@@ -18,17 +18,74 @@
    .checkout-cart-index .sws-coupons-modal .modal-popup .modal-content {
        padding: unset;
    }
+    .checkout-index-index .amcoupons-main-container {
+        width: unset;
+    }
+    .form-discount .payment-option-inner {
+        flex-direction: row;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        input[type="text"]:focus {
+            box-shadow: unset;
+            border: 1px solid #e0e0e0;
+            color: #2b2b2b;
+        }
+        .field {
+            width: ~"calc(100% - 154px)";
+        }
+        .actions-toolbar {
+            padding: 0;
+            height: 40px;
+            width: 154px;
+            .amcoupons-apply {
+                margin: 0;
+                white-space: nowrap;
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                color: #2b2b2b;
+                border-left: 0;
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
 }
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__xl) {
     .sidebar-additional {
         padding-left: 2.5%;
     }
 }
+/* Style for mobile */
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
     .checkout-cart-index {
         .couponContainer {
             .actions-toolbar {
                 min-height: 40px;
+            }
+        }
+    }
+    .checkout-index-index {
+        .form-discount .payment-option-inner {
+            .field {
+                width: ~"calc(100% - 90px)";
+            }
+            .actions-toolbar {
+                width: 90px;
+            }
+        }
+    }
+}
+/* Style for tablet device */
+@media only screen and (min-width: @screen__m) and (max-width: (@screen__l - 1)) {
+    .checkout-index-index {
+        .form-discount .payment-option-inner {
+            .field {
+                width: ~"calc(100% - 163px)";
+            }
+            .actions-toolbar {
+                width: 163px;
             }
         }
     }
