@@ -122,6 +122,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             }
 
             $this->calculator->reset($address);
+            $address->setBaseGrandTotal($address->getBaseSubtotal());
+            $address->setGrandTotal($address->getSubtotal());
             $itemsAggregate = [];
             foreach ($shippingAssignment->getItems() as $item) {
                 $itemId = $item->getId();
