@@ -23,8 +23,7 @@ define([
     }
     //customize here
     isApplied(couponCode() != null && couponCode() !== '');
-    console.log('debug isApplied');
-    console.log(isApplied);
+
     return Component.extend({
         defaults: {
             template: 'Magento_SalesRule/payment/discount'
@@ -51,7 +50,6 @@ define([
         cancel: function () {
             if (this.validate()) {
                 couponCode('');
-                console.log('when cancel coupon')
                 cancelCouponAction(isApplied);
             }
         },
