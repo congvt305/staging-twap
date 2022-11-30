@@ -17,7 +17,7 @@
                                                         <item name="before-shipping-method-form" xsi:type="array">
                                                             <item name="children" xsi:type="array">
                                                                 <item name="discount" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Amasty_Coupons/js/view/checkout/discount</item>
+                                                                    <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount</item>
                                                                     <item name="children" xsi:type="array">
                                                                         <item name="errors" xsi:type="array">
                                                                             <item name="sortOrder" xsi:type="string">0</item>
@@ -52,7 +52,7 @@
                                                             </item>
                                                         </item>
                                                         <item name="discount" xsi:type="array">
-                                                            <item name="component" xsi:type="string">Amasty_Coupons/js/view/checkout/discount</item>
+                                                            <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount</item>
                                                             <item name="displayArea" xsi:type="string">beforeMethods</item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="errors" xsi:type="array">
@@ -67,12 +67,6 @@
                                                                     <item name="configSource" xsi:type="string">checkoutConfig</item>
                                                                 </item>
                                                             </item>
-                                                             <item name="config" xsi:type="array">
-                                                                <item name="successMessage" xsi:type="string" translate="true">Coupon was successfully applied.</item>
-                                                                <item name="errorMessage" xsi:type="string" translate="true">Coupon code is not valid.</item>
-                                                                <item name="cancelMessage" xsi:type="string" translate="true">Coupon code was removed.</item>
-                                                            </item>
-                                                             <item name="template" xsi:type="string">Amasty_Coupons/checkout/discount</item>
                                                         </item>
                                                     </item>
                                                 </item>
