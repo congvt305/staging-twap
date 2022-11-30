@@ -32,16 +32,30 @@ class CustomCouponManagement
      */
     private $quoteCouponStorage;
 
+    /**
+     * @var \CJ\Coupons\Helper\Data
+     */
+    protected $dataHelper;
+
+    /**
+     * @param CouponRenderer $couponRenderer
+     * @param CartRepositoryInterface $quoteRepository
+     * @param FilterCoupons $filterCoupons
+     * @param \Amasty\Coupons\Model\QuoteCouponStorage $quoteCouponStorage
+     * @param \CJ\Coupons\Helper\Data $dataHelper
+     */
     public function __construct(
         CouponRenderer $couponRenderer,
         CartRepositoryInterface $quoteRepository,
         FilterCoupons $filterCoupons,
-        \Amasty\Coupons\Model\QuoteCouponStorage $quoteCouponStorage
+        \Amasty\Coupons\Model\QuoteCouponStorage $quoteCouponStorage,
+        \CJ\Coupons\Helper\Data $dataHelper
     ) {
         $this->couponRenderer = $couponRenderer;
         $this->quoteRepository = $quoteRepository;
         $this->filterCoupons = $filterCoupons;
         $this->quoteCouponStorage = $quoteCouponStorage;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -54,31 +68,14 @@ class CustomCouponManagement
      */
     public function beforeSet(CouponManagementInterface $subject, $cartId, $couponCode)
     {
-        $couponCode = $this->prepareCoupon((int)$cartId, (string)$couponCode);
+        $multiCouponEnabled = $this->dataHelper->getMultiCouponEnabled();
+        if ($multiCouponEnabled) {
+            $couponCode = $this->prepareCoupon((int)$cartId, (string)$couponCode);
+        }
+
         $this->quoteCouponStorage->setQuoteCoupons((int)$cartId, $couponCode);
 
         return [$cartId, $couponCode];
-    }
-
-    /**
-     * Render and filter coupon codes.
-     * Return as string
-     *
-     * @param int $cartId
-     * @param string $couponCode
-     *
-     * @return string
-     */
-    private function prepareCoupon(int $cartId, string $couponCode): string
-    {
-        $renderedCodes = $this->couponRenderer->render($couponCode);
-
-        if (!empty($renderedCodes)) {
-            $quote = $this->quoteRepository->getActive($cartId);
-            //$renderedCodes = $this->filterCoupons->validationFilter($renderedCodes, (int)$quote->getCustomerId());
-        }
-
-        return implode(',', $renderedCodes);
     }
 
     /**
@@ -97,5 +94,23 @@ class CustomCouponManagement
     public function afterSet(CouponManagementInterface $subject, $result, $cartId)
     {
         return $subject->get($cartId);
+    }
+
+    /**
+     * @param int $cartId
+     * @param string $couponCode
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    private function prepareCoupon(int $cartId, string $couponCode): string
+    {
+        $renderedCodes = $this->couponRenderer->render($couponCode);
+
+        if (!empty($renderedCodes)) {
+            $quote = $this->quoteRepository->getActive($cartId);
+            $renderedCodes = $this->filterCoupons->validationFilter($renderedCodes, (int)$quote->getCustomerId());
+        }
+
+        return implode(',', $renderedCodes);
     }
 }
