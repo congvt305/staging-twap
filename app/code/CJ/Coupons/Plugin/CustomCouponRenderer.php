@@ -10,35 +10,18 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class CustomCouponRenderer
 {
-    const XML_PATH_MULTICOUPON_ENABLED = 'amcoupons/general/enable_multi_coupons';
-
     /**
-     * @var StoreManagerInterface
+     * @var \CJ\Coupons\Helper\Data
      */
-    protected $storeManager;
+    protected $dataHelper;
 
     /**
-     * @var ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
-     * @param StoreManagerInterface $storeManager
-     * @param ScopeConfigInterface $scopeConfig
+     * @param \CJ\Coupons\Helper\Data $dataHelper
      */
     public function __construct(
-        StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        \CJ\Coupons\Helper\Data $dataHelper
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->storeManager = $storeManager;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getMultiCouponEnabled() {
-        return (bool) $this->scopeConfig->getValue(self::XML_PATH_MULTICOUPON_ENABLED, 'website');
+       $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -48,25 +31,26 @@ class CustomCouponRenderer
      * @return array|mixed
      */
     public function aroundParseCoupon(\Amasty\Coupons\Model\CouponRenderer $subject, \Closure $proceed, $couponString) {
-        $enabled = $this->getMultiCouponEnabled();
-        if (!$enabled) {
-            if (!$couponString) {
-                return [];
-            }
-
-            $coupons = [$couponString];
-            $result = [];
-            foreach ($coupons as &$coupon) {
-                $coupon = trim($coupon);
-                if ($coupon && $this->findCouponInArray($coupon, $result) === false) {
-                    $result[] = $coupon;
-                }
-            }
-
-            return $result;
-        } else {
+        $multiCouponEnabled = $this->dataHelper->getMultiCouponEnabled();
+        if ($multiCouponEnabled) {
             return $proceed($couponString);
         }
+
+        // If setting multicoupon is set to NO, we will not split coupons string to many coupon codes
+        if (!$couponString) {
+            return [];
+        }
+
+        $coupons = [$couponString];
+        $result = [];
+        foreach ($coupons as &$coupon) {
+            $coupon = trim($coupon);
+            if ($coupon && $this->findCouponInArray($coupon, $result) === false) {
+                $result[] = $coupon;
+            }
+        }
+
+        return $result;
     }
 
     /**
