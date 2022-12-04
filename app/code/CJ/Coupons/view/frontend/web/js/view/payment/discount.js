@@ -10,14 +10,17 @@ define(
         'uiComponent',
         'Magento_Checkout/js/model/quote',
         'Magento_SalesRule/js/model/payment/discount-messages',
+        'Amasty_Coupons/js/action/apply-coupon-codes',
         'Amasty_Coupons/js/action/set-coupon-code',
         'Magento_SalesRule/js/action/cancel-coupon',
         'Magento_SalesRule/js/model/coupon',
+        'Amasty_Coupons/js/model/coupon',
         'Magento_Ui/js/modal/modal',
         'text!CJ_Coupons/template/modal/modal-popup.html',
+        'Amasty_Coupons/js/model/abstract-apply-response-processor',
         'domReady!'
     ],
-    function ($, ko, _, $t, Component, quote, messageContainer, setCouponCodeAction, cancelCouponAction,couponAction, modal, popupTpl) {
+    function ($, ko, _, $t, Component, quote, messageContainer, setCouponCodesAction, setCouponCodeAction, cancelCouponAction,couponAction, couponModel, modal, popupTpl, responseProcessor) {
         'use strict';
 
         var totals = quote.getTotals(),
@@ -101,6 +104,14 @@ define(
         var message = $t('Your coupon was successfully applied'),
             messageError = $t('Coupon code is not valid'),
             messageDelete = $t('Coupon code was removed');
+
+
+        /*
+         * Adding new attributes that only exist on latest version of Amasty Coupons
+         **/
+        var couponsArray = couponModel.couponsArray;
+
+
         return Component.extend({
 
             defaults: {
@@ -133,6 +144,22 @@ define(
              * check should show couponlist
              */
             canViewCouponList: ko.observable(canViewCouponList),
+
+            /*
+            * Adding new attributes that only exist on latest version of Amasty Coupons
+            **/
+            couponsArray: couponsArray,
+            inputCode: '',
+            responseProcessor: responseProcessor,
+            initObservable: function () {
+                this._super();
+
+                this.observe(['inputCode']);
+
+                return this;
+            },
+            /*End adding new attributes*/
+
 
             createPopupWebsite: function() {
                 if (websiteCode == 'tw_lageige_website') {
@@ -214,7 +241,7 @@ define(
              * Coupon code application procedure
              */
             apply: function() {
-                if (this.validate()) {
+              /*  if (this.validate()) {
                     isLoading(true);
                     var newDiscountCode =  this.fakeCouponCode();
                     var code = [];
@@ -237,7 +264,27 @@ define(
                     }.bind(this)).always(function(){
                         isLoading(false);
                     });
+                }*/
+
+                var codes = [];
+
+                if (this.validate()) {
+                    this.isLoading(true);
+                    this.inputCode(this.fakeCouponCode());
+                    codes = codes.concat(this.couponsArray())
+                        .concat(couponModel.renderCoupons(this.inputCode()));
+
+                    setCouponCodesAction(codes, this.responseProcessor)
+                        .done(function () {
+                            this.handleErrorMessages();
+                            this.inputCode(this.responseProcessor.errorCoupons.join(', '));
+                            $('.totals.discount .title').removeClass('negative');
+                        }.bind(this))
+                        .always(function () {
+                            this.isLoading(false);
+                        }.bind(this));
                 }
+
             },
 
             /**
@@ -259,6 +306,19 @@ define(
             validate: function() {
                 var form = '#discount-form';
                 return $(form).validation() && $(form).validation('isValid');
+            },
+
+            /**
+             * @returns {void}
+             */
+            handleErrorMessages: function () {
+                var messages = this.getChild('errors');
+
+                messages.messageContainer.clear();
+
+                _.each(responseProcessor.errorCoupons, function (code) {
+                    messages.messageContainer.errorMessages.push(code + ' ' + this.errorMessage);
+                }, this);
             },
 
             /**
