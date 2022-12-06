@@ -11,7 +11,6 @@ class UpdateCustomerGroupResponse
     extends \Magento\Framework\Model\AbstractExtensibleModel
     implements UpdateCustomerGroupResponseInterface
 {
-
     /**
      * {@inheritDoc}
      */
@@ -47,16 +46,16 @@ class UpdateCustomerGroupResponse
     /**
      * {@inheritDoc}
      */
-    public function getGradeData(): array
+    public function getSuccess(): bool
     {
-        return $this->getData(self::GRADE_DATA);
+        return $this->getData(self::SUCCESS);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setGradeData(?array $data)
+    public function setSuccess(?bool $isSuccess)
     {
-        $this->setData(self::GRADE_DATA, $data);
+        $this->setData(self::SUCCESS, $isSuccess);
     }
 }

@@ -1,13 +1,9 @@
 <?xml version="1.0"?>
-<!--
-/*
- *  @author Eguana Commerce Brian
- *  @copyright Copyright 2020 (c) Eguana Commerce
- */
--->
-<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route method="POST" url="/V1/customer/group/update">
-        <service class="Amore\Sap\Api\SapOrderManagementInterface" method="orderStatus"/>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/cj_customer/group" method="PUT">
+        <service class="CJ\CustomCustomer\Api\CustomerGroupManagementInterface" method="setGroup"/>
         <resources>
             <resource ref="anonymous" />
         </resources>
