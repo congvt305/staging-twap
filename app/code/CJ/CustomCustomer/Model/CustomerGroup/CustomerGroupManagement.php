@@ -2,12 +2,15 @@
 
 namespace CJ\CustomCustomer\Model\CustomerGroup;
 
-use Amore\PointsIntegration\Model\CustomerPointsSearch;
+use CJ\CouponCustomer\Helper\Data;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Customer\Api\Data\CustomerInterface;
 
-class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupManagementInterface {
+/**
+ * Class CustomerGroupManagement
+ */
+class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupManagementInterface
+{
 
     /**
      * @var CustomerRepositoryInterface
@@ -15,7 +18,7 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     protected $customerRepository;
 
     /**
-     * @var SearchCriteriaBuilder
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
     protected $searchCriteriaBuilder;
 
@@ -25,59 +28,126 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     protected $logger;
 
     /**
-     * @var Json
+     * @var \CJ\CouponCustomer\Helper\Data
      */
-    protected $json;
+    protected $helperData;
 
-    protected $customerPointsSearch;
+    /**
+     * @var \Magento\Store\Api\StoreRepositoryInterface
+     */
+    protected $storeRepository;
+
+    /**
+     * @var \CJ\CustomCustomer\Helper\Data
+     */
+    protected $helper;
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \CJ\CustomCustomer\Logger\Logger $logger
-     * @param Json $json
+     * @param Data $helperData
+     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRepository
+     * @param \CJ\CustomCustomer\Helper\Data $helper
      */
     public function __construct(
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \CJ\CustomCustomer\Logger\Logger $logger,
-        \Magento\Framework\Serialize\Serializer\Json $json,
-        \Amore\PointsIntegration\Model\CustomerPointsSearch $customerPointsSearch,
-    ) {
+        \Magento\Framework\Api\SearchCriteriaBuilder      $searchCriteriaBuilder,
+        \CJ\CustomCustomer\Logger\Logger                  $logger,
+        \CJ\CouponCustomer\Helper\Data                    $helperData,
+        \Magento\Store\Api\StoreRepositoryInterface       $storeRepository,
+        \CJ\CustomCustomer\Helper\Data                    $helper
+    )
+    {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->logger = $logger;
-        $this->json = $json;
-        $this->customerPointsSearch = $customerPointsSearch;
+        $this->helperData = $helperData;
+        $this->helper = $helper;
+        $this->storeRepository = $storeRepository;
     }
 
-
-    public function setGroup($customerGradeData)
+    /**
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function setGroup($gradeData)
     {
         $result = [];
 
-        $customerIntegrationId = $customerGradeData['integrationNumber'];
-        $currentGrade = $customerGradeData['currentGrade'];
+        $cstmIntegSeq = $gradeData['cstmIntgSeq'];
+        $scope = $gradeData['scope'];
+        $websiteId = $this->storeRepository->get($scope)->getWebsiteId();
+        $loggingEnabled = $this->helper->getLoggingEnabled();
 
-        $customer = $this->getCustomerByIntegrationNumber($customerIntegrationId);
+        $customer = $this->getCustomerByIntegrationNumber($cstmIntegSeq, $websiteId);
 
-        if ($customer) {
-            //@todo
+        if (!$customer) {
+            $message = __("Failed to update grade. Error is no customer exists with integration number \"%1\"", $cstmIntegSeq);
+            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002", $message);
+        } else {
+            $customerId = $customer->getId();
+            $customerData = $this->customerRepository->getById($customerId);
+
+            if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
+                $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
+                $gradeName = $prefix . '_' . $gradeData['cstmGradeNM'];
+                $posCustomerGroupId = $this->helperData->getCustomerGroupIdByName($gradeName);
+
+                if (!$posCustomerGroupId) {
+                    $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $gradeName);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0003");
+                } elseif ($posCustomerGroupId == $customerData->getGroupId()) {
+                    $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $gradeName);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0004");
+                } else {
+                    $customerData->setGroupId($posCustomerGroupId);
+                    $this->customerRepository->save($customerData);
+                    $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
+                }
+            }
         }
-
-
-
+        if ($loggingEnabled) {
+            $this->logger->info("Response data", [$result]);
+        }
+        return $result;
     }
 
-    protected function getCustomerByIntegrationNumber($integrationNumber)
+    /**
+     * @return CustomerInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function getCustomerByIntegrationNumber($integrationNumber, $websiteId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('website_id', $websiteId)
             ->addFilter('integration_number', $integrationNumber)
             ->create();
         $customers = $this->customerRepository->getList($searchCriteria)->getItems();
-        $customer = reset($customers);
 
-        return $customer;
+        return reset($customers);
     }
 
+    /**
+     * @param $request
+     * @param $message
+     * @param $code
+     * @param $exceptionMsg
+     * @return array
+     */
+    protected function gradeResultMsg($request, $message, $code, $exceptionMsg = '')
+    {
+        return [
+            'success' => $code === "0001",
+            'code' => $code,
+            'message' => $message,
+            'exceptionMsg' => $exceptionMsg,
+            'data' => [
+                'cstmIntgSeq' => $request['cstmIntgSeq'],
+                'cstmGradeNM' => $request['cstmGradeNM'],
+                'cstmGradeCD' => $request['cstmGradeCD'],
+                'scope' => $request['scope']
+            ]
+        ];
+    }
 }
