@@ -285,6 +285,18 @@
                     width: 100%;
                     padding: 0;
                     float: none;
+                    &.sticky {
+                        bottom: 0;
+                        left: 0;
+                        position: fixed;
+                        right: 0;
+                        z-index: 4;
+                        margin: 0;
+                        > button {
+                            width: 50%;
+                            line-height: 46px !important;
+                        }
+                    }
                 }
             }
 
