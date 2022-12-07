@@ -107,6 +107,12 @@ class PosReturnData
      */
     private $middlewareHelper;
 
+
+    /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
     /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -141,9 +147,9 @@ class PosReturnData
         \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory,
         Logger                                                 $pointsIntegrationLogger,
         CommentInterfaceFactory                                $commentInterfaceFactory,
-        Data                                                   $middlewareHelper
-    )
-    {
+        Data                                                   $middlewareHelper,
+        \Amasty\Rewards\Model\Config $amConfig
+    ) {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -160,6 +166,7 @@ class PosReturnData
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->middlewareHelper = $middlewareHelper;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -179,6 +186,21 @@ class PosReturnData
         $invoice = $order->getInvoiceCollection()->getFirstItem();
         $couponCode = $order->getCouponCode();
 
+        $redemptionFlag = 'N';
+        $rewardPoints = 0;
+        $storeId = $order->getStoreId();
+        if($this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $discountFromPoints = $rewardPoints / $spendingRate;
+            if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
+                $redemptionFlag = 'Y';
+            }
+        }
+
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -188,7 +210,9 @@ class PosReturnData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_RETURN,
             'promotionKey' => $couponCode,
-            'orderInfo' => $rmaItem
+            'orderInfo' => $rmaItem,
+            'PointAccount' => (int)$rewardPoints,
+            'redemptionFlag' => $redemptionFlag
         ];
 
         return $rmaData;
