@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="cj_checkout_point_set_plugin" type="CJ\Rewards\Plugin\Checkout\Controller\IndexPlugin" sortOrder="1" />
+    </type>
+    <type name="Amasty\Rewards\Model\Quote\Collector\Points">
+        <plugin name="cj_reward_before_collect" type="CJ\Rewards\Plugin\Model\Quote\Collector\CheckCondition" sortOrder="1" />
+    </type>
+    <preference for="Amasty\Rewards\Model\Calculation\Discount" type="CJ\Rewards\Model\Calculation\Discount" />
+</config>

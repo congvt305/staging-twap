@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amrewards>
+            <general>
+                <enabled>0</enabled>
+            </general>
+        </amrewards>
+    </default>
+    <websites>
+        <tw_lageige_website>
+            <amrewards>
+                <general>
+                    <enabled>1</enabled>
+                    <enabled_rewards_point_for_only_bundle>1</enabled_rewards_point_for_only_bundle>
+                </general>
+                <points>
+                    <rate>30</rate>
+                </points>
+            </amrewards>
+        </tw_lageige_website>
+        <base>
+            <amrewards>
+                <general>
+                    <enabled>1</enabled>
+                    <enabled_rewards_point_for_only_bundle>0</enabled_rewards_point_for_only_bundle>
+                </general>
+                <points>
+                    <rate>20</rate>
+                </points>
+            </amrewards>
+        </base>
+    </websites>
+</config>
