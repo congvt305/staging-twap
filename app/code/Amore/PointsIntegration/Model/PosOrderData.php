@@ -713,7 +713,8 @@ class PosOrderData
         $orderCollection = $this->orderCollectionFactory->create();
         $orderCollection
             ->addFieldToFilter('store_id', $storeId)
-            ->addFieldToFilter('pos_order_cancel_send', true);
+            ->addFieldToFilter('pos_order_cancel_send', true)
+            ->addFieldToFilter('pos_order_paid_sent', true);
 
         return $orderCollection->getItems();
     }
