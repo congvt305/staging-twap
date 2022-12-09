@@ -130,7 +130,7 @@ class Order
         $notIssuedOrderList = [];
         foreach ($orderList->getItems() as $order) {
             $payment = $order->getPayment();
-            $eInvoiceData = json_decode($payment->getAdditionalData(), true);
+            $eInvoiceData = json_decode($payment->getAdditionalData()??'', true);
 
             if (empty($eInvoiceData) || (isset($eInvoiceData["RtnCode"]) && $eInvoiceData["RtnCode"] != 1)) {
                 $notIssuedOrderList[] = $order;

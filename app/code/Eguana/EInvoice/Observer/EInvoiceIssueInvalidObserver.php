@@ -33,7 +33,7 @@ class EInvoiceIssueInvalidObserver implements ObserverInterface
         $order = $payment->getOrder();
 
         if (!empty($payment->getAdditionalData())) {
-            $eInvoiceData = json_decode($payment->getAdditionalData(), true);
+            $eInvoiceData = json_decode($payment->getAdditionalData()??'', true);
 
             if (isset($eInvoiceData["InvoiceNumber"]) && ($eInvoiceData["RtnCode"] == 1)) {
                 $this->ecpayPaymentModel->issueAllowance($payment, $order);
