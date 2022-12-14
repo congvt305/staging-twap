@@ -23,6 +23,10 @@ define(
                 let barCodeValid = true;
                 const eInvoiceForm = $('#linepay-custom-checkout-form');
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="linepay_einvoice_type"]:checked').val();
+                const errorMessage = {
+                    please_enter_in_numbers: $t('Please enter in numbers.'),
+                    this_is_a_required_field: $t('This is a required field.')
+                };
                 $('.line-pay-triplicate-title-error-msg').hide();
                 $('.line-pay-tax-id-number-error-msg').hide();
                 if (choosenEInvoice == 'cellphone-barcode-invoice') {
@@ -42,8 +46,14 @@ define(
                     }
                     let linePayTaxIdNumber = $("input:text[id=line_pay_tax_id_number]").val();
                     if (linePayTaxIdNumber == '') {
-                        $('.line-pay-tax-id-number-error-msg').show();
+                        $('.line-pay-tax-id-number-error-msg').text(errorMessage.this_is_a_required_field).show();
                         requiredFieldEntered = false;
+                    } else {
+                        let isNum = linePayTaxIdNumber.match(/^[0-9]+$/) != null;
+                        if (!isNum) {
+                            $('.line-pay-tax-id-number-error-msg').text(errorMessage.please_enter_in_numbers).show();
+                            requiredFieldEntered = false;
+                        }
                     }
                     if (requiredFieldEntered == false) {
                         return requiredFieldEntered;
