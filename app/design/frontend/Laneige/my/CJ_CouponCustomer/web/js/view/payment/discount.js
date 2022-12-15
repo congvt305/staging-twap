@@ -189,9 +189,12 @@ define([
             $('.discount-card-button').removeClass('applied-button');
             $('.discount-card-button').text($t('Apply'));
 
-            var couponCodeApplied = $('#discount-code').val();
-            $('#' + couponCodeApplied).text($t('Cancel'));
-            $('#' + couponCodeApplied).addClass('applied-button');
+            if (coupon.isApplied()) {
+                var couponCodeApplied = $('#discount-code').val();
+                $('#' + couponCodeApplied).text($t('Cancel'));
+                $('#' + couponCodeApplied).addClass('applied-button');
+            }
+
             popup.openModal();
         },
         /**
@@ -201,7 +204,7 @@ define([
 
         applyCouponPopup: function(data, event) {
             var couponCode = event.target.id;
-            if(couponCode == couponAppliedPopup) {
+            if (coupon.isApplied() && couponCode == couponAppliedPopup) {
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
                 $('#discount-code').val('');
