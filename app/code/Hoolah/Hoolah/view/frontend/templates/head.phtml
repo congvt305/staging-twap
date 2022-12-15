@@ -1,0 +1,15 @@
+<?php if ($block->isEnabled()) : ?>
+    <?php
+        $urls = $block->getCDNLinks();
+        
+        if ($urls) :
+    ?>
+    <script type="text/javascript" charset="utf-8" src="<?php echo $urls['main.js'] ?>"></script>
+    
+    <link rel="stylesheet" type="text/css" href="<?php echo $urls['general.css'] ?>" />
+    <?php endif; ?>
+    
+    <meta name="generator" content="hoolah <?php echo $block->getVersion() ?>">
+    
+    <?php echo $block->getDebugInfo() ?>
+<?php endif; ?>

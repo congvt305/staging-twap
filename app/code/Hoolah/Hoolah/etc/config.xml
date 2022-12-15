@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <hoolah>
+                <active>0</active>
+                <model>HoolahPaymentGatewayFacade</model>
+                <order_status>processing</order_status>
+                <title>ShopBack PayLater. Pay in 3, 0% interest</title>
+                <can_use_checkout>1</can_use_checkout>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_refund>1</can_refund>
+                <is_gateway>1</is_gateway>
+                <sort_order>1</sort_order>
+                <send_logs_time_scope>7</send_logs_time_scope>
+                <send_logs_lines_scope>hoolah</send_logs_lines_scope>
+                <create_email_notification>1</create_email_notification>
+                <disable_db_log>0</disable_db_log>
+            </hoolah>
+        </payment>
+    </default>
+</config>
