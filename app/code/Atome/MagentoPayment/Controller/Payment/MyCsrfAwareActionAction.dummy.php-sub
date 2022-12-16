@@ -1,6 +1,0 @@
-<?php
-namespace Atome\MagentoPayment\Controller\Payment;
-
-abstract class MyCsrfAwareActionAction extends \Magento\Framework\App\Action\Action
-{
-}

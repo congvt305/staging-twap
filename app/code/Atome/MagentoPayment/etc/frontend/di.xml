@@ -11,7 +11,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="atome" xsi:type="object">Atome\MagentoPayment\Model\CheckoutConfigProvider</item>
+                <item name="atome" xsi:type="object">\Atome\MagentoPayment\Services\View\FrontendConfigProvider</item>
             </argument>
         </arguments>
     </type>
