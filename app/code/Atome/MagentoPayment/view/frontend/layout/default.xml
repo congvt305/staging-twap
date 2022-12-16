@@ -10,7 +10,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="before.body.end">
-            <block class="Atome\MagentoPayment\Block\DefaultPageEnd" name="atome.default.body.end" after="-" template="Atome_MagentoPayment::atome/default_body_end.phtml" />
+            <block class="Atome\MagentoPayment\Block\GlobalBlock" name="atome.default.body.end" after="-" template="Atome_MagentoPayment::atome/global.phtml" />
         </referenceContainer>
     </body>
 </page>

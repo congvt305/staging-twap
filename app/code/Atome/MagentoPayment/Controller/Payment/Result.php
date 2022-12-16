@@ -9,116 +9,177 @@
 
 namespace Atome\MagentoPayment\Controller\Payment;
 
-use Atome\MagentoPayment\Model\Adapter\PaymentApi;
-use Atome\MagentoPayment\Helper\CallbackHelper;
-use Atome\MagentoPayment\Helper\CommonHelper;
-use Atome\MagentoPayment\Model\Config\PaymentGatewayConfig;
-use Atome\MagentoPayment\Model\PaymentGateway;
-use Exception;
+use Atome\MagentoPayment\Services\Config\PaymentGatewayConfig;
+use Atome\MagentoPayment\Services\Logger\Logger;
 use Magento\Checkout\Model\Session;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Payment\Model\Method\AbstractMethod;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Result\Page;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\OrderRepository;
 
-class Result extends Action
+class Result extends AtomeAction
 {
-    protected $commonHelper;
-    protected $checkoutSession;
+    protected $session;
     protected $paymentGatewayConfig;
-    protected $callbackHelper;
     protected $controllerContext;
-    protected $paymentApi;
 
     public function __construct(
-        Context $context,
-        Session $checkoutSession,
-        CommonHelper $commonHelper,
-        PaymentGatewayConfig $paymentGatewayConfig,
-        CallbackHelper $callbackHelper,
-        PaymentApi $paymentApi
-    ) {
+        Context              $context,
+        Session              $session,
+        PaymentGatewayConfig $paymentGatewayConfig
+    )
+    {
         parent::__construct($context);
         $this->controllerContext = $context;
-        $this->commonHelper = $commonHelper;
-        $this->checkoutSession = $checkoutSession;
-        $this->callbackHelper = $callbackHelper;
+        $this->session = $session;
         $this->paymentGatewayConfig = $paymentGatewayConfig;
-        $this->paymentApi = $paymentApi;
     }
 
     public function execute()
     {
-        $this->commonHelper->logInfo('action Result: begin');
-        if ($this->paymentGatewayConfig->getPaymentAction() == AbstractMethod::ACTION_AUTHORIZE_CAPTURE) {
-            try {
-                $queryParams = $this->getRequest()->getParams();
-                $type = $queryParams['type'] ?? '';
-                $this->commonHelper->logInfo('action Result: queryParams => ' . json_encode($queryParams));
-                $quoteId = $queryParams['quoteId'] ?? null;
-                $orderId = $queryParams['orderId'] ?? null;
-                if ($this->paymentGatewayConfig->getOrderCreatedWhen() === 'before_paying') {
-                    $ctx = $this->callbackHelper->applyOrderPayment($orderId, $queryParams);
-                } else {
-                    $ctx = $this->callbackHelper->applyQuotePayment($quoteId, $queryParams);
-                }
-            } catch (LocalizedException $e) {
-                $errorCode = $e->getCode();
-                $error = $e->getMessage();
-                $this->commonHelper->logError('action Result applyQuotePayment LocalizedException: ' . $error);
-            } catch (Exception $e) {
-                $errorCode = $e->getCode();
-                $this->commonHelper->logError("action Result applyQuotePayment failed: " . get_class($e) . ':' . $e->getMessage());
-                $error = "Payment Error: " . get_class($e) . ':' . $e->getMessage();
-            }
-        }
-        if (!empty($error)) {
-            $redirect = 'checkout/cart';
-            if ($type != 'cancel' || $errorCode !== CommonHelper::EXP_CODE_PAYMENT_PROCESSING) {
-                $this->messageManager->addError($error);
-            }
-            if (!empty($orderId) && $this->paymentGatewayConfig->getOrderCreatedWhen() === 'before_paying') {
-                $order = $this->callbackHelper->getOrderByOrderId($orderId);
-                if (!$this->paymentGatewayConfig->getClearCartWithoutPaying()) {
-                    $this->checkoutSession->restoreQuote();         
-                }
-                if ($order) {
-                    $order->cancel();
-                    $order->save();
-                    if ($type == 'cancel' && $this->paymentGatewayConfig->getDeleteOrdersWithoutPaying()) {
-                        $registry = $this->_objectManager->get('Magento\Framework\Registry');
-                        $registry->register('isSecureArea', true, true);
-                        $order->delete();
-                        $registry->unregister('isSecureArea');
-                    }
-                    // 尝试去取消 payment，防止客户又去付款导致回调失败
-                    try {
-                        $payment = $order->getPayment();
-                        $oldReferenceId = $payment->getAdditionalInformation(PaymentGateway::PAYMENT_REFERENCE_ID);
-                        $this->commonHelper->logInfo("action Result: cancel old payment: {$payment->getPaymentId()} ($oldReferenceId), method={$payment->getMethod()}, data=" . json_encode($payment->getData()));
-                        $this->paymentApi->cancelPayment($oldReferenceId);
-                    } catch (\Exception $e) {
-                        $this->commonHelper->logError("action Result: failed to cancel old payment, " . get_class($e) . ', message: ' . $e->getMessage());
-                    }
-                }
-            }
-        } else {
-            if (!empty($orderId) && $this->paymentGatewayConfig->getOrderCreatedWhen() === 'before_paying') {
-                $order = $ctx->orderCreated;
-            } else {
-                $order = $this->callbackHelper->getOrderByIncrementId($ctx->quote->getReservedOrderId());
-                $this->checkoutSession
-                    ->setLastQuoteId($ctx->quote->getId())
-                    ->setLastSuccessQuoteId($ctx->quote->getId())
-                    ->clearHelperData();
-            }
+        $orderId = $this->_request->getParam('orderId');
+        $type = strtolower($this->_request->getParam('type'));
 
-            $this->checkoutSession->setLastOrderId($order->getId())
-                ->setLastRealOrderId($order->getIncrementId());
-            $redirect = 'checkout/onepage/success';
-            $this->messageManager->addSuccess(__("Atome Payment Completed"));
+        Logger::instance()->info('action Result: begin' . json_encode(compact('orderId', 'type')));
+
+        if (!$orderId) {
+            return $this->whenParameterMissing();
         }
-        $this->commonHelper->logInfo('action Result: redirectUrl => ' . $redirect);
-        $this->_redirect($redirect);
+
+        if ($type === 'cancel') {
+            return $this->whenCancelOrder();
+        }
+
+        if ($order = $this->getOrder($orderId)) {
+            $this->restoreSession($order);
+
+            if ($redirect = $this->getRedirectUrl(
+                $order->getState(),
+                $order->getStatus()
+            )) {
+                return $this->_redirect($redirect);
+            }
+        }
+
+        return $this->renderPage($orderId);
     }
+
+
+    protected function renderPage($orderId)
+    {
+        $this->messageManager->addWarningMessage(__("Atome payment is processing. Please wait a while."));
+
+        /** @var Page $page */
+        $page = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+        /** @var Template $block */
+        $block = $page->getLayout()->getBlock('atome.payment.result');
+        $block->setData('orderId', $orderId);
+
+        return $page;
+    }
+
+    protected function whenParameterMissing()
+    {
+        $this->messageManager->addErrorMessage(__("Atome payment unexpected problem occurs."));
+
+        return $this->_redirect('checkout/cart');
+    }
+
+    protected function whenCancelOrder()
+    {
+        if (!$this->paymentGatewayConfig->getClearCartWithoutPaying()) {
+            $this->session->restoreQuote();
+        }
+
+        return $this->_redirect('checkout/cart');
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param $quoteId
+     * @return void
+     */
+    protected function restoreSession($order)
+    {
+        $this->session
+            ->setLastOrderId($order->getId())
+            ->setLastRealOrderId($order->getIncrementId());
+    }
+
+    protected function getRedirectUrl($orderState, $orderStatus)
+    {
+        $redirect = null;
+        if ($orderStatus === $this->paymentGatewayConfig->getOrderStatus()) {
+            /*
+             * If the status has been changed to the status set by the merchant,
+             * it means the payment is successful and the callback has been completed,
+             * and the success page can be displayed.
+             *
+             * This also prevents merchants from using unconventional order processes,
+             * such as setting the state to remain as PENDING_PAYMENT after payment is complete.
+             */
+            $this->messageManager->addSuccessMessage(__("Atome Payment Completed"));
+            return 'checkout/onepage/success';
+        }
+
+        /*
+         * Otherwise we use state to determine what result should be displayed
+         */
+        switch ($orderState) {
+            case Order::STATE_NEW:
+            case Order::STATE_PENDING_PAYMENT:
+            case Order::STATE_HOLDED:
+            case Order::STATE_PAYMENT_REVIEW:
+                break;
+            case Order::STATE_PROCESSING:
+            case Order::STATE_COMPLETE:
+                $this->messageManager->addSuccessMessage(__("Atome Payment Completed"));
+                $redirect = 'checkout/onepage/success';
+                break;
+            case Order::STATE_CLOSED:
+            case Order::STATE_CANCELED:
+                $this->messageManager->addErrorMessage(__('Atome payment failed. Please try again or use an alternative payment method.'));
+                $redirect = 'checkout/onepage/failure';
+                break;
+            default:
+                Logger::instance()->error("Unknown Magento order state: {$orderState}");
+                break;
+        }
+
+        return $redirect;
+    }
+
+
+    /**
+     * @param $orderId
+     * @param $quoteId
+     * @return OrderInterface|Order|null
+     * @throws InputException
+     */
+    protected function getOrder($orderId)
+    {
+        $order = null;
+        try {
+            $objectManager = ObjectManager::getInstance();
+            $order = $objectManager->get(OrderRepository::class)->get($orderId);
+        } catch (NoSuchEntityException $exception) {
+            // PASS
+        }
+
+        return $order;
+    }
+
+    protected function _redirect($path, $arguments = [])
+    {
+        Logger::instance()->info('action Result: redirectUrl => ' . $path);
+
+        return parent::_redirect($path, $arguments);
+    }
+
 }
