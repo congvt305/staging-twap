@@ -559,7 +559,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         //Never update tracking number for Ninjavan
         if ($carrierCode == 'ninjavan') {
             $message = __("Shipping method is ninjavan and we won't change tracking number.");
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
             return $result;
         }
