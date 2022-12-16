@@ -1,0 +1,8 @@
+<?php
+namespace Atome\MagentoPayment\Controller\Payment;
+
+abstract class AtomeAction extends \Magento\Framework\App\Action\Action
+{
+   use Response;
+
+}
