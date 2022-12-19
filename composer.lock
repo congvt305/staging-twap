@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b64cc1ab9dcc09e6843cf18ee7595cf2",
+    "content-hash": "6b6971d5a536e0bb6fd94028d50286d6",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -307,31 +307,6 @@
                 "Commercial"
             ],
             "description": "Cron Schedule List by Amasty"
-        },
-        {
-            "name": "amasty/customer-group-assign",
-            "version": "1.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/customer-group-assign-1.0.8.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.5",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\GroupAssign\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Customer Group Auto Assign by Amasty"
         },
         {
             "name": "amasty/feed",
@@ -23536,11 +23511,11 @@
         },
         {
             "name": "magento/quality-patches",
-            "version": "1.1.23",
+            "version": "1.1.22",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.23.0.zip",
-                "shasum": "955a249e001188e11c56d788c3a0c8347b487af2"
+                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.22.0.zip",
+                "shasum": "f745031d0170d4d88a47d8dfac6d07312a55bab1"
             },
             "require": {
                 "ext-json": "*",
