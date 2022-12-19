@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "469caa20941f02054fe578f7ae375b2e",
+    "content-hash": "b64cc1ab9dcc09e6843cf18ee7595cf2",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -383,36 +383,6 @@
                 "Commercial"
             ],
             "description": "Amasty Geoip Data"
-        },
-        {
-            "name": "amasty/groupcat",
-            "version": "1.8.6",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/groupcat-1.8.6.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.6",
-                "amasty/customer-group-assign": "*",
-                "amasty/reindex-from-admin": "*",
-                "php": ">=7.3"
-            },
-            "suggest": {
-                "amasty/groupcat-mftf-3": "Install groupcat-mftf-3 module to be able to run Customer Group Catalog MFTF tests for Magento ee2.4.2+ version."
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\Groupcat\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Amasty Customer Group Catalog"
         },
         {
             "name": "amasty/module-advanced-conditions",
@@ -992,31 +962,6 @@
                 "Commercial"
             ],
             "description": "Free Gift by Amasty"
-        },
-        {
-            "name": "amasty/reindex-from-admin",
-            "version": "1.1.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/reindex-from-admin-1.1.2-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.2",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\Reindex\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Indexer Reindex In Admin Panel by Amasty"
         },
         {
             "name": "amasty/reviews_import_export",
