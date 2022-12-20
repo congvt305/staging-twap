@@ -1,0 +1,27 @@
+<!--@subject Discount Coupon from {{var store_name}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td valign="top">
+            <p><strong>Hello {{var customer_name}},</strong></p>
+            <p>{{trans "Thank you for creating account with"}} {{var website_name}} !</p>
+
+            <p>{{trans "We have noticed you haven't log in for a long time and decided to send you a discount coupon to invite yor back in our store!"}}</p>
+
+            {{depend coupon}}
+            <p>{{trans "Feel free to use this coupon"}}: {{var coupon}}</p>
+            <p>{{trans "Please note that it expires in"}} {{var coupon_days}} day(s)</p>
+            {{/depend}}
+
+
+
+            <p>{{trans "Sincerely"}},  {{var store_name}} Team</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}
+
+
