@@ -1,0 +1,54 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, style: {'opacity' : (isDisabled() ? 0.5 : 1)}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label class="label" data-bind="attr: {'for': getCode()}">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+    </div>
+    
+    <div class="payment-method-content">
+        <!-- ko if: getPaymentDescription() -->
+            <div data-bind="html: getPaymentDescription()"></div>
+        <!-- /ko -->
+        <!-- ko ifnot: getPaymentDescription() -->
+            <p style="position: relative; max-width: 600px;">
+                <img data-bind="attr: {src: getPaymentAcceptanceMarkSrc(), alt: getTitle()}" class="payment-icon hoolah-payment-icon" style="height: 45px; width: auto; position: absolute; right: 0;" />
+                <strong>Pay in 3 equal instalments</strong><br>
+                <a data-bind="attr: {href: getProcessConsumerLink()}" style="color:#E81F25" target="_blank">What is ShopBack PayLater?</a>
+            </p>
+        <!-- /ko -->
+        
+        <!-- ko if: !isDisabled() -->
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')}
+                        ">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

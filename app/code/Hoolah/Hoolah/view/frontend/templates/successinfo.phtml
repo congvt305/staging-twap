@@ -1,0 +1,21 @@
+<?php
+    $orderConfirmation = $block->getData('orderConfirmation');
+?>
+<?php if ($orderConfirmation) : ?>
+    <?php echo $orderConfirmation; ?>
+<?php else : ?>
+    <img src="https://cdn.hoolah.co/images/ShopBack_logo_big_spark-20220706-031305.svg" style="width: 150px; height: auto; float: left; margin: 0 40px 70px 0; clear:both; border-radius: 0"/>
+    <p style="margin: 0 0 50px 0;overflow:auto;font-size: 1.41575em">
+        You will receive an email from ShopBack PayLater with your repayment schedule for the remaining 2 repayments shortly. As a reminder: on each due date, we will charge your card with the required repayment instalment.
+    </p>
+<?php endif; ?>
+
+<script>
+    require([
+        'Magento_Customer/js/customer-data'
+     ], function (customerData) {
+         var sections = ['cart', 'last-ordered-items'];
+         customerData.invalidate(sections);
+         customerData.reload(sections, true);
+     });
+</script>

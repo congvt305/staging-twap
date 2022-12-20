@@ -6,7 +6,7 @@
         <section id="amcoupons">
             <group id="general">
                 <field id="enable_multi_coupons" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1"
-                       showInStore="1" canRestore="1">
+                       showInStore="0" canRestore="1">
                     <label>Enable Multi Coupons</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>

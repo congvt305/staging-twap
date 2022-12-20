@@ -343,10 +343,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                         $result = $this->createEInvoice($order, $orderStatusData, $result);
                     }
                     $shipmentCheck = $order->hasShipments();
-                    $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0016-75.log');
-                    $logger = new \Zend_Log();
-                    $logger->addWriter($writer);
-                    $logger->crit('Update data for order: '. $order->getIncrementId() . ' have current status: ' . $order->getStatus());
                     if (!$shipmentCheck) {
                         if ($order->getShippingMethod() == "blackcat_homedelivery") {
                             try {
@@ -563,7 +559,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         //Never update tracking number for Ninjavan
         if ($carrierCode == 'ninjavan') {
             $message = __("Shipping method is ninjavan and we won't change tracking number.");
-            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0001");
+            $result[$orderStatusData['odrno']] = $this->orderResultMsg($orderStatusData, $message, "0000");
 
             return $result;
         }

@@ -5,12 +5,16 @@
  * @author Atome
  * @copyright 2020 Atome
  */
+
 namespace Atome\MagentoPayment\Block\Cart;
 
-use Atome\MagentoPayment\Model\PaymentGateway;
-use Atome\MagentoPayment\Model\Config\PaymentGatewayConfig;
-use Atome\MagentoPayment\Model\Config\LocaleConfig;
+use Atome\MagentoPayment\Services\Config\ConfigService;
+use Atome\MagentoPayment\Services\Config\LocaleConfig;
+use Atome\MagentoPayment\Services\Config\PaymentGatewayConfig;
+use Atome\MagentoPayment\Services\Payment\PaymentGateway;
+use Magento\Catalog\Model\Product;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Element\Template;
 
 class CheckoutCartBlock extends Template
@@ -21,13 +25,14 @@ class CheckoutCartBlock extends Template
     protected $checkoutSession;
 
     public function __construct(
-        Template\Context $context,
+        Template\Context     $context,
         PaymentGatewayConfig $paymentGatewayConfig,
-        LocaleConfig $localeConfig,
-        PaymentGateway $paymentGateway,
-        CheckoutSession $checkoutSession,
-        array $data
-    ) {
+        LocaleConfig         $localeConfig,
+        PaymentGateway       $paymentGateway,
+        CheckoutSession      $checkoutSession,
+        array                $data
+    )
+    {
         parent::__construct($context, $data);
 
         $this->paymentGatewayConfig = $paymentGatewayConfig;
@@ -41,36 +46,50 @@ class CheckoutCartBlock extends Template
         if (!$this->paymentGatewayConfig->isActive()) {
             return false;
         }
+
         $quote = $this->checkoutSession->getQuote();
-        if (!$this->paymentGateway->canUseForCurrencyAmount($quote->getQuoteCurrencyCode(), $quote->getGrandTotal())) {
+        if (!$this->canUseForCurrencyAmount($quote->getQuoteCurrencyCode(), $quote->getGrandTotal())) {
             return false;
         }
         $products = [];
         foreach ($quote->getAllVisibleItems() as $item) {
             $products[] = $item->getProduct();
         }
-        return $this->paymentGateway->canUseForProducts($products);
+        return $this->canUseForProducts($products);
     }
 
-    public function supportNewUserOff()
-    {        
-        return $this->localeConfig->getNewUserOff(false);
-    }
-
-    public function getFormatedNewUserOffAmount()
+    public function canUseForCurrencyAmount($currencyCode, $amount)
     {
-        switch ($this->localeConfig->getNewUserOffType() ?: 'AMOUNT') {
-            case 'PERCENTAGE':
-                return $this->localeConfig->getNewUserOffAmount() . '%';
-                break;
-            case 'AMOUNT':
-                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                $newUserOffAmount = intval($this->localeConfig->getNewUserOffAmount(0) / 100);
-                return $objectManager->create('\Magento\Framework\Pricing\PriceCurrencyInterface')->format($newUserOffAmount, true, 0);
-                break;
-            default:
-                return '';
-                break;
+        $min = $this->paymentGatewayConfig->getMinSpend();
+        $max = $this->paymentGatewayConfig->getMaxSpend();
+        return $this->paymentGateway->canUseForCurrency($currencyCode)
+            && (!$min || $amount >= $min)
+            && (!$max || $amount <= $max);
+    }
+
+
+    /**
+     * @param Product[] $products
+     * @return bool
+     */
+    public function canUseForProducts($products)
+    {
+        $excludedCategoriesString = $this->paymentGatewayConfig->getExcludedCategories();
+        $excludedCategoriesArray = explode(",", $excludedCategoriesString);
+        foreach ($products as $product) {
+            $categoryIds = $product->getCategoryIds();
+            foreach ($categoryIds as $k) {
+                if (in_array($k, $excludedCategoriesArray)) {
+                    return false;
+                }
+            }
         }
+        return true;
+    }
+
+
+    public function getNewUserOffImage()
+    {
+        return ObjectManager::getInstance()->create(ConfigService::class)->getNewUserOffImage();
     }
 }

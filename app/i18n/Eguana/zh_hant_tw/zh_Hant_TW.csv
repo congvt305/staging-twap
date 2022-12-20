@@ -16400,6 +16400,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
 "This is a required field.","此為必填欄位。",lib,web
+"Please enter in numbers."," 請輸入數字。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web

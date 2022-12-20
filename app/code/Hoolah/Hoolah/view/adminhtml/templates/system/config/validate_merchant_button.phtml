@@ -1,0 +1,78 @@
+<style>
+    .vmb-result { display: inline-block; padding-top: 5px; width: 22px; text-align: center; }
+    .use-default .vmb-result { vertical-align: middle; margin-right: 5px; padding-top: 0; }
+    .vmb-result:before { display: block; font-family: 'Admin Icons'; font-size: 1.9rem; font-style: normal; font-weight: 400; height: auto; line-height: inherit; width: auto; }
+    .vmb-result.vmb-right:before { color: #79a22e; content: '\e62d'; }
+    .vmb-result.vmb-wrong:before { color: #e22626; content: '\e632'; }
+</style>
+
+<script>
+    function vmb_result_html($target, result)
+    {
+        $target.closest('td').next('td').prepend('<span class="vmb-result vmb-' + (result ? 'right' : 'wrong') + '"></span>');
+    }
+    
+    require([
+        'jquery',
+        'prototype',
+    ], function($){
+        $('#validate_merchant_button').click(function(e) {
+            e.preventDefault();
+            
+            var $button = $(this),
+                $form, $merchant_id, $merchant_secret_test, $merchant_secret, $mode, $merchant_cdn_id;
+                
+            // >= m2.2.10
+            if ($button.closest('#payment_other_hoolah').length) {
+                $form = $button.closest('#payment_other_hoolah');
+                $merchant_id = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_id');
+                $merchant_secret_test = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_secret_test_mode');
+                $merchant_secret = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_secret');
+                $mode = $form.find('select#payment_other_hoolah_hoolah_mc_mode');
+                $merchant_cdn_id = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_cdn_id');
+            }
+            else
+            {
+                $form = $button.closest('#payment_us_hoolah');
+                $merchant_id = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_id');
+                $merchant_secret_test = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_secret_test_mode');
+                $merchant_secret = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_secret');
+                $mode = $form.find('select#payment_us_hoolah_hoolah_mc_mode');
+                $merchant_cdn_id = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_cdn_id');
+            }
+            
+            if ($button.html() != 'Processing...')
+            {
+                $form.find('.vmb-result').remove();
+                
+                if (!$button.data('init_html'))
+                    $button.data('init_html', $button.html());
+                $button.html('Processing...');
+                
+                $.post(
+                    '<?php echo $block->getAjaxUrl() ?>',
+                    {
+                        'action': 'validate_merchant',
+                        'merchant_id': $merchant_id.val(),
+                        'merchant_secret_test': $merchant_secret_test.val(),
+                        'merchant_secret': $merchant_secret.val(),
+                        'mode': $mode.val(),
+                        'merchant_cdn_id': $merchant_cdn_id.val()
+                    }, function(response) {
+                        if (response.ok || response.ok_test)
+                            vmb_result_html($merchant_id, true);
+                        
+                        vmb_result_html($merchant_secret, response.ok);
+                        vmb_result_html($merchant_secret_test, response.ok_test);
+                        
+                        vmb_result_html($merchant_cdn_id, response.ok_cdn);
+                        
+                        $button.html($button.data('init_html'));
+                    }
+                );
+            }
+        })
+    });
+</script>
+ 
+<?php echo $block->getButtonHtml() ?>

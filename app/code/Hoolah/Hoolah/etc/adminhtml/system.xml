@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="hoolah" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>ShopBack PayLater</label>
+                
+                <group id="hoolah_mc" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Merchant credentials &amp; Operation mode</label>
+                    
+                    <field id="mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Operation mode</label>
+                        <config_path>payment/hoolah/mode</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\OperationMode</source_model>
+                        <comment>Shall ShopBack PayLater transactions be treated as test or as real transactions?</comment>
+                    </field>
+                    
+                    <field id="merchant_cdn_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant CDN ID</label>
+                        <backend_model>Hoolah\Hoolah\Model\Config\TrimmedValue</backend_model>
+                    </field>
+                    
+                    <field id="merchant_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant ID</label>
+                        <backend_model>Hoolah\Hoolah\Model\Config\TrimmedValue</backend_model>
+                    </field>
+                    
+                    <field id="merchant_secret_test_mode" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Secret</label>
+                        <comment>Sandbox - starting with TK_</comment>
+                        <backend_model>Hoolah\Hoolah\Model\Config\TrimmedValue</backend_model>
+                    </field>
+                    
+                    <field id="merchant_secret" translate="label" type="password" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Secret</label>
+                        <comment>Production - starting with PK_</comment>
+                        <backend_model>Hoolah\Hoolah\Model\Config\TrimmedValue</backend_model>
+                    </field>
+                    
+                    <field id="validate_merchant_button" translate="label comment" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Hoolah\Hoolah\Block\System\Config\Form\ValidateMerchantButton</frontend_model>
+                    </field>
+                </group>
+                
+                <group id="hoolah_cfm" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Checkout / Field mapping</label>
+                    
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enabled</label>
+                        <config_path>payment/hoolah/active</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <config_path>payment/hoolah/title</config_path>
+                    </field>
+                    
+                    <field id="sort_order" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Sort Order</label>
+                        <config_path>payment/hoolah/sort_order</config_path>
+                        <frontend_class>validate-number</frontend_class>
+                    </field>
+                    
+                    <field id="order_mode" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Order creation mode</label>
+                        <config_path>payment/hoolah/order_mode</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\OrderMode</source_model>
+                        <comment>Shall ShopBack PayLater create orders after payments or before?</comment>
+                    </field>
+                    
+                    <field id="order_status" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Order status</label>
+                        <config_path>payment/hoolah/order_status</config_path>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Newprocessing</source_model>
+                        <comment>Default order status for new orders with ShopBack PayLater.</comment>
+                    </field>
+                    
+                    <field id="billing_city_field_title" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Billing city field title</label>
+                        <comment>In case that you have renamed your checkout field.</comment>
+                    </field>
+                    
+                    <field id="create_email_notification" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Create email notification</label>
+                        <config_path>payment/hoolah/create_email_notification</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\Yesno</source_model>
+                    </field>
+                </group>
+                
+                <group id="hoolah_c" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Conversion</label>
+                    
+                    <group id="hoolah_ex" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ShopBack PayLater explainer</label>
+                        
+                        <frontend_model>Hoolah\Hoolah\Block\System\Config\Form\Explainer</frontend_model>
+                    </group>
+                </group>
+                
+                <group id="hoolah_about" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>About (Support / Send logs)</label>
+
+                    <field id="plugin_version" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Plugin version</label>
+                        <frontend_model>Hoolah\Hoolah\Block\System\Config\Form\PluginVersion</frontend_model>
+                    </field>
+
+                    <field id="disable_db_log" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Disable DB log</label>
+                        <config_path>payment/hoolah/disable_db_log</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    
+                    <field id="send_logs_time_scope" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Scope of log data to be send</label>
+                        <config_path>payment/hoolah/send_logs_time_scope</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\SendLogsTimeScope</source_model>
+                    </field>
+                    
+                    <field id="send_logs_relates" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Relates to</label>
+                        <config_path>payment/hoolah/send_logs_relates</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\SendLogsRelates</source_model>
+                    </field>
+                    
+                    <field id="send_logs_details" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Details</label>
+                        <config_path>payment/hoolah/send_logs_details</config_path>
+                        <comment>The support ticket reference / team member name.</comment>
+                    </field>
+                    
+                    <field id="send_logs_lines_scope" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Scope</label>
+                        <config_path>payment/hoolah/send_logs_lines_scope</config_path>
+                        <source_model>Hoolah\Hoolah\Model\Config\Source\SendLogsLinesScope</source_model>
+                    </field>
+                    
+                    <field id="send_logs_button" translate="label comment" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Hoolah\Hoolah\Block\System\Config\Form\SendLogsButton</frontend_model>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

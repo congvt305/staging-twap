@@ -5,25 +5,17 @@
  * @author Atome
  * @copyright 2020 Atome
  */
+
 namespace Atome\MagentoPayment\Block\Adminhtml\System\Config\Form\Field;
 
+use Atome\MagentoPayment\Services\Config\Atome;
+use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use \Atome\MagentoPayment\Helper\CommonHelper;
 
-class ModuleVersion extends \Magento\Config\Block\System\Config\Form\Field
+class ModuleVersion extends Field
 {
-    protected $commonHelper;
-
-    public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        CommonHelper $commonHelper
-    ) {
-        parent::__construct($context);
-        $this->commonHelper = $commonHelper;
-    }
-
     protected function _getElementHtml(AbstractElement $element)
     {
-        return $this->commonHelper->getModuleVersion();
+        return Atome::version();
     }
 }
