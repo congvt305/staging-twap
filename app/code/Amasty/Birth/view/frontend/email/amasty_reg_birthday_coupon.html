@@ -1,0 +1,18 @@
+<!--@subject One More Year With Us Coupon from {{var store_name}} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td valign="top">
+            <p><strong>{{trans "Hello"}} {{var customer_name}},</strong></p>
+            <p>{{trans "Thank you for"}} {{var years_from_reg}} {{trans "incredible years you've been staying with us"}}</p>
+
+            {{depend coupon}}
+            <p>{{trans "Feel free to use this coupon"}}: {{var coupon}}</p>
+            <p>{{trans "Please note that it expires in"}} {{var coupon_days}} day(s)</p>
+            {{/depend}}
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}
