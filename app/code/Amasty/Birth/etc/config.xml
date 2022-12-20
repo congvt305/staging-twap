@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Special Occasion Coupons for Magento 2
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amasty_birth>
+            <general>
+                <identity>general</identity>
+                <remove_days>30</remove_days>
+            </general>
+
+            <birth>
+                <enabled>0</enabled>
+                <days>0</days>
+                <template>amasty_birth_birth_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </birth>
+
+            <reg>
+                <enabled>0</enabled>
+                <days>0</days>
+                <template>amasty_birth_reg_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </reg>
+
+            <newsletter>
+                <enabled>0</enabled>
+                <template>amasty_birth_newsletter_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </newsletter>
+
+            <wishlist>
+                <enabled>0</enabled>
+                <template>amasty_birth_wishlist_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </wishlist>
+
+            <activity>
+                <enabled>0</enabled>
+                <days>30</days>
+                <template>amasty_birth_activity_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </activity>
+
+            <order_placed>
+                <enabled>0</enabled>
+                <template>amasty_birth_order_placed_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </order_placed>
+
+            <regbirth>
+                <enabled>0</enabled>
+                <template>amasty_birth_reg_birth_template</template>
+                <coupon_type>by_percent</coupon_type>
+                <coupon_amount>5</coupon_amount>
+                <coupon_days>1</coupon_days>
+                <coupon_uses>1</coupon_uses>
+                <uses_per_customer>1</uses_per_customer>
+                <min_order>0</min_order>
+            </regbirth>
+
+        </amasty_birth>
+    </default>
+</config>
