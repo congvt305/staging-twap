@@ -96,7 +96,13 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $middlewareHelper;
 
     /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
+    /**
      * SapOrderConfirmData constructor.
+     *
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -114,6 +120,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
+     * @param \Amasty\Rewards\Model\Config $amConfig
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -132,7 +139,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         Logger $logger,
         StoreManagerInterface $storeManager,
         Data $helper,
-        \CJ\Middleware\Helper\Data $middlewareHelper
+        \CJ\Middleware\Helper\Data $middlewareHelper,
+        \Amasty\Rewards\Model\Config $amConfig,
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -148,6 +156,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -306,6 +315,14 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
             $totalPointRedemption = $this->getTotalPointRedemption($orderData);
             $mileageUsedAmount = is_null($orderData->getRewardPointsBalance()) ? 0 : round($orderData->getRewardPointsBalance());
+            if ($this->amConfig->isEnabled($storeId)) {
+                $spendingRate = $this->amConfig->getPointsRate($storeId);
+                $rewardPoints = (int)$orderData->getData('am_spent_reward_points');
+                if (!$spendingRate) {
+                    $spendingRate = 1;
+                }
+                $mileageUsedAmount = $rewardPoints / $spendingRate;
+            }
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -547,6 +564,14 @@ class SapOrderConfirmData extends AbstractSapOrder
         $orderTotal = $this->roundingPrice($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount(), $isDecimalFormat);
         $invoice = $this->getInvoice($order->getEntityId());
         $mileageUsedAmount = is_null($order->getRewardPointsBalance()) ? '0' : $order->getRewardPointsBalance();
+        $spendingRate = $this->amConfig->getPointsRate($storeId);
+        if (!$spendingRate) {
+            $spendingRate = 1;
+        }
+        if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $mileageUsedAmount = $rewardPoints / $spendingRate;
+        }
 
         if ($order == null) {
             throw new NoSuchEntityException(
@@ -588,6 +613,16 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                     $sku = str_replace($skuPrefix, '', $orderItem->getSku());
                     $pointRedemption = round($this->getPointRedemptionPerItem($order, $orderItem));
+                    $redemptionFlag = 'N';
+                    $rewardPoints = 0;
+                    if ($isEnableRewardsPoint) {
+                        $rewardPoints = (int)$orderItem->getData('am_spent_reward_points');
+                        $discountFromPoints = $rewardPoints / $spendingRate;
+                        if ($discountFromPoints == $orderItem->getRowTotal()) {
+                            $redemptionFlag = 'Y';
+                        }
+                    }
+
                     $orderItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -612,7 +647,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
                         'itemOdrnoOri' => $order->getIncrementId(),
                         'itemPosnrOri' => $cnt,
-                        'itemId' => $orderItem->getItemId()
+                        'itemId' => $orderItem->getItemId(),
+                        'redemptionFlag' => $redemptionFlag,
+                        'PointAccount' => (int)$rewardPoints
                     ];
 
                     $cnt++;
@@ -662,6 +699,26 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
                         $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
                         $pointRedemption =  $this->roundingPrice($this->getPointRedemptionPerItem($order, $orderItem, $bundleChild), $isDecimalFormat);
+                        $redemptionFlag = 'N';
+                        $rewardPointsPerChild = 0;
+                        if ($isEnableRewardsPoint) {
+
+                            if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
+                                $rewardPoints = (int)$orderItem->getData('am_spent_reward_points');
+                                $rewardPointsPerChild = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $rewardPoints)));
+                                $discountFromPoints = $rewardPoints / $spendingRate;
+                                if ($discountFromPoints >= $orderItem->getRowTotal()) {
+                                    $redemptionFlag = 'Y';
+                                }
+                            } else {
+                                $rewardPointsPerChild = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);
+                                $discountFromPoints = $rewardPointsPerChild / $spendingRate;
+                                if ($discountFromPoints >= $bundleChild->getRowTotal()) {
+                                    $redemptionFlag = 'Y';
+                                }
+                            }
+
+                        }
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -686,7 +743,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemKunnrOri' => $this->config->getClient('store', $storeId),
                             'itemOdrnoOri' => $order->getIncrementId(),
                             'itemPosnrOri' => $cnt,
-                            'itemId' => $item->getItemId()
+                            'itemId' => $item->getItemId(),
+                            'redemptionFlag' => $redemptionFlag,
+                            'PointAccount' => (int)$rewardPointsPerChild
                         ];
                         $cnt++;
                         $itemsSubtotal += $itemSubtotal;

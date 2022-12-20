@@ -116,6 +116,11 @@ class PosOrderData
     private $orderStatusHistoryRepository;
 
     /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
+    /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -149,9 +154,9 @@ class PosOrderData
         Logger                         $pointsIntegrationLogger,
         StoreManagerInterface          $storeManager,
         Data                           $middlewareConfig,
-        OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository
-    )
-    {
+        OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
+        \Amasty\Rewards\Model\Config $amConfig
+    ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -168,6 +173,7 @@ class PosOrderData
         $this->storeManager = $storeManager;
         $this->middlewareConfig = $middlewareConfig;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -207,6 +213,22 @@ class PosOrderData
                 ];
             }
         }
+
+        $redemptionFlag = 'N';
+        $rewardPoints = 0;
+        $storeId = $order->getStoreId();
+        if($this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $discountFromPoints = $rewardPoints / $spendingRate;
+            if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
+                $redemptionFlag = 'Y';
+            }
+        }
+
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -216,7 +238,9 @@ class PosOrderData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_ORDER,
             'promotionKey' => $couponCode,
-            'orderInfo' => $orderItemData
+            'orderInfo' => $orderItemData,
+            'PointAccount' => (int)$rewardPoints,
+            'redemptionFlag' => $redemptionFlag
         ];
         return array_merge($orderData, $redInvoiceData);
     }
