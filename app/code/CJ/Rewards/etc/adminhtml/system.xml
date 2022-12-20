@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="amrewards" translate="label" type="text" sortOrder="180516" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Amasty_Rewards::config</resource>
+            <class>separator-top</class>
+            <label>Rewards Points</label>
+            <tab>amasty</tab>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled_rewards_point_for_only_bundle" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable 'Rewards Points' For Only Bundle</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="exclude_days" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exclude Days</label>
+                    <backend_model>CJ\Rewards\Model\Config\Backend\ExcludeDaysMultipleFields</backend_model>
+                    <frontend_model>CJ\Rewards\Block\System\Config\Form\Field\ExcludeDaysMultipleFields</frontend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

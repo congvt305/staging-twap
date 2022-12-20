@@ -48,6 +48,7 @@
         "amasty/module-salesrulewizard": ">=1.0.3",
         "amasty/promo": "^2.11",
         "amasty/reviews_import_export": "^1.0",
+        "amasty/rewards": "^1.17",
         "amasty/rgrid": ">=1.0.7",
         "amasty/special-occasion-coupons": "^1.0",
         "magento/composer-root-update-plugin": "^2.0.2",

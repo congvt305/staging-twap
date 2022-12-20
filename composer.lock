@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "469caa20941f02054fe578f7ae375b2e",
+    "content-hash": "5360fd0438f0f7f97d2c42a02ef57304",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -1043,6 +1043,38 @@
                 "Commercial"
             ],
             "description": "Reviews Import Export by Amasty"
+        },
+        {
+            "name": "amasty/rewards",
+            "version": "1.17.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/rewards-1.17.4.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/cron-schedule-list": "*",
+                "amasty/module-advanced-conditions": ">=1.3.6",
+                "php": ">=7.3"
+            },
+            "suggest": {
+                "amasty/rewards-graph-ql": "Install rewards-graph-ql module to be able to use Reward Points GraphQL queries.",
+                "amasty/rewards-mftf-2": "Install rewards-mftf-2 module to be able to run Reward Points MFTF tests for Magento 2.3.5+ version",
+                "amasty/rewards-mftf-3": "Install rewards-mftf-3 module to be able to run Reward Points MFTF tests for Magento 2.4.0+ version"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Rewards\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty Rewards"
         },
         {
             "name": "amasty/rgrid",

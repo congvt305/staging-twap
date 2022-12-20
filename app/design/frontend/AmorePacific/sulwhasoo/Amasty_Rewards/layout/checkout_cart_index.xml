@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.amreward" class="CJ\Rewards\Block\Frontend\Cart\Rewards" template="Amasty_Rewards::cart/rewards.phtml"/>
+        <move element="checkout.cart.amreward" destination="checkout.cart.container" after="checkout.cart.multicoupons"/>
+    </body>
+</page>
+
