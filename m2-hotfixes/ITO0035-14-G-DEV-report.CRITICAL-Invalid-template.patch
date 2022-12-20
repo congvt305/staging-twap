@@ -4,9 +4,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento/framework/View/Element/Template.php
---- a/vendor/magento/framework/View/Element/Template.php	(revision 093cd4ec2c52d018cf653ef6da7366c47bdf2fc7)
-+++ b/vendor/magento/framework/View/Element/Template.php	(date 1670991342662)
-@@ -266,7 +266,23 @@
+--- a/vendor/magento/framework/View/Element/Template.php	(revision 67c5037e3df2544d0d0205b3e9c08e92b3f88e6f)
++++ b/vendor/magento/framework/View/Element/Template.php	(date 1671516712393)
+@@ -266,6 +266,23 @@
              $templatePath = $fileName ?: $this->getTemplate();
              $errorMessage = "Invalid template file: '{$templatePath}' in module: '{$this->getModuleName()}'"
                  . " block's name: '{$this->getNameInLayout()}'";
@@ -21,10 +21,10 @@ diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento
 +                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
 +                }
 +                $logger->crit('Trace error invalid template: ' . $backTrace);
-+                $logger->info('filename: '. $fileName);
-+                $logger->info('full action name: '. $this->getRequest()->getFullActionName());
-+                $logger->info('user agent: '.  isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT']: 'cannot get user agent');
-+                $logger->info('request uri: ' . isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI']: 'cannot get request uri';
++                $logger->info('filename: ' . $fileName);
++                $logger->info('full action name: ' . $this->getRequest()->getFullActionName());
++                $logger->info('user agent: ' . isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'cannot get user agent');
++                $logger->info('request uri: ' . isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : 'cannot get request uri';
 +                $logger->info('block data: ' . json_encode($this->getData()));
 +            }
              if ($this->_appState->getMode() === \Magento\Framework\App\State::MODE_DEVELOPER) {
