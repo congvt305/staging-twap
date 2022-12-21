@@ -559,110 +559,6 @@
             "homepage": "https://amasty.com/"
         },
         {
-            "name": "amasty/module-image-optimizer",
-            "version": "1.1.4",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-1.1.4-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.2",
-                "amasty/module-page-speed-tools": ">=1.0.5",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\ImageOptimizer\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Image Optimizer by Amasty"
-        },
-        {
-            "name": "amasty/module-image-optimizer-ui",
-            "version": "1.1.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-ui-1.1.2-ee.zip"
-            },
-            "require": {
-                "amasty/base": "*",
-                "amasty/module-image-optimizer": ">=1.1.4",
-                "php": "^7.3.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\ImageOptimizerUi\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Image Optimizer Ui by Amasty"
-        },
-        {
-            "name": "amasty/module-lazy-load",
-            "version": "1.1.4",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-1.1.4-ee.zip"
-            },
-            "require": {
-                "amasty/base": "*",
-                "amasty/module-page-speed-tools": ">=1.0.5",
-                "php": "^7.3.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\LazyLoad\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Lazy Load by Amasty"
-        },
-        {
-            "name": "amasty/module-lazy-load-ui",
-            "version": "1.0.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-ui-1.0.0-ee.zip"
-            },
-            "require": {
-                "amasty/base": "*",
-                "amasty/module-lazy-load": ">=1.1.4",
-                "php": "^7.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\LazyLoadUi\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Lazy Load Admin Ui by Amasty"
-        },
-        {
             "name": "amasty/module-legacy-templates",
             "version": "1.0.0",
             "dist": {
@@ -739,59 +635,6 @@
                 "Commercial"
             ],
             "description": "One Step Checkout Premium Package by Amasty"
-        },
-        {
-            "name": "amasty/module-page-speed-optimizer",
-            "version": "2.2.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-optimizer-2.2.0-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.9.4",
-                "amasty/module-image-optimizer-ui": ">=1.1.2",
-                "amasty/module-lazy-load-ui": ">=1.0.0",
-                "amasty/module-page-speed-tools": ">=1.0.5",
-                "php": "^7.3.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\PageSpeedOptimizer\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Google Page Speed Optimizer by Amasty"
-        },
-        {
-            "name": "amasty/module-page-speed-tools",
-            "version": "1.0.5",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-tools-1.0.5-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.9.4",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\PageSpeedTools\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Google Page Speed Tools by Amasty"
         },
         {
             "name": "amasty/module-salesrulewizard",
@@ -1025,32 +868,6 @@
                 "Commercial"
             ],
             "description": "Social Login by Amasty"
-        },
-        {
-            "name": "amasty/special-occasion-coupons",
-            "version": "1.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/special-occasion-coupons-1.0.8.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.2",
-                "amasty/cron-schedule-list": "*",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\Birth\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Special Occasion Coupons by Amasty"
         },
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
