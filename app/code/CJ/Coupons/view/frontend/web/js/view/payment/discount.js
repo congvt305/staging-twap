@@ -123,6 +123,7 @@ define(
 
             couponCode: couponCode,
             fakeCouponCode: fakeCouponCode,
+            errorMessage: messageError,
 
             /**
              * Applied flag
