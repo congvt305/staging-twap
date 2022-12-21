@@ -99,8 +99,10 @@ class DeleteItems extends Action implements HttpPostActionInterface
                 $quote = $this->quoteRepository->getActive($params['quote_id']);
                 foreach ($params['item_id'] as $itemId) {
                     $item = $quote->getItemById($itemId);
-                    $this->_removeErrorsFromQuoteAndItem($item, Data::ERROR_QTY);
-                    $this->itemResourceModel->delete($item);
+                    if ($item) {
+                        $this->_removeErrorsFromQuoteAndItem($item, Data::ERROR_QTY);
+                        $this->itemResourceModel->delete($item);
+                    }
                 }
                 $this->quoteRepository->save($quote);
 
