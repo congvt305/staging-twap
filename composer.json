@@ -38,9 +38,7 @@
         "amasty/base": "1.13.6",
         "amasty/coupons": "2.1.1",
         "amasty/cron-schedule-list": ">=1.0.5",
-        "amasty/customer-group-assign": "^1.0",
         "amasty/feed": "^2.7.0",
-        "amasty/groupcat": "^1.8",
         "amasty/module-advanced-conditions": ">=1.5.3",
         "amasty/module-banners-lite": ">=1.0.19",
         "amasty/module-one-step-checkout-premium-package": "^2.0",
@@ -54,6 +52,7 @@
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
         "magento/product-recommendations": "^3.1",
+        "magepal/magento2-reindex": "^1.1",
         "phpoffice/phpspreadsheet": "^1.18"
     },
     "suggest": {
