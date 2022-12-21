@@ -278,7 +278,13 @@ define(
                         .done(function () {
                             this.handleErrorMessages();
                             this.inputCode(this.responseProcessor.errorCoupons.join(', '));
+                            let couponCodes = [];
+                            couponCodes = couponCodes
+                                .concat(this.responseProcessor.appliedCoupons)
+                                .concat(this.responseProcessor.notChangedCoupons);
+                            this.couponCode(couponCodes.join(', '));
                             $('.totals.discount .title').removeClass('negative');
+                            window.location.reload();
                         }.bind(this))
                         .always(function () {
                             this.isLoading(false);
