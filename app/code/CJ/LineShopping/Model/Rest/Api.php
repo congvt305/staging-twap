@@ -491,20 +491,20 @@ class Api
 
             $result = $response->getBody()->getContents();
 
-            $this->logger->addInfo(Logger::LINE_CUSTOMER,
+            $this->logger->info(Logger::LINE_CUSTOMER,
                 [
                     'request_data' => $body,
                     'result' => $result
                 ]);
             return $result;
         } catch (\Exception $exception) {
-            $this->logger->addError(Logger::LINE_CUSTOMER,
+            $this->logger->error(Logger::LINE_CUSTOMER,
                 [
                     'request_data' => $body,
                     'error' => $exception->getMessage()
                 ]);
         } catch (GuzzleException $exception) {
-            $this->logger->addError(Logger::LINE_CUSTOMER, [
+            $this->logger->error(Logger::LINE_CUSTOMER, [
                 'request_data' => $body,
                 'error' => $exception->getMessage()
             ]);
