@@ -103,7 +103,7 @@ class Prepare extends AtomeAction
                 $this->cancelOrder($orderId);
             }
 
-            return $this->redirectResponse('checkout/cart');
+            return $this->redirectResponse('/checkout/cart');
         }
     }
 

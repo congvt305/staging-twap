@@ -88,7 +88,7 @@ class Result extends AtomeAction
     {
         $this->messageManager->addErrorMessage(__("Atome payment unexpected problem occurs."));
 
-        return $this->_redirect('checkout/cart');
+        return $this->_redirect('/checkout/cart');
     }
 
     protected function whenCancelOrder()
@@ -97,7 +97,7 @@ class Result extends AtomeAction
             $this->session->restoreQuote();
         }
 
-        return $this->_redirect('checkout/cart');
+        return $this->_redirect('/checkout/cart');
     }
 
     /**
