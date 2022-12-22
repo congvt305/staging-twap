@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Reward Points Base for Magento 2
+*/-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+            <referenceBlock name="customer-account-amrewards-rewards-link" remove="true" />
+            <referenceBlock name="customer-account-amrewards-rewards-history" remove="true" />
+    </body>
+</page>
