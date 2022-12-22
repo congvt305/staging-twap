@@ -29,6 +29,10 @@ class CategoryList implements ArrayInterface
         foreach ($arr as $key => $value) {
             $ret[] = ['value' => $key, 'label' => $value];
         }
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-atome-payment.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('array category : ' . json_encode($arr));
         return $ret;
     }
 
@@ -40,13 +44,18 @@ class CategoryList implements ArrayInterface
 
     public function renderCategories($_categories)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-atome-payment.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $count = 0;
         $this->categoryList = [];
         foreach ($_categories as $category) {
             $i = 0;
             $this->categoryList[$category->getEntityId()] = __($category->getName());   // Main categories
             $this->renderSubCat($category, $i);
+            $count++;
         }
-
+        $logger->info('total count : ' . $count);
         return $this->categoryList;
     }
 
