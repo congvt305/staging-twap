@@ -75,7 +75,7 @@ class CheckoutCartBlock extends Template
     public function canUseForProducts($products)
     {
         $excludedCategoriesString = $this->paymentGatewayConfig->getExcludedCategories();
-        $excludedCategoriesArray = explode(",", $excludedCategoriesString);
+        $excludedCategoriesArray = explode(",", $excludedCategoriesString ?: "");
         foreach ($products as $product) {
             $categoryIds = $product->getCategoryIds();
             foreach ($categoryIds as $k) {
