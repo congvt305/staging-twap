@@ -24,15 +24,22 @@ class CategoryList implements ArrayInterface
 
     public function toOptionArray()
     {
-        $arr = $this->toArray();
-        $ret = [];
-        foreach ($arr as $key => $value) {
-            $ret[] = ['value' => $key, 'label' => $value];
-        }
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-atome-payment.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
-        $logger->info('array category : ' . json_encode($arr));
+        $logger->info('start render exclude category');
+        try {
+            $arr = $this->toArray();
+            $ret = [];
+            foreach ($arr as $key => $value) {
+                $ret[] = ['value' => $key, 'label' => $value];
+            }
+
+            $logger->info('array category : ' . json_encode($arr));
+        } catch (\Exception $e) {
+            $logger->info($e->getMessage());
+        }
+
         return $ret;
     }
 
