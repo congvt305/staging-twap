@@ -131,7 +131,7 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
                 $this->messageManager->addError(
                     __('A customer with the same integration/sequence number already exists in an associated website.')
                 );
-                throw new InputException();
+                throw new InputException(__('A customer with the same integration/sequence number already exists in an associated website.'));
             }
         }
 
