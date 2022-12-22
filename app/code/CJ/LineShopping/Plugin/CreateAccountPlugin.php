@@ -79,7 +79,7 @@ class CreateAccountPlugin
                 }
             }
         } catch (\Exception $exception) {
-            $this->logger->addError(Logger::LINE_CUSTOMER,
+            $this->logger->error(Logger::LINE_CUSTOMER,
                 [
                     'email' => $customer->getEmail(),
                     'lineId' => $lineId,
