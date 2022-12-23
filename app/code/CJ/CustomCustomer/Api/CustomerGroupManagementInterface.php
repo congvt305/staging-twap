@@ -9,8 +9,8 @@ namespace CJ\CustomCustomer\Api;
 interface CustomerGroupManagementInterface
 {
     /**
-     * @param Data\CustomerDataInterface $gradeData
-     * @return \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface
+     * @param \CJ\CustomCustomer\Api\Data\SyncGradeReqItemInterface[]
+     * @return \CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface
      */
-    public function setGroup(\CJ\CustomCustomer\Api\Data\CustomerDataInterface $gradeData);
+    public function setGroup(array $body);
 }

@@ -3,8 +3,9 @@
 namespace CJ\CustomCustomer\Model\CustomerGroup;
 
 use CJ\CouponCustomer\Helper\Data;
+use CJ\CustomCustomer\Api\Data\CustomerDataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class CustomerGroupManagement
@@ -43,6 +44,21 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     protected $helper;
 
     /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
+
+    /**
+     * @var \CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface
+     */
+    protected $syncGradeResponse;
+
+    /**
+     * @var \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseFactory
+     */
+    protected $updateCustomerGroupResponseFactory;
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \CJ\CustomCustomer\Logger\Logger $logger
@@ -56,7 +72,10 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         \CJ\CustomCustomer\Logger\Logger                  $logger,
         \CJ\CouponCustomer\Helper\Data                    $helperData,
         \Magento\Store\Api\StoreRepositoryInterface       $storeRepository,
-        \CJ\CustomCustomer\Helper\Data                    $helper
+        \CJ\CustomCustomer\Helper\Data                    $helper,
+        \Magento\Framework\Serialize\Serializer\Json $json,
+        \CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface $syncGradeResponse,
+        \CJ\CustomCustomer\Model\CustomerGroup\UpdateCustomerGroupResponseFactory $updateCustomerGroupResponseFactory
     )
     {
         $this->customerRepository = $customerRepository;
@@ -65,67 +84,86 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         $this->helperData = $helperData;
         $this->helper = $helper;
         $this->storeRepository = $storeRepository;
+        $this->json = $json;
+        $this->syncGradeResponse = $syncGradeResponse;
+        $this->updateCustomerGroupResponseFactory = $updateCustomerGroupResponseFactory;
     }
 
     /**
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * {@inheritDoc}
      */
-    public function setGroup($gradeData)
+    public function setGroup(array $body)
     {
-        $result = [];
+        $loggingCheck = $this->helper->getLoggingEnabled();
 
-        $cstmIntegSeq = $gradeData['cstmIntgSeq'];
-        $scope = $gradeData['scope'];
-        $websiteId = $this->storeRepository->get($scope)->getWebsiteId();
-        $loggingEnabled = $this->helper->getLoggingEnabled();
+        $result = [
+            'code' => '0000',
+            'message' => 'SUCCESS',
+            'data' => []
+        ];
 
-        $customer = $this->getCustomerByIntegrationNumber($cstmIntegSeq, $websiteId);
+        $parameters = ['body' => $body];
 
-        if (!$customer) {
-            $message = __("Failed to update grade. Error is no customer exists with integration number \"%1\"", $cstmIntegSeq);
-            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002", $message);
-        } else {
-            $customerId = $customer->getId();
-            $customerData = $this->customerRepository->getById($customerId);
+        if ($loggingCheck) {
+            $this->logger->info('***** SYNC CUSTOMER GRADE API PARAMETERS *****');
+            $this->logger->info($this->json->serialize($parameters));
+        }
 
-            if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
-                $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
-                $gradeName = $prefix . '_' . $gradeData['cstmGradeNM'];
-                $posCustomerGroupId = $this->helperData->getCustomerGroupIdByName($gradeName);
+        foreach ($body as $reqItem) {
+            /** @var CustomerDataInterface $info */
+            $info = $reqItem->getGradeData();
+            $cstmIntegSeq = $info[CustomerDataInterface::CSTM_INTG_SEQ];
+            $cstmGradeCD = $info[CustomerDataInterface::CSTM_GRADE_C_D];
+            $cstmGradeNM = $info[CustomerDataInterface::CSTM_GRADE_N_M];
 
-                if (!$posCustomerGroupId) {
-                    $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $gradeName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0003");
-                } elseif ($posCustomerGroupId == $customerData->getGroupId()) {
-                    $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $gradeName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0004");
+            if ($customerData = $this->getCustomerByIntgSeq($cstmIntegSeq)) {
+                $groupName = $this->helperData->getPrefix($cstmGradeCD) . '_' . $cstmGradeNM;
+                $groupId = $this->helperData->getCustomerGroupIdByName($groupName);
+
+                if (!$groupId) {
+                    $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $groupName);
+                    $result['data'][] = $this->getUpdateCustomerGroupResult($info, $message, "0003");
+                } elseif ($groupId == $customerData->getGroupId()) {
+                    $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $groupName);
+                    $result['data'][] = $this->getUpdateCustomerGroupResult($info, $message, "0004");
                 } else {
-                    $customerData->setGroupId($posCustomerGroupId);
+                    $customerData->setGroupId($groupId);
                     $this->customerRepository->save($customerData);
                     $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
+                    $result['data'][] = $this->getUpdateCustomerGroupResult($info, $message, "0001");
                 }
+            } else {
+                $message = __("Failed to update grade. Error is no customer exists with integration sequence \"%1\"", $cstmIntegSeq);
+                $result['data'][] = $this->getUpdateCustomerGroupResult($info, $message, "0002");
             }
         }
-        if ($loggingEnabled) {
-            $this->logger->info("Response data", [$result]);
-        }
-        return $result;
+
+        return $this->getSyncGradeResponse(
+            $result['code'],
+            $result['message'],
+            $result['data'],
+            $loggingCheck
+        );
     }
 
     /**
-     * @return CustomerInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param string $cstmIntgSeq
+     * @return \Magento\Customer\Api\Data\CustomerInterface
+     * @throws LocalizedException
      */
-    protected function getCustomerByIntegrationNumber($integrationNumber, $websiteId)
+    protected function getCustomerByIntgSeq($cstmIntgSeq)
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('website_id', $websiteId)
-            ->addFilter('integration_number', $integrationNumber)
+            ->addFilter('website_id', $this->helper->getWebsiteIdByIntgSeq($cstmIntgSeq))
+            ->addFilter('integration_number', $cstmIntgSeq)
             ->create();
         $customers = $this->customerRepository->getList($searchCriteria)->getItems();
+        $customer = reset($customers);
 
-        return reset($customers);
+        if (!$customer) {
+            throw new LocalizedException(__('customer not found'));
+        }
+        return $this->customerRepository->getById($customer->getId());
     }
 
     /**
@@ -133,21 +171,40 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
      * @param $message
      * @param $code
      * @param $exceptionMsg
-     * @return array
+     * @return \CJ\CustomCustomer\Model\CustomerGroup\UpdateCustomerGroupResponse
      */
-    protected function gradeResultMsg($request, $message, $code, $exceptionMsg = '')
+    protected function getUpdateCustomerGroupResult($request, $message, $code)
     {
-        return [
-            'success' => $code === "0001",
-            'code' => $code,
-            'message' => $message,
-            'exceptionMsg' => $exceptionMsg,
-            'data' => [
-                'cstmIntgSeq' => $request['cstmIntgSeq'],
-                'cstmGradeNM' => $request['cstmGradeNM'],
-                'cstmGradeCD' => $request['cstmGradeCD'],
-                'scope' => $request['scope']
-            ]
+        $result = $this->updateCustomerGroupResponseFactory->create();
+        $result->setCode($code);
+        $result->setMessage($message);
+        $result->setSuccess($code === "0001");
+        return $result;
+    }
+
+    /**
+     * @param string $code
+     * @param string $message
+     * @param \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[] $data
+     * @param bool $loggingCheck
+     * @return \CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface
+     */
+    protected function getSyncGradeResponse($code, $message, $data = [], $loggingCheck = false) {
+        $response = [
+            'code'      => $code,
+            'message'   => $message,
+            'data'      => $data
         ];
+
+        if ($loggingCheck) {
+            $this->logger->info('***** SYNC CUSTOMER GRADE API RESPONSE *****');
+            $this->logger->info($this->json->serialize($response));
+        }
+
+        $this->syncGradeResponse->setCode($code);
+        $this->syncGradeResponse->setMessage($message);
+        $this->syncGradeResponse->setData($data);
+
+        return $this->syncGradeResponse;
     }
 }
