@@ -102,7 +102,13 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
             'data' => []
         ];
 
-        $parameters = ['body' => $body];
+        $parameters = [
+            'body' => array_map(function ($_reqItem) {
+                return [
+                    'gradeData' => $_reqItem->getGradeData()->toArray()
+                ];
+            }, $body)
+        ];
 
         if ($loggingCheck) {
             $this->logger->info('***** SYNC CUSTOMER GRADE API PARAMETERS *****');
