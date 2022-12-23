@@ -9,6 +9,7 @@ use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class IndexPlugin
 {
@@ -42,12 +43,18 @@ class IndexPlugin
     protected $logger;
 
     /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * @param \Magento\Customer\Model\Session $_customerSession
      * @param RewardsRepository $rewardsRepository
      * @param RewardsProvider $rewardsProvider
      * @param CustomerPointsSearch $customerPointsSearch
      * @param Config $config
      * @param Logger $logger
+     * @param Json $json
      */
     public function __construct(
         \Magento\Customer\Model\Session $_customerSession,
@@ -55,7 +62,8 @@ class IndexPlugin
         RewardsProvider $rewardsProvider,
         CustomerPointsSearch $customerPointsSearch,
         Config $config,
-        Logger $logger
+        Logger $logger,
+        Json $json
     ) {
         $this->_customerSession = $_customerSession;
         $this->rewardsRepository = $rewardsRepository;
@@ -63,6 +71,7 @@ class IndexPlugin
         $this->customerPointsSearch = $customerPointsSearch;
         $this->config = $config;
         $this->logger = $logger;
+        $this->json = $json;
     }
 
     public function beforeExecute(\Magento\Checkout\Controller\Cart\Index $subject)
@@ -73,7 +82,7 @@ class IndexPlugin
             if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
                 $this->logger->info("CUSTOMER POINTS INFO", $customerPointsInfo);
             }
-
+            $customerPointsInfo = $this->json->unserialize($customerPointsInfo);
             if ($this->responseValidation($customerPointsInfo)) {
                 $data = $customerPointsInfo['data'];
 //                $data['availablePoint'] = 500000;
