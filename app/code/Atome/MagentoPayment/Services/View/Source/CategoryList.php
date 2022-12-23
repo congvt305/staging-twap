@@ -1,9 +1,9 @@
 <?php
 namespace Atome\MagentoPayment\Services\View\Source;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class CategoryList implements ArrayInterface
+class CategoryList implements OptionSourceInterface
 {
     protected $categoryHelper;
     protected $categoryRepository;
