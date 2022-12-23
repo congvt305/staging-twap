@@ -19,7 +19,7 @@ class SyncGradeResponse
     protected $message;
 
     /**
-     * @var \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[]
+     * @var \CJ\CustomCustomer\Api\Data\CustomerDataInterface[]
      */
     protected $data;
 
