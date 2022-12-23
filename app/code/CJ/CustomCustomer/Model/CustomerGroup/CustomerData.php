@@ -14,64 +14,49 @@ class CustomerData
     /**
      * {@inheritDoc}
      */
-    public function getIntegrationSequence(): string
+    public function getCstmIntgSeq(): string
     {
-        return $this->getData(self::INTEGRATION_SEQUENCE);
+        return $this->getData(self::CSTM_INTG_SEQ);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setIntegrationSequence(?string $intgSeq)
+    public function setCstmIntgSeq(?string $intgSeq)
     {
-        $this->setData(self::INTEGRATION_SEQUENCE, $intgSeq);
+        return $this->setData(self::CSTM_INTG_SEQ, $intgSeq);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getGradeNm(): string
+    public function getCstmGradeNM(): string
     {
-        return $this->getData(self::GRADE_NM);
+        return $this->getData(self::CSTM_GRADE_N_M);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setGradeNm(?string $gradeNM)
+    public function setCstmGradeNM(?string $gradeNM)
     {
-        $this->setData(self::GRADE_NM, $gradeNM);
+        return $this->setData(self::CSTM_GRADE_N_M, $gradeNM);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getGradeCd(): string
+    public function getCstmGradeCD(): string
     {
-        return $this->getData(self::GRADE_CD);
+        return $this->getData(self::CSTM_GRADE_C_D);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setGradeCd(?string $gradePrefix)
+    public function setCstmGradeCD(?string $gradePrefix)
     {
-        $this->setData(self::GRADE_CD, $gradePrefix);
+        return $this->setData(self::CSTM_GRADE_C_D, $gradePrefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getScope(): string
-    {
-        return $this->getData(self::REQUEST_SCOPE);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setScope(string $scope = 'default')
-    {
-        $this->setData(self::REQUEST_SCOPE, $scope);
-    }
 }
