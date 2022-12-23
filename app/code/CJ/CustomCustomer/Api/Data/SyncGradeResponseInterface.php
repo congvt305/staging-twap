@@ -3,26 +3,15 @@
 namespace CJ\CustomCustomer\Api\Data;
 
 /**
- * Interface UpdateCustomerGroupResponseInterface
+ * Interface SyncGradeResponseInterface
  */
-interface UpdateCustomerGroupResponseInterface
+interface SyncGradeResponseInterface
 {
-    const SUCCESS = 'success';
-
     const CODE = 'code';
 
     const MESSAGE = 'message';
 
-    /**
-     * @return bool
-     */
-    public function getSuccess(): bool;
-
-    /**
-     * @param bool|null $isSuccess
-     * @return $this
-     */
-    public function setSuccess(?bool $isSuccess);
+    const DATA = 'data';
 
     /**
      * @return string
@@ -31,7 +20,7 @@ interface UpdateCustomerGroupResponseInterface
 
     /**
      * @param string|null $code
-     * @return $this
+     * @return mixed
      */
     public function setCode(?string $code);
 
@@ -42,7 +31,18 @@ interface UpdateCustomerGroupResponseInterface
 
     /**
      * @param string|null $message
-     * @return $this
+     * @return mixed
      */
     public function setMessage(?string $message);
+
+    /**
+     * @return \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[]
+     */
+    public function getData(): array;
+
+    /**
+     * @param \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[] $data
+     * @return mixed
+     */
+    public function setData($data);
 }

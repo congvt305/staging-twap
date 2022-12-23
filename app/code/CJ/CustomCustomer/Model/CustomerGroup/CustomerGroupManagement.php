@@ -3,8 +3,9 @@
 namespace CJ\CustomCustomer\Model\CustomerGroup;
 
 use CJ\CouponCustomer\Helper\Data;
+use CJ\CustomCustomer\Api\Data\CustomerDataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class CustomerGroupManagement
@@ -43,6 +44,11 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     protected $helper;
 
     /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \CJ\CustomCustomer\Logger\Logger $logger
@@ -56,98 +62,104 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         \CJ\CustomCustomer\Logger\Logger                  $logger,
         \CJ\CouponCustomer\Helper\Data                    $helperData,
         \Magento\Store\Api\StoreRepositoryInterface       $storeRepository,
-        \CJ\CustomCustomer\Helper\Data                    $helper
-    )
-    {
+        \CJ\CustomCustomer\Helper\Data                    $helper,
+        \Magento\Framework\Serialize\Serializer\Json $json
+    ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->logger = $logger;
         $this->helperData = $helperData;
         $this->helper = $helper;
         $this->storeRepository = $storeRepository;
+        $this->json = $json;
     }
 
     /**
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * {@inheritDoc}
      */
-    public function setGroup($gradeData)
+    public function setGroup(array $body)
     {
+        $loggingCheck = $this->helper->getLoggingEnabled();
+
         $result = [];
 
-        $cstmIntegSeq = $gradeData['cstmIntgSeq'];
-        $scope = $gradeData['scope'];
-        $websiteId = $this->storeRepository->get($scope)->getWebsiteId();
-        $loggingEnabled = $this->helper->getLoggingEnabled();
+        $parameters = [
+            'body' => array_map(function ($_reqItem) {
+                return [
+                    'gradeData' => $_reqItem->getGradeData()->toArray()
+                ];
+            }, $body)
+        ];
 
-        $customer = $this->getCustomerByIntegrationNumber($cstmIntegSeq, $websiteId);
+        if ($loggingCheck) {
+            $this->logger->info('***** SYNC CUSTOMER GRADE API PARAMETERS *****');
+            $this->logger->info($this->json->serialize($parameters));
+        }
 
-        if (!$customer) {
-            $message = __("Failed to update grade. Error is no customer exists with integration number \"%1\"", $cstmIntegSeq);
-            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002", $message);
-        } else {
-            $customerId = $customer->getId();
-            $customerData = $this->customerRepository->getById($customerId);
+        foreach ($body as $reqItem) {
+            /** @var CustomerDataInterface $info */
+            $info = $reqItem->getGradeData();
+            $cstmIntegSeq = $info[CustomerDataInterface::CSTM_INTG_SEQ];
+            $cstmGradeCD = $info[CustomerDataInterface::CSTM_GRADE_C_D];
+            $cstmGradeNM = $info[CustomerDataInterface::CSTM_GRADE_N_M];
 
-            if (isset($gradeData['cstmGradeCD']) && isset($gradeData['cstmGradeNM'])) {
-                $prefix = $this->helperData->getPrefix($gradeData['cstmGradeCD']);
-                $gradeName = $prefix . '_' . $gradeData['cstmGradeNM'];
-                $posCustomerGroupId = $this->helperData->getCustomerGroupIdByName($gradeName);
+            try {
+                if ($customerData = $this->getCustomerByIntgSeq($cstmIntegSeq)) {
+                    $groupName = $this->helperData->getPrefix($cstmGradeCD) . '_' . $cstmGradeNM;
+                    $groupId = $this->helperData->getCustomerGroupIdByName($groupName);
 
-                if (!$posCustomerGroupId) {
-                    $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $gradeName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0003");
-                } elseif ($posCustomerGroupId == $customerData->getGroupId()) {
-                    $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $gradeName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0004");
+                    if (!$groupId) {
+                        $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $groupName);
+                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0003");
+                    } elseif ($groupId == $customerData->getGroupId()) {
+                        $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $groupName);
+                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0004");
+                    } else {
+                        $customerData->setGroupId($groupId);
+                        $this->customerRepository->save($customerData);
+                        $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
+                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0001");
+                    }
                 } else {
-                    $customerData->setGroupId($posCustomerGroupId);
-                    $this->customerRepository->save($customerData);
-                    $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
+                    $message = __("Failed to update grade. Error is no customer exists with integration sequence \"%1\"", $cstmIntegSeq);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0002");
                 }
+            } catch (\Exception $e) {
+                $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $e->getMessage(), "0005");
             }
         }
-        if ($loggingEnabled) {
-            $this->logger->info("Response data", [$result]);
-        }
+
+
+
         return $result;
     }
 
     /**
-     * @return CustomerInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param string $cstmIntgSeq
+     * @return \Magento\Customer\Api\Data\CustomerInterface
+     * @throws LocalizedException
      */
-    protected function getCustomerByIntegrationNumber($integrationNumber, $websiteId)
+    protected function getCustomerByIntgSeq($cstmIntgSeq)
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('website_id', $websiteId)
-            ->addFilter('integration_number', $integrationNumber)
+            ->addFilter('website_id', $this->helper->getWebsiteIdByIntgSeq($cstmIntgSeq))
+            ->addFilter('integration_number', $cstmIntgSeq)
             ->create();
         $customers = $this->customerRepository->getList($searchCriteria)->getItems();
+        $customer = reset($customers);
 
-        return reset($customers);
+        if (!$customer) {
+            throw new LocalizedException(__('Customer not found!'));
+        }
+        return $this->customerRepository->getById($customer->getId());
     }
 
-    /**
-     * @param $request
-     * @param $message
-     * @param $code
-     * @param $exceptionMsg
-     * @return array
-     */
-    protected function gradeResultMsg($request, $message, $code, $exceptionMsg = '')
+    protected function gradeResultMsg(\CJ\CustomCustomer\Api\Data\SyncGradeReqItemInterface $reqItem, $message, $code)
     {
         return [
-            'success' => $code === "0001",
             'code' => $code,
             'message' => $message,
-            'exceptionMsg' => $exceptionMsg,
-            'data' => [
-                'cstmIntgSeq' => $request['cstmIntgSeq'],
-                'cstmGradeNM' => $request['cstmGradeNM'],
-                'cstmGradeCD' => $request['cstmGradeCD'],
-                'scope' => $request['scope']
-            ]
+            'data' => $reqItem->getGradeData()->toArray()
         ];
     }
 }
