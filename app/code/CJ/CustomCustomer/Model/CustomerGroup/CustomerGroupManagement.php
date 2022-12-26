@@ -148,7 +148,7 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         $customer = reset($customers);
 
         if (!$customer) {
-            throw new LocalizedException(__('Customer not found!'));
+            throw new LocalizedException(__('No customer found with this integration sequence number: "%1"', $cstmIntgSeq));
         }
         return $this->customerRepository->getById($customer->getId());
     }
