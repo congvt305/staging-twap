@@ -76,10 +76,10 @@ class IndexPlugin
                 $this->logger->info("CUSTOMER POINTS INFO", $customerPointsInfo);
             }
 
-            if ($this->responseValidation($customerPointsInfo)) {
+            if ($this->responseValidation($customerPointsInfo) && isset($customerPointsInfo['data']['availablePoint'])) {
                 $data = $customerPointsInfo['data'];
 //                $data['availablePoint'] = 500000;
-                $availablePoint = $data['availablePoint'];
+                $availablePoint = (int)$data['availablePoint']; //parse to int because if do not have availablePoint, availablePoint = ''
                 $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customer->getId());
                 $pointsDiscrepancy = $availablePoint - $customerRewards;
                 if (abs($pointsDiscrepancy) > 0) {
