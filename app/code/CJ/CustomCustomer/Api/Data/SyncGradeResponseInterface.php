@@ -36,13 +36,13 @@ interface SyncGradeResponseInterface
     public function setMessage(?string $message);
 
     /**
-     * @return \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[]
+     * @return \CJ\CustomCustomer\Api\Data\CustomerDataInterface[]
      */
     public function getData(): array;
 
     /**
-     * @param \CJ\CustomCustomer\Api\Data\UpdateCustomerGroupResponseInterface[] $data
-     * @return mixed
+     * @param \CJ\CustomCustomer\Api\Data\CustomerDataInterface[] $data
+     * @return $this
      */
-    public function setData($data);
+    public function setData(array $data);
 }
