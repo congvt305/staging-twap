@@ -2,9 +2,11 @@
 
 namespace CJ\CustomCustomer\Model\CustomerGroup;
 
+use Amore\Sap\Api\Data\SapOrderStatusInterface;
 use CJ\CouponCustomer\Helper\Data;
 use CJ\CustomCustomer\Api\Data\CustomerDataInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
@@ -49,6 +51,11 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     protected $json;
 
     /**
+     * @var \Magento\Framework\Event\ManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \CJ\CustomCustomer\Logger\Logger $logger
@@ -63,7 +70,8 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         \CJ\CouponCustomer\Helper\Data                    $helperData,
         \Magento\Store\Api\StoreRepositoryInterface       $storeRepository,
         \CJ\CustomCustomer\Helper\Data                    $helper,
-        \Magento\Framework\Serialize\Serializer\Json $json
+        \Magento\Framework\Serialize\Serializer\Json $json,
+        \Magento\Framework\Event\ManagerInterface $eventManager
     ) {
         $this->customerRepository = $customerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -72,64 +80,55 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         $this->helper = $helper;
         $this->storeRepository = $storeRepository;
         $this->json = $json;
+        $this->eventManager = $eventManager;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setGroup(array $body)
+    public function setGroup(\CJ\CustomCustomer\Api\Data\CustomerDataInterface $gradeData)
     {
         $loggingCheck = $this->helper->getLoggingEnabled();
 
         $result = [];
 
-        $parameters = [
-            'body' => array_map(function ($_reqItem) {
-                return [
-                    'gradeData' => $_reqItem->getGradeData()->toArray()
-                ];
-            }, $body)
-        ];
+        $parameters = $gradeData->toArray();
 
         if ($loggingCheck) {
             $this->logger->info('***** SYNC CUSTOMER GRADE API PARAMETERS *****');
             $this->logger->info($this->json->serialize($parameters));
         }
 
-        foreach ($body as $reqItem) {
-            /** @var CustomerDataInterface $info */
-            $info = $reqItem->getGradeData();
-            $cstmIntegSeq = $info[CustomerDataInterface::CSTM_INTG_SEQ];
-            $cstmGradeCD = $info[CustomerDataInterface::CSTM_GRADE_C_D];
-            $cstmGradeNM = $info[CustomerDataInterface::CSTM_GRADE_N_M];
+        $cstmIntegSeq = $gradeData[CustomerDataInterface::CSTM_INTG_SEQ];
+        $cstmGradeCD = $gradeData[CustomerDataInterface::CSTM_GRADE_C_D];
+        $cstmGradeNM = $gradeData[CustomerDataInterface::CSTM_GRADE_N_M];
 
-            try {
-                if ($customerData = $this->getCustomerByIntgSeq($cstmIntegSeq)) {
-                    $groupName = $this->helperData->getPrefix($cstmGradeCD) . '_' . $cstmGradeNM;
-                    $groupId = $this->helperData->getCustomerGroupIdByName($groupName);
+        try {
+            if ($customerData = $this->getCustomerByIntgSeq($cstmIntegSeq)) {
+                $groupName = $this->helperData->getPrefix($cstmGradeCD) . '_' . $cstmGradeNM;
+                $groupId = $this->helperData->getCustomerGroupIdByName($groupName);
 
-                    if (!$groupId) {
-                        $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $groupName);
-                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0003");
-                    } elseif ($groupId == $customerData->getGroupId()) {
-                        $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $groupName);
-                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0004");
-                    } else {
-                        $customerData->setGroupId($groupId);
-                        $this->customerRepository->save($customerData);
-                        $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
-                        $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0001");
-                    }
+                if (!$groupId) {
+                    $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $groupName);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002");
+                } elseif ($groupId == $customerData->getGroupId()) {
+                    $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $groupName);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0003");
                 } else {
-                    $message = __("Failed to update grade. Error is no customer exists with integration sequence \"%1\"", $cstmIntegSeq);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $message, "0002");
+                    $customerData->setGroupId($groupId);
+                    $this->customerRepository->save($customerData);
+                    $message = __("Updated the latest grade for customer \"%1\"", $cstmIntegSeq);
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0000");
                 }
-            } catch (\Exception $e) {
-                $result[$cstmIntegSeq] = $this->gradeResultMsg($reqItem, $e->getMessage(), "0005");
+            } else {
+                $message = __("Failed to update grade. Error is no customer exists with integration sequence \"%1\"", $cstmIntegSeq);
+                $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
             }
+        } catch (\Exception $e) {
+            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $e->getMessage(), "0004");
         }
 
-
+        $this->operationLogWriter($parameters, $result, $gradeData, 'cj.customer.group.sync.info');
 
         return $result;
     }
@@ -154,12 +153,41 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
         return $this->customerRepository->getById($customer->getId());
     }
 
-    protected function gradeResultMsg(\CJ\CustomCustomer\Api\Data\SyncGradeReqItemInterface $reqItem, $message, $code)
+    /**
+     * @param CustomerDataInterface $customerData
+     * @param string $message
+     * @param string $code
+     * @return array
+     */
+    protected function gradeResultMsg(\CJ\CustomCustomer\Api\Data\CustomerDataInterface $customerData, $message, $code)
     {
         return [
             'code' => $code,
             'message' => $message,
-            'data' => $reqItem->getGradeData()->toArray()
+            'data' => $customerData->toArray()
         ];
+    }
+
+
+    /**
+     * @param array $parameters
+     * @param array $result
+     * @param CustomerDataInterface $customerData
+     * @param $topicName
+     * @return void
+     */
+    public function operationLogWriter(array $parameters, array $result, \CJ\CustomCustomer\Api\Data\CustomerDataInterface $customerData, $topicName)
+    {
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => $topicName,
+                'direction' => 'incoming',
+                'to' => "Magento",
+                'serialized_data' => $this->json->serialize($parameters),
+                'status' => $result[$customerData->getCstmIntgSeq()]['code'] == "0000" ? 1 : 0,
+                'result_message' => $this->json->serialize($result)
+            ]
+        );
     }
 }
