@@ -2,10 +2,10 @@
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/cj_customer/group" method="POST">
+    <route url="/V1/cj-customer/group" method="POST">
         <service class="CJ\CustomCustomer\Api\CustomerGroupManagementInterface" method="setGroup"/>
         <resources>
-            <resource ref="anonymous" />
+            <resource ref="CJ_CustomCustomer::token" />
         </resources>
     </route>
 </routes>
