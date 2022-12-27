@@ -20,9 +20,16 @@
 & when (@media-common = true) {
 
     .amrewards-apply-container#block-reward { // override magento styles
+        border-top: 1px solid #333333;
+        padding: 15px 0;
+        margin-top: 40px;
+        .payment-option-title {
+            margin-bottom: 10px;
+        }
         .content {
             max-width: 100%;
             .reward {
+                margin: 10px 0;
                 .message-error {
                     padding-left: 35px !important;
                 }
