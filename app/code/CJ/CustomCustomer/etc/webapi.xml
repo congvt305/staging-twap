@@ -5,7 +5,7 @@
     <route url="/V1/cj-customer/group" method="POST">
         <service class="CJ\CustomCustomer\Api\CustomerGroupManagementInterface" method="setGroup"/>
         <resources>
-            <resource ref="CJ_CustomCustomer::token" />
+            <resource ref="Amore_PointsIntegration::api" />
         </resources>
     </route>
 </routes>
