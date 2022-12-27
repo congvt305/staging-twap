@@ -16400,6 +16400,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
 "This is a required field.","此為必填欄位。",lib,web
+"Please enter in numbers."," 請輸入數字。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web
@@ -16483,3 +16484,7 @@ sample,樣本
 "Items has been deleted","已成功刪除缺貨商品"
 "Items cannot be deleted. Please try again","無法刪除缺貨商品，請重新再試一次**"
 "The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!","因系統已安排出貨，目前無法取消訂單。如有需要取消訂單請使用退貨流程，謝謝!"
+"Apply Rewards","使用點數折現"
+"You Have <strong>%1</strong> points left","目前剩餘總點數: <strong>%1</strong>點"
+"Maximum point: <strong>%1</strong>","本次可用點數: <strong>%1</strong>點"
+"Deducted amount: <strong>%1</strong>","等於折抵金額: <strong>%1</strong>元"

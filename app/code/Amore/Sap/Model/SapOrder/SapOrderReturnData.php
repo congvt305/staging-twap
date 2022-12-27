@@ -88,7 +88,11 @@ class SapOrderReturnData extends AbstractSapOrder
     private $middlewareHelper;
 
     /**
-     * SapOrderReturnData constructor.
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -105,6 +109,7 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
+     * @param \Amasty\Rewards\Model\Config $amConfig
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -122,7 +127,8 @@ class SapOrderReturnData extends AbstractSapOrder
         \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         StoreManagerInterface $storeManager,
         Data $helper,
-        \CJ\Middleware\Helper\Data $middlewareHelper
+        \CJ\Middleware\Helper\Data $middlewareHelper,
+        \Amasty\Rewards\Model\Config $amConfig
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -137,6 +143,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -183,6 +190,19 @@ class SapOrderReturnData extends AbstractSapOrder
         $trackData = $this->getTracks($rma);
         $ztrackId = $trackData['track_number'] ?? '';
         $shippingMethod = $order->getShippingMethod();
+        $rewardPoints = 0;
+        $redemptionFlag = 'N';
+        if($this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $pointUsed = $rewardPoints / $spendingRate;
+            if ($pointUsed == $order->getBaseSubtotal()) {
+                $redemptionFlag = 'Y';
+            }
+        }
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
@@ -255,7 +275,9 @@ class SapOrderReturnData extends AbstractSapOrder
             // 납품처
             'kunwe' => $this->kunweCheck($order),
             // trackNo 가져와야 함
-            'ztrackId' => $ztrackId
+            'ztrackId' => $ztrackId,
+            'redemptionFlag' => $redemptionFlag,
+            'PointAccount' => $rewardPoints
         ];
 
         if ($isDecimalFormat) {
@@ -288,6 +310,15 @@ class SapOrderReturnData extends AbstractSapOrder
         $mileageUsedAmount = $order->getRewardPointsBalance();
         $originPosnr = $this->getOrderItemPosnr($rma);
         $pointUsed = $order->getRewardPointsBalance();
+
+        if($this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $mileageUsedAmount = $rewardPoints / $spendingRate;
+        }
 
         $itemsSubtotal = 0;
         $itemsDiscountAmount = 0;
@@ -802,6 +833,15 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $mileageUsedAmount = $order->getRewardPointsBalance();
 
+        $storeId = $order->getStoreId();
+        if($this->amConfig->isEnabled($storeId)) {
+            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $mileageUsedAmount = $rewardPoints / $spendingRate;
+        }
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() == 'bundle') {

@@ -1,17 +1,12 @@
-From 00f9204b9cdd8d44c4b252c3b945afd0ea5fe1c7 Mon Sep 17 00:00:00 2001
-From: Hoang Phan <hoangphan@amorepacific.com>
-Date: Tue, 11 Oct 2022 06:25:46 -0400
-Subject: [PATCH] ITO0035-14 [G-DEV] report.CRITICAL: Invalid template file
-
----
- vendor/magento/framework/View/Element/Template.php | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
+Index: vendor/magento/framework/View/Element/Template.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
 diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento/framework/View/Element/Template.php
-index e9f164c..aeca2b0 100644
---- a/vendor/magento/framework/View/Element/Template.php
-+++ b/vendor/magento/framework/View/Element/Template.php
-@@ -276,6 +276,16 @@ class Template extends AbstractBlock
+--- a/vendor/magento/framework/View/Element/Template.php	(revision 67c5037e3df2544d0d0205b3e9c08e92b3f88e6f)
++++ b/vendor/magento/framework/View/Element/Template.php	(date 1671516712393)
+@@ -266,6 +266,23 @@
              $templatePath = $fileName ?: $this->getTemplate();
              $errorMessage = "Invalid template file: '{$templatePath}' in module: '{$this->getModuleName()}'"
                  . " block's name: '{$this->getNameInLayout()}'";
@@ -20,14 +15,18 @@ index e9f164c..aeca2b0 100644
 +                $logger = new \Zend_Log();
 +                $logger->addWriter($writer);
 +                $logger->info($errorMessage);
-+                $logger->info('filename: '. $fileName);
-+                $logger->info('full action name: '. $this->getRequest()->getFullActionName());
-+                $logger->info('request uri: ' . $_SERVER['REQUEST_URI']);
++                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                $backTrace = '';
++                foreach ($debugBackTrace as $item) {
++                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
++                }
++                $logger->crit('Trace error invalid template: ' . $backTrace);
++                $logger->info('filename: ' . $fileName);
++                $logger->info('full action name: ' . $this->getRequest()->getFullActionName());
++                $logger->info('user agent: ' . isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'cannot get user agent');
++                $logger->info('request uri: ' . isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : 'cannot get request uri';
 +                $logger->info('block data: ' . json_encode($this->getData()));
 +            }
              if ($this->_appState->getMode() === \Magento\Framework\App\State::MODE_DEVELOPER) {
                  throw new \Magento\Framework\Exception\ValidatorException(
                      new \Magento\Framework\Phrase(
---
-2.25.1
-

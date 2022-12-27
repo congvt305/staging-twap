@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Special Occasion Coupons for Magento 2
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>       
+        <section id="amasty_birth" translate="label" type="text" sortOrder="191615" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <class>separator-top</class>
+            <label>Special Occasion Coupons</label>
+            <tab>amasty</tab>
+            <resource>Amasty_Birth::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General</label>
+                <field id="identity" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="remove_days" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Remove not used Coupons after Creation (days)</label>
+                    <comment>Indicate -1 if you would like not to remove coupons automatically</comment>
+                </field>
+            </group>
+            <group id="birth" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Customer Birthday</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="days" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Send Coupon After (days)</label>
+                    <comment>Indicate 0 for the same day, or -1,-2, etc to send the coupon before the date.</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+            <group id="reg" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>New Registartion</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="days" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Send Coupon After (days)</label>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+
+            <group id="newsletter" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Newsletter Subscribtion</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <comment>To send the coupon in the subscription success email please add {{var subscriber.getCoupon()}} variable to the subscription success template.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+
+            <group id="wishlist" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Wishlist Created</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="days" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Send Coupon After (days)</label>
+                    <comment>Indicate 0 for the same day.</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+
+            <group id="activity" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>No Customer Activity</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="days" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Send Coupon After Last Log-In (days)</label>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+            
+            <group id="order_placed" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Placed</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+
+            <group id="regbirth" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>One More Year With Us</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="coupon_type" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount type</label>
+                    <source_model>Amasty\Birth\Model\Source\Discount</source_model>
+                </field>
+                <field id="coupon_amount" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Discount Amount</label>
+                </field>
+                <field id="coupon_days" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Expire Coupon in (days)</label>
+                </field>
+                <field id="coupon_uses" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Coupon Uses</label>
+                </field>
+                <field id="uses_per_customer" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Uses per Customer</label>
+                </field>
+                <field id="customer_group" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Apply for Customer Group Only</label>
+                    <source_model>Amasty\Birth\Model\Source\Group</source_model>
+                </field>
+                <field id="min_order" translate="label comment" type="text" sortOrder="95" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min Order Amount</label>
+                </field>
+            </group>
+            <group id="information" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cronjob Information</label>
+                <frontend_model>Amasty\Birth\Block\Adminhtml\Info</frontend_model>
+            </group>
+        </section>
+    </system>
+</config>
