@@ -124,6 +124,7 @@ define(
             couponCode: couponCode,
             fakeCouponCode: fakeCouponCode,
             errorMessage: messageError,
+            successMessage: message,
 
             /**
              * Applied flag
@@ -284,7 +285,16 @@ define(
                             couponCodes = couponCodes
                                 .concat(this.responseProcessor.appliedCoupons)
                                 .concat(this.responseProcessor.notChangedCoupons);
-                            this.couponCode(couponCodes.join(', '));
+                            if (couponCodes.length > 0) {
+                                this.isApplied(true);
+                                this.couponCode(couponCodes.join(', '));
+                                let messages = this.getChild('errors');
+                                messages.messageContainer.clear();
+                                messages.messageContainer.addSuccessMessage({
+                                    'message': this.successMessage
+                                });
+                            }
+
                             $('.totals.discount .title').removeClass('negative');
                             window.location.reload();
                         }.bind(this))

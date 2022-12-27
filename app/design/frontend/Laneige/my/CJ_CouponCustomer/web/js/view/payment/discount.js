@@ -131,7 +131,7 @@ define([
                 messages.messageContainer.errorMessages.push(code + ' ' + this.errorMessage);
             }, this);
         },
-        
+
         /**
          * Cancel using coupon
          */
@@ -203,8 +203,8 @@ define([
          */
 
         applyCouponPopup: function(data, event) {
-            var couponCode = event.target.id;
-            if (coupon.isApplied() && couponCode == couponAppliedPopup) {
+            var _couponCode = event.target.id;
+            if (coupon.isApplied() && _couponCode == couponAppliedPopup) {
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
                 $('#discount-code').val('');
@@ -212,10 +212,20 @@ define([
             }
             else
             {
-                setCouponCodeAction(couponCode, coupon.getIsApplied(true));
-                $('#discount-code').val(couponCode);
-                couponAppliedPopup = couponCode;
-                popup.closeModal();
+                setCouponCodeAction(_couponCode, coupon.getIsApplied(true))
+                    .done(function (response) {
+                        $('#discount-code').val(_couponCode);
+                        couponAppliedPopup = _couponCode;
+                        popup.closeModal();
+                    })
+                    .fail(function (response) {
+                        couponCode('');
+                        isApplied(false);
+                        $('#discount-code').val(_couponCode);
+                        popup.closeModal();
+                        window.location.reload();
+                    }
+                );
             }
         },
     });
