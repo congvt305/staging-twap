@@ -8,16 +8,14 @@ define([
     'ko',
     'uiComponent',
     'Magento_Checkout/js/model/quote',
-    'Amasty_Coupons/js/action/apply-coupon-codes',
     'Magento_SalesRule/js/action/set-coupon-code',
     'Magento_SalesRule/js/action/cancel-coupon',
     'Magento_SalesRule/js/model/coupon',
     'Magento_Ui/js/modal/modal',
     'text!CJ_CouponCustomer/template/modal/modal-popup.html',
     'mage/translate',
-    'Amasty_Coupons/js/model/abstract-apply-response-processor',
     'domReady!'
-], function ($, ko, Component, quote, setCouponCodesAction, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl, $t, responseProcessor) {
+], function ($, ko, Component, quote, setCouponCodeAction, cancelCouponAction, coupon, modal, popupTpl, $t) {
     'use strict';
 
     var totals = quote.getTotals(),
@@ -73,9 +71,7 @@ define([
             template: template
         },
         couponCode: couponCode,
-        responseProcessor: responseProcessor,
-        errorMessage: $t('Coupon code is not valid'),
-        successMessage: $t('Your coupon was successfully applied.'),
+
         /**
          * Coupon list
          */
@@ -105,31 +101,7 @@ define([
          */
         applyPopup: function() {
             couponAppliedPopup = $('#discount-code').val();
-            setCouponCodesAction([couponAppliedPopup], this.responseProcessor)
-                .done(function () {
-                    this.handleErrorMessages();
-                    if (this.responseProcessor.appliedCoupons.length > 0 || this.responseProcessor.notChangedCoupons.length > 0) {
-                        this.isApplied(true);
-                        let messages = this.getChild('errors');
-                        messages.messageContainer.clear();
-                        messages.messageContainer.addSuccessMessage({
-                            'message': this.successMessage
-                        });
-                    }
-                }.bind(this));
-        },
-
-        /**
-         * @returns {void}
-         */
-        handleErrorMessages: function () {
-            var messages = this.getChild('errors');
-
-            messages.messageContainer.clear();
-
-            _.each(responseProcessor.errorCoupons, function (code) {
-                messages.messageContainer.errorMessages.push(code + ' ' + this.errorMessage);
-            }, this);
+            setCouponCodeAction(couponCode(), isApplied);
         },
 
         /**
