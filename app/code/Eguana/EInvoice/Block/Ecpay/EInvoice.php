@@ -70,15 +70,15 @@ class EInvoice extends \Magento\Framework\View\Element\Template
 
     protected function getInvalidateEInvoiceInformation($orderId)
     {
+        $invalidateEInvoiceInformation = null;
         $order = $this->orderRepository->get($orderId);
         $payment = $order->getPayment();
         $ecpayInvoiceInvalidateData = $payment->getEcpayInvoiceInvalidateData();
 
-        if (json_decode($ecpayInvoiceInvalidateData??'', true)["RtnCode"] == 1) {
-            return json_decode($ecpayInvoiceInvalidateData??'', true);
-        } else {
-            return null;
+        if ($ecpayInvoiceInvalidateData && isset(json_decode($ecpayInvoiceInvalidateData, true)["RtnCode"]) && json_decode($ecpayInvoiceInvalidateData, true)["RtnCode"] == 1) {
+            $invalidateEInvoiceInformation = json_decode($ecpayInvoiceInvalidateData, true);
         }
+        return $invalidateEInvoiceInformation;
     }
 
     public function getInvalidateEInvoiceNumber($orderId)
