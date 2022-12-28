@@ -1,0 +1,16 @@
+<?php
+    $explainerPreview = $block->getData('explainerPreview');
+    $explainerCSS = $block->getData('explainerCSS');
+?>
+<!-- hoolah explainer WIDGET -->
+<div id="6760c0e1-53c6-4fbb-b73f-b547748ba63e">
+    Please visit <a href="http://www.hoolah.co/#consumer_process" target="_blank">https://www.hoolah.co/shopper</a> for further information.
+</div>
+<script>
+    require([
+        'jquery'
+    ], function($){
+        $('#6760c0e1-53c6-4fbb-b73f-b547748ba63e').load('<?php echo $explainerPreview ?>');
+        $('head').append($('<link rel="stylesheet" type="text/css" />').attr('href', '<?php echo $explainerCSS ?>'));
+    });
+</script>
