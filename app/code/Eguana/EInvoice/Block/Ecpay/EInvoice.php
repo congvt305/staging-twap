@@ -74,10 +74,10 @@ class EInvoice extends \Magento\Framework\View\Element\Template
         $payment = $order->getPayment();
         $ecpayInvoiceInvalidateData = $payment->getEcpayInvoiceInvalidateData();
 
-        if (json_decode($ecpayInvoiceInvalidateData??'', true)["RtnCode"] == 1) {
-            return json_decode($ecpayInvoiceInvalidateData??'', true);
-        } else {
+        if (!$ecpayInvoiceInvalidateData) {
             return null;
+        } else if (json_decode($ecpayInvoiceInvalidateData, true)["RtnCode"] == 1) {
+            return json_decode($ecpayInvoiceInvalidateData, true);
         }
     }
 
