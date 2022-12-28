@@ -118,6 +118,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $this->calculator->reset($address);
             $address->setDiscountAmount(0);
             $address->setBaseDiscountAmount(0);
+            $address->setBaseGrandTotal($address->getBaseSubtotal());
+            $address->setGrandTotal($address->getSubtotal());
             $items = $shippingAssignment->getItems();
 
             if (!count($items)) {
