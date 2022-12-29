@@ -106,7 +106,7 @@ class Data extends AbstractHelper
         OrderRepositoryInterface $orderRepository,
         \Psr\Log\LoggerInterface $logger,
         StateInterface $inlineTranslation,
-        TransportBuilder $transportBuilder,
+        TransportBuilder $transportBuilder
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
