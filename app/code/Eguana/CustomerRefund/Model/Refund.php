@@ -44,9 +44,7 @@ class Refund
             }
 
             if (($order->getPayment()->getMethod() === 'adyen_cc') ||
-                ($order->getPayment()->getMethod() === 'cashondelivery') ||
-                ($order->getPayment()->getMethod() === 'paynow')
-            ) {
+                ($order->getPayment()->getMethod() === 'cashondelivery')) {
                 return true;
             }
 
