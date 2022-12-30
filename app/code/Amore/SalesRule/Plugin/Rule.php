@@ -51,6 +51,9 @@ class Rule
             //validate input promo items before save to make sure when apply rule in front end do got get error
             if ($subject->getExtensionAttributes() && isset($subject->getExtensionAttributes()['ampromo_rule']['sku'])) {
                 $skuArr = explode(',', $subject->getExtensionAttributes()['ampromo_rule']['sku']);
+                array_walk($skuArr, function(&$sku){
+                    $sku = trim($sku);
+                });
                 foreach($subject->getWebsiteIds() as $websiteId) {
                     $storeIdArr = $this->storeWebsiteRelation->getStoreByWebsiteId($websiteId);
                     foreach ($storeIdArr as $storeId) {
