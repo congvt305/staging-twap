@@ -35,15 +35,15 @@ class EInvoice extends \Magento\Framework\View\Element\Template
 
     protected function getEInvoiceInformation($orderId)
     {
+        $einvoiceInformation = null;
         $order = $this->orderRepository->get($orderId);
         $payment = $order->getPayment();
         $additionalData = $payment->getAdditionalData();
 
-        if (isset(json_decode($additionalData??'', true)["RtnCode"]) && json_decode($additionalData??'', true)["RtnCode"] == 1) {
-            return json_decode($additionalData??'', true);
-        } else {
-            return null;
+        if ($additionalData && isset(json_decode($additionalData, true)["RtnCode"]) && json_decode($additionalData, true)["RtnCode"] == 1) {
+            $einvoiceInformation = json_decode($additionalData, true);
         }
+        return $einvoiceInformation;
     }
 
     public function getEInvoiceDate($orderId)
@@ -94,20 +94,20 @@ class EInvoice extends \Magento\Framework\View\Element\Template
 
     protected function getEInvoiceTriplicateInformation($orderId)
     {
+        $einvoiceTriplicateInformation = null;
         $order = $this->orderRepository->get($orderId);
         $payment = $order->getPayment();
         $additionalData = $payment->getAdditionalData();
         $additionalInfo = $payment->getAdditionalInformation();
         $rawDetailsInfo = $additionalInfo["raw_details_info"];
 
-        if (json_decode($additionalData??'', true)["RtnCode"] == 1
+        if ($additionalData && isset(json_decode($additionalData, true)["RtnCode"]) && json_decode($additionalData, true)["RtnCode"] == 1
             && !empty($rawDetailsInfo["ecpay_einvoice_triplicate_title"])
             && !empty($rawDetailsInfo["ecpay_einvoice_tax_id_number"])
         ) {
-            return $rawDetailsInfo;
-        } else {
-            return null;
+            $einvoiceTriplicateInformation = $rawDetailsInfo;
         }
+        return $einvoiceTriplicateInformation;
     }
 
     public function getEInvoiceTriplicateTitle($orderId)
