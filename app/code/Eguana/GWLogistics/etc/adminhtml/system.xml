@@ -89,27 +89,27 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="cron_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="cron_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Cron Settings</label>
-                <field id="enable_cron" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                <field id="enable_cron" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Enable Cron to create shipments automatically</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="order_status_to_create_shipment" translate="label" sortOrder="20" type="multiselect" showInStore="0" showInWebsite="0"
+                <field id="order_status_to_create_shipment" translate="label" sortOrder="20" type="multiselect" showInStore="0" showInWebsite="1"
                        showInDefault="1" canRestore="1">
                     <label>Choose Order Status To Create Shipment</label>
                     <source_model>Eguana\GWLogistics\Model\Config\Source\OrderStatus</source_model>
                 </field>
-                <field id="last_order_id" translate="label" sortOrder="30" type="text" showInStore="0" showInWebsite="0"
+                <field id="last_order_id" translate="label" sortOrder="30" type="text" showInStore="0" showInWebsite="1"
                        showInDefault="1" canRestore="1">
                     <label>Last Order ID to process cron</label>
                 </field>
-                <field id="create_shipment" translate="label" sortOrder="40" showInStore="0" showInWebsite="0"
+                <field id="create_shipment" translate="label" sortOrder="40" showInStore="0" showInWebsite="1"
                        showInDefault="1" >
                     <label>Create Shipments</label>
                     <frontend_model>Eguana\GWLogistics\Model\Config\Frontend\CreateShipments</frontend_model>
                 </field>
-                <field id="create_shipment_cron_schedule" translate="label" sortOrder="50" type="select" showInStore="0" showInWebsite="0"
+                <field id="create_shipment_cron_schedule" translate="label" sortOrder="50" type="select" showInStore="0" showInWebsite="1"
                        showInDefault="1" canRestore="1">
                     <label>Create Shipment Cron Schedule</label>
                     <source_model>Eguana\GWLogistics\Model\Config\Source\CronExpressions</source_model>
