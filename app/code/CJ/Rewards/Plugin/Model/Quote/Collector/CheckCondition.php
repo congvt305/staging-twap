@@ -69,7 +69,7 @@ class CheckCondition
         \Closure $proceed,
         Quote $quote,
         ShippingAssignmentInterface $shippingAssignment,
-        Total $total,
+        Total $total
     ) {
         $spentPoints = (float)$quote->getData(EntityInterface::POINTS_SPENT);
         if ($spentPoints && (!$this->rewardsData->canUseRewardPoint($quote) || $this->rewardsData->isExcludeDay())) {
