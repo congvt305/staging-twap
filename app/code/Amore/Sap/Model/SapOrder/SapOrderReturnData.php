@@ -240,7 +240,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'abrvw' => self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
             'custid' => $customer != '' ? $rma->getCustomerId() : '',
-            'custnm' => $order->getCustomerLastname() . $order->getCustomerFirstname(),
+            'custnm' => $rma->getData('rma_customer_name') ?: $order->getCustomerLastname() . $order->getCustomerFirstname(),
             //배송지 id - 직영몰 자체코드, 없으면 공백
             'recvid' => '',
             'recvnm' => $shippingAddress->getLastname() . ' ' . $shippingAddress->getFirstname(),
