@@ -140,7 +140,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         StoreManagerInterface $storeManager,
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
-        \Amasty\Rewards\Model\Config $amConfig,
+        \Amasty\Rewards\Model\Config $amConfig
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -312,14 +312,19 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $orderData->getSubtotalInclTax() + $this->getBundleExtraAmount($orderData) + $this->getCatalogRuleDiscountAmount($orderData),
                 $isDecimalFormat));
             $orderGrandTotal = $orderData->getGrandTotal() == 0 ? $orderData->getGrandTotal() : abs($this->roundingPrice($orderData->getGrandTotal() - $orderData->getShippingAmount(), $isDecimalFormat));
+            $mileageUsedAmount = 0;
+            if ($orderData->getRewardPointsBalance()) {
+                $mileageUsedAmount = $this->roundingPrice($orderData->getRewardPointsBalance(), $isDecimalFormat);
+            }
             if ($this->amConfig->isEnabled($storeId)) {
                 $spendingRate = $this->amConfig->getPointsRate($storeId);
-                $rewardPoints = (int)$orderData->getData('am_spent_reward_points');
+                $rewardPoints = $this->roundingPrice($orderData->getData('am_spent_reward_points'), $isDecimalFormat);
                 if (!$spendingRate) {
                     $spendingRate = 1;
                 }
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
             }
+
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -358,9 +363,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderSubTotal,
-                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal, $isDecimalFormat),
+                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal, $isDecimalFormat) - $mileageUsedAmount,
                 'slamt' => $orderGrandTotal,
-                'miamt' => is_null($orderData->getRewardPointsBalance()) ? '0' : $this->roundingPrice($orderData->getRewardPointsBalance(), $isDecimalFormat),
+                'miamt' => $mileageUsedAmount,
                 'shpwr' => $this->roundingPrice($orderData->getShippingAmount(), $isDecimalFormat),
                 'mwsbp' => $this->roundingPrice($orderData->getTaxAmount(), $isDecimalFormat),
                 'spitn1' => $orderData->getDeliveryMessage(),
@@ -552,8 +557,9 @@ class SapOrderConfirmData extends AbstractSapOrder
             $spendingRate = 1;
         }
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
             $mileageUsedAmount = $rewardPoints / $spendingRate;
+            $mileageUsedAmountExisted = $mileageUsedAmount;
         }
 
         if ($order == null) {
@@ -586,6 +592,13 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $orderItem->getDiscountAmount(),
                         $mileageUsedAmount,
                         $isDecimalFormat);
+                    if($isEnableRewardsPoint) {
+                        if ($mileageUsedAmountExisted > $mileagePerItem) {
+                            $mileageUsedAmountExisted -= $mileagePerItem;
+                        } else {
+                            $mileagePerItem = $mileageUsedAmountExisted;
+                        }
+                    }
 
                     $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
                     $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat));
@@ -599,7 +612,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
                     if ($isEnableRewardsPoint) {
-                        $rewardPoints = (int)$orderItem->getData('am_spent_reward_points');
+                        $rewardPoints = $this->roundingPrice($orderItem->getData('am_spent_reward_points'), $isDecimalFormat);
                         $discountFromPoints = $rewardPoints / $spendingRate;
                         if ($discountFromPoints == $orderItem->getRowTotal()) {
                             $redemptionFlag = 'Y';
@@ -664,6 +677,13 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $mileageUsedAmount,
                             $isDecimalFormat);
 
+                        if($isEnableRewardsPoint) {
+                            if ($mileageUsedAmountExisted > $mileagePerItem) {
+                                $mileageUsedAmountExisted -= $mileagePerItem;
+                            } else {
+                                $mileagePerItem = $mileageUsedAmountExisted;
+                            }
+                        }
                         $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
                         $meins = $product->getData('meins');
                         $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
@@ -686,7 +706,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         if ($isEnableRewardsPoint) {
 
                             if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                                $rewardPoints = (int)$orderItem->getData('am_spent_reward_points');
+                                $rewardPoints = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);;
                                 $rewardPointsPerChild = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $rewardPoints)));
                                 $discountFromPoints = $rewardPoints / $spendingRate;
                                 if ($discountFromPoints >= $orderItem->getRowTotal()) {

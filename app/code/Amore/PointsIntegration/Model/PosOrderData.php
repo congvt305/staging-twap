@@ -217,7 +217,7 @@ class PosOrderData
         $rewardPoints = 0;
         $storeId = $order->getStoreId();
         if($this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = (int)$order->getData('am_spent_reward_points');
+            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'));
             $spendingRate = $this->amConfig->getPointsRate($storeId);
             if (!$spendingRate) {
                 $spendingRate = 1;
