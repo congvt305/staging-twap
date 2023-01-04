@@ -318,7 +318,10 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
             if ($this->amConfig->isEnabled($storeId)) {
                 $spendingRate = $this->amConfig->getPointsRate($storeId);
-                $rewardPoints = $this->roundingPrice($orderData->getData('am_spent_reward_points'), $isDecimalFormat);
+                $rewardPoints = 0;
+                if ($orderData->getData('am_spent_reward_points')) {
+                    $rewardPoints = $this->roundingPrice($orderData->getData('am_spent_reward_points'), $isDecimalFormat);
+                }
                 if (!$spendingRate) {
                     $spendingRate = 1;
                 }
@@ -557,7 +560,10 @@ class SapOrderConfirmData extends AbstractSapOrder
             $spendingRate = 1;
         }
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            $rewardPoints = 0;
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            }
             $mileageUsedAmount = $rewardPoints / $spendingRate;
             $mileageUsedAmountExisted = $mileageUsedAmount;
         }
@@ -612,7 +618,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
                     if ($isEnableRewardsPoint) {
-                        $rewardPoints = $this->roundingPrice($orderItem->getData('am_spent_reward_points'), $isDecimalFormat);
+                        if ($orderItem->getData('am_spent_reward_points')) {
+                            $rewardPoints = $this->roundingPrice($orderItem->getData('am_spent_reward_points'), $isDecimalFormat);
+                        }
+
                         $discountFromPoints = $rewardPoints / $spendingRate;
                         if ($discountFromPoints == $orderItem->getRowTotal()) {
                             $redemptionFlag = 'Y';
@@ -706,14 +715,19 @@ class SapOrderConfirmData extends AbstractSapOrder
                         if ($isEnableRewardsPoint) {
 
                             if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                                $rewardPoints = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);;
+                                $rewardPoints = 0;
+                                if ($bundleChild->getData('am_spent_reward_points')) {
+                                    $rewardPoints = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);
+                                }
                                 $rewardPointsPerChild = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $rewardPoints)));
                                 $discountFromPoints = $rewardPoints / $spendingRate;
                                 if ($discountFromPoints >= $orderItem->getRowTotal()) {
                                     $redemptionFlag = 'Y';
                                 }
                             } else {
-                                $rewardPointsPerChild = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);
+                                if ($bundleChild->getData('am_spent_reward_points')) {
+                                    $rewardPointsPerChild = $this->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);
+                                }
                                 $discountFromPoints = $rewardPointsPerChild / $spendingRate;
                                 if ($discountFromPoints >= $bundleChild->getRowTotal()) {
                                     $redemptionFlag = 'Y';
