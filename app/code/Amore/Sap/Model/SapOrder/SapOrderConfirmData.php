@@ -612,7 +612,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     }
 
                     $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
-                    $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat));
+                    $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat) - $mileagePerItem);
                     $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
                     $itemTaxAmount = abs($this->roundingPrice($orderItem->getTaxAmount(), $isDecimalFormat));
 
@@ -646,9 +646,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
-                        'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
+                        'itemMilfg' => $pointRedemption ? 'Y' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N'),
                         'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
-                        'itemAugru' => $pointRedemption ? 'F07' : '',
+                        'itemAugru' => $pointRedemption ? 'F07' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : ''),
                         'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -706,7 +706,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemTotalDiscount = abs($this->roundingPrice(
                                 $bundleChildDiscountAmount +
                                 (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
-                                $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat)
+                                $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                         );
                         $itemTaxAmount = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount()), $isDecimalFormat));
 
@@ -749,9 +749,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs($this->roundingPrice($mileagePerItem)),
                             // 상품이 무상제공인 경우 Y 아니면 N
                             'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
-                            'itemMilfg' => $pointRedemption ? 'Y' : (empty($mileageUsedAmount) ? 'N' : 'Y'),
+                            'itemMilfg' => $pointRedemption ? 'Y' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N'),
                             'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
-                            'itemAugru' => $pointRedemption ? 'F07' : '',
+                            'itemAugru' => $pointRedemption ? 'F07' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : ''),
                             'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
