@@ -169,7 +169,14 @@
         </div>
         <div class="field name">
             <span class="label"><span><?= $block->escapeHtml(__('Customer Name')) ?></span></span>
-            <div class="control"><span><?= $block->escapeHtml($_order->getCustomerLastname() .' '. $_order->getCustomerFirstname()) ?></span></div>
+            <?php if ($_order->getShippingMethod() == 'blackcat_homedelivery') {?>
+            <div class=" control">
+                <input type="text" name='rma_customer_name' value="<?= $_order->getCustomerLastname() .' '. $_order->getCustomerFirstname() ?>"
+                       class="input-text validate-address-name">
+            </div>
+            <?php } else {?>
+                <div class="control"><span><?= $block->escapeHtml($_order->getCustomerLastname() .' '. $_order->getCustomerFirstname()) ?></span></div>
+                <?php } ?>
         </div>
         <div class="field email">
             <span class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></span>

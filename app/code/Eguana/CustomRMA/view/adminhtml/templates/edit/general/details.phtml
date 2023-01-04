@@ -34,7 +34,7 @@ $customerLink = $block->getCustomerLink();
                     <?php if ($customerLink) : ?>
                     <a href="<?= $block->escapeUrl($customerLink) ?>">
                         <?php endif;?>
-                        <?= $block->escapeHtml($block->getCustomerName()) ?>
+                        <?= $block->getRmaData('rma_customer_name') ?? $block->escapeHtml($block->getCustomerName()) ?>
                         <?php if ($customerLink) : ?>
                     </a>
                 <?php endif;?>
