@@ -601,7 +601,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     }
 
                     $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
-                    $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat));
+                    $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat) - $mileagePerItem);
                     $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
                     $itemTaxAmount = abs($this->roundingPrice($orderItem->getTaxAmount(), $isDecimalFormat));
 
@@ -634,9 +634,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMiamt' => abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
-                        'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
+                        'itemMilfg' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N',
                         'itemAuart' => self::NORMAL_ORDER,
-                        'itemAugru' => '',
+                        'itemAugru' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : '',
                         'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
@@ -694,7 +694,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $itemTotalDiscount = abs($this->roundingPrice(
                             $bundleChildDiscountAmount +
                             (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
-                            $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat)
+                            $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                         );
                         $itemTaxAmount = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount()), $isDecimalFormat));
 
@@ -736,9 +736,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMiamt' => abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
                             // 상품이 무상제공인 경우 Y 아니면 N
                             'itemFgflg' => $itemSaleAmount == 0 ? 'Y' : 'N',
-                            'itemMilfg' => empty($mileageUsedAmount) ? 'N' : 'Y',
+                            'itemMilfg' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N',
                             'itemAuart' => self::NORMAL_ORDER,
-                            'itemAugru' => '',
+                            'itemAugru' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : '',
                             'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
