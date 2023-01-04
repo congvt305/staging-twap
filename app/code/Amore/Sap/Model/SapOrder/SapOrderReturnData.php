@@ -193,7 +193,9 @@ class SapOrderReturnData extends AbstractSapOrder
         $rewardPoints = 0;
         $redemptionFlag = 'N';
         if($this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            }
             $spendingRate = $this->amConfig->getPointsRate($storeId);
             if (!$spendingRate) {
                 $spendingRate = 1;
@@ -312,7 +314,10 @@ class SapOrderReturnData extends AbstractSapOrder
         $pointUsed = $order->getRewardPointsBalance();
 
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            $rewardPoints = 0;
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            }
             $spendingRate = $this->amConfig->getPointsRate($storeId);
             if (!$spendingRate) {
                 $spendingRate = 1;
@@ -850,7 +855,11 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $storeId = $order->getStoreId();
         if($this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);;
+            $rewardPoints = 0;
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+            }
+
             $spendingRate = $this->amConfig->getPointsRate($storeId);
             if (!$spendingRate) {
                 $spendingRate = 1;
