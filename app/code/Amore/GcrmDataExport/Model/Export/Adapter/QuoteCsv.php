@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Adapter;
 
+use Amore\GcrmDataExport\Model\Export\Quote\Quote;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 use Magento\ImportExport\Model\Export\Adapter\Csv;
@@ -212,12 +213,8 @@ class QuoteCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
-        $headersData = [];
-        foreach ($rowData as $key => $data) {
-            $headersData[] = $key;
-        }
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            array_merge(array_intersect_key($rowData, $this->getArrayValue(Quote::HEADER_COLUMN_NAME))),
             $this->_delimiter,
             $this->_enclosure
         );
