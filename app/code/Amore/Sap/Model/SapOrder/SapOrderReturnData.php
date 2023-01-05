@@ -216,9 +216,9 @@ class SapOrderReturnData extends AbstractSapOrder
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
             $nsamt  = abs($this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat));
-            $dcamt  = abs($this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat));
+            $dcamt  = abs($this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat)  - $pointUsed);
             $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
-                abs($this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat));
+                abs($this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat)) + $pointUsed;
         }
 
         $bindData[] = [
@@ -521,7 +521,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         $orderSubtotal = $this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat);
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat);
-        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat);
+        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat) - $mileageUsedAmount;
 
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt', $isDecimalFormat);
@@ -854,7 +854,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $mileageUsedAmount = $order->getRewardPointsBalance();
 
         $storeId = $order->getStoreId();
-        if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
+        if($this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
                 $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
@@ -865,8 +865,6 @@ class SapOrderReturnData extends AbstractSapOrder
                 $spendingRate = 1;
             }
             $mileageUsedAmount = $rewardPoints / $spendingRate;
-            $mileageUsedAmountExisted = $mileageUsedAmount;
-            $grandTotal += $mileageUsedAmount;
         }
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
@@ -884,13 +882,6 @@ class SapOrderReturnData extends AbstractSapOrder
                         $bundleChildDiscountAmount,
                         $mileageUsedAmount,
                         $isDecimalFormat);
-                    if($isEnableRewardsPoint) {
-                        if ($mileageUsedAmountExisted > $mileagePerItem) {
-                            $mileageUsedAmountExisted -= $mileagePerItem;
-                        } else {
-                            $mileagePerItem = $mileageUsedAmountExisted;
-                        }
-                    }
                     $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax())
                         - $bundleChildDiscountAmount;
 
@@ -905,13 +896,6 @@ class SapOrderReturnData extends AbstractSapOrder
                     $pointsUsed,
                     $isDecimalFormat
                 );
-                if($isEnableRewardsPoint) {
-                    if ($mileageUsedAmountExisted > $mileagePerItem) {
-                        $mileageUsedAmountExisted -= $mileagePerItem;
-                    } else {
-                        $mileagePerItem = $mileageUsedAmountExisted;
-                    }
-                }
                 $itemGrandTotal = $orderItem->getRowTotal()
                     - $orderItem->getDiscountAmount();
 
