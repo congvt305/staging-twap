@@ -326,7 +326,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $spendingRate = 1;
                 }
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
-                $orderGrandTotal += $mileageUsedAmount;
             }
 
             $bindData[] = [
@@ -368,7 +367,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderSubTotal,
                 'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal, $isDecimalFormat) - $mileageUsedAmount,
-                'slamt' => $orderGrandTotal,
+                'slamt' => $orderGrandTotal + $mileageUsedAmount,
                 'miamt' => $mileageUsedAmount,
                 'shpwr' => $this->roundingPrice($orderData->getShippingAmount(), $isDecimalFormat),
                 'mwsbp' => $this->roundingPrice($orderData->getTaxAmount(), $isDecimalFormat),
