@@ -372,7 +372,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 $sku = str_replace($skuPrefix, '', $this->productTypeCheck($orderItem)->getSku());
                 $itemNsamt = $itemSubtotal;
                 $itemDcamt = $itemTotalDiscount;
-                $itemSlamt = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed;
+                $itemSlamt = $itemSubtotal - $itemTotalDiscount;
                 $itemNetwr = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount;
 
                 if ($websiteCode == 'vn_laneige_website') {
@@ -467,7 +467,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
                     $itemNsamt = $itemSubtotal;
                     $itemDcamt = $itemDiscountAmount;
-                    $itemSlamt = $itemSubtotal - $itemDiscountAmount - $this->roundingPrice($mileagePerItem, $isDecimalFormat);
+                    $itemSlamt = $itemSubtotal - $itemDiscountAmount;
                     $itemNetwr = $itemSubtotal - $itemDiscountAmount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount;
 
                     if ($websiteCode == 'vn_laneige_website') {

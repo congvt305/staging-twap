@@ -619,7 +619,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                     $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat));
                     $itemTotalDiscount = abs($this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat) - $mileagePerItem);
-                    $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
+                    $itemSaleAmount = $itemSubtotal - $itemTotalDiscount;
                     $itemTaxAmount = abs($this->roundingPrice($orderItem->getTaxAmount(), $isDecimalFormat));
 
                     $product = $this->productRepository->getById($orderItem->getProductId());
@@ -721,7 +721,7 @@ class SapOrderConfirmData extends AbstractSapOrder
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
                         $item = $this->searchOrderItem($orderAllItems, $bundleChild->getSku(), $itemId);
-                        $itemSaleAmount = $itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat));
+                        $itemSaleAmount = $itemSubtotal - $itemTotalDiscount;
                         $pointRedemption =  $this->roundingPrice($this->getPointRedemptionPerItem($order, $orderItem, $bundleChild), $isDecimalFormat);
                         $redemptionFlag = 'N';
                         $rewardPointsPerChild = 0;
