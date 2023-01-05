@@ -847,7 +847,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $mileageUsedAmount = $order->getRewardPointsBalance();
 
         $storeId = $order->getStoreId();
-        if($this->amConfig->isEnabled($storeId)) {
+        if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
                 $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
@@ -858,6 +858,8 @@ class SapOrderReturnData extends AbstractSapOrder
                 $spendingRate = 1;
             }
             $mileageUsedAmount = $rewardPoints / $spendingRate;
+            $mileageUsedAmountExisted = $mileageUsedAmount;
+            $grandTotal += $mileageUsedAmount;
         }
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
@@ -875,9 +877,15 @@ class SapOrderReturnData extends AbstractSapOrder
                         $bundleChildDiscountAmount,
                         $mileageUsedAmount,
                         $isDecimalFormat);
+                    if($isEnableRewardsPoint) {
+                        if ($mileageUsedAmountExisted > $mileagePerItem) {
+                            $mileageUsedAmountExisted -= $mileagePerItem;
+                        } else {
+                            $mileagePerItem = $mileageUsedAmountExisted;
+                        }
+                    }
                     $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax())
-                        - $bundleChildDiscountAmount
-                        - $mileagePerItem;
+                        - $bundleChildDiscountAmount;
 
                     $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
                     $grandTotal += $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChild), $rmaItem->getQtyRequested() * $qtyPerBundle);
@@ -890,9 +898,15 @@ class SapOrderReturnData extends AbstractSapOrder
                     $pointsUsed,
                     $isDecimalFormat
                 );
+                if($isEnableRewardsPoint) {
+                    if ($mileageUsedAmountExisted > $mileagePerItem) {
+                        $mileageUsedAmountExisted -= $mileagePerItem;
+                    } else {
+                        $mileagePerItem = $mileageUsedAmountExisted;
+                    }
+                }
                 $itemGrandTotal = $orderItem->getRowTotal()
-                    - $orderItem->getDiscountAmount()
-                    - $mileagePerItem;
+                    - $orderItem->getDiscountAmount();
 
                 $itemGrandTotal = $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
                 $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
