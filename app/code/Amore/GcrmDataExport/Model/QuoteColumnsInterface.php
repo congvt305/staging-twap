@@ -30,6 +30,7 @@ interface QuoteColumnsInterface
     const QUOTE_STORE_TO_QUOTE_RATE = 'store_to_quote_rate';
     const QUOTE_BASE_CURRENCY_CODE = 'base_currency_code';
     const QUOTE_STORE_CURRENCY_CODE = 'store_currency_code';
+    const QUOTE_CURRENCY_CODE = 'quote_currency_code';
     const QUOTE_GRAND_TOTAL = 'grand_total';
     const QUOTE_BASE_GRAND_TOTAL = 'base_grand_total';
     const QUOTE_CHECKOUT_METHOD = 'checkout_method';
@@ -99,11 +100,7 @@ interface QuoteColumnsInterface
     const QUOTE_BASE_REWARD_CURRENCY_AMOUNT = 'base_reward_currency_amount';
     const QUOTE_REWARD_CURRENCY_AMOUNT = 'reward_currency_amount';
     const QUOTE_DELIVERY_MESSAGE = 'delivery_message';
-    const QUOTE_PAYPAL_ORDER_SUBTOTAL = 'paypal_subtotal';
-    const QUOTE_PAYPAL_GRAND_TOTAL = 'paypal_grand_total';
-    const QUOTE_PAYPAL_TAX_AMOUNT = 'paypal_tax_amount';
-    const QUOTE_PAYPAL_SHIPPING_AMOUNT = 'paypal_shipping_amount';
-    const QUOTE_PAYPAL_DISCOUNT_AMOUNT = 'paypal_discount_amount';
-    const QUOTE_PAYPAL_RATE = 'paypal_rate';
-    const QUOTE_PAYPAL_CURRENCY_CODE = 'paypal_currency_code';
+    const COUNTRY_POS_CODE = 'country_pos_code';
+    const PACKAGE_OPTION = 'package_option';
+    const AM_SPENT_REWARD_POINTS = 'am_spent_reward_points';
 }
