@@ -325,6 +325,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $spendingRate = 1;
                 }
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
+                $orderGrandTotal += $mileageUsedAmount;
             }
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
