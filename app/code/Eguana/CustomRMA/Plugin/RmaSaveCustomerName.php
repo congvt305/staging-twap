@@ -29,7 +29,7 @@ class RmaSaveCustomerName
      */
     public function afterPrepareNewRmaInstanceData(RmaDataMapper $subject, $result, array $saveRequest, Order $order)
     {
-        $result['rma_customer_name'] = $saveRequest['rma_customer_name'];
+        $result['rma_customer_name'] = isset($saveRequest['rma_customer_name']) ? $saveRequest['rma_customer_name'] : null;
         return $result;
     }
 }
