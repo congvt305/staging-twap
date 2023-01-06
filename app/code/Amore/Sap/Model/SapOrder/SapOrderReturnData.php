@@ -260,7 +260,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'nsamt' => $nsamt,
             'dcamt' => $dcamt,
             'slamt' => $slamt,
-            'miamt' => abs($this->roundingPrice($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal), $isDecimalFormat)),
+            'miamt' => abs($this->roundingPrice($pointUsed, $isDecimalFormat)),
             'shpwr' => '',
             'mwsbp' => $this->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
@@ -312,7 +312,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $mileageUsedAmount = $order->getRewardPointsBalance();
         $originPosnr = $this->getOrderItemPosnr($rma);
         $pointUsed = $order->getRewardPointsBalance();
-
+        $mileageUsedAmountExisted = 0;
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
@@ -355,6 +355,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         $mileageUsedAmountExisted -= $mileagePerItem;
                     } else {
                         $mileagePerItem = $mileageUsedAmountExisted;
+                        $mileageUsedAmountExisted = 0;
                     }
                 }
                 $product = $this->productRepository->get($rmaItem->getProductSku());
@@ -444,6 +445,7 @@ class SapOrderReturnData extends AbstractSapOrder
                             $mileageUsedAmountExisted -= $mileagePerItem;
                         } else {
                             $mileagePerItem = $mileageUsedAmountExisted;
+                            $mileageUsedAmountExisted = 0;
                         }
                     }
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
@@ -489,7 +491,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemMiamt' => $mileagePerItem,
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
-                        'itemMilfg' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSlamt > 0) ? 'Y' : 'N',
+                        'itemMilfg' => ((bcsub($itemSubtotal, $itemDiscountAmount) == $mileagePerItem) && $itemSlamt > 0) ? 'Y' : 'N',
                         'itemAuart' => self::RETURN_ORDER,
                         'itemAugru' => self::AUGRU_RETURN_CODE,
                         'itemAbrvw' => self::ABRVW_RETURN_CODE,
@@ -515,7 +517,9 @@ class SapOrderReturnData extends AbstractSapOrder
         $orderSubtotal = $this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat);
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat);
         $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat) - $mileageUsedAmount;
-
+        if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
+            $itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
+        }
         if ($websiteCode != 'vn_laneige_website') {
             $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt', $isDecimalFormat);
             $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt', $isDecimalFormat);
