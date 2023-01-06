@@ -571,6 +571,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         if (!$spendingRate) {
             $spendingRate = 1;
         }
+        $mileageUsedAmountExisted = 0;
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
@@ -614,6 +615,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $mileageUsedAmountExisted -= $mileagePerItem;
                         } else {
                             $mileagePerItem = $mileageUsedAmountExisted;
+                            $mileageUsedAmountExisted = 0;
                         }
                     }
 
@@ -639,7 +641,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $redemptionFlag = 'Y';
                         }
                     }
-
+                    $itemNetwr = $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount;
                     $orderItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -658,7 +660,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         'itemMilfg' => $pointRedemption ? 'Y' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N'),
                         'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
                         'itemAugru' => $pointRedemption ? 'F07' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : ''),
-                        'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
+                        'itemNetwr' => $itemNetwr,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -672,8 +674,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $cnt++;
                     $itemsSubtotal += $this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat);
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)));
-                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount);
-                    $itemsDiscountAmount += $this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat);
+                    $itemsGrandTotalInclTax += $itemNetwr;
+                    $itemsDiscountAmount += $this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat) - $mileagePerItem;
                     $itemsMileage += $this->roundingPrice($mileagePerItem, $isDecimalFormat);
                 } else {
                     /** @var \Magento\Catalog\Model\Product $bundleProduct */
@@ -703,6 +705,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                                 $mileageUsedAmountExisted -= $mileagePerItem;
                             } else {
                                 $mileagePerItem = $mileageUsedAmountExisted;
+                                $mileageUsedAmountExisted = 0;
                             }
                         }
                         $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
@@ -748,6 +751,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             }
 
                         }
+                        $itemNetwr = $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount;
                         $orderItemData[] = [
                             'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnr' => $this->config->getClient('store', $storeId),
@@ -766,7 +770,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemMilfg' => $pointRedemption ? 'Y' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'Y' : 'N'),
                             'itemAuart' => $pointRedemption ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
                             'itemAugru' => $pointRedemption ? 'F07' : (((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSaleAmount > 0) ? 'F07' : ''),
-                            'itemNetwr' => $itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount,
+                            'itemNetwr' => $itemNetwr,
                             'itemMwsbp' => $itemTaxAmount,
                             'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
                             'itemKunnrOri' => $this->config->getClient('store', $storeId),
@@ -778,7 +782,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         ];
                         $cnt++;
                         $itemsSubtotal += $itemSubtotal;
-                        $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount);
+                        $itemsGrandTotalInclTax += $itemNetwr;
                         $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)));
                         $itemsDiscountAmount += $itemTotalDiscount;
 
@@ -790,8 +794,12 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $orderSubtotal = $this->roundingPrice($order->getSubtotalInclTax() + $this->getBundleExtraAmount($order) + $this->getCatalogRuleDiscountAmount($order), $isDecimalFormat);
         $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
-        $orderDiscountAmount = $this->getOrderDiscountAmount($order, $orderSubtotal, $orderGrandtotal, $isDecimalFormat);
+        $orderDiscountAmount = $this->getOrderDiscountAmount($order, $orderSubtotal, $orderGrandtotal, $isDecimalFormat) - $mileageUsedAmount;
 
+        if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
+            $itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
+            $itemsDiscountAmount -= $mileageUsedAmountExisted;
+        }
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
