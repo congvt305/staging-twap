@@ -12773,7 +12773,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Specified rule only allows auto generated coupons","Specified rule only allows auto generated coupons",module,Magento_SalesRule
 "Specified rule does not allow auto generated coupons","Specified rule does not allow auto generated coupons",module,Magento_SalesRule
 "Error occurred when saving coupon: %1","Error occurred when saving coupon: %1",module,Magento_SalesRule
-"Discount (%1)",活動共折抵 (%1)",module,Magento_SalesRule
+"Discount (%1)","活動共折抵 (%1)",module,Magento_SalesRule
 "Discount","活動共折抵",module,Magento_SalesRule
 "Coupon with the same code","Coupon with the same code",module,Magento_SalesRule
 "No Coupon","No Coupon",module,Magento_SalesRule
