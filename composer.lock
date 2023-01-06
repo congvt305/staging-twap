@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c384f47c3c2bdcee38c6f449cf31c05",
+    "content-hash": "e999673917e82677718ddbda1d242c81",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -626,6 +626,110 @@
             "homepage": "https://amasty.com/"
         },
         {
+            "name": "amasty/module-image-optimizer",
+            "version": "1.1.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-1.1.6.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/module-page-speed-tools": ">=1.0.8",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ImageOptimizer\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Image Optimizer by Amasty"
+        },
+        {
+            "name": "amasty/module-image-optimizer-ui",
+            "version": "1.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-image-optimizer-ui-1.1.5.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/module-image-optimizer": ">=1.1.6",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ImageOptimizerUi\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Image Optimizer Ui by Amasty"
+        },
+        {
+            "name": "amasty/module-lazy-load",
+            "version": "1.1.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-1.1.6.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/module-page-speed-tools": ">=1.0.8",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\LazyLoad\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Lazy Load by Amasty"
+        },
+        {
+            "name": "amasty/module-lazy-load-ui",
+            "version": "1.0.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-lazy-load-ui-1.0.2.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/module-lazy-load": ">=1.1.6",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\LazyLoadUi\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Lazy Load Admin Ui by Amasty"
+        },
+        {
             "name": "amasty/module-one-step-checkout-core",
             "version": "1.2.7",
             "dist": {
@@ -685,6 +789,59 @@
                 "Commercial"
             ],
             "description": "One Step Checkout Premium Package by Amasty"
+        },
+        {
+            "name": "amasty/module-page-speed-optimizer",
+            "version": "2.2.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-optimizer-2.2.2.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "amasty/module-image-optimizer-ui": ">=1.1.2",
+                "amasty/module-lazy-load-ui": "*",
+                "amasty/module-page-speed-tools": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\PageSpeedOptimizer\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Google Page Speed Optimizer by Amasty"
+        },
+        {
+            "name": "amasty/module-page-speed-tools",
+            "version": "1.0.8",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-tools-1.0.8.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.6",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\PageSpeedTools\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Google Page Speed Tools by Amasty"
         },
         {
             "name": "amasty/module-salesrulewizard",
@@ -975,6 +1132,32 @@
                 "Commercial"
             ],
             "description": "Social Login by Amasty"
+        },
+        {
+            "name": "amasty/special-occasion-coupons",
+            "version": "1.0.8",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/special-occasion-coupons-1.0.8.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/cron-schedule-list": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Birth\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Special Occasion Coupons by Amasty"
         },
         {
             "name": "astock/stock-api-libphp",
@@ -23710,120 +23893,6 @@
                 "source": "https://github.com/magento/zf1/tree/1.15.1"
             },
             "time": "2022-06-21T01:22:39+00:00"
-        },
-        {
-            "name": "magepal/magento2-core",
-            "version": "1.1.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magepal/magento2-core.git",
-                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/magepal/magento2-core/zipball/83fbffc0d540f82f55e0623719e08ecacc9c7e18",
-                "reference": "83fbffc0d540f82f55e0623719e08ecacc9c7e18",
-                "shasum": ""
-            },
-            "require": {
-                "magento/framework": "*"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "MagePal\\Core\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Renon Stewart",
-                    "email": "renon@magepal.com",
-                    "homepage": "https://www.magepal.com/",
-                    "role": "Leader"
-                }
-            ],
-            "description": "MagePal core extension",
-            "homepage": "https://www.magepal.com/",
-            "keywords": [
-                "magento 2",
-                "magepal core extension"
-            ],
-            "support": {
-                "email": "support@magepal.com",
-                "issues": "https://github.com/magepal/magento2-core/issues/",
-                "source": "https://github.com/magepal/magento2-core/tree/1.1.12"
-            },
-            "time": "2021-05-29T19:47:51+00:00"
-        },
-        {
-            "name": "magepal/magento2-reindex",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magepal/magento2-reindex.git",
-                "reference": "f5635196db2fc272b6f3251fbc03cd0ad194925f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/magepal/magento2-reindex/zipball/f5635196db2fc272b6f3251fbc03cd0ad194925f",
-                "reference": "f5635196db2fc272b6f3251fbc03cd0ad194925f",
-                "shasum": ""
-            },
-            "require": {
-                "magento/framework": "100.0.*|100.1.*|101.0.*|102.0.*|103.0.*",
-                "magento/module-backend": "100.0.*|100.1.*|100.2.*|101.0.*|102.0.*",
-                "magepal/magento2-core": ">1.1.8",
-                "php": "~7.1.0|~7.1.3|~7.2.0|~7.3.0|~7.4.0|~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "MagePal\\Reindex\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Renon Stewart",
-                    "email": "renon@magepal.com",
-                    "homepage": "https://www.magepal.com/",
-                    "role": "Leader"
-                }
-            ],
-            "description": "Reindex your Magento2 store quickly and easily from backend/admin, instead of command line.",
-            "homepage": "https://www.magepal.com/",
-            "keywords": [
-                "admin reindex",
-                "backend reindex",
-                "magento 2",
-                "magento2",
-                "reindex"
-            ],
-            "support": {
-                "email": "support@magepal.com",
-                "issues": "https://github.com/magepal/magento2-reindex/issues/",
-                "source": "https://github.com/magepal/magento2-reindex/tree/1.1.1"
-            },
-            "funding": [
-                {
-                    "url": "https://www.magepal.com/reindex.html?utm_source=reindex&utm_medium=github%20sponsor",
-                    "type": "custom"
-                }
-            ],
-            "time": "2022-04-12T18:34:42+00:00"
         },
         {
             "name": "markbaker/complex",
