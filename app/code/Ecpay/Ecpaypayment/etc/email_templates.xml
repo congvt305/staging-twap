@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: bilalyounas
+ * Date: 12/10/20
+ * Time: 08:13 PM
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="payment_other_ecpay_ecpaypayment_ecpay_admin_email_template" label="Email Notification Order Have State Error After ECpay" file="notify_admin_email_state_error.html" type="html" module="Ecpay_Ecpaypayment" area="frontend"/>
+</config>

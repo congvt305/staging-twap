@@ -44,7 +44,6 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
         array $data = []
     ) {
         parent::__construct($context, $addressHelper, $customerMetadata, $data);
-        $this->_isScopePrivate = true;
         $this->helper = $helper;
     }
 

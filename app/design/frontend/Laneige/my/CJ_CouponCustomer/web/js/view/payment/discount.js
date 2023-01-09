@@ -189,9 +189,12 @@ define([
             $('.discount-card-button').removeClass('applied-button');
             $('.discount-card-button').text($t('Apply'));
 
-            var couponCodeApplied = $('#discount-code').val();
-            $('#' + couponCodeApplied).text($t('Cancel'));
-            $('#' + couponCodeApplied).addClass('applied-button');
+            if (coupon.isApplied()) {
+                var couponCodeApplied = $('#discount-code').val();
+                $('#' + couponCodeApplied).text($t('Cancel'));
+                $('#' + couponCodeApplied).addClass('applied-button');
+            }
+
             popup.openModal();
         },
         /**
@@ -200,8 +203,8 @@ define([
          */
 
         applyCouponPopup: function(data, event) {
-            var couponCode = event.target.id;
-            if(couponCode == couponAppliedPopup) {
+            var _couponCode = event.target.id;
+            if (coupon.isApplied() && _couponCode == couponAppliedPopup) {
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
                 $('#discount-code').val('');
@@ -209,10 +212,20 @@ define([
             }
             else
             {
-                setCouponCodeAction(couponCode, coupon.getIsApplied(true));
-                $('#discount-code').val(couponCode);
-                couponAppliedPopup = couponCode;
-                popup.closeModal();
+                setCouponCodeAction(_couponCode, coupon.getIsApplied(true))
+                    .done(function (response) {
+                        $('#discount-code').val(_couponCode);
+                        couponAppliedPopup = _couponCode;
+                        popup.closeModal();
+                    })
+                    .fail(function (response) {
+                        couponCode('');
+                        isApplied(false);
+                        $('#discount-code').val(_couponCode);
+                        popup.closeModal();
+                        window.location.reload();
+                    }
+                );
             }
         },
     });

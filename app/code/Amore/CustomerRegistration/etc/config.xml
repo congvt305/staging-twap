@@ -24,4 +24,20 @@
             </pos>
         </customerregistraion>
     </default>
+    <websites>
+        <tw_lageige_website>
+            <customerregistraion>
+                <general>
+                    <warning_message_verification_mobile>如果無法順利接收驗證碼，請聯繫客服中心 0800-600-308</warning_message_verification_mobile>
+                </general>
+            </customerregistraion>
+        </tw_lageige_website>
+        <base>
+            <customerregistraion>
+                <general>
+                    <warning_message_verification_mobile>如果無法順利接收驗證碼，請聯繫客服中心 0800-600-308</warning_message_verification_mobile>
+                </general>
+            </customerregistraion>
+        </base>
+    </websites>
 </config>

@@ -226,12 +226,16 @@
             margin-bottom: 10px;
         }
         .actions-toolbar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            display: block;
             margin: 10px 0;
             .primary {
-                width: calc(45%);
+                width: calc(48%);
+                &:nth-child(1) {
+                    float: left;
+                }
+                &:nth-child(2) {
+                    float: right;
+                }
                 .action {
                     width: 100%;
                     padding: 11px 0;

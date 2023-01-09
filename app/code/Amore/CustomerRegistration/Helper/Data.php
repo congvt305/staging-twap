@@ -69,6 +69,7 @@ class Data extends AbstractHelper
     const BA_CODE_ENABLE = 'customerregistraion/general/ba_code_enable';
     const BA_CODE_PREFIX = 'customerregistraion/general/ba_code_prefix';
     const POS_BA_CODE_INFO_URL = 'customerregistraion/pos/bacode_info';
+    const WARNING_MESSAGE_VERIFCATION_MOBILE = 'customerregistraion/general/warning_message_verification_mobile';
 
     /**
      * Get cms block id set in setting
@@ -421,5 +422,18 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_WEBSITE
         );
         return $baseURL.$memberInfoURL;
+    }
+
+    /**
+     * Get warning message show below mobile
+     *
+     * @return null|string
+     */
+    public function getWarningMessageVerficationMobile()
+    {
+        return $this->scopeConfig->getValue(
+            self::WARNING_MESSAGE_VERIFCATION_MOBILE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
     }
 }

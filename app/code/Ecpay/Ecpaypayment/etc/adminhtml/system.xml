@@ -61,11 +61,37 @@
                     <label>Is Save Card</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="test_flag" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="ecpay_enable_send_mail_when_state_error" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable Send Email To Admin When Get Response State Error</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ecpay_sender_admin_email" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Sender Admin Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="*/*/ecpay_enable_send_mail_when_state_error">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ecpay_receiver_admin_email" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Receiver Admin Email</label>
+                    <depends>
+                        <field id="*/*/ecpay_enable_send_mail_when_state_error">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="ecpay_admin_email_template" translate="label" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Admin Email Receive Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="*/*/ecpay_enable_send_mail_when_state_error">1</field>
+                    </depends>
+                </field>
+                <field id="test_flag" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>TEST Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <group id="ecpay_invoice" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="ecpay_invoice" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>ECPay E-Invoice</label>
                     <field id="ecpay_invoice_hash_key" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>金鑰</label>

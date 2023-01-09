@@ -52,6 +52,11 @@ class DeleteItems extends Action implements HttpPostActionInterface
     private $cookieMetadataFactory;
 
     /**
+     * @var \Magento\Quote\Model\ResourceModel\Quote\Item
+     */
+    private $itemResourceModel;
+
+    /**
      * @param Context $context
      * @param RequestInterface $request
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
@@ -59,6 +64,7 @@ class DeleteItems extends Action implements HttpPostActionInterface
      * @param LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
+     * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResouceModel
      */
     public function __construct(
         Context $context,
@@ -67,7 +73,8 @@ class DeleteItems extends Action implements HttpPostActionInterface
         QuoteRepository $quoteRepository,
         LoggerInterface $logger,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
-        \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
+        \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
+        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
     ) {
         $this->request = $request;
         $this->jsonHelper = $jsonHelper;
@@ -75,6 +82,7 @@ class DeleteItems extends Action implements HttpPostActionInterface
         $this->logger = $logger;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->cookieManager = $cookieManager;
+        $this->itemResourceModel = $itemResourceModel;
         parent::__construct($context);
     }
 
@@ -90,8 +98,11 @@ class DeleteItems extends Action implements HttpPostActionInterface
             try {
                 $quote = $this->quoteRepository->getActive($params['quote_id']);
                 foreach ($params['item_id'] as $itemId) {
-                    $quote = $quote->removeItem($itemId);
-                    $this->_removeErrorsFromQuoteAndItem($quote->getItemById($itemId), Data::ERROR_QTY);
+                    $item = $quote->getItemById($itemId);
+                    if ($item) {
+                        $this->_removeErrorsFromQuoteAndItem($item, Data::ERROR_QTY);
+                        $this->itemResourceModel->delete($item);
+                    }
                 }
                 $this->quoteRepository->save($quote);
 

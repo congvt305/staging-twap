@@ -8,7 +8,6 @@ use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
-use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 use Magento\Quote\Model\Quote\Item;
@@ -47,12 +46,24 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     private $discountDataInterfaceFactory;
 
+    /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    protected $promoItemHelper;
+
     protected $stores = [
-        'tw_laneige',
-        'vn_laneige',
-        'vn_sulwhasoo',
-        'default'
+        self::TW_LNG,
+        self::MY_LNG,
+        self::VN_LNG,
+        self::VN_SWS,
+        self::TW_SWS
     ];
+
+    const VN_LNG = 'vn_laneige';
+    const VN_SWS = 'vn_sulwhasoo';
+    const TW_LNG = 'tw_laneige';
+    const TW_SWS = 'default';
+    const MY_LNG = 'my_laneige';
 
     /**
      * @var RulesApplier|null
@@ -64,6 +75,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         StoreManagerInterface $storeManager,
         Validator $validator,
         PriceCurrencyInterface $priceCurrency,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
         DiscountDataInterfaceFactory $discountDataInterfaceFactory = null,
         RulesApplier $rulesApplier = null
@@ -74,6 +86,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             ?: ObjectManager::getInstance()->get(RuleDiscountInterfaceFactory::class);
         $this->discountDataInterfaceFactory = $discountDataInterfaceFactory
             ?: ObjectManager::getInstance()->get(DiscountDataInterfaceFactory::class);
+        $this->promoItemHelper = $promoItemHelper;
         $this->rulesApplier = $rulesApplier
             ?: ObjectManager::getInstance()->get(RulesApplier::class);
     }
@@ -105,11 +118,18 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 $address->setPaymentMethod($quote->getPayment()->getMethod());
             }
             //set temp to calculate paynow-visa and paynow-wallet as paynow payment
-            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
-                $address->setPaymentMethod(self::PAYNOW);
+            if ($storeCode == self::VN_LNG) {
+                if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                    $address->setPaymentMethod(self::PAYNOW);
+                }
             }
 
             $this->calculator->reset($address);
+            $address->setDiscountAmount(0);
+            $address->setBaseDiscountAmount(0);
+            $address->setBaseGrandTotal($address->getBaseSubtotal());
+            $address->setGrandTotal($address->getSubtotal());
+
             $itemsAggregate = [];
             foreach ($shippingAssignment->getItems() as $item) {
                 $itemId = $item->getId();
@@ -130,6 +150,21 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                 'customer_group_id' => $quote->getCustomerGroupId(),
                 'coupon_code' => $quote->getCouponCode(),
             ];
+
+            foreach ($items as $item) {
+                if (!$this->promoItemHelper->isPromoItem($item)) {
+                    $item->setDiscountAmount(0);
+                    $item->setBaseDiscountAmount(0);
+
+                    // ensure my children are zeroed out
+                    if ($item->getHasChildren() && $item->isChildrenCalculated()) {
+                        foreach ($item->getChildren() as $child) {
+                            $child->setDiscountAmount(0);
+                            $child->setBaseDiscountAmount(0);
+                        }
+                    }
+                }
+            }
             $address->setDiscountDescription([]);
             $address->getExtensionAttributes()->setDiscounts([]);
             $this->addressDiscountAggregator = [];
@@ -220,8 +255,10 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             $address->setBaseDiscountAmount($total->getBaseDiscountAmount());
 
             //set back current payment method after calculate
-            if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
-                $address->setPaymentMethod($quote->getPayment()->getMethod());
+            if ($storeCode == self::VN_LNG) {
+                if ($quote->getPayment()->getMethod() == self::PAYNOW_WALLET || $quote->getPayment()->getMethod() == self::PAYNOW_VISA) {
+                    $address->setPaymentMethod($quote->getPayment()->getMethod());
+                }
             }
             return $this;
         } else {

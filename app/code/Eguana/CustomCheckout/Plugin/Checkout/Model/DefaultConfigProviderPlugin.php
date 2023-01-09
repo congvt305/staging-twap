@@ -45,6 +45,9 @@ class DefaultConfigProviderPlugin extends AbstractModel
     ) {
         $items = $result['totalsData']['items'];
         foreach ($items as $index => $item) {
+            if (!isset($item['item_id'])) {
+                continue;
+            }
             $quoteItem = $this->checkoutSession->getQuote()->getItemById($item['item_id']);
             $product = $this->_productRepository->getById($quoteItem->getProduct()->getId());
 

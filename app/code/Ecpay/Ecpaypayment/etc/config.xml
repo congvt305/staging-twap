@@ -16,6 +16,9 @@
 				<allowspecific>0</allowspecific>
 				<payment_action>sale</payment_action>
                 <ecpay_issavecard>0</ecpay_issavecard>
+                <ecpay_sender_admin_email>general</ecpay_sender_admin_email>
+                <ecpay_enable_send_mail_when_state_error>0</ecpay_enable_send_mail_when_state_error>
+                <ecpay_admin_email_template>payment_other_ecpay_ecpaypayment_ecpay_admin_email_template</ecpay_admin_email_template>
 				<ecpay_invoice>
 					<ecpay_invoice_stage_url>https://einvoice-stage.ecpay.com.tw/Invoice/</ecpay_invoice_stage_url>
 					<ecpay_invoice_production_url>https://einvoice.ecpay.com.tw/Invoice/</ecpay_invoice_production_url>
@@ -23,4 +26,23 @@
 			</ecpay_ecpaypayment>
 		</payment>
 	</default>
+    <websites>
+        <tw_lageige_website>
+            <payment>
+                <ecpay_ecpaypayment>
+                    <ecpay_enable_send_mail_when_state_error>1</ecpay_enable_send_mail_when_state_error>
+                    <ecpay_receiver_admin_email>maggieliu@tw.amorepacific.com, eddiegao@tw.amorepacific.com</ecpay_receiver_admin_email>
+                </ecpay_ecpaypayment>
+            </payment>
+        </tw_lageige_website>
+        <base>
+            <payment>
+                <ecpay_ecpaypayment>
+                    <ecpay_enable_send_mail_when_state_error>1</ecpay_enable_send_mail_when_state_error>
+                    <ecpay_receiver_admin_email>maggieliu@tw.amorepacific.com, taviatsai@tw.amorepacific.com</ecpay_receiver_admin_email>
+                </ecpay_ecpaypayment>
+            </payment>
+        </base>
+    </websites>
+
 </config>

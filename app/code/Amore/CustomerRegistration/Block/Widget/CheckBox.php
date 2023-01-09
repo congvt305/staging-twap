@@ -66,7 +66,6 @@ class CheckBox extends \Magento\Customer\Block\Widget\AbstractWidget
         $this->customerSession = $customerSession;
         $this->customerRepository = $customerRepository;
         parent::__construct($context, $addressHelper, $customerMetadata, $data);
-        $this->_isScopePrivate = true;
         $this->config = $config;
     }
 

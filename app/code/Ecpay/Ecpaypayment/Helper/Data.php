@@ -5,15 +5,27 @@ namespace Ecpay\Ecpaypayment\Helper;
 use Exception;
 use Ecpay\Ecpaypayment\Model\Order as EcpayOrderModel;
 use Ecpay\Ecpaypayment\Model\Payment as EcpayPaymentModel;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Store\Model\ScopeInterface;
 
 include_once('Library/ECPayPaymentHelper.php');
 
 class Data extends AbstractHelper
 {
+    const XML_PATH_ENABLE_SEND_MAIL_WHEN_STATE_ERROR = 'enable_send_mail_when_state_error';
+
+    const XML_PATH_SENDER_ADMIN_EMAIL = 'sender_admin_email';
+
+    const XML_PATH_RECEIVER_ADMIN_EMAIL = 'receiver_admin_email';
+
+    const XML_PATH_ADMIN_EMAIL_TEMPLATE = 'admin_email_template';
+
     /**
      * @var EcpayOrderModel
      */
@@ -60,7 +72,31 @@ class Data extends AbstractHelper
      */
     private $logger;
 
+    /**
+     * @var TransportBuilder
+     */
+    private $transportBuilder;
+
+    /**
+     * @var StateInterface
+     */
+    private $inlineTranslation;
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param EcpayOrderModel $ecpayOrderModel
+     * @param EcpayPaymentModel $ecpayPaymentModel
+     * @param ModuleListInterface $moduleList
+     * @param ProductMetadataInterface $productMetadata
+     * @param Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue
+     * @param \Magento\Framework\HTTP\Client\Curl $curl
+     * @param OrderRepositoryInterface $orderRepository
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param StateInterface $inlineTranslation
+     * @param TransportBuilder $transportBuilder
+     */
     public function __construct(
+        \Magento\Framework\App\Helper\Context $context,
         EcpayOrderModel $ecpayOrderModel,
         EcpayPaymentModel $ecpayPaymentModel,
         ModuleListInterface $moduleList,
@@ -68,7 +104,9 @@ class Data extends AbstractHelper
         \Ecpay\Ecpaypayment\Helper\Library\ECPayInvoiceCheckMacValue $ECPayInvoiceCheckMacValue,
         \Magento\Framework\HTTP\Client\Curl $curl,
         OrderRepositoryInterface $orderRepository,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        StateInterface $inlineTranslation,
+        TransportBuilder $transportBuilder
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -82,6 +120,9 @@ class Data extends AbstractHelper
         $this->curl = $curl;
         $this->orderRepository = $orderRepository;
         $this->logger = $logger;
+        $this->inlineTranslation = $inlineTranslation;
+        $this->transportBuilder = $transportBuilder;
+        parent::__construct($context);
     }
 
     public function getChoosenPayment()
@@ -144,6 +185,12 @@ class Data extends AbstractHelper
             $paymentName = $this->getPaymentTranslation($choosenPayment);
             $isPaymentMethod = $this->_ecpayPaymentModel->isValidPayment($choosenPayment);
             $this->logger->error('EcPay Valid Payment: ' . $isPaymentMethod);
+            if (!$choosenPayment) {
+                return [
+                    'status' => 'Success'
+                ];
+            }
+
             if ($this->_ecpayPaymentModel->isValidPayment($choosenPayment) === false) {
                 return $this->setFailureStauts($this->getErrorMessage('invalidPayment', $paymentName), $order);
             }
@@ -236,7 +283,6 @@ class Data extends AbstractHelper
                 );
                 $responseStatus = $sdkHelper->getResponseState($feedback, $helperData);
                 unset($helperData);
-
                 // Update the order status
                 $patterns = array(
                     1 => __('ecpay_payment_order_comment_payment_result'),
@@ -280,6 +326,43 @@ class Data extends AbstractHelper
                         $this->orderRepository->save($order);
 
                         unset($status, $pattern, $comment);
+                        break;
+                    case 5:
+                        try {
+                            $storeId = $order->getStoreId();
+                            $isEnableSendMail = $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_ENABLE_SEND_MAIL_WHEN_STATE_ERROR, $storeId);
+                            if ($isEnableSendMail) {
+                                $templateOptions = [
+                                    'area' => Area::AREA_FRONTEND,
+                                    'store' => $order->getStoreId()
+                                ];
+                                $templateVars = [
+                                    'order_increment_id' => $order->getIncrementId(),
+                                ];
+                                $from = ['email' => $this->getEmailSender($storeId), 'name' => $this->getNameSender($storeId)];
+                                $this->inlineTranslation->suspend();
+                                $stringTo = $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_RECEIVER_ADMIN_EMAIL, $storeId);
+                                $arrTo = explode(',', $stringTo);
+                                try {
+                                    foreach ($arrTo as $to) {
+                                        $templateId = $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_ADMIN_EMAIL_TEMPLATE, $storeId);
+                                        $transport = $this->transportBuilder
+                                            ->setTemplateIdentifier($templateId)
+                                            ->setTemplateOptions($templateOptions)
+                                            ->setTemplateVars($templateVars)
+                                            ->setFromByScope($from, $storeId)
+                                            ->addTo(trim($to))
+                                            ->getTransport();
+                                        $transport->sendMessage();
+                                    }
+                                    $this->inlineTranslation->resume();
+                                } catch (\Exception $e) {
+                                    $this->logger->info($e->getMessage());
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            $this->logger->info($e->getMessage());
+                        }
                         break;
                     case 6: // Simulate Paid
                         $status = $orderStatus;
@@ -404,5 +487,20 @@ class Data extends AbstractHelper
                 break;
         }
         return $merchandizeName;
+    }
+
+    private function getSenderData($storeId)
+    {
+        return  $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_SENDER_ADMIN_EMAIL, $storeId);
+    }
+
+    private function getNameSender($storeId)
+    {
+        return $this->scopeConfig->getValue('trans_email/ident_' . $this->getSenderData($storeId) . '/name', ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    private function getEmailSender($storeId)
+    {
+        return $this->scopeConfig->getValue('trans_email/ident_' . $this->getSenderData($storeId) . '/email', ScopeInterface::SCOPE_STORE, $storeId);
     }
 }
