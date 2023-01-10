@@ -109,10 +109,7 @@ class CounterRepository implements CounterRepositoryInterface
     }
 
     /**
-     * * Load data by given id
-     * @param int $counterId
-     * @return \Eguana\Redemption\Api\Data\CounterInterface|Counter
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function getById($counterId)
     {
