@@ -14,7 +14,7 @@ if ($block->getCustomerId() && $block->canShowConvertPoint()) :
     if (!$maximumPoint || $maximumPoint >= $pointsLeft) {
         $maximumPoint = $totalPoints - $totalPoints % $rateForCurrency;
     }
-    if ($block->getCountQuote() > 2) {
+    if ($block->getCountQuote() >= 2) {
         $style = '';
     } else {
         $style = 'clear:both';
