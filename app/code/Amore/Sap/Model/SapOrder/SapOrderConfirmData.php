@@ -798,7 +798,6 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
             $itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
-            $itemsDiscountAmount -= $mileageUsedAmountExisted;
         }
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
