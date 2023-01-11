@@ -100,7 +100,4 @@ interface QuoteColumnsInterface
     const QUOTE_BASE_REWARD_CURRENCY_AMOUNT = 'base_reward_currency_amount';
     const QUOTE_REWARD_CURRENCY_AMOUNT = 'reward_currency_amount';
     const QUOTE_DELIVERY_MESSAGE = 'delivery_message';
-    const COUNTRY_POS_CODE = 'country_pos_code';
-    const PACKAGE_OPTION = 'package_option';
-    const AM_SPENT_REWARD_POINTS = 'am_spent_reward_points';
 }

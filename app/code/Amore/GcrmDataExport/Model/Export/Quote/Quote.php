@@ -128,10 +128,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         self::QUOTE_REWARD_POINTS_BALANCE => 'reward_points_balance',
         self::QUOTE_BASE_REWARD_CURRENCY_AMOUNT => 'base_reward_currency_amount',
         self::QUOTE_REWARD_CURRENCY_AMOUNT => 'reward_currency_amount',
-        self::QUOTE_DELIVERY_MESSAGE => 'delivery_message',
-        self::COUNTRY_POS_CODE => 'country_pos_code',
-        self::PACKAGE_OPTION => 'package_option',
-        self::AM_SPENT_REWARD_POINTS => 'am_spent_reward_points'
+        self::QUOTE_DELIVERY_MESSAGE => 'delivery_message'
     ];
     /**#@-*/
 
