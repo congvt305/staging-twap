@@ -1,4 +1,13 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Amasty\AdvancedReview\Block\Email\ReminderEmailContent" type="CJ\CustomAmastyReview\Block\Overridden\ReminderEmailContent"/>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\AdvancedReview\Block\Email\ReminderEmailContent"
+                type="CJ\CustomAmastyReview\Block\Overridden\ReminderEmailContent"/>
+    <preference for="Amasty\AdvancedReview\Model\Email\Coupon"
+                type="CJ\CustomAmastyReview\Model\Overridden\EmailCoupon"/>
+    <preference for="Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review"
+                type="CJ\CustomAmastyReview\Model\Overridden\Adminhtml\Review"/>
+    <preference for="Amasty\AdvancedReview\Model\Email\SalesRuleProvider"
+                type="CJ\CustomAmastyReview\Model\Overridden\SalesRuleProvider"/>
+    <preference for="Amasty\AdvancedReview\Helper\Config" type="CJ\CustomAmastyReview\Model\Overridden\ConfigHelper"/>
 </config>
