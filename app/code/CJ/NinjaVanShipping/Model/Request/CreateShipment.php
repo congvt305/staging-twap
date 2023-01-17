@@ -18,8 +18,10 @@ use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionColl
 class CreateShipment
 {
     const INVALID_TOKEN_CODE = 2001;
+
     const DUPLICATE_TRACKING_CODE = 109201;
 
+    const TRACKING_NUMBER_FREFIX = 'MYL';
     /**
      * @var NinjaVanToken
      */
@@ -170,6 +172,10 @@ class CreateShipment
                                 throw new \Exception('Cannot get access token from NinjaVan.');
                             }
 
+                            $trackNumber = $this->generateTrackNumber($order);
+                            // Send the order's information to NinjaVan to create new delivery order
+                            $data = $this->payloadSendToNinjaVan($order, $trackNumber);
+
                             $headers[RequestOptions::HEADERS] = ['Authorization' => 'Bearer ' . $auth['access_token']];
                             $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
 
@@ -237,6 +243,9 @@ class CreateShipment
         $stateFrom = $stateIdFrom ? $this->getRegionById($stateIdFrom) : '';
 
         $nameTo = $order->getCustomerFirstname() .' '. $order->getCustomerLastname();
+        if (!$nameTo) {
+            $nameTo = $order->getShippingAddress()->getFirstname() .' '. $order->getShippingAddress()->getLastname();
+        }
         $phoneTo = $order->getShippingAddress()->getTelephone();
         $mailTo = $order->getCustomerEmail();
         $addressTo = implode(" ",$order->getShippingAddress()->getStreet());
@@ -339,5 +348,17 @@ class CreateShipment
         $regionCollection = $this->regionCollectionFactory->create();
         $region = $regionCollection->addFieldToFilter('main_table.region_id', $regionId)->getFirstItem();
         return $region->getDefaultName() ?? '';
+    }
+
+    /**
+     * Generate tracking number
+     *
+     * @param $order
+     * @return string
+     */
+    public function generateTrackNumber($order): string
+    {
+        $orderPrefix = self::TRACKING_NUMBER_FREFIX;
+        return $orderPrefix.substr($order->getIncrementId(), -6);
     }
 }
