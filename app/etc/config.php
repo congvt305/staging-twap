@@ -774,6 +774,7 @@ return [
         'CJ_SKUValidation' => 1,
         'CJ_Seo' => 1,
         'Hoolah_Hoolah' => 1,
+        'CJ_Sms' => 1,
         'CJ_AmastyPromo' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,
