@@ -829,6 +829,7 @@ return [
         'CJ_SKUValidation' => 1,
         'CJ_Seo' => 1,
         'Hoolah_Hoolah' => 1,
+        'CJ_Sms' => 1,
         'CJ_Sorting' => 1,
         'CJ_TotalInquiry' => 1,
         'Eguana_GWLogistics' => 1,
