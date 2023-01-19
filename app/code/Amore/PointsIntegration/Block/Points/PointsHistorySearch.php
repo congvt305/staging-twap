@@ -66,7 +66,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         }
 
         if ($this->pointsHistorySearch->responseValidation($pointsHistoryResult, $customer->getWebsiteId())) {
-            $pointsData = $pointsHistoryResult['data']['point_data'];
+            $pointsData = $pointsHistoryResult['data']['point_data'] ?? [];
             return $this->pagination->ajaxPagination($pointsData);
         } else {
             return [];
