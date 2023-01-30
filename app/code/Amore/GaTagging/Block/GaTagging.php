@@ -463,9 +463,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $selectionItems = [];
         $selections = $parentItem->getOptionsByCode();
         $selectionIds = explode(',',str_replace(['"', '[', ']'], '', $selections['bundle_selection_ids']->getValue()));
+        $optionIds = explode(',',str_replace(['"', '[', ']'], '', $selections['bundle_option_ids']->getValue()));
         $selectionCollection = $this->selectionCollectionFactory->create();
         $selectionCollection->setSelectionIdsFilter($selectionIds);
-
+        $selectionCollection->setOptionIdsFilter($optionIds);
         foreach ($selectionCollection as $selection) {
             $selectionItems[$selection->getData('product_id')] = ['price' => $selection->getData('selection_price_value'), 'qty' => $selection->getData('selection_qty')];
         }
