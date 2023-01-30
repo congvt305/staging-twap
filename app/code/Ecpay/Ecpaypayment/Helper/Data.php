@@ -26,6 +26,8 @@ class Data extends AbstractHelper
 
     const XML_PATH_ADMIN_EMAIL_TEMPLATE = 'admin_email_template';
 
+    const ORDER_STATUS_CANCEL = 'canceled';
+
     /**
      * @var EcpayOrderModel
      */
@@ -331,7 +333,7 @@ class Data extends AbstractHelper
                         try {
                             $storeId = $order->getStoreId();
                             $isEnableSendMail = $this->_ecpayPaymentModel->getEcpayConfigFromStore(self::XML_PATH_ENABLE_SEND_MAIL_WHEN_STATE_ERROR, $storeId);
-                            if ($isEnableSendMail) {
+                            if ($isEnableSendMail && $orderStatus == self::ORDER_STATUS_CANCEL) {
                                 $templateOptions = [
                                     'area' => Area::AREA_FRONTEND,
                                     'store' => $order->getStoreId()
