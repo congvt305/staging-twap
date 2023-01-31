@@ -16,6 +16,7 @@
                 <field id="limit_per_day" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
                        showInStore="1" canRestore="1">
                     <label>Limit Send Verification Sms Per Day</label>
+                    <validate>validate-number validate-digits validate-not-negative-number no-whitespace</validate>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
