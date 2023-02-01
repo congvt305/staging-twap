@@ -279,8 +279,8 @@ class Review extends \Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review
             ['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $store->getId()]
         )->setTemplateVars(
             $data
-        )->setFrom(
-            $sender
+        )->setFromByScope(
+            $sender, $store->getId()
         )->addTo(
             $emailTo
         )->getTransport();
