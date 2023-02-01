@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cj_sms>
+            <general>
+                <enabled>1</enabled>
+                <limit_per_day>3</limit_per_day>
+                <cron_expr>0 0 * * *</cron_expr>
+            </general>
+        </cj_sms>
+    </default>
+</config>

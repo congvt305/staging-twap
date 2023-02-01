@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cj_sms" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>SMS Setting</label>
+            <tab>cj_extensions_tab</tab>
+            <resource>CJ_Sms::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label>Enable Limit Send Verification SMS</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="limit_per_day" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label>Limit Send Verification Sms Per Day</label>
+                    <validate>validate-number validate-digits validate-not-negative-number no-whitespace</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="cron_expr" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Cron Expr</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
