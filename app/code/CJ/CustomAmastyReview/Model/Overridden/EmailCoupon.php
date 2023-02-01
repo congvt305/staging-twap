@@ -13,6 +13,7 @@ use Magento\SalesRule\Model\ResourceModel\Rule\Collection;
 use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory;
 use Magento\SalesRule\Model\Rule;
 use Magento\Store\Api\Data\WebsiteInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -66,6 +67,11 @@ class EmailCoupon extends \Amasty\AdvancedReview\Model\Email\Coupon
     protected $helper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * @param Config $configHelper
      * @param DateTime $date
      * @param CollectionFactory $ruleCollectionFactory
@@ -85,9 +91,11 @@ class EmailCoupon extends \Amasty\AdvancedReview\Model\Email\Coupon
         CouponFactory $couponFactory,
         CouponRepositoryInterface $couponRepository,
         SalesRuleProvider $salesRuleProvider,
-        \CJ\CustomAmastyReview\Helper\Config $helper
+        \CJ\CustomAmastyReview\Helper\Config $helper,
+        StoreManagerInterface $storeManager
     ) {
         $this->helper = $helper;
+        $this->storeManager = $storeManager;
         parent::__construct($configHelper, $date, $ruleCollectionFactory, $logger, $ruleRepository, $couponFactory, $couponRepository, $salesRuleProvider);
         $this->date = $date;
         $this->ruleCollectionFactory = $ruleCollectionFactory;
@@ -147,11 +155,12 @@ class EmailCoupon extends \Amasty\AdvancedReview\Model\Email\Coupon
      */
     public function getCouponMessage(WebsiteInterface $website): string
     {
-        if ($this->helper->isAllowCoupons($website->getId())) {
-            if ($this->helper->isNeedReview($website->getId())) {
+        $storeId = $this->_getStoreIdByWebsite($website);
+        if ($this->helper->isAllowCoupons($storeId)) {
+            if ($this->helper->isNeedReview($storeId)) {
                 $message = $this->getReviewText();
             } else {
-                $days = (int)$this->helper->getModuleConfig('coupons/coupon_days', $website->getId());
+                $days = (int)$this->helper->getModuleConfig('coupons/coupon_days', $storeId);
                 $couponCode = $this->generateCoupon($website);
                 $message = $this->getCouponText($couponCode, $days);
 
@@ -164,5 +173,20 @@ class EmailCoupon extends \Amasty\AdvancedReview\Model\Email\Coupon
         }
 
         return $message;
+    }
+
+    /**
+     * @param WebsiteInterface $website
+     * @return int
+     */
+    private function _getStoreIdByWebsite(WebsiteInterface $website): int
+    {
+        $storeId = null;
+        foreach ($this->storeManager->getStores() as $store) {
+            if ($website->getId() === $store->getWebsiteId()) {
+                $storeId = $store->getId();
+            }
+        }
+        return $storeId;
     }
 }

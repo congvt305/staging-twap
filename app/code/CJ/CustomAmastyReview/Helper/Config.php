@@ -25,38 +25,40 @@ class Config
 
     /**
      * @param $path
-     * @param $websiteId
+     * @param $storeId
      * @return mixed
      */
-    public function getGeneralConfig($path, $websiteId = null)
+    protected function getGeneralConfig($path, $storeId = null)
     {
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
      * @param $path
-     * @param $websiteId
+     * @param $storeId
      * @return mixed
      */
-    public function getModuleConfig($path, $websiteId = null)
+    public function getModuleConfig($path, $storeId = null)
     {
-        return $this->getGeneralConfig('amasty_advancedreview/' . $path, $websiteId);
+        return $this->getGeneralConfig('amasty_advancedreview/' . $path, $storeId);
     }
 
     /**
-     * @param int|null $websiteId
+     * @param int|null $storeId
      * @return bool
      */
-    public function isAllowCoupons(?int $websiteId)
+    public function isAllowCoupons(?int $storeId)
     {
-        return (bool)$this->getModuleConfig('coupons/enabled', $websiteId);
+        return (bool)$this->getModuleConfig('coupons/enabled', $storeId);
     }
 
     /**
      * @return bool
      */
-    public function isNeedReview(?int $websiteId)
+    public function isNeedReview(?int $storeId)
     {
-        return (bool)$this->getModuleConfig('coupons/review', $websiteId);
+        return (bool)$this->getModuleConfig('coupons/review', $storeId);
     }
+
+
 }
