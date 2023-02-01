@@ -175,17 +175,7 @@ class Review extends \Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review
         }
     }
 
-    /**
-     * @param $storeId
-     * @return int
-     */
-    protected function _getWebsiteId($storeId) {
-        try {
-            return $this->storeManager->getStore($storeId)->getWebsiteId();
-        } catch (NoSuchEntityException $e) {
-            return 0;
-        }
-    }
+
 
     /**
      * @param MagentoReview $subject
@@ -194,7 +184,7 @@ class Review extends \Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review
     {
         if ($subject->isApproved()
             && $subject->dataHasChangedFor('status_id')
-            && $this->dataHelper->isAllowCoupons($this->_getWebsiteId($subject->getStoreId()))
+            && $this->dataHelper->isAllowCoupons($subject->getStoreId())
         ) {
             $customerData = $this->getCustomerData($subject);
             $emailTo = $customerData->getData('emailTo');
@@ -223,7 +213,7 @@ class Review extends \Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review
                 ];
 
                 $this->sendMessage($template, $store, $data, $sender, $emailTo);
-                $this->customEmailSender->updateCouponStatus($reminderData['entity_id'], $store->getWebsiteId());
+                $this->customEmailSender->updateCouponStatus($reminderData['entity_id'], $store->getId());
             } catch (\Exception $e) {
                 $this->logger->critical($e);
             }
@@ -279,8 +269,8 @@ class Review extends \Amasty\AdvancedReview\Plugin\Review\Model\Adminhtml\Review
             ['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $store->getId()]
         )->setTemplateVars(
             $data
-        )->setFrom(
-            $sender
+        )->setFromByScope(
+            $sender, $store->getId()
         )->addTo(
             $emailTo
         )->getTransport();

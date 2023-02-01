@@ -129,13 +129,29 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
      */
     private function buildRule(Rule $rule, WebsiteInterface $website): RuleInterface
     {
+        $storeId = $this->_getStoreIdByWebsite($website);
         $rule->loadPost(array_merge(
             $this->couponDataProvider->generateCouponData($website),
-            $this->_generateConditions($website->getId())
+            $this->_generateConditions($storeId)
         ));
         $this->convertDateTimeIntoDates($rule);
         $rule->setConditionsSerialized($this->serializer->serialize($rule->getConditions()->asArray()));
         return $this->ruleRepository->save($this->toDataModelConverter->toDataModel($rule));
+    }
+
+    /**
+     * @param WebsiteInterface $website
+     * @return int
+     */
+    private function _getStoreIdByWebsite(WebsiteInterface $website): int
+    {
+        $storeId = null;
+        foreach ($this->storeManager->getStores() as $store) {
+            if ($website->getId() === $store->getWebsiteId()) {
+                $storeId = $store->getId();
+            }
+        }
+        return $storeId;
     }
 
     /**
@@ -155,10 +171,10 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
     }
 
     /**
-     * @param $websiteId
+     * @param $storeId
      * @return array[]
      */
-    protected function _generateConditions($websiteId): array
+    protected function _generateConditions($storeId): array
     {
         return [
             'conditions' => [
@@ -172,7 +188,7 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
                             'type'      => Address::class,
                             'attribute' => 'base_subtotal',
                             'operator'  => '>=',
-                            'value'     => (float) $this->configHelper->getModuleConfig('coupons/min_order', $websiteId),
+                            'value'     => (float) $this->configHelper->getModuleConfig('coupons/min_order', $storeId),
                         ]
                     ]
                 ]

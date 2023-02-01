@@ -32,13 +32,13 @@ class CustomEmailSender
 
     /**
      * @param $id
-     * @param $websiteId
+     * @param $storeId
      * @return void
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function updateCouponStatus($id, $websiteId)
+    public function updateCouponStatus($id, $storeId)
     {
-        if ($this->dataHelper->isAllowCoupons($websiteId)) {
+        if ($this->dataHelper->isAllowCoupons($storeId)) {
             $reminder = $this->reminderRepository->getById($id);
             $reminder->setCoupon(CouponDataProvider::STATUS_ACTIVE);
             $reminder->save();
