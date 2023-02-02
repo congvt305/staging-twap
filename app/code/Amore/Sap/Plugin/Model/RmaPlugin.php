@@ -220,7 +220,7 @@ class RmaPlugin
                 } catch (LocalizedException $e) {
                     throw new LocalizedException(__($e->getMessage()));
                 } catch (\Exception $e) {
-                    throw new \Exception(__('SAP Return : ' . $e));
+                    throw new \Exception($e);
                 }
             }
         }
