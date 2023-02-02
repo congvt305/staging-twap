@@ -204,6 +204,9 @@ class SapOrderReturnData extends AbstractSapOrder
             if ($pointUsed == $order->getBaseSubtotal()) {
                 $redemptionFlag = 'Y';
             }
+            $miamt = abs($this->roundingPrice($pointUsed, $isDecimalFormat));
+        } else {
+            $miamt = abs($this->roundingPrice($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal), $isDecimalFormat));
         }
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
@@ -260,7 +263,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'nsamt' => $nsamt,
             'dcamt' => $dcamt,
             'slamt' => $slamt,
-            'miamt' => abs($this->roundingPrice($pointUsed, $isDecimalFormat)),
+            'miamt' => $miamt,
             'shpwr' => '',
             'mwsbp' => $this->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
