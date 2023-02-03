@@ -76,8 +76,8 @@ class AddLineInfoToCookiePlugin
      */
     public function setLineCookie()
     {
+        $params = $this->request->getParams();
         try {
-            $params = $this->request->getParams();
             $duration = $this->config->getCookieLifeTime() ? $this->config->getCookieLifeTime() : CookieLineInformation::COOKIE_LIFETIME;
 
             if ($this->config->isEnableSaveUtm()) {
@@ -106,8 +106,8 @@ class AddLineInfoToCookiePlugin
         } catch (Exception $exception) {
             $this->logger->addError(Logger::LINE_COOKIE,
                 [
-                    'ecidCookie' => $params['ecid'],
-                    'message' => $exception->$exception()
+                    'ecidCookie' => isset($params['ecid']) ? $params['ecid'] : null,
+                    'message' => $exception->getMessage()
                 ]
             );
         }
