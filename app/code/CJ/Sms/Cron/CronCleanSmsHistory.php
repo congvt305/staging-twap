@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace CJ\Sms\Cron;
 
@@ -6,9 +7,9 @@ class CronCleanSmsHistory
 {
 
     /**
-     * @var \CJ\Sms\Model\ResourceModel\SmsHistory\Collection
+     * @var \CJ\Sms\Model\ResourceModel\SmsHistoryFactory
      */
-    private $smsResourceModel;
+    private $smsHistoryFactory;
 
     /**
      * @param \CJ\Sms\Model\ResourceModel\SmsHistoryFactory $smsHistoryFactory
