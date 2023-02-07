@@ -16488,4 +16488,4 @@ sample,樣本
 "You Have <strong>%1</strong> points left","目前剩餘總點數: <strong>%1</strong>點"
 "Maximum point: <strong>%1</strong>","本次可用點數: <strong>%1</strong>點"
 "Deducted amount: <strong>%1</strong>","等於折抵金額: <strong>%1</strong>元"
-"Reached limit send SMS per day. Please try again tomorrow","已超過每日最高發送3次之限制，敬請隔日再次嘗試，謝謝"
+"The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you","已超過每日最高發送%1次之限制，敬請隔日再次嘗試，謝謝"
