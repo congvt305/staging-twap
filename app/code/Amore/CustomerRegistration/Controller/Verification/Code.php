@@ -120,7 +120,7 @@ class Code extends Action
                 $currentLimit = $item->getLimitNumber();
                 if ($item->getEntityId()) {
                     if ($currentLimit && $currentLimit >= $limitSendSMS) {
-                        $result['message'] = __('Reached limit send SMS per day. Please try again tomorrow');
+                        $result['message'] = __("The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you", $limitSendSMS);
                         $jsonResult->setData($result);
                         return $jsonResult;
                     }
