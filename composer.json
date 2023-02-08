@@ -53,7 +53,6 @@
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
         "magento/product-recommendations": "^3.1",
-        "magepal/magento2-reindex": "^1.1",
         "phpoffice/phpspreadsheet": "^1.18"
     },
     "suggest": {
