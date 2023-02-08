@@ -1,0 +1,17 @@
+{
+    "amasty_birth_log": {
+        "column": {
+            "log_id": true,
+            "customer_id": true,
+            "sent_date": true,
+            "y": true,
+            "type": true
+        },
+        "index": {
+            "AMASTY_BIRTH_LOG_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
