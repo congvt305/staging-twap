@@ -702,7 +702,6 @@ return [
         'Amasty_AdvancedReview' => 1,
         'Amasty_BannersLite' => 1,
         'Amasty_Base' => 1,
-        'Amasty_Birth' => 0,
         'Amasty_Geoip' => 1,
         'PayPal_Braintree' => 0,
         'Amasty_CheckoutCore' => 1,
