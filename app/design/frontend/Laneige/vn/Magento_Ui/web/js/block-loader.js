@@ -46,8 +46,9 @@ define([
     function addBlockLoader(element) {
         element.find(':focus').trigger('blur');
         element.find('input:disabled, select:disabled').addClass('_disabled');
-        element.find('input, select').prop('disabled', true);
-
+        // CUSTOM HERE
+        element.find('input:not("#discount-code"), select').prop('disabled', true);
+        // END CUSTOM
         if (isLoadingClassRequired(element)) {
             element.addClass(blockContentLoadingClass);
         }
