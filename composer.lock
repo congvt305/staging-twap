@@ -180,7 +180,6 @@
                 "amasty/base": ">=1.13.2",
                 "amasty/cron-schedule-list": "*",
                 "amasty/geoip": ">=1.3.6",
-                "amasty/module-legacy-templates": "*",
                 "php": ">=7.3.0"
             },
             "type": "magento2-module",
@@ -556,32 +555,6 @@
                 "Commercial"
             ],
             "description": "Google Address Autocomplete By Amasty",
-            "homepage": "https://amasty.com/"
-        },
-        {
-            "name": "amasty/module-legacy-templates",
-            "version": "1.0.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-legacy-templates-1.0.0-ee.zip"
-            },
-            "require": {
-                "amasty/base": ">=1.13.2",
-                "php": ">=7.3"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Amasty\\LegacyTemplates\\": ""
-                }
-            },
-            "license": [
-                "Commercial"
-            ],
-            "description": "Legacy Templates by Amasty",
             "homepage": "https://amasty.com/"
         },
         {
