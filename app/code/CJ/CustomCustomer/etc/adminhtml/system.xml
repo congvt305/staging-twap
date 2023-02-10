@@ -2,7 +2,7 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="cjcustomer" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="0" showInStore="0">
+        <section id="cjcustomer" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="0">
             <label>Custom Customer</label>
             <tab>cj_extensions_tab</tab>
             <resource>CJ_CustomCustomer::customer</resource>
@@ -13,6 +13,18 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
+            <group id="poscstmno" translate="label" type="text" sortOrder="15" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>POS Customer ID</label>
+                <field id="enable" translate="label" type="select" sortOrder="5" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enable sync pos customer id</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="last_customer" translate="label comment" type="text" sortOrder="20" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Last customer</label>
+                    <comment><![CDATA[Used to identify customers that need to be synched.]]><![CDATA[<br>]]><![CDATA[It is the entity id of the customer.]]><![CDATA[<br>]]><![CDATA[<b>]]><![CDATA[for example, if last customer is equal to 1000, then when cron runs it will scan customers whose entity is greater than or equal to 1000]]><![CDATA[</b>]]></comment>
+                </field>
+            </group>
         </section>
+
     </system>
 </config>

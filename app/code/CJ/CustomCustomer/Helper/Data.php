@@ -11,6 +11,10 @@ class Data
 {
     const XML_PATH_LOGGING_ENABLED = 'cjcustomer/group/logging';
 
+    const XML_PATH_POS_CSTM_NO_SYN_ENABLED = 'cjcustomer/poscstmno/enable';
+
+    const XML_PATH_POS_CSTM_NO_LAST_CSTM_ID = 'cjcustomer/poscstmno/last_customer';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -73,5 +77,21 @@ class Data
         } else {
             throw new LocalizedException(__('Store is not found for this customer integration sequence "%1"', [$cstmIntgSeq]));
         }
+    }
+
+    /**
+     * @param int|null $websiteId
+     * @return bool
+     */
+    public function getPosCstmNOSynEnabled(?int $websiteId): bool {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_SYN_ENABLED, 'website', $websiteId);
+    }
+
+    /**
+     * @param int|null $websiteId
+     * @return int
+     */
+    public function getPosCstmNOLastCstmId(?int $websiteId): int {
+        return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LAST_CSTM_ID, 'website', $websiteId);
     }
 }
