@@ -2,6 +2,6 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="customer_entity">
-        <column xsi:type="varchar" name="pos_customer_id" nullable="false" length="255" comment="POS Customer Id"/>
+        <column xsi:type="varchar" name="pos_cstm_no" nullable="true" length="255" comment="POS Customer ID"/>
     </table>
 </schema>

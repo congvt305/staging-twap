@@ -7,6 +7,10 @@
             <group>
                 <logging>0</logging>
             </group>
+            <poscstmno>
+                <enable>0</enable>
+                <last_customer>1871</last_customer>
+            </poscstmno>
         </cjcustomer>
     </default>
 </config>
