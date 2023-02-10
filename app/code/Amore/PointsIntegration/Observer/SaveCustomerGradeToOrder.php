@@ -79,10 +79,10 @@ class SaveCustomerGradeToOrder implements ObserverInterface
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
             try {
-                if ($customerId && !$order->getData(self::POS_CUSTOMER_GRADE)) {
+                if ($customerId) {
                     $websiteId = $order->getStore()->getWebsiteId();
                     $customerGrade = $this->getCustomerGrade($customerId, $websiteId);
-                    if($customerGrade) {
+                    if ($customerGrade && (!$order->getData(self::POS_CUSTOMER_GRADE) || ($customerGrade != $order->getData(self::POS_CUSTOMER_GRADE)))) {
                         $order->setData(self::POS_CUSTOMER_GRADE, $customerGrade);
                         $this->orderRepository->save($order);
                     }
