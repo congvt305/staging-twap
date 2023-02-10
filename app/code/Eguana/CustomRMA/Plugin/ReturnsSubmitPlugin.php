@@ -43,6 +43,7 @@ class ReturnsSubmitPlugin
     {
         $shippingPreference = $subject->getRequest()->getParam('shipping_preference');
         $customPhone = $subject->getRequest()->getParam('customer_custom_phone');
+        $rmaCustomerName = $subject->getRequest()->getParam('rma_customer_name');
         if ($shippingPreference) {
             $orderId = (int)$subject->getRequest()->getParam('order_id');
             try {
@@ -50,6 +51,7 @@ class ReturnsSubmitPlugin
                 $this->rmaResource->load($rmaModel, $orderId, 'order_id');
                 $rmaModel->setData('shipping_preference', $shippingPreference);
                 $rmaModel->setData('customer_custom_phone', $customPhone);
+                $rmaModel->setData('rma_customer_name', $rmaCustomerName);
                 $this->rmaResource->save($rmaModel);
             } catch (AlreadyExistsException $e) {
                 $this->logger->critical($e->getMessage());

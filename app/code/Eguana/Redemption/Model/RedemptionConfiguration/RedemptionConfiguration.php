@@ -285,7 +285,7 @@ class RedemptionConfiguration
 
         $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
         $individualNumbers = $this->getIndividualNumbers($websiteId);
-        $individualNumbers = explode(',', $individualNumbers);
+        $individualNumbers = explode(',', $individualNumbers ?? '');
         $usableNumbers = array_diff($individualNumbers, $usedNumbers);
 
         return reset($usableNumbers) ?: '';

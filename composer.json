@@ -22,10 +22,6 @@
             "type": "composer",
             "url": "https://repo.magento.com"
         },
-        "magento-baler": {
-            "type": "vcs",
-            "url": "git@github.com:magento/m2-baler.git"
-        },
         "amasty_1": {
             "type": "composer",
             "url": "https://composer1.amasty.com/community/"

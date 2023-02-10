@@ -11,6 +11,7 @@ namespace Eguana\Redemption\Api;
 
 use Eguana\Redemption\Api\Data\CounterInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Interface CounterRepositoryInterface
@@ -31,6 +32,7 @@ interface CounterRepositoryInterface
      *
      * @param int $counterId
      * @return CounterInterface
+     * @throws NoSuchEntityException
      */
     public function getById($counterId);
 

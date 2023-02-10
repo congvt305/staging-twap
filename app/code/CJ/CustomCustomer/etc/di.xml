@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="CJ\CustomCustomer\Api\CustomerGroupManagementInterface" type="CJ\CustomCustomer\Model\CustomerGroup\CustomerGroupManagement"/>
+    <preference for="CJ\CustomCustomer\Api\Data\CustomerDataInterface" type="CJ\CustomCustomer\Model\CustomerGroup\CustomerData"/>
+    <preference for="CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface" type="CJ\CustomCustomer\Model\CustomerGroup\SyncGradeResponse"/>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="cj_unused_customer_group_remove" xsi:type="object">CJ\CustomCustomer\Console\RemoveUnusedCustomerGroup</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="CJ\CustomCustomer\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="CJ\CustomCustomer\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">cjCustomerLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\CustomCustomer\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

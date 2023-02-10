@@ -43,7 +43,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
     /**#@+
      * Constants for Quote Attributes.
      */
-    protected $headColumnNames = [
+    const HEADER_COLUMN_NAME = [
         self::QUOTE_ENTITY_ID => 'entity_id',
         self::QUOTE_STORE_ID => 'store_id',
         self::QUOTE_CREATED_AT => 'created_at',
@@ -59,6 +59,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         self::QUOTE_STORE_TO_QUOTE_RATE => 'store_to_quote_rate',
         self::QUOTE_BASE_CURRENCY_CODE => 'base_currency_code',
         self::QUOTE_STORE_CURRENCY_CODE => 'store_currency_code',
+        self::QUOTE_CURRENCY_CODE => 'quote_currency_code',
         self::QUOTE_GRAND_TOTAL => 'grand_total',
         self::QUOTE_BASE_GRAND_TOTAL => 'base_grand_total',
         self::QUOTE_CHECKOUT_METHOD => 'checkout_method',
@@ -127,14 +128,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
         self::QUOTE_REWARD_POINTS_BALANCE => 'reward_points_balance',
         self::QUOTE_BASE_REWARD_CURRENCY_AMOUNT => 'base_reward_currency_amount',
         self::QUOTE_REWARD_CURRENCY_AMOUNT => 'reward_currency_amount',
-        self::QUOTE_DELIVERY_MESSAGE => 'delivery_message',
-        self::QUOTE_PAYPAL_ORDER_SUBTOTAL => 'paypal_subtotal',
-        self::QUOTE_PAYPAL_GRAND_TOTAL => 'paypal_grand_total',
-        self::QUOTE_PAYPAL_TAX_AMOUNT => 'paypal_tax_amount',
-        self::QUOTE_PAYPAL_SHIPPING_AMOUNT => 'paypal_shipping_amount',
-        self::QUOTE_PAYPAL_DISCOUNT_AMOUNT => 'paypal_discount_amount',
-        self::QUOTE_PAYPAL_RATE => 'paypal_rate',
-        self::QUOTE_PAYPAL_CURRENCY_CODE => 'paypal_currency_code',
+        self::QUOTE_DELIVERY_MESSAGE => 'delivery_message'
     ];
     /**#@-*/
 
@@ -246,17 +240,9 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
             return false;
         }
 
-        $index = 0;
-        $headersData = [];
+        $writer->setHeaderCols($this->_getHeaderColumns());
         foreach ($quoteData as $quotes) {
             foreach ($quotes as $quote) {
-                if ($index == 0) {
-                    foreach (array_keys($quote) as $key) {
-                        $headersData[] = $key;
-                        $index += 1;
-                    }
-                    $writer->setHeaderCols($headersData);
-                }
                 $writer->writeSourceRowWithCustomColumns($quote);
             }
         }
@@ -311,7 +297,7 @@ class Quote extends AbstractEntity implements QuoteColumnsInterface
     protected function _getHeaderColumns()
     {
         $header = [];
-        foreach ($this->headColumnNames as $englishColumn) {
+        foreach (self::HEADER_COLUMN_NAME as $englishColumn) {
             $header[] = $englishColumn;
         }
         return $header;

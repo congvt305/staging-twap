@@ -1,0 +1,16 @@
+{
+    "cj_sms_history": {
+        "column": {
+            "entity_id": true,
+            "created_at": true,
+            "telephone": true,
+            "store_id": true,
+            "limit_number": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CJ_SMS_HISTORY_STORE_ID_STORE_STORE_ID": true,
+            "CJ_SMS_HISTORY_TELEPHONE_STORE_ID": true
+        }
+    }
+}
