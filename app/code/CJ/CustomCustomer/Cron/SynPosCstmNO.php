@@ -55,19 +55,16 @@ class SynPosCstmNO
     public function execute()
     {
         foreach ($this->storeManager->getStores() as $store) {
-            $isEnabled = $this->config->getPosCstmNOSynEnabled($store->getWebsiteId());
-            if ($isEnabled) {
-                $customers = $this->_getCustomers($store->getWebsiteId());
-                foreach ($customers as $customer) {
-                    /** @var \Magento\Customer\Model\Customer $customer */
-                    try {
-                        $posCstmNO = $this->posIntg->synPosCstmNO($customer);
-                        $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO,
-                            $customer->getData('increment_id')));
-                    } catch (\Exception $e) {
-                        $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $customer->getData('increment_id')));
-                        $this->logger->error($e->getMessage());
-                    }
+            $customers = $this->_getCustomers($store->getWebsiteId());
+            foreach ($customers as $customer) {
+                /** @var \Magento\Customer\Model\Customer $customer */
+                try {
+                    $posCstmNO = $this->posIntg->synPosCstmNO($customer);
+                    $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO,
+                        $customer->getData('increment_id')));
+                } catch (\Exception $e) {
+                    $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $customer->getData('increment_id')));
+                    $this->logger->error($e->getMessage(), ['increment_id' => $customer->getData('increment_id')]);
                 }
             }
         }
@@ -80,11 +77,10 @@ class SynPosCstmNO
      */
     protected function _getCustomers($websiteId): array
     {
-        $lastCstmId = $this->config->getPosCstmNOLastCstmId($websiteId);
         $collection = $this->customerCollectionFactory->create()
-       ->addFieldToFilter('website_id', $websiteId)
-        ->addFieldToFilter('entity_id', ['gteq' => $lastCstmId])
-        ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')]);
+            ->addFieldToFilter('website_id', $websiteId)
+            ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')])
+            ->setPageSize($this->config->getPosCstmNOLimit($websiteId));
         return $collection->getItems();
     }
 }
