@@ -4,4 +4,7 @@
     <table name="customer_entity">
         <column xsi:type="varchar" name="pos_cstm_no" nullable="true" length="20" comment="POS Customer ID"/>
     </table>
+    <table name="customer_grid_flat" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="pos_cstm_no" nullable="true" length="20" comment="POS Customer ID"/>
+    </table>
 </schema>
