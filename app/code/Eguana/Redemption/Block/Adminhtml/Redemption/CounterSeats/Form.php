@@ -109,13 +109,12 @@ class Form extends Generic
                 $counterSeats = [];
                 $storeId = $selectedStoreId;
             }
-
+            $form = $this->_formFactory->create();
             if ($offlineStoreIds && $storeId) {
                 if (is_array($storeId) && isset($storeId[0])) {
                     $storeId = $storeId[0];
                 }
 
-                $form = $this->_formFactory->create();
                 $form->setHtmlIdPrefix('redemption_');
 
                 $fieldset = $form->addFieldset('counter_seats_fieldset', []);
@@ -146,9 +145,8 @@ class Form extends Generic
 
                     $i++;
                 }
-
-                $this->setForm($form);
             }
+            $this->setForm($form);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
