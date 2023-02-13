@@ -75,10 +75,12 @@ class Upload extends Action implements HttpPostActionInterface
         if (!$imageId) {
             $imageId = $this->_request->getParam('param_name', 'thank_you_image');
         }
+        $result = [];
         try {
             $result = $this->imageUploader->saveFileToTmpDir($imageId);
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
+            $result['error'] = __($exception->getMessage());
         }
         return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
     }
