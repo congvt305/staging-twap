@@ -80,10 +80,12 @@ class SaveCustomerGradeToOrder implements ObserverInterface
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
         if ($moduleActive) {
             try {
+                $this->logger->info("start update customer grade");
                 if ($customerId) {
                     $websiteId = $order->getStore()->getWebsiteId();
                     $customerGrade = $this->getCustomerGrade($customerId, $websiteId);
                     if ($customerGrade && (!$order->getData(self::POS_CUSTOMER_GRADE) || ($customerGrade != $order->getData(self::POS_CUSTOMER_GRADE)))) {
+                        $this->logger->info("Before save customer grade: " . $customerGrade);
                         $order->setData(self::POS_CUSTOMER_GRADE, $customerGrade);
                         $this->orderRepository->save($order);
                     }
@@ -115,7 +117,7 @@ class SaveCustomerGradeToOrder implements ObserverInterface
             $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED");
             $this->logger->error($exception->getMessage());
         }
-
+        $this->logger->info("grade customer: " . $grade);
         return $grade;
     }
 }
