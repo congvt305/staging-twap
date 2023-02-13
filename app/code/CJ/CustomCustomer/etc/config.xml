@@ -7,6 +7,9 @@
             <group>
                 <logging>0</logging>
             </group>
+            <poscstmno>
+                <limit>50</limit>
+            </poscstmno>
         </cjcustomer>
     </default>
 </config>

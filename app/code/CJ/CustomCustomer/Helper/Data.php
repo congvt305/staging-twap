@@ -11,6 +11,8 @@ class Data
 {
     const XML_PATH_LOGGING_ENABLED = 'cjcustomer/group/logging';
 
+    const XML_PATH_POS_CSTM_NO_LIMIT = 'cjcustomer/poscstmno/limit';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -73,5 +75,13 @@ class Data
         } else {
             throw new LocalizedException(__('Store is not found for this customer integration sequence "%1"', [$cstmIntgSeq]));
         }
+    }
+
+    /**
+     * @param int|null $websiteId
+     * @return int
+     */
+    public function getPosCstmNOLimit(?int $websiteId): int {
+        return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LIMIT, 'website', $websiteId);
     }
 }
