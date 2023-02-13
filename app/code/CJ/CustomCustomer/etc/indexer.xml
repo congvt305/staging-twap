@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="customer_grid" view_id="customer_dummy" class="Magento\Framework\Indexer\Action\Entity" primary="customer">
+        <fieldset name="customer" source="Magento\Customer\Model\Indexer\Source"
+                  provider="Magento\Customer\Model\Indexer\AttributeProvider">
+            <field name="pos_cstm_no" xsi:type="searchable" dataType="text"/>
+        </fieldset>
+    </indexer>
+</config>
