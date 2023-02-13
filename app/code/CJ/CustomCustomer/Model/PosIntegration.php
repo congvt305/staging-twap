@@ -53,11 +53,18 @@ class PosIntegration
         try {
             $mobileNumber = $customerData->getCustomAttribute('mobile_number')->getValue();
         } catch (\Throwable $e) {
-            throw new \Exception(__("Cannot get mobile number for the customer #%1. %2", $customer->getId(), $e->getMessage()));
+            throw new \Exception("Can't get mobile phone number");
         }
         $posData = $this->posSystem->getMemberInfo($firstName, $lastName, $mobileNumber, $storeId);
-        $customerData->setCustomAttribute(AddCustomerCustomAttributes::POS_CSTM_NO, $posData[self::CSTM_NO]);
-        $this->customerRepository->save($customerData);
+        if (!isset($posData[self::CSTM_NO])) {
+            throw new \Exception("POS has no data cstmNO");
+        }
+        try {
+            $customerData->setCustomAttribute(AddCustomerCustomAttributes::POS_CSTM_NO, $posData[self::CSTM_NO]);
+            $this->customerRepository->save($customerData);
+        } catch (\Exception $e) {
+            throw new \Exception(__("Could not save pos cstmNO %1 to customer. Error message: %2", $posData[self::CSTM_NO], $e->getMessage()));
+        }
         return $posData[self::CSTM_NO];
     }
 }
