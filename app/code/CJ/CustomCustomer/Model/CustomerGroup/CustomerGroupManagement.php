@@ -110,10 +110,10 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
 
                 if (!$groupId) {
                     $message = __("Failed to update new grade for successful customer. Error because this customer group \"%1\" does not exist on magento", $groupName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002");
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
                 } elseif ($groupId == $customerData->getGroupId()) {
                     $message = __("Failed to update new grade because this customer's grade \"%1\" on magento synced with grade on POS already", $groupName);
-                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0003");
+                    $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0002");
                 } else {
                     $customerData->setGroupId($groupId);
                     $this->customerRepository->save($customerData);
@@ -125,7 +125,7 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
                 $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $message, "0001");
             }
         } catch (\Exception $e) {
-            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $e->getMessage(), "0004");
+            $result[$cstmIntegSeq] = $this->gradeResultMsg($gradeData, $e->getMessage(), "0001");
         }
 
         $this->operationLogWriter($parameters, $result, $gradeData, 'cj.customer.group.sync.info');
@@ -185,9 +185,31 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
                 'direction' => 'incoming',
                 'to' => "Magento",
                 'serialized_data' => $this->json->serialize($parameters),
-                'status' => $result[$customerData->getCstmIntgSeq()]['code'] == "0000" ? 1 : 0,
+                'status' => $this->setOperationLogStatus($result[$customerData->getCstmIntgSeq()]['code']),
                 'result_message' => $this->json->serialize($result)
             ]
         );
+    }
+
+    /**
+     * @param $code
+     * @return int
+     */
+    protected function setOperationLogStatus($code)
+    {
+        switch ($code) {
+            case "0001":
+                $result = 0;
+                break;
+            case "0000":
+                $result = 1;
+                break;
+            case "0002":
+                $result = 2;
+                break;
+            default:
+                $result = 0;
+        }
+        return $result;
     }
 }
