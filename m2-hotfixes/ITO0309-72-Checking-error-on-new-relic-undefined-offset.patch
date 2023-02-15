@@ -1,15 +1,16 @@
-From bffec1b15cda1b65c4b478ce02e7e511c31c3e76 Mon Sep 17 00:00:00 2001
+From c12c214b2058da3f3dac6a82a3f7e5580f09ec72 Mon Sep 17 00:00:00 2001
 From: Hoang Phan <hoangphan@amorepacific.com>
-Date: Thu, 2 Feb 2023 13:20:25 +0700
+Date: Wed, 15 Feb 2023 13:59:11 +0700
 Subject: [PATCH] ITO0309-72 [G-DEV] Checking error on new
  relic_report.CRITICAL: Notice: Undifined offset
 
 ---
- vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php | 31 +++++++++++++++++--
+ vendor/magento/framework/Filter/Template.php                           |  9 ++++++
+ 2 files changed, 38 insertions(+), 2 deletions(-)
 
 diff --git a/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php b/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
-index 83345ac..4dce35e 100644
+index 83345ac..92d36ca 100644
 --- a/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
 +++ b/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
 @@ -8,6 +8,7 @@ declare(strict_types=1);
@@ -60,7 +61,7 @@ index 83345ac..4dce35e 100644
 +            }
 +            $logger->crit($errorMsg . $backTrace);
 +            $logger->info('full action name: ' . $this->_request->getFullActionName());
-+            $logger->info('user agent: ' . isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'cannot get user agent');
++            $logger->info('user agent: ' . $_SERVER['HTTP_USER_AGENT'] ?? 'cannot get user agent');
 +            $logger->info('request uri: ' . $_SERVER['REQUEST_URI'] ?? 'cannot get request uri');
 +            $logger->info('mage run code: ' . $_SERVER['MAGE_RUN_CODE'] ?? 'cannot get mage_run_code');
 +            $logger->info('construction data: ' . json_encode($construction));
@@ -70,6 +71,26 @@ index 83345ac..4dce35e 100644
          if ($this->variableResolver->resolve($construction[1], $filter, $templateVariables) == '') {
              return '';
          } else {
+diff --git a/vendor/magento/framework/Filter/Template.php b/vendor/magento/framework/Filter/Template.php
+index be4c7eb..8b9d156 100644
+--- a/vendor/magento/framework/Filter/Template.php
++++ b/vendor/magento/framework/Filter/Template.php
+@@ -181,6 +181,15 @@ class Template implements \Zend_Filter_Interface
+
+             if (preg_match_all($directiveProcessor->getRegularExpression(), $value, $constructions, PREG_SET_ORDER)) {
+                 foreach ($constructions as $construction) {
++                    if (is_array($construction) && empty($construction)) {
++                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0309-72-G-DEV.log');
++                        $logger = new \Zend_Log();
++                        $logger->addWriter($writer);
++                        $logger->info('-- inside function \Magento\Framework\Filter\Template::filter --');
++                        $logger->info('-- before executing $directiveProcessor->process() --');
++                        $logger->info('template value: ' . $value);
++                        $logger->info('-- executing $directiveProcessor->process() --');
++                    }
+                     $replacedValue = $directiveProcessor->process($construction, $this, $this->templateVars);
+
+                     $value = str_replace($construction[0], $replacedValue, $value);
 --
 2.34.1
 
