@@ -69,7 +69,6 @@ abstract class BaseRequest
         if ($isNewMiddlewareEnable) {
             $logger->info('=====Submit request=====');
             $logger->info($url);
-            $logger->info(print_r($requestData, 1));
             $logger->info($this->json->serialize($requestData));
         }
         $this->curl->post($url, $this->json->serialize($requestData));
