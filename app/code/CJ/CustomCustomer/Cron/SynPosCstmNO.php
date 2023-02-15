@@ -59,12 +59,12 @@ class SynPosCstmNO
             foreach ($customers as $customer) {
                 /** @var \Magento\Customer\Model\Customer $customer */
                 try {
+                    $cstmId = $customer->getId();
                     $posCstmNO = $this->posIntg->synPosCstmNO($customer);
-                    $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO,
-                        $customer->getData('increment_id')));
+                    $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
                 } catch (\Exception $e) {
-                    $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $customer->getData('increment_id')));
-                    $this->logger->error($e->getMessage(), ['increment_id' => $customer->getData('increment_id')]);
+                    $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $cstmId));
+                    $this->logger->error($e->getMessage(), ['id' => $cstmId]);
                 }
             }
         }

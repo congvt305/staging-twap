@@ -23,17 +23,24 @@ class PosIntegration
      */
     protected $posSystem;
 
+    /**
+     * @var \Magento\Customer\Model\AddressRegistry
+     */
+    protected $addressRegistry;
 
     /**
      * @param \Amore\CustomerRegistration\Model\POSSystem $posSystem
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Customer\Model\AddressRegistry $addressRegistry
      */
     public function __construct(
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Amore\CustomerRegistration\Model\POSSystem $posSystem
+        \Amore\CustomerRegistration\Model\POSSystem $posSystem,
+        \Magento\Customer\Model\AddressRegistry $addressRegistry
     ) {
         $this->customerRepository = $customerRepository;
         $this->posSystem = $posSystem;
+        $this->addressRegistry = $addressRegistry;
     }
 
     /**
@@ -50,6 +57,8 @@ class PosIntegration
         $firstName = $customer->getFirstname();
         $lastName = $customer->getLastname();
         $customerData = $this->customerRepository->getById($customer->getId());
+        // No need to validate customer address while sync pos cstmNO
+        $this->disableAddressValidation($customerData);
         try {
             $mobileNumber = $customerData->getCustomAttribute('mobile_number')->getValue();
         } catch (\Throwable $e) {
@@ -66,5 +75,19 @@ class PosIntegration
             throw new \Exception(__("Could not save pos cstmNO %1 to customer. Error message: %2", $posData[self::CSTM_NO], $e->getMessage()));
         }
         return $posData[self::CSTM_NO];
+    }
+
+    /**
+     * Disable Customer Address Validation
+     *
+     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * @throws NoSuchEntityException
+     */
+    protected function disableAddressValidation($customer)
+    {
+        foreach ($customer->getAddresses() as $address) {
+            $addressModel = $this->addressRegistry->retrieve($address->getId());
+            $addressModel->setShouldIgnoreValidation(true);
+        }
     }
 }
