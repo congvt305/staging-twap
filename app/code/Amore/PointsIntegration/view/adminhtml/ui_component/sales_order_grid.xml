@@ -16,7 +16,7 @@
                 <visible>false</visible>
             </settings>
         </column>
-        <column name="pos_grade" class="Amore\PointsIntegration\Ui\Component\Listing\Column\PosGrade">
+        <column name="pos_customer_grade" class="Amore\PointsIntegration\Ui\Component\Listing\Column\PosGrade">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="visible" xsi:type="boolean">true</item>
