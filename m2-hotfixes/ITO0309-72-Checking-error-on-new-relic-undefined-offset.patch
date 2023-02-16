@@ -1,4 +1,4 @@
-From c12c214b2058da3f3dac6a82a3f7e5580f09ec72 Mon Sep 17 00:00:00 2001
+From 7cbec965770cc92b31cbfb1de4503e8f700624f8 Mon Sep 17 00:00:00 2001
 From: Hoang Phan <hoangphan@amorepacific.com>
 Date: Wed, 15 Feb 2023 13:59:11 +0700
 Subject: [PATCH] ITO0309-72 [G-DEV] Checking error on new
@@ -6,8 +6,8 @@ Subject: [PATCH] ITO0309-72 [G-DEV] Checking error on new
 
 ---
  vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php | 31 +++++++++++++++++--
- vendor/magento/framework/Filter/Template.php                           |  9 ++++++
- 2 files changed, 38 insertions(+), 2 deletions(-)
+ vendor/magento/framework/Filter/Template.php                           | 10 ++++++
+ 2 files changed, 39 insertions(+), 2 deletions(-)
 
 diff --git a/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php b/vendor/magento/framework/Filter/DirectiveProcessor/DependDirective.php
 index 83345ac..92d36ca 100644
@@ -72,20 +72,21 @@ index 83345ac..92d36ca 100644
              return '';
          } else {
 diff --git a/vendor/magento/framework/Filter/Template.php b/vendor/magento/framework/Filter/Template.php
-index be4c7eb..8b9d156 100644
+index be4c7eb..1378bc3 100644
 --- a/vendor/magento/framework/Filter/Template.php
 +++ b/vendor/magento/framework/Filter/Template.php
-@@ -181,6 +181,15 @@ class Template implements \Zend_Filter_Interface
+@@ -181,6 +181,16 @@ class Template implements \Zend_Filter_Interface
 
              if (preg_match_all($directiveProcessor->getRegularExpression(), $value, $constructions, PREG_SET_ORDER)) {
                  foreach ($constructions as $construction) {
-+                    if (is_array($construction) && empty($construction)) {
++                    if (!isset($construction[1])) {
 +                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0309-72-G-DEV.log');
 +                        $logger = new \Zend_Log();
 +                        $logger->addWriter($writer);
 +                        $logger->info('-- inside function \Magento\Framework\Filter\Template::filter --');
 +                        $logger->info('-- before executing $directiveProcessor->process() --');
 +                        $logger->info('template value: ' . $value);
++
 +                        $logger->info('-- executing $directiveProcessor->process() --');
 +                    }
                      $replacedValue = $directiveProcessor->process($construction, $this, $this->templateVars);
