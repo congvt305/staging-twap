@@ -9,6 +9,8 @@
             </group>
             <poscstmno>
                 <limit>50</limit>
+                <enable_cron>1</enable_cron>
+                <cron_schedule>0 0 * * *</cron_schedule>
             </poscstmno>
         </cjcustomer>
     </default>

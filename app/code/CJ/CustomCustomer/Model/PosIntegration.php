@@ -29,6 +29,21 @@ class PosIntegration
     protected $addressRegistry;
 
     /**
+     * @var \CJ\CustomCustomer\Helper\Data
+     */
+    protected $config;
+
+    /**
+     * @var \CJ\CustomCustomer\Logger\Logger
+     */
+    protected $logger;
+
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
+
+    /**
      * @param \Amore\CustomerRegistration\Model\POSSystem $posSystem
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Customer\Model\AddressRegistry $addressRegistry
@@ -36,11 +51,17 @@ class PosIntegration
     public function __construct(
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Amore\CustomerRegistration\Model\POSSystem $posSystem,
-        \Magento\Customer\Model\AddressRegistry $addressRegistry
+        \Magento\Customer\Model\AddressRegistry $addressRegistry,
+        \CJ\CustomCustomer\Helper\Data $config,
+        \CJ\CustomCustomer\Logger\Logger $logger,
+        \Magento\Framework\Serialize\Serializer\Json $json
     ) {
         $this->customerRepository = $customerRepository;
         $this->posSystem = $posSystem;
         $this->addressRegistry = $addressRegistry;
+        $this->config = $config;
+        $this->logger = $logger;
+        $this->json = $json;
     }
 
     /**
@@ -56,6 +77,7 @@ class PosIntegration
         $storeId = $customer->getStoreId();
         $firstName = $customer->getFirstname();
         $lastName = $customer->getLastname();
+        $logEnabled = $this->config->getLoggingEnabled();
         $customerData = $this->customerRepository->getById($customer->getId());
         // No need to validate customer address while sync pos cstmNO
         $this->disableAddressValidation($customerData);
@@ -66,6 +88,10 @@ class PosIntegration
         }
         $posData = $this->posSystem->getMemberInfo($firstName, $lastName, $mobileNumber, $storeId);
         if (!isset($posData[self::CSTM_NO])) {
+            if ($logEnabled) {
+                $this->logger->info("POST DATA INFO WHEN CALL API TO SYN POS CUSTOMER ID FAILED");
+                $this->logger->info($this->json->serialize($posData));
+            }
             throw new \Exception("POS has no data cstmNO");
         }
         try {

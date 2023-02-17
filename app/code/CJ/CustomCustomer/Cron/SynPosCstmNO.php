@@ -54,12 +54,17 @@ class SynPosCstmNO
 
     public function execute()
     {
-        foreach ($this->storeManager->getStores() as $store) {
-            $customers = $this->_getCustomers($store->getWebsiteId());
+        $isEnabled = $this->config->getPosCstmNOCronEnabled();
+        $limit = $this->config->getPosCstmNOLimit();
+        if ($isEnabled) {
+            $customers = $this->customerCollectionFactory->create()
+                ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')])
+                ->setPageSize($limit)
+                ->getItems();
             foreach ($customers as $customer) {
                 /** @var \Magento\Customer\Model\Customer $customer */
+                $cstmId = $customer->getId();
                 try {
-                    $cstmId = $customer->getId();
                     $posCstmNO = $this->posIntg->synPosCstmNO($customer);
                     $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
                 } catch (\Exception $e) {
@@ -69,18 +74,5 @@ class SynPosCstmNO
             }
         }
         return $this;
-    }
-
-    /**
-     * @param $websiteId
-     * @return array
-     */
-    protected function _getCustomers($websiteId): array
-    {
-        $collection = $this->customerCollectionFactory->create()
-            ->addFieldToFilter('website_id', $websiteId)
-            ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')])
-            ->setPageSize($this->config->getPosCstmNOLimit($websiteId));
-        return $collection->getItems();
     }
 }
