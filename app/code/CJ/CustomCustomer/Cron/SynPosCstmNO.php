@@ -54,17 +54,20 @@ class SynPosCstmNO
 
     public function execute()
     {
-        foreach ($this->storeManager->getStores() as $store) {
-            $customers = $this->_getCustomers($store->getWebsiteId());
-            foreach ($customers as $customer) {
-                /** @var \Magento\Customer\Model\Customer $customer */
-                try {
+        $isEnabled = $this->config->getPosCstmNOCronEnabled();
+        if ($isEnabled) {
+            foreach ($this->storeManager->getStores() as $store) {
+                $customers = $this->_getCustomers($store->getWebsiteId());
+                foreach ($customers as $customer) {
+                    /** @var \Magento\Customer\Model\Customer $customer */
                     $cstmId = $customer->getId();
-                    $posCstmNO = $this->posIntg->synPosCstmNO($customer);
-                    $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
-                } catch (\Exception $e) {
-                    $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $cstmId));
-                    $this->logger->error($e->getMessage(), ['id' => $cstmId]);
+                    try {
+                        $posCstmNO = $this->posIntg->synPosCstmNO($customer);
+                        $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
+                    } catch (\Exception $e) {
+                        $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $cstmId));
+                        $this->logger->error($e->getMessage(), ['id' => $cstmId]);
+                    }
                 }
             }
         }
