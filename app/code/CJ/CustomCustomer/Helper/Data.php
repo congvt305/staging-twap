@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace CJ\CustomCustomer\Helper;
 
 use Magento\Framework\Exception\LocalizedException;
@@ -12,6 +12,8 @@ class Data
     const XML_PATH_LOGGING_ENABLED = 'cjcustomer/group/logging';
 
     const XML_PATH_POS_CSTM_NO_LIMIT = 'cjcustomer/poscstmno/limit';
+
+    const XML_PATH_POS_CSTM_NO_CRON_ENABLED = 'cjcustomer/poscstmno/enable_cron';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -83,5 +85,12 @@ class Data
      */
     public function getPosCstmNOLimit(?int $websiteId): int {
         return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LIMIT, 'website', $websiteId);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPosCstmNOCronEnabled(): bool {
+        return (bool) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_CRON_ENABLED);
     }
 }
