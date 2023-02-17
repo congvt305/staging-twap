@@ -55,35 +55,24 @@ class SynPosCstmNO
     public function execute()
     {
         $isEnabled = $this->config->getPosCstmNOCronEnabled();
+        $limit = $this->config->getPosCstmNOLimit();
         if ($isEnabled) {
-            foreach ($this->storeManager->getStores() as $store) {
-                $customers = $this->_getCustomers($store->getWebsiteId());
-                foreach ($customers as $customer) {
-                    /** @var \Magento\Customer\Model\Customer $customer */
-                    $cstmId = $customer->getId();
-                    try {
-                        $posCstmNO = $this->posIntg->synPosCstmNO($customer);
-                        $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
-                    } catch (\Exception $e) {
-                        $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $cstmId));
-                        $this->logger->error($e->getMessage(), ['id' => $cstmId]);
-                    }
+            $customers = $this->customerCollectionFactory->create()
+                ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')])
+                ->setPageSize($limit)
+                ->getItems();
+            foreach ($customers as $customer) {
+                /** @var \Magento\Customer\Model\Customer $customer */
+                $cstmId = $customer->getId();
+                try {
+                    $posCstmNO = $this->posIntg->synPosCstmNO($customer);
+                    $this->logger->info(__("Pos cstmno %1 for customer #%2 sync successful.", $posCstmNO, $cstmId));
+                } catch (\Exception $e) {
+                    $this->logger->error(__("Pos cstmno sync failed for customer #%1.", $cstmId));
+                    $this->logger->error($e->getMessage(), ['id' => $cstmId]);
                 }
             }
         }
         return $this;
-    }
-
-    /**
-     * @param $websiteId
-     * @return array
-     */
-    protected function _getCustomers($websiteId): array
-    {
-        $collection = $this->customerCollectionFactory->create()
-            ->addFieldToFilter('website_id', $websiteId)
-            ->addFieldToFilter('pos_cstm_no', ['is' => new \Zend_Db_Expr('null')])
-            ->setPageSize($this->config->getPosCstmNOLimit($websiteId));
-        return $collection->getItems();
     }
 }
