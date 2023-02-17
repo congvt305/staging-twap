@@ -80,11 +80,10 @@ class Data
     }
 
     /**
-     * @param int|null $websiteId
      * @return int
      */
-    public function getPosCstmNOLimit(?int $websiteId): int {
-        return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LIMIT, 'website', $websiteId);
+    public function getPosCstmNOLimit(): int {
+        return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LIMIT);
     }
 
     /**

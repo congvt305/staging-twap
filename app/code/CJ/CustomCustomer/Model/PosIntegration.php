@@ -39,6 +39,11 @@ class PosIntegration
     protected $logger;
 
     /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
+
+    /**
      * @param \Amore\CustomerRegistration\Model\POSSystem $posSystem
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Customer\Model\AddressRegistry $addressRegistry
@@ -48,13 +53,15 @@ class PosIntegration
         \Amore\CustomerRegistration\Model\POSSystem $posSystem,
         \Magento\Customer\Model\AddressRegistry $addressRegistry,
         \CJ\CustomCustomer\Helper\Data $config,
-        \CJ\CustomCustomer\Logger\Logger $logger
+        \CJ\CustomCustomer\Logger\Logger $logger,
+        \Magento\Framework\Serialize\Serializer\Json $json
     ) {
         $this->customerRepository = $customerRepository;
         $this->posSystem = $posSystem;
         $this->addressRegistry = $addressRegistry;
         $this->config = $config;
         $this->logger = $logger;
+        $this->json = $json;
     }
 
     /**
@@ -80,11 +87,10 @@ class PosIntegration
             throw new \Exception("Can't get mobile phone number");
         }
         $posData = $this->posSystem->getMemberInfo($firstName, $lastName, $mobileNumber, $storeId);
-
         if (!isset($posData[self::CSTM_NO])) {
             if ($logEnabled) {
                 $this->logger->info("POST DATA INFO WHEN CALL API TO SYN POS CUSTOMER ID FAILED");
-                $this->logger->info(json_encode($posData));
+                $this->logger->info($this->json->serialize($posData));
             }
             throw new \Exception("POS has no data cstmNO");
         }
