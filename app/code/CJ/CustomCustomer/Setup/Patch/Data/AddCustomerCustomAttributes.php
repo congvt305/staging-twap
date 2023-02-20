@@ -139,6 +139,7 @@ class AddCustomerCustomAttributes
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }
+
             $this->assignAttributeToForms($attributeCode);
         }
     }
