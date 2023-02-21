@@ -5,7 +5,7 @@
     <indexer id="customer_grid" view_id="customer_dummy" class="Magento\Framework\Indexer\Action\Entity" primary="customer">
         <fieldset name="customer" source="Magento\Customer\Model\Indexer\Source"
                   provider="Magento\Customer\Model\Indexer\AttributeProvider">
-            <field name="pos_cstm_no" xsi:type="searchable" dataType="text"/>
+            <field name="pos_cstm_no" xsi:type="filterable" dataType="varchar"/>
         </fieldset>
     </indexer>
 </config>
