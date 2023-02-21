@@ -7,6 +7,7 @@ use Amasty\AdvancedReview\Model\Email\CouponConditionsProvider;
 use Amasty\AdvancedReview\Model\Email\CouponDataProvider;
 use Amasty\AdvancedReview\Model\Email\Flag;
 use Amasty\Base\Model\Serializer;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\SalesRule\Api\Data\RuleInterface;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
@@ -121,8 +122,33 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
         $this->date = $date;
     }
 
+    /**
+     * @param WebsiteInterface $website
+     * @return Rule
+     */
+    public function getRule(WebsiteInterface $website): Rule
+    {
+        try {
+            $rule = $this->ruleRepository->getById($this->flag->getRuleIdByWebsiteId((int)$website->getId()));
+            $rule = $this->toModelConverter->toModel($rule);
+            $now = $this->date->date('Y-m-d');
+
+            if (!$rule->getIsActive() || !($rule->getFromDate() <= $now && $rule->getToDate() >= $now)) {
+                $rule = $this->ruleFactory->create();
+            }
+        } catch (NoSuchEntityException $exception) {
+            $rule = $this->ruleFactory->create();
+        }
+
+        $rule = $this->buildRule($rule, $website);
+        $this->flag->addRuleIdByWebsite((int)$rule->getRuleId(), (int)$website->getId());
+
+        return $this->toModelConverter->toModel($rule);
+    }
 
     /**
+     * Override get data follow store view
+     *
      * @param Rule $rule
      * @param WebsiteInterface $website
      * @return RuleInterface
