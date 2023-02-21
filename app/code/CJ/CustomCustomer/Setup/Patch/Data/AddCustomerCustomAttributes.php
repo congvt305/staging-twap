@@ -102,7 +102,7 @@ class AddCustomerCustomAttributes
                 self::IS_USED_IN_GRID => 1,
                 self::IS_VISIBLE_IN_GRID => 1,
                 self::IS_FILTERABLE_IN_GRID => 1,
-                self::IS_SEARCHABLE_IN_GRID => 1
+                self::IS_SEARCHABLE_IN_GRID => 0
             ]
         ];
 
