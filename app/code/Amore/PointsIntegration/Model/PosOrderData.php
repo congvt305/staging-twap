@@ -545,6 +545,11 @@ class PosOrderData
 
                         $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
                     }
+                } else {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
+                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
+                    }
                 }
             }
         }
