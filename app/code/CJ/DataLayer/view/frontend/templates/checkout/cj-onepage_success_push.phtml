@@ -1,0 +1,25 @@
+<?php
+/** @var \CJ\DataLayer\Block\DataLayer $block */
+/** @var \CJ\DataLayer\ViewModel\Data $viewModel */
+$viewModel = $block->getData('view_model');
+$orderData = $block->getCJPurchaseData();
+$orderId = $block->getOrderId();
+
+?>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        "event": "productPurchase",
+        "ecommerce": {
+            "currency" : "<?= $viewModel->getCurrencyCode() ?>",
+            "purchase" : {
+                "actionField": {
+                    "id": CJ_PURCHASE_ORDER_ID,
+                    "revenue": CJ_PURCHASE_PRICE,
+                    "shipping": CJ_PURCHASE_SHIPPING
+                },
+                "products" : CJ_PURCHASE_PRDS
+            }
+        }
+    })
+</script>

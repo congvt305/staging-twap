@@ -8,7 +8,7 @@ $viewModel = $block->getData('view_model');
     {
         "*": {
             "CJ_DataLayer/js/actions/product-detail": {
-                "currency": "TWD",
+                "currency": "<?= $viewModel->getCurrencyCode() ?>",
                 "products": {
                     "name": "<?= $block->escapeHtml($currentProduct->getName()) ?>",
                     "id": "<?= $block->escapeHtml($currentProduct->getSku()) ?>",

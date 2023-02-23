@@ -1,22 +1,15 @@
-<?xml version="1.0"?>
-<!--
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="after.body.start">
             <block class="CJ\DataLayer\Block\DataLayer"
-                   name="cj_product_detail"
-                   after="-"
-                   template="CJ_DataLayer::catalog/cj-product-detail.phtml" >
-            </block>
+                   name="cj_onepage_success"
+                   cacheable="false"
+                   template="CJ_DataLayer::checkout/cj-onepage_success.phtml" />
         </referenceContainer>
         <referenceContainer name="before.body.end">
-            <block class="CJ\DataLayer\Block\DataLayer" name="product_view_detail_datalayer"
-                   template="CJ_DataLayer::detail-product.phtml">
+            <block name="order_success_datalayer_push"
+                   after="-"
+                   template="CJ_DataLayer::checkout/cj-onepage_success_push.phtml" >
                 <arguments>
                     <argument name="view_model" xsi:type="object">CJ\DataLayer\ViewModel\Data</argument>
                 </arguments>
