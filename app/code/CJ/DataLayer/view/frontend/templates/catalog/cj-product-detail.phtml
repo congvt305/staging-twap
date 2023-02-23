@@ -1,0 +1,17 @@
+<?php
+/** @var \CJ\DataLayer\Block\DataLayer $block */
+$currentProduct = $block->getCurrentProduct();
+$productInfo = $block->getProductInfo($currentProduct);
+?>
+<script>
+    var CJ_PRD_NAME = "<?= $block->escapeHtml($currentProduct->getName())?>";
+    var CJ_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
+    var CJ_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
+    var CJ_PRD_BRAND = "<?= $block->escapeHtml($currentProduct->getBctxten())?>";
+    var CJ_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
+    var PRD_DATA = [
+        <?php foreach($productInfo as $info) : ?>
+        <?= $info ?>,
+        <?php endforeach; ?>
+    ];
+</script>
