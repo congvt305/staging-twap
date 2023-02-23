@@ -2,10 +2,10 @@
 
 namespace Amore\PointsIntegration\Observer;
 
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\PointsIntegration\Model\Source\Config as PointConfig;
+use Magento\Rma\Model\ResourceModel\Rma\CollectionFactory;
 use Magento\Sales\Model\Order;
 use \Magento\Sales\Model\OrderRepository;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
@@ -14,13 +14,6 @@ use Amore\PointsIntegration\Logger\Logger;
 
 class SaveCustomerGradeToOrder implements ObserverInterface
 {
-    const STORE_WEBSITE_CODE = ['default', 'tw_laneige'];
-
-    /**
-     * const POS_CUSTOMER_GRADE
-     */
-    const POS_CUSTOMER_GRADE = 'pos_customer_grade';
-
     /**
      * @var PointConfig
      */
@@ -30,6 +23,11 @@ class SaveCustomerGradeToOrder implements ObserverInterface
      * @var OrderRepository
      */
     protected $orderRepository;
+
+    /**
+     * @var CollectionFactory
+     */
+    protected $rmaCollectionFactory;
 
     /**
      * @var CustomerPointsSearch
@@ -45,28 +43,26 @@ class SaveCustomerGradeToOrder implements ObserverInterface
     protected $logger;
 
     /**
-     * @var RequestInterface
+     * const POS_CUSTOMER_GRADE
      */
-    private $request;
+    const POS_CUSTOMER_GRADE = 'pos_customer_grade';
 
     /**
      * @param PointConfig $pointConfig
      * @param OrderRepository $orderRepository
      */
     public function __construct(
-        PointConfig $pointConfig,
-        OrderRepository $orderRepository,
+        PointConfig          $pointConfig,
+        OrderRepository      $orderRepository,
         CustomerPointsSearch $customerPointsSearch,
-        Config $config,
-        Logger $logger,
-        RequestInterface $request
+        Config               $config,
+        Logger               $logger
     ){
         $this->pointConfig = $pointConfig;
         $this->orderRepository = $orderRepository;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->config = $config;
         $this->logger = $logger;
-        $this->request = $request;
     }
 
     /**
@@ -81,24 +77,21 @@ class SaveCustomerGradeToOrder implements ObserverInterface
         $order = $observer->getEvent()->getOrder();
         $customerId = $order->getCustomerId();
         $moduleActive = $this->pointConfig->getActive($order->getStore()->getWebsiteId());
-        if ($moduleActive && in_array($order->getStore()->getCode(), self::STORE_WEBSITE_CODE)) {
+        if ($moduleActive) {
             try {
-                if ($customerId) {
-                    //if in case from place order so check customer grade in order also
-                    if (preg_match('/payment-information/', $this->request->getUri()->getPath()) && !$order->getData(self::POS_CUSTOMER_GRADE)
-                        || !preg_match('/payment-information/', $this->request->getUri()->getPath())) {
-                        $websiteId = $order->getStore()->getWebsiteId();
-                        $customerGrade = $this->getCustomerGrade($customerId, $websiteId);
-                        if ($customerGrade && ($customerGrade != $order->getData(self::POS_CUSTOMER_GRADE))) {
-                            $order->setData(self::POS_CUSTOMER_GRADE, $customerGrade);
-                            $this->orderRepository->save($order);
-                        }
+                if ($customerId && !$order->getData(self::POS_CUSTOMER_GRADE)) {
+                    $websiteId = $order->getStore()->getWebsiteId();
+                    $customerGrade = $this->getCustomerGrade($customerId, $websiteId);
+                    if($customerGrade) {
+                        $order->setData(self::POS_CUSTOMER_GRADE, $customerGrade);
+                        $this->orderRepository->save($order);
                     }
-                } else {
-                    $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: " . "customerID: " . $customerId . ";" . "orderID: " . $order->getIncrementId());
+                    else {
+                        $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: " . "customerID: " . $customerId . ";" . "orderID: " . $order->getIncrementId());
+                    }
                 }
             } catch (\Exception $exception) {
-                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: " . "message" . $exception->getMessage());
+                $this->logger->info("CUSTOMER POINTS INFO WHEN CALL API TO GET CUSTOMER GRADE FAILED: ". "message". $exception->getMessage());
             }
         }
     }
