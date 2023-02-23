@@ -13,6 +13,7 @@ class CreateCustomer
 {
     const IS_POS = 'isPos';
     const SALOFFCD= 'salOffCd';
+
    /**
      * @var Data
      */
@@ -34,6 +35,11 @@ class CreateCustomer
     private Logger $logger;
 
     /**
+     * @var \Eguana\Directory\Model\ResourceModel\City\CollectionFactory
+     */
+    private $cityCollectionFactory;
+
+    /**
      * @param Logger $logger
      * @param Data $configHelper
      * @param StoreRepository $storeRepository
@@ -43,12 +49,14 @@ class CreateCustomer
         Logger $logger,
         Data $configHelper,
         StoreRepository $storeRepository,
-        Request $request
+        Request $request,
+        \Eguana\Directory\Model\ResourceModel\City\CollectionFactory $cityCollectionFactory
     ) {
         $this->logger = $logger;
         $this->configHelper = $configHelper;
         $this->storeRepository = $storeRepository;
         $this->request = $request;
+        $this->cityCollectionFactory = $cityCollectionFactory;
     }
 
     /**
@@ -71,7 +79,19 @@ class CreateCustomer
             if ($data && isset($data[self::IS_POS]) && isset($data[self::SALOFFCD]) && $data[self::IS_POS] == 1) {
                 $customerWebsiteId = $this->getCustomerWebsiteId($data[self::SALOFFCD]);
                 $customer->setWebsiteId($customerWebsiteId);
+                if ($addresses = $customer->getAddresses()) {
+                    foreach ($addresses as $address) {
+                        if ($address->getCity()) {
+                            $cityCollection = $this->cityCollectionFactory->create();
+                            $cityData = $cityCollection->addFieldToFilter('main_table.default_name', $address->getCity())->getFirstItem();
+                            if ($cityData->getRegionId()) {
+                                $address->getRegion()->setRegionId($cityData->getRegionId());
+                            }
+                        }
+                    }
+                }
             }
+
         } catch (\Throwable $throwable) {
             $this->logger->error($throwable->getMessage());
         }
