@@ -289,6 +289,7 @@ class Payment
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_TIMEOUT => 60,
                 CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POSTFIELDS => $request,
                 CURLOPT_HEADER => false,
                 CURLOPT_VERBOSE => true,
                 CURLOPT_SSL_VERIFYPEER => false,
@@ -300,7 +301,7 @@ class Payment
                 ]
             ]
         );
-        $this->curlClient->post($apiUrl, $request);
+        $this->curlClient->post($apiUrl, []);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
         $logParameters['response'] = $response;
         $message = 'Confirm Payment API Call';
