@@ -90,6 +90,15 @@ class CreateCustomer
                         }
                     }
                 }
+                $customer->setCustomAttribute(
+                    'sales_organization_code',
+                    $this->configHelper->getOrganizationSalesCode($customerWebsiteId)
+                );
+                $customer->setCustomAttribute(
+                    'sales_office_code',
+                    $this->configHelper->getOfficeSalesCode($customerWebsiteId)
+                );
+                $customer->setCustomAttribute('partner_id', $this->configHelper->getPartnerId($customerWebsiteId));
             }
 
         } catch (\Throwable $throwable) {
