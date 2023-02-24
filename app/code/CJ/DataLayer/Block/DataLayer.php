@@ -23,6 +23,8 @@ class DataLayer extends \Amore\GaTagging\Block\GaTagging
 
     protected $orderRepository;
 
+    protected $categoryRepository;
+
     protected $selectionCollectionFactory;
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
@@ -33,6 +35,7 @@ class DataLayer extends \Amore\GaTagging\Block\GaTagging
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Framework\Registry $registry,
         \Amore\GaTagging\Helper\Data $helper,
         Template\Context $context,
@@ -43,6 +46,7 @@ class DataLayer extends \Amore\GaTagging\Block\GaTagging
         $this->checkoutSession = $checkoutSession;
         $this->orderRepository = $orderRepository;
         $this->selectionCollectionFactory = $selectionCollectionFactory;
+        $this->categoryRepository = $categoryRepository;
         parent::__construct($productRepository, $messageManager, $orderRepository, $selectionCollectionFactory, $logger, $customerSession, $checkoutSession, $jsonSerializer, $registry, $helper, $context, $data);
     }
 
@@ -247,12 +251,15 @@ class DataLayer extends \Amore\GaTagging\Block\GaTagging
      * {@inheritDoc}
      */
     public function getProductCategory($product) {
-        $attributeCode = 'product_types';
-//        $productTypesAttr = $product->getCustomAttribute($attributeCode);
-//        return $productTypesAttr->getFrontend()->getValue($product);
+        $productCategory = "";
         $categoryIds = $product->getCategoryIds();
-        //skincare => 16,256, make up => 19,259, homme =>  22,262
+        $storeId = $product->getStoreId();
+        $firstCategoryId = reset($categoryIds);
+        if ($firstCategoryId) {
+            $catInstance = $this->categoryRepository->get($firstCategoryId, $storeId);
+            $productCategory = $catInstance->getName();
+        }
 
-        return '스킨케어'; // skin care
+        return $productCategory;
     }
 }
