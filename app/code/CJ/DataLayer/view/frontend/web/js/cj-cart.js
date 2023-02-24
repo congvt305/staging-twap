@@ -52,15 +52,13 @@ define([
                     });
                 }
                 console.log('cjCartAddProds:',cjCartAddProds);
-                window.AP_CART_ADDPRDS = cjCartAddProds;
-                this.options.dataLayer.push({'event': 'addcart'});
-                console.log('debug cj-cart.js')
+                window.CJ_CART_ADDPRDS = cjCartAddProds;
                 this.options.dataLayer.push({
                     'event': 'productAddToCart',
                     'ecommerce': {
-                        'currency': 'TW',
+                        'currency': CJ_PRD_CURRENCY,
                         'add': {
-                            'products': cjCartAddProds
+                            'products': CJ_CART_ADDPRDS
                         }
                     }
                 });
@@ -68,7 +66,7 @@ define([
         },
 
         getBundleProductData: function (product) {
-            var productInfosArr = window.PRD_DATA;
+            var productInfosArr = window.CJ_PRD_DATA;
             productInfosArr.forEach(function (productInfo) {
                 productInfo.price = parseInt(product.product_price_value * productInfo.rate);
                 productInfo.quantity = parseInt(productInfo.quantity * product.qty);
@@ -80,15 +78,23 @@ define([
             var productInfosArr = [];
             var productInfo = {
                 'name': product.product_name,
-                'id': product.product_sku,
+                'code': product.product_sku,
+                'v2code': product.product_id,
+                'sapcode': product.product_sku,
+                'brand': product.product_brand,
                 'price': product.product_price_value,
+                'prdprice': parseInt(product.product_original_price),
+                'variant': '',
+                'promotion': '',
+                'cate': '',
+                'catecode': '',
                 'quantity': product.qty,
             }
             productInfosArr.push(productInfo);
             return productInfosArr;
         },
         getConfigurableProductData: function (product) {
-            var productInfosArr = window.PRD_DATA;
+            var productInfosArr = window.CJ_PRD_DATA;
             var selectedProductInfo = [];
             productInfosArr.forEach(function (productInfo) {
                 if (productInfo.code === product.product_sku) {
