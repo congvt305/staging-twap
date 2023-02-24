@@ -100,7 +100,7 @@ class Redirect extends Action implements HttpGetActionInterface
                 $quote->getPayment()->save();
                 $this->linePayLogger->addAPICallLog('LinePay additional data (Via mobile)', $additionalData);
             }
-            if (!($result['status'] === 'Failure')) {
+            if ($result['status'] === 'missing' || !($result['status'] === 'Failure')) {
                 $this->_redirect($result['url']);
             }
             if ($result['status'] === 'Failure') {
