@@ -10,6 +10,8 @@
 namespace Eguana\LinePay\Model;
 
 use Eguana\LinePay\Model\Quote as LinePayModel;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\Client\Curl;
 use Eguana\LinePay\Helper\Data;
 use Magento\Framework\UrlInterface;
@@ -145,7 +147,15 @@ class Payment
         }
 
         //request payment api call
-        $response = $this->requestPayment();
+        try{
+            $response = $this->requestPayment();
+        } catch (LocalizedException $e) {
+            return [
+                'status' => 'missing',
+                'url' => 'checkout/cart'
+            ];
+        }
+
         if ($response['returnCode'] == '0000') {
             try {
                 $quote->getPayment()->setAdditionalInformation(
@@ -190,7 +200,9 @@ class Payment
 
     /**
      * Request payment api
+     *
      * @return array|bool|float|int|string|null
+     * @throws \Exception
      */
     private function requestPayment()
     {
