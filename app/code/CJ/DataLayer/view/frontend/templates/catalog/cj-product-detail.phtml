@@ -8,8 +8,9 @@ $productInfo = $block->getProductInfo($currentProduct);
     var CJ_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
     var CJ_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
     var CJ_PRD_BRAND = "<?= $block->escapeHtml($currentProduct->getBctxten())?>";
-    var CJ_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
-    var PRD_DATA = [
+    var CJ_PRD_CATEGORY = "<?= $block->escapeHtml($block->getRooCategory())?>";
+    var CJ_PRD_CURRENCY = "<?= $block->escapeHtml($block->getCurrentCurrency()) ?>";
+    var CJ_PRD_DATA = [
         <?php foreach($productInfo as $info) : ?>
         <?= $info ?>,
         <?php endforeach; ?>

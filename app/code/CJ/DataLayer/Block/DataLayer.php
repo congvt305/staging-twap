@@ -262,4 +262,8 @@ class DataLayer extends \Amore\GaTagging\Block\GaTagging
 
         return $productCategory;
     }
+
+    public function getCurrentCurrency() {
+        return $this->_storeManager->getStore()->getCurrentCurrency()->getCode();
+    }
 }
