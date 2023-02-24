@@ -72,7 +72,7 @@ class CreateAccountPlugin
             $baseUrl = $this->storeManager->getStore($customer->getStoreId())->getBaseUrl();
             if ($this->isPOSRequest()) {
                 $lineId = $customer->getCustomAttribute('line_id') ? $customer->getCustomAttribute('line_id')->getValue() : '';
-                $resetPasswordUrl = $baseUrl . self::RESET_PASSWORD_PATH . $customerRegistry->getRpToken();
+                $resetPasswordUrl = $baseUrl . self::RESET_PASSWORD_PATH . $customerRegistry->getRpToken() . '&id=' . $customer->getId();
                 $websiteId = $customer->getWebsiteId();
                 if ($lineId) {
                     $this->lineShoppingApi->sendMessageToLine($lineId, $resetPasswordUrl, $websiteId);
