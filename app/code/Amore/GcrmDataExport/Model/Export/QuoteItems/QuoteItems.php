@@ -43,7 +43,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
     /**#@+
      * Constants for Quote Items Attributes.
      */
-    protected $headColumnNames = [
+    const HEADER_COLUMN_NAMES = [
         self::QUOTE_ITEM_ITEM_ID => 'item_id',
         self::QUOTE_ITEM_QUOTE_ID => 'quote_id',
         self::QUOTE_ITEM_CREATED_AT => 'created_at',
@@ -103,9 +103,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         self::QUOTE_ITEM_BASE_WEEE_TAX_DISPOSITION => 'base_weee_tax_disposition',
         self::QUOTE_ITEM_BASE_WEEE_TAX_ROW_DISPOSITION => 'base_weee_tax_row_disposition',
         self::QUOTE_ITEM_FREE_SHIPPING => 'free_shipping',
-        self::QUOTE_ITEM_GIFTREGISTRY_ITEM_ID => 'giftregistery_item_id',
-        self::QUOTE_ITEM_PAYPAL_PRICE => 'paypal_price',
-        self::QUOTE_ITEM_PAYPAL_ROW_TOATL => 'paypal_row_total',
+        self::QUOTE_ITEM_GIFTREGISTRY_ITEM_ID => 'giftregistery_item_id'
     ];
     /**#@-*/
 
@@ -219,15 +217,9 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
 
         $index = 0;
         $headersData = [];
+        $writer->setHeaderCols($this->_getHeaderColumns());
         foreach ($quoteItemsData as $quoteItems) {
             foreach ($quoteItems as $item) {
-                if ($index == 0) {
-                    foreach (array_keys($item) as $key) {
-                        $headersData[] = $key;
-                        $index += 1;
-                    }
-                    $writer->setHeaderCols($headersData);
-                }
                 $writer->writeSourceRowWithCustomColumns($item);
             }
         }
@@ -280,11 +272,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
      */
     protected function _getHeaderColumns()
     {
-        $header = [];
-        foreach ($this->headColumnNames as $englishColumn) {
-            $header[] = $englishColumn;
-        }
-        return $header;
+        return self::HEADER_COLUMN_NAMES;
     }
 
     /**
