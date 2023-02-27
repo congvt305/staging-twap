@@ -8,6 +8,19 @@
 
 <script>
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({'event': 'purchase'})
+    window.dataLayer.push({
+        'event': 'productPurchase',
+        'ecommerce': {
+            'currency': AP_PURCHASE_CURRENCY,
+            'purchase': {
+                'actionField': {
+                    'id': AP_PURCHASE_ORDERNUM,
+                    'revenue': AP_PURCHASE_PRICE,
+                    'shipping': AP_PURCHASE_SHIPPING,
+                    'products': AP_PURCHASE_PRDS
+                }
+            }
+        }
+    })
 </script>
 
