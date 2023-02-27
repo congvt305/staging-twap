@@ -51,9 +51,16 @@ define([
                         apCartAddProds.push(info);
                     });
                 }
-                console.log('apCartAddProds:',apCartAddProds);
                 window.AP_CART_ADDPRDS = apCartAddProds;
-                this.options.dataLayer.push({'event': 'addcart'});
+                this.options.dataLayer.push({
+                    'event': 'productAddToCart',
+                    'ecommerce': {
+                        'currency': AP_PRD_CURRENCY,
+                        'add': {
+                            'products': apCartAddProds
+                        }
+                    }
+                });
             }.bind(this);
         },
 
