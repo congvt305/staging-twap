@@ -105,7 +105,7 @@ class Quote
             $reserveId = $origReserveId.$timestamp;
             $currentQuote = $this->quoteRepository->get($this->checkoutSession->getQuote()->getId());
             $shippingAddress = $currentQuote->getShippingAddress();
-            if ($shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
+            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
                 throw new LocalizedException(__('The shipping address is missing. Set the address and try again.'));
             }
             $currentQuote->setData('reserved_order_id', $origReserveId);
