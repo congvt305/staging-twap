@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <points_integration>
+            <referral_setting>
+                <default_bc_referral_code>AP GECP</default_bc_referral_code>
+            </referral_setting>
+        </points_integration>
+    </default>
+</config>
