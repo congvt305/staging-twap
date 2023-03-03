@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amore\StaffReferral\Api\Data\ReferralInformationInterface" type="Amore\StaffReferral\Model\Data\ReferralInformation"/>
+    <preference for="Amore\StaffReferral\Api\ReferralCodeManagementInterface" type="Amore\StaffReferral\Model\ReferralCodeManagement"/>
+    <preference for="Amore\StaffReferral\Api\GuestReferralCodeManagementInterface" type="Amore\StaffReferral\Model\GuestReferralCodeManagement"/>
+    <preference for="Amore\StaffReferral\Api\ReferralApplyResultInterface" type="Amore\StaffReferral\Model\ReferralApplyResult"/>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="referral_ba_code" xsi:type="string">sales_order.referral_ba_code</item>
+                <item name="referral_ff_code" xsi:type="string">sales_order.referral_ff_code</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="apply-referral-condition" type="Amore\StaffReferral\Plugin\ApplyReferralCartRule"/>
+    </type>
+</config>

@@ -9,6 +9,8 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use Amore\StaffReferral\Api\Data\ReferralInformationInterface;
+use Amore\StaffReferral\Helper\Config as ReferralConfig;
 use CJ\Middleware\Helper\Data;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -22,6 +24,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Rma\Api\Data\CommentInterfaceFactory;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -108,6 +111,11 @@ class PosReturnData
     private $middlewareHelper;
 
     /**
+     * @var ReferralConfig
+     */
+    private $referralConfig;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -141,9 +149,9 @@ class PosReturnData
         \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory,
         Logger                                                 $pointsIntegrationLogger,
         CommentInterfaceFactory                                $commentInterfaceFactory,
-        Data                                                   $middlewareHelper
-    )
-    {
+        Data                                                   $middlewareHelper,
+        ReferralConfig $referralConfig
+    ) {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -160,6 +168,7 @@ class PosReturnData
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->middlewareHelper = $middlewareHelper;
+        $this->referralConfig = $referralConfig;
     }
 
     /**
@@ -178,6 +187,7 @@ class PosReturnData
         $rmaItem = $this->getRmaItemData($rma);
         $invoice = $order->getInvoiceCollection()->getFirstItem();
         $couponCode = $order->getCouponCode();
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
 
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -188,7 +198,8 @@ class PosReturnData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_RETURN,
             'promotionKey' => $couponCode,
-            'orderInfo' => $rmaItem
+            'orderInfo' => $rmaItem,
+            'baReferralCode' => $baReferralCode
         ];
 
         return $rmaData;
@@ -658,5 +669,26 @@ class PosReturnData
         }
 
         return (int)$price;
+    }
+
+
+    /**
+     * @param $order
+     * @param $websiteId
+     * @return float|mixed|string|null
+     */
+    protected function getReferralBACode($order, $websiteId)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
+            } elseif ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+            } else {
+                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+            }
+        }
+
+        return '';
     }
 }

@@ -1,0 +1,112 @@
+<div class="payment-option _collapsible opc-payment-additional referral-code">
+    <div class="payment-option-title field choice referral-title" data-referral-js="step-title">
+        <span  data-bind="i18n: 'Referral Code'"></span>
+    </div>
+    <div id="checkout-step-referral" class="step-content referral-content payment-option-content"
+         data-referral-js="step-content" data-role="content"
+         role="tabpanel" aria-hidden="false">
+        <div class="referral-type-container">
+            <div id="bc-radio" data-bind="css: {'_active': referralType() == 1}">
+                <input type="radio" id="referral-type-bc" class="radio" name="referralType" value="1" data-bind="checked: referralType" />
+                <label class="label" for="referral-type-bc"><span data-bind="i18n: 'BC Code'"></span></label>
+            </div>
+            <div id="ff-radio" data-bind="css: {'_active': referralType() == 2}">
+                <input type="radio" id="referral-type-ff" class="radio" name="referralType" value="2" data-bind="checked: referralType" />
+                <label class="label" for="referral-type-ff"><span data-bind="i18n: 'FF Code'"></span></label>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="referral-form payment-option-content">
+            <form class="form form-discount" id="referral-form" data-bind="blockLoader: isLoading">
+                <!-- ko if: isBcForm -->
+                <div class="payment-option-title field choice" data-role="title">
+                    <span class="action amcp-title" id="block-bc-code-heading" role="heading" aria-level="2">
+                        <!-- ko i18n: 'Enter beauty consultant No.'--><!-- /ko -->
+                    </span>
+                </div>
+                <div class="referral-main-container payment-option-content"  aria-labelledby="block-referral-heading">
+                    <div class="payment-option-inner">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input-text"
+                                       type="text"
+                                       id="bc-code"
+                                       name="bc_referral"
+                                       data-validate="{'required-entry':true}"
+                                       data-bind="value: referralCode, attr:{placeholder: $t('7-8 digits number only'), disabled: canResetBC}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-toolbar">
+                            <div class="primary">
+                                <!-- ko ifnot: canResetBC -->
+                                <button class="refferral-button action primary action-apply"
+                                        type="submit"
+                                        data-bind="'value': $t('Apply'), click: apply">
+                                    <!-- ko i18n: 'Apply'--><!-- /ko -->
+                                </button>
+                                <!-- /ko -->
+                                <!-- ko if: canResetBC -->
+                                <button class="refferral-button action primary action-apply"
+                                        type="submit"
+                                        data-bind="'value': $t('Reset'), click: reset">
+                                    <!-- ko i18n: 'Reset'--><!-- /ko -->
+                                </button>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    <!-- ko foreach: getRegion('captcha') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: isBcForm -->
+                <div class="payment-option-title field choice" data-role="title">
+                    <span class="action amcp-title" id="block-ff-code-heading" role="heading" aria-level="2">
+                        <!-- ko i18n: 'Enter Family code No.'--><!-- /ko -->
+                    </span>
+                </div>
+                <div class="referral-main-container payment-option-content"  aria-labelledby="block-discount-heading">
+                    <div class="payment-option-inner">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input-text"
+                                       type="text"
+                                       id="ff-phonenumber"
+                                       name="posPhoneNumber"
+                                       data-validate="{'required-entry':true}"
+                                       data-bind="value: posPhoneNumber, attr:{placeholder: $t('Phone Number'), disabled: canResetFF}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-toolbar">
+                        <div class="primary">
+                            <!-- ko ifnot: canResetFF -->
+                            <button class="refferral-button action primary action-apply"
+                                    type="submit"
+                                    data-bind="'value': $t('Apply'), click: apply">
+                                <!-- ko i18n: 'Apply'--><!-- /ko -->
+                            </button>
+                            <!-- /ko -->
+                            <!-- ko if: canResetFF -->
+                            <button class="refferral-button action primary action-apply"
+                                    type="submit"
+                                    data-bind="'value': $t('Reset'), click: reset">
+                                <!-- ko i18n: 'Reset'--><!-- /ko -->
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- ko foreach: getRegion('captcha') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </form>
+            <!-- ko foreach: getRegion('messages') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<hr>
