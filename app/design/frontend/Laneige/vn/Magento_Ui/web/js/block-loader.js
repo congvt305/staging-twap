@@ -47,7 +47,7 @@ define([
         element.find(':focus').trigger('blur');
         element.find('input:disabled, select:disabled').addClass('_disabled');
         // CUSTOM HERE
-        element.find('input:not("#discount-code"), select').prop('disabled', true);
+        element.find('input:not("#discount-code, #bc-code, #ff-phonenumber"), select').prop('disabled', true);
         // END CUSTOM
         if (isLoadingClassRequired(element)) {
             element.addClass(blockContentLoadingClass);
@@ -65,7 +65,7 @@ define([
         }
         element.find(blockLoaderClass).remove();
         // CUSTOM HERE
-        element.find('input:not("._disabled,#discount-code"), select:not("._disabled")').prop('disabled', false);
+        element.find('input:not("._disabled,#discount-code, #bc-code, #ff-phonenumber"), select:not("._disabled")').prop('disabled', false);
         // END CUSTOM
         element.find('input:disabled, select:disabled').removeClass('_disabled');
         element.removeClass(blockContentLoadingClass);
