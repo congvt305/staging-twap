@@ -50,7 +50,7 @@ define([
             null,
             headers
         ).done(function (response) {
-            var deferred, message;
+            var deferred;
 
             if (response) {
                 deferred = $.Deferred();
@@ -59,15 +59,13 @@ define([
                 recollectShippingRates();
                 getPaymentInformationAction(deferred);
                 messageContainer.clear();
-                message = messageContainer.addSuccessMessage({
+                messageContainer.addSuccessMessage({
                     'message': response.message
                 });
                 $.when(deferred).done(function () {
                     fullScreenLoader.stopLoader();
                     totals.isLoading(false);
-                    $.when(message).done(function () {
-                        referralInformation.onReset();
-                    });
+                    referralInformation.onReset();
                 });
                 //Allowing to tap into apply-coupon process.
                 successCallbacks.forEach(function (callback) {
