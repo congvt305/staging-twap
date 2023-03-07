@@ -13,7 +13,7 @@ $productInfo = $block->getProductInfo($currentProduct);
 if ($currentProduct->getTypeId() == 'bundle') {
     $price = $currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
 } else {
-    $price = $currentProduct->getFinalPrice();
+    $price = round($currentProduct->getFinalPrice());
 }
 $qty = ($currentProduct->isSaleable()) ? $block->getProductDefaultQty($currentProduct) * 1 : 0;
 ?>
