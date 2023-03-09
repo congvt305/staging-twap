@@ -229,6 +229,7 @@ class SmsSender implements SmsInterface
             $this->curl->setOption(CURLOPT_HTTPHEADER, $header);
             $this->curl->setOption(CURLOPT_HEADER, false);
             $this->curl->setOption(CURLOPT_POST, true);
+            $this->curl->setOption(CURLOPT_POSTFIELDS, json_encode($param));
             $this->logger->info("====START SENDING SMS====");
             $this->logger->info(__("Send request: %1", $this->json->serialize($param)));
             $this->curl->post($apiUrl, $param);
