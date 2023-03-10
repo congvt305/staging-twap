@@ -92,6 +92,11 @@ class RedemptionPos
         ],
         [
             'main_table',
+            'address',
+            'address'
+        ],
+        [
+            'main_table',
             'postcode',
             'postcode'
         ],
