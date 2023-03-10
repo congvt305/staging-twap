@@ -92,7 +92,7 @@ class RedemptionPos
         ],
         [
             'main_table',
-            'HomeAddr',
+            'homeAddr',
             'address'
         ],
         [
