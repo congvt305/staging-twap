@@ -92,22 +92,22 @@ class RedemptionPos
         ],
         [
             'main_table',
-            'address',
+            'HomeAddr',
             'address'
         ],
         [
             'main_table',
-            'postcode',
+            'homeZip',
             'postcode'
         ],
         [
             'main_table',
-            'city',
+            'homeCity',
             'city'
         ],
         [
             'main_table',
-            'region',
+            'homeState',
             'region'
         ]
     ];
@@ -360,7 +360,7 @@ class RedemptionPos
             if ($exportDate == "NULL") {
                 $collection = $this->counterCollectionFactory->create();
             } else {
-
+                $exportDate = '2023-01-09 06:51:27';
                 $collection = $this->counterCollectionFactory->create();
                 $connection = $collection->getConnection();
                 $collection
