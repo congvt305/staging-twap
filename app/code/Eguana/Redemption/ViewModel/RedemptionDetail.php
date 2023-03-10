@@ -474,4 +474,9 @@ class RedemptionDetail implements ArgumentInterface
     {
         return $this->redemptionConfiguration->getHomeDeliveryEnabled($this->getStoreId());
     }
+
+    public function isShowPostCodeRegionCity()
+    {
+        return $this->redemptionConfiguration->getIsShowPostCodeRegionCity($this->getStoreId());
+    }
 }
