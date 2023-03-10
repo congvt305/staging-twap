@@ -84,10 +84,14 @@
             "utm_content": true,
             "creation_time": true,
             "update_time": true,
-            "individual_number": true
+            "individual_number": true,
+            "postcode": true,
+            "city": true,
+            "region": true
         },
         "index": {
-            "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true
+            "EGUANA_REDEMPTION_USER_CUSTOMER_NAME": true,
+            "EGUANA_REDEMPTION_USER_INDIVIDUAL_NUMBER": true
         },
         "constraint": {
             "PRIMARY": true,

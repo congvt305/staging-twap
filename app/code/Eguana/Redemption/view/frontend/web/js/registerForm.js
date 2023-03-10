@@ -32,6 +32,7 @@ define([
         let utmSource = url.searchParams.get("utm_source");
         let utmMedium = url.searchParams.get("utm_medium");
         let utmContent = url.searchParams.get("utm_content");
+        let dmState = $('#dm_state');
         if (utmSource) {
           $('#utm_source').val(_.escape(utmSource));
         }
@@ -77,7 +78,10 @@ define([
                     $('#phone').removeClass('mage-error');
                     $('#phone-error').hide();
                 }
-
+                if (dmState.length) {
+                    let regionName = "<input name='region_name' value=" + $('#region_id option:selected').text() + " title='region_name' type='hidden'>";
+                    $('form[id="counter-form"]').append(regionName);
+                }
                 let formkey = "<input name='form_key' value=" + window.FORM_KEY + " title='form_key' type='hidden'>";
                 $('form[id="counter-form"]').append(formkey);
                 let form_data = $('form[id="counter-form"]').serialize();
