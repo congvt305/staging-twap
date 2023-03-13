@@ -81,9 +81,34 @@ class RedemptionPos
             'store_view'
         ],
         [
+            'storeview',
+            'store_id',
+            'store_id'
+        ],
+        [
             'main_table',
             'email',
             'email'
+        ],
+        [
+            'main_table',
+            'address',
+            'homeAddr'
+        ],
+        [
+            'main_table',
+            'postcode',
+            'homeZip'
+        ],
+        [
+            'main_table',
+            'city',
+            'homeCity'
+        ],
+        [
+            'main_table',
+            'region',
+            'homeState'
         ]
     ];
 
@@ -151,6 +176,11 @@ class RedemptionPos
     protected $configHelper;
 
     /**
+     * @var \CJ\Middleware\Helper\Data
+     */
+    protected $middlewareHelper;
+
+    /**
      * @inheritDoc
      */
     public function __construct(
@@ -168,6 +198,7 @@ class RedemptionPos
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\ImportExport\Model\Export\Factory $collectionFactory,
         \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $resourceColFactory,
+        \CJ\Middleware\Helper\Data $middlewareHelper,
         array $data = []
     ) {
         $this->configHelper = $configHelper;
@@ -180,6 +211,7 @@ class RedemptionPos
         $this->redemptionColFactory = $redemptionColFactory;
         $this->exportCollectionFactory = $exportCollectionFactory;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
         parent::__construct(
             $scopeConfig,
             $storeManager,
@@ -278,7 +310,14 @@ class RedemptionPos
         $cnt = 0;
 
         foreach ($collection as $item) {
-            $itemData = $this->dataHelper->fixSingleRowData($item->getData());
+            $rowData = $item->getData();
+            // Add sales organization code, sales office code columns
+            $storeId = $rowData['store_id'] ? (int)$rowData['store_id'] : '';
+            $rowData['sales_organization_code'] = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+            $rowData['sales_office_code'] = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
+            unset($rowData['store_id']);
+
+            $itemData = $this->dataHelper->fixSingleRowData($rowData);
             $itemRow[$item->getIncrementId()][$cnt] = $itemData;
             $cnt++;
         }
@@ -321,7 +360,6 @@ class RedemptionPos
             if ($exportDate == "NULL") {
                 $collection = $this->counterCollectionFactory->create();
             } else {
-
                 $collection = $this->counterCollectionFactory->create();
                 $connection = $collection->getConnection();
                 $collection
