@@ -1,0 +1,35 @@
+From 0633a0980797768a06a746e793fb72e787e7c7c2 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Thu, 9 Mar 2023 16:13:05 +0700
+Subject: [PATCH] ITO0035-36 Add log to record error trace
+
+---
+ vendor/magento/framework/DB/Statement/Pdo/Mysql.php | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php b/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
+index d24bc5f..72d38ff 100644
+--- a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
++++ b/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
+@@ -107,6 +107,18 @@ class Mysql extends \Zend_Db_Statement_Pdo
+             return $callback();
+         } catch (\PDOException $e) {
+             $message = sprintf('%s, query was: %s', $e->getMessage(), $this->_stmt->queryString);
++            if ($e->getCode() == '23000') {
++                $errorMsg = 'PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails';
++                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-for-ticket-ITO0035-36-a-foreign-key-constraint-fails.log');
++                $logger = new \Zend_Log();
++                $logger->addWriter($writer);
++                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                $backTrace = '';
++                foreach ($debugBackTrace as $item) {
++                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
++                }
++                $logger->crit($errorMsg . $backTrace);
++            }
+             throw new \Zend_Db_Statement_Exception($message, (int)$e->getCode(), $e);
+         } finally {
+             error_reporting($previousLevel);
+--
+2.34.1
+
