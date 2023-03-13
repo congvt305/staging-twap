@@ -19,6 +19,7 @@
             </block>
             <block class="Eguana\Redemption\Block\RedemptionDetails" name="redemption.details" template="Eguana_Redemption::redemptions-details.phtml">
                 <arguments>
+                    <argument name="attribute_data" xsi:type="object">Magento\Customer\Block\DataProviders\AddressAttributeData</argument>
                     <argument name="details_view_model" xsi:type="object">Eguana\Redemption\ViewModel\RedemptionDetail</argument>
                 </arguments>
                 <container name="form.additional.info">

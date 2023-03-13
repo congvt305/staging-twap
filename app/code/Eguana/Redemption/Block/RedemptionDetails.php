@@ -13,7 +13,6 @@ use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 use Eguana\Redemption\Model\Redemption;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\DataObject\IdentityInterface;
-use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -23,7 +22,7 @@ use Psr\Log\LoggerInterface;
  *
  * block for details.phtml
  */
-class RedemptionDetails extends Template implements IdentityInterface
+class RedemptionDetails extends \Magento\Directory\Block\Data implements IdentityInterface
 {
     /**
      * @var LoggerInterface
@@ -46,28 +45,38 @@ class RedemptionDetails extends Template implements IdentityInterface
     private $requestInterface;
 
     /**
-     * Redemption constructor.
-     *
-     * @param Context $context
-     * @param RedemptionRepositoryInterface $redemptionRepository
-     * @param StoreManagerInterface $storeManager
-     * @param RequestInterface $requestInterface
-     * @param LoggerInterface $logger
-     * @param array $data
+     * @var \Magento\Customer\Model\Session
      */
+    private $_customerSession;
+
     public function __construct(
-        Context $context,
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Directory\Helper\Data $directoryHelper,
+        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
+        \Magento\Framework\App\Cache\Type\Config $configCacheType,
+        \Magento\Directory\Model\ResourceModel\Region\CollectionFactory $regionCollectionFactory,
+        \Magento\Directory\Model\ResourceModel\Country\CollectionFactory $countryCollectionFactory,
         RedemptionRepositoryInterface $redemptionRepository,
         StoreManagerInterface $storeManager,
         RequestInterface $requestInterface,
         LoggerInterface $logger,
+        \Magento\Customer\Model\Session $customerSession,
         array $data = []
     ) {
         $this->storeManager = $storeManager;
         $this->redemptionRepository = $redemptionRepository;
         $this->requestInterface = $requestInterface;
         $this->logger = $logger;
-        parent::__construct($context, $data);
+        $this->_customerSession = $customerSession;
+        parent::__construct(
+            $context,
+            $directoryHelper,
+            $jsonEncoder,
+            $configCacheType,
+            $regionCollectionFactory,
+            $countryCollectionFactory,
+            $data
+        );
     }
 
     /**
@@ -146,5 +155,29 @@ class RedemptionDetails extends Template implements IdentityInterface
             $this->logger->debug($exception->getMessage());
         }
         return $this;
+    }
+
+
+    /**
+     * Retrieve form data
+     *
+     * @return mixed
+     */
+    public function getFormData()
+    {
+        $data = $this->getData('form_data');
+        if ($data === null) {
+            $formData = $this->_customerSession->getCustomerFormData(true);
+            $data = new \Magento\Framework\DataObject();
+            if ($formData) {
+                $data->addData($formData);
+                $data->setCustomerData(1);
+            }
+            if (isset($data['region_id'])) {
+                $data['region_id'] = (int)$data['region_id'];
+            }
+            $this->setData('form_data', $data);
+        }
+        return $data;
     }
 }

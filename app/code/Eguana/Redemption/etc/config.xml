@@ -62,8 +62,25 @@
                     隱私權保護政策之修正
                     本網站隱私權保護政策將因應需求隨時進行修正，修正後的條款將刊登於網站上。</privacy_policy_text>
                 <home_delivery_enabled>0</home_delivery_enabled>
+                <show_postcode_region_city>0</show_postcode_region_city>
                 <fixed_text_banner_enabled>0</fixed_text_banner_enabled>
             </configuration>
         </redemption>
     </default>
+    <websites>
+        <tw_lageige_website>
+            <redemption>
+                <configuration>
+                    <show_postcode_region_city>1</show_postcode_region_city>
+                </configuration>
+            </redemption>
+        </tw_lageige_website>
+        <base>
+            <redemption>
+                <configuration>
+                    <show_postcode_region_city>1</show_postcode_region_city>
+                </configuration>
+            </redemption>
+        </base>
+    </websites>
 </config>
