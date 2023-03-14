@@ -17,6 +17,8 @@
                 <maximum_mobile_number_digits>11</maximum_mobile_number_digits>
                 <ba_code_enable>0</ba_code_enable>
                 <datalayer_singup_success>0</datalayer_singup_success>
+                <minimum_length_ba_code>7</minimum_length_ba_code>
+                <maximum_length_ba_code>12</maximum_length_ba_code>
             </general>
             <pos>
                 <sales_organization_code>TW10</sales_organization_code>
@@ -29,6 +31,8 @@
             <customerregistraion>
                 <general>
                     <warning_message_verification_mobile>如果無法順利接收驗證碼，請聯繫客服中心 0800-600-308</warning_message_verification_mobile>
+                    <minimum_length_ba_code>7</minimum_length_ba_code>
+                    <maximum_length_ba_code>8</maximum_length_ba_code>
                 </general>
             </customerregistraion>
         </tw_lageige_website>
@@ -36,6 +40,8 @@
             <customerregistraion>
                 <general>
                     <warning_message_verification_mobile>如果無法順利接收驗證碼，請聯繫客服中心 0800-600-308</warning_message_verification_mobile>
+                    <minimum_length_ba_code>7</minimum_length_ba_code>
+                    <maximum_length_ba_code>8</maximum_length_ba_code>
                 </general>
             </customerregistraion>
         </base>

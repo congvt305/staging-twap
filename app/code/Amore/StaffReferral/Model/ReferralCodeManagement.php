@@ -20,6 +20,10 @@ use Psr\Log\LoggerInterface;
 class ReferralCodeManagement implements ReferralCodeManagementInterface
 {
 
+    const TW_WEBSITE = [
+        'tw_lageige_website',
+        'base'
+    ];
     /**
      * Quote repository.
      *
@@ -58,6 +62,11 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
     private $filterBuilder;
 
     /**
+     * @var \Amore\CustomerRegistration\Helper\Data
+     */
+    private $config;
+
+    /**
      * ReferralCodeManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param POSSystem $posSystem
@@ -66,6 +75,7 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
      * @param CustomerRepositoryInterface $customerRepositoryInterface
      * @param ReferralApplyResultInterfaceFactory $referralApplyResultFactory
      * @param LoggerInterface $logger
+     * @param \Amore\CustomerRegistration\Helper\Data $config
      */
     public function __construct(
         CartRepositoryInterface $quoteRepository,
@@ -74,7 +84,8 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
         FilterBuilder $filterBuilder,
         CustomerRepositoryInterface $customerRepositoryInterface,
         ReferralApplyResultInterfaceFactory $referralApplyResultFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        \Amore\CustomerRegistration\Helper\Data $config
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->posSystem = $posSystem;
@@ -83,6 +94,7 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->referralApplyResultFactory = $referralApplyResultFactory;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -101,7 +113,8 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
          */
         $quote = $this->quoteRepository->getActive($cartId);
         if ($referralInformation->getReferralType() === Data\ReferralInformationInterface::REFERRAL_TYPE_BA) {
-            $message = $this->validateStaffReferral($referralInformation->getReferralCode());
+            $website = $quote->getStore()->getWebsite();
+            $message = $this->validateStaffReferral($referralInformation->getReferralCode(),  $website->getCode(), $website->getId());
             $quote->setData(
                 Data\ReferralInformationInterface::REFERRAL_BA_CODE_KEY,
                 $referralInformation->getReferralCode()
@@ -185,10 +198,14 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
      * @return string
      * @throws NoSuchEntityException The specified referral code does not exist.
      */
-    private function validateStaffReferral($code)
+    private function validateStaffReferral($code, $websiteCode, $websiteId)
     {
         $code = trim($code);
-        if (is_numeric($code) && strlen($code) >= 7 && strlen($code) <= 8) {
+        if (in_array($websiteCode, self::TW_WEBSITE) && !is_numeric($code)) {
+            throw new NoSuchEntityException(__('Invalid Referral Code'));
+        }
+
+        if (strlen($code) >= $this->config->getMinimumLengthBACode($websiteId) && strlen($code) <= $this->config->getMaximumLengthBACode($websiteId)) {
             try {
                 $verificationResult = $this->posSystem->callBACodeInfoApi($code);
                 if (isset($verificationResult['verify']) && $verificationResult['verify']) {
