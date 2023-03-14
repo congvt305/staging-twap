@@ -68,6 +68,8 @@ class Data extends AbstractHelper
     const EXTENSION_ENABLE = 'customerregistraion/general/active';
     const BA_CODE_ENABLE = 'customerregistraion/general/ba_code_enable';
     const BA_CODE_PREFIX = 'customerregistraion/general/ba_code_prefix';
+    const MINIMUM_LENGTH_BA_CODE = 'customerregistraion/general/minimum_length_ba_code';
+    const MAXIMUM_LENGTH_BA_CODE = 'customerregistraion/general/maximum_length_ba_code';
     const POS_BA_CODE_INFO_URL = 'customerregistraion/pos/bacode_info';
     const WARNING_MESSAGE_VERIFCATION_MOBILE = 'customerregistraion/general/warning_message_verification_mobile';
 
@@ -407,6 +409,40 @@ class Data extends AbstractHelper
         }
 
         return false;
+    }
+
+    /**
+     * Get minimum length for ba code
+     *
+     * @param $websiteId
+     * @return mixed|void
+     */
+    public function getMinimumLengthBACode($websiteId = null) {
+        $moduleEnable = $this->getRegistrationModuleEnable($websiteId);
+
+        if ($moduleEnable) {
+            return $this->scopeConfig->getValue(
+                self::MINIMUM_LENGTH_BA_CODE,
+                ScopeInterface::SCOPE_WEBSITE
+            );
+        }
+    }
+
+    /**
+     * Get maximum length for ba code
+     *
+     * @param $websiteId
+     * @return mixed|void
+     */
+    public function getMaximumLengthBACode($websiteId = null) {
+        $moduleEnable = $this->getRegistrationModuleEnable($websiteId);
+
+        if ($moduleEnable) {
+            return $this->scopeConfig->getValue(
+                self::MAXIMUM_LENGTH_BA_CODE,
+                ScopeInterface::SCOPE_WEBSITE
+            );
+        }
     }
 
     /**

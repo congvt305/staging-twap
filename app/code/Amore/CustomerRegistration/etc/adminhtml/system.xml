@@ -111,7 +111,18 @@
                         <field id="ba_code_enable">1</field>
                     </depends>
                 </field>
-
+                <field id="minimum_length_ba_code" translate="label" type="text" sortOrder="136" showInDefault="1" showInWebsite="1">
+                    <label>Minimum Length BA Code</label>
+                    <depends>
+                        <field id="ba_code_enable">1</field>
+                    </depends>
+                </field>
+                <field id="maximum_length_ba_code" translate="label" type="text" sortOrder="137" showInDefault="1" showInWebsite="1">
+                    <label>Maximum Length BA Code</label>
+                    <depends>
+                        <field id="ba_code_enable">1</field>
+                    </depends>
+                </field>
                 <field id="datalayer_singup_success" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" >
                     <label>Enable Event Signup Success</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
