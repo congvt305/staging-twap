@@ -649,7 +649,10 @@ class POSSystem extends BaseRequest
             if (in_array(strtolower($checkTW), ['tw', 'vn'])) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
             } else {
-                $baCode = strtoupper($prefix) . $baCode;
+                if ($prefix) {
+                    $baCode = strtoupper($prefix) . $baCode;
+                }
+
             }
         }
         return $baCode;
