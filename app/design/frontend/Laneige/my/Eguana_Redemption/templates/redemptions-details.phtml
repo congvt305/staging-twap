@@ -79,21 +79,12 @@ $storeId = $viewModel->getStoreId();
                     name="utm_content"
                 >
                 <fieldset class="fieldset redemption">
-                    <div class="field last-name required">
-                        <label class="label" for="lastname">
-                            <span><?= $block->escapeHtml(__('Last Name')); ?></span></label>
-                        </label>
-                        <div class="control">
-                            <input id="lastname" name="last_name" type="text" title="<?= $block->escapeHtml(__('Last Name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Last Name')) ?>" data-validate='{"required":true}'>
-                        </div>
-                    </div>
-
                     <div class="field name required">
                         <label class="label" for="name">
-                            <span><?= $block->escapeHtml(__('First Name')); ?></span></label>
+                            <span><?= $block->escapeHtml(__('Name')); ?></span></label>
                         </label>
                         <div class="control">
-                            <input id="name" name="name" type="text" title="<?= $block->escapeHtml(__('First Name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('First Name')) ?>" data-validate='{"required":true}'>
+                            <input id="name" name="name" type="text" title="<?= $block->escapeHtml(__('Name')) ?>" class="input-text" placeholder="<?= $block->escapeHtml(__('Name')) ?>" data-validate='{"required":true}'>
                         </div>
                     </div>
 
@@ -155,7 +146,7 @@ $storeId = $viewModel->getStoreId();
                 </fieldset>
                 <div class="block block-precautions">
                     <div class="block-title">
-                        <strong><?= $block->escapeHtml(__('Privacy policy')) ?></strong>
+                        <strong><?= $block->escapeHtml(__('Privacy Policy')) ?></strong>
                     </div>
                     <fieldset class="fieldset">
                         <div class="field choice required">
@@ -165,11 +156,11 @@ $storeId = $viewModel->getStoreId();
                                 id="privacy_policy"
                                 class="agreement-checkbox checkbox"
                                 required="true"
-                                title="<?= $block->escapeHtmlAttr(__('I agree to the privacy policy')) ?>"/>
+                                title="<?= $block->escapeHtmlAttr(__('I agree to the Privacy Policy')) ?>"/>
                             <label
                                 class="label"
                                 for="privacy_policy">
-                                <span><?= $block->escapeHtml(__('I agree to the privacy policy')); ?></span>
+                                <span><?= $block->escapeHtml(__('I agree to the Privacy Policy')); ?></span>
                             </label>
                         </div>
                         <div class="privacy-policy-box">
