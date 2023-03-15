@@ -296,7 +296,7 @@ class CounterSaveAjax extends Action
             $fbFunEnable = ($isFbEnabled && $isRedemptionApplied) ? true : false;
             $resultJson->setData(
                 [
-                    "message" => __('You have successfully applied for redemption, please check your email.'),
+                    "message" => __('You have successfully registered for a redemption, please check your email and SMS for further details.'),
                     "success" => true,
                     'fbFunEnable' => $fbFunEnable,
                     'entity_id' => $entity
