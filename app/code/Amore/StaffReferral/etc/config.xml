@@ -1,10 +1,34 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
+        <checkout>
+            <options>
+                <minimum_length_ba_code>7</minimum_length_ba_code>
+                <maximum_length_ba_code>12</maximum_length_ba_code>
+            </options>
+        </checkout>
         <points_integration>
             <referral_setting>
                 <default_bc_referral_code>AP GECP</default_bc_referral_code>
             </referral_setting>
         </points_integration>
     </default>
+    <websites>
+        <tw_lageige_website>
+            <checkout>
+                <options>
+                    <minimum_length_ba_code>7</minimum_length_ba_code>
+                    <maximum_length_ba_code>8</maximum_length_ba_code>
+                </options>
+            </checkout>
+        </tw_lageige_website>
+        <base>
+            <checkout>
+                <options>
+                    <minimum_length_ba_code>7</minimum_length_ba_code>
+                    <maximum_length_ba_code>8</maximum_length_ba_code>
+                </options>
+            </checkout>
+        </base>
+    </websites>
 </config>

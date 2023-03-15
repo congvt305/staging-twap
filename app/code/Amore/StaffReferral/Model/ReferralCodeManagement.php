@@ -11,14 +11,19 @@ use Amore\StaffReferral\Api\ReferralCodeManagementInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
+use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
 class ReferralCodeManagement implements ReferralCodeManagementInterface
 {
+    const CONFIG_PATH_MINIMUM_LENGTH_BA_CODE = 'checkout/options/minimum_length_ba_code';
+
+    const CONFIG_PATH_MAXIMUM_LENGTH_BA_CODE = 'checkout/options/maximum_length_ba_code';
 
     const TW_WEBSITE = [
         'tw_lageige_website',
@@ -67,6 +72,11 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
     private $config;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * ReferralCodeManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param POSSystem $posSystem
@@ -85,7 +95,8 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
         CustomerRepositoryInterface $customerRepositoryInterface,
         ReferralApplyResultInterfaceFactory $referralApplyResultFactory,
         LoggerInterface $logger,
-        \Amore\CustomerRegistration\Helper\Data $config
+        \Amore\CustomerRegistration\Helper\Data $config,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->posSystem = $posSystem;
@@ -95,6 +106,7 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
         $this->referralApplyResultFactory = $referralApplyResultFactory;
         $this->logger = $logger;
         $this->config = $config;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -114,7 +126,7 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
         $quote = $this->quoteRepository->getActive($cartId);
         if ($referralInformation->getReferralType() === Data\ReferralInformationInterface::REFERRAL_TYPE_BA) {
             $website = $quote->getStore()->getWebsite();
-            $message = $this->validateStaffReferral($referralInformation->getReferralCode(),  $website->getCode(), $website->getId());
+            $message = $this->validateStaffReferral($referralInformation->getReferralCode(),  $website->getCode());
             $quote->setData(
                 Data\ReferralInformationInterface::REFERRAL_BA_CODE_KEY,
                 $referralInformation->getReferralCode()
@@ -194,18 +206,22 @@ class ReferralCodeManagement implements ReferralCodeManagementInterface
     }
 
     /**
-     * @param string $code
-     * @return string
+     * Validate staff referral
+     *
+     * @param $code
+     * @param $websiteCode
+     * @return \Magento\Framework\Phrase
      * @throws NoSuchEntityException The specified referral code does not exist.
      */
-    private function validateStaffReferral($code, $websiteCode, $websiteId)
+    private function validateStaffReferral($code, $websiteCode)
     {
         $code = trim($code);
         if (in_array($websiteCode, self::TW_WEBSITE) && !is_numeric($code)) {
             throw new NoSuchEntityException(__('Invalid Referral Code'));
         }
-
-        if (strlen($code) >= $this->config->getMinimumLengthBACode($websiteId) && strlen($code) <= $this->config->getMaximumLengthBACode($websiteId)) {
+        $minimumLengthBACode = $this->scopeConfig->getValue(self::CONFIG_PATH_MINIMUM_LENGTH_BA_CODE, ScopeInterface::SCOPE_STORE);
+        $maximumLengthBACode = $this->scopeConfig->getValue(self::CONFIG_PATH_MAXIMUM_LENGTH_BA_CODE, ScopeInterface::SCOPE_STORE);
+        if (strlen($code) >= $minimumLengthBACode && strlen($code) <= $maximumLengthBACode) {
             try {
                 $verificationResult = $this->posSystem->callBACodeInfoApi($code);
                 if (isset($verificationResult['verify']) && $verificationResult['verify']) {
