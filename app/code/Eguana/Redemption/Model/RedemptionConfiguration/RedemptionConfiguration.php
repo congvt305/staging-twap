@@ -274,15 +274,15 @@ class RedemptionConfiguration
     }
 
     /**
-     * @param $websiteId
+     * @param $storeId
      * @return mixed
      */
-    public function getIsShowPostCodeRegionCity($websiteId)
+    public function getIsShowPostCodeRegionCity($storeId)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_SHOW_POSTCODE_REGION_CITY_ENABLED,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
+            ScopeInterface::SCOPE_STORE,
+            $storeId
         );
     }
 
