@@ -165,7 +165,9 @@ class CounterSaveAjax extends Action
                 $model->setData('redemption_id', $post['redemption_id']);
                 $model->setData('redeem_date', null);
                 $model->setData('customer_name', $post['name']);
-                $model->setData('last_name', isset($post['last_name'])? $post['last_name']: null);
+                if (isset($post['last_name'])) {
+                    $model->setData('last_name', $post['last_name']);
+                }
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
                 $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($storeId);
