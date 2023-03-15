@@ -33,7 +33,7 @@ Redemptions,換領
 "This redemption has been expired!","此兌換已過期！"
 "This redemption will be available at %1","可以在以下位置使用此兌換 %1"
 "Email or SMS sending failed.","電子郵件或短信發送失敗。"
-"You have successfully applied for redemption, please check your email and newsletter.","您已成功申請兌換，請查看您的電子郵件與簡訊。"
+"You have successfully applied for redemption, please check your email.","您已成功申請兌換，請查看您的電子郵件與簡訊。"
 "Something went wrong while saving the counter.","保存計數器時出了點問題。"
 "No redemption exsit with ' . . ' id","不存在與' . . ' id"
 "No counter exsit with ' . . ' id","無反制' . . ' id"
