@@ -122,7 +122,7 @@ class Resend extends Action
         }
         $resultJson->setData(
             [
-                "resendmessage" => __('You have successfully applied for redemption, please check your email.'),
+                "resendmessage" => __('You have successfully registered for a redemption, please check your email and SMS for further details.'),
                 "success" => true
             ]
         );
