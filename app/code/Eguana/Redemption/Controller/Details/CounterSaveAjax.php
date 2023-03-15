@@ -197,7 +197,7 @@ class CounterSaveAjax extends Action
                 }
                 $model->setData('counter_id', $post['counter']);
                 $model->setData('store_id', $storeId);
-                if (!$homeDeliveryEnabled) {
+                if (!$homeDeliveryEnabled && isset($post['line'])) {
                     $model->setData('line_id', $post['line']);
                 }
                 $model->setData('token', $token);
