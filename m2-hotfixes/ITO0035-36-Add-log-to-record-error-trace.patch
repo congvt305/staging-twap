@@ -1,12 +1,18 @@
-Index: vendor/magento/framework/DB/Statement/Pdo/Mysql.php
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
+From 1c6d66bea2f55977c37e99f22bef998c008d1cda Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Thu, 16 Mar 2023 12:00:13 +0700
+Subject: [PATCH] ITO0035-36 Update log to trace issue PDOException(code:
+ 23000)
+
+---
+ vendor/magento/framework/DB/Statement/Pdo/Mysql.php | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
 diff --git a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php b/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
---- a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php	(revision 2e8e1d265bfd47de03a3fce04635ab6328fad94f)
-+++ b/vendor/magento/framework/DB/Statement/Pdo/Mysql.php	(date 1678700752204)
-@@ -87,9 +87,25 @@
+index d24bc5f..5e170c7 100644
+--- a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
++++ b/vendor/magento/framework/DB/Statement/Pdo/Mysql.php
+@@ -87,9 +87,26 @@ class Mysql extends \Zend_Db_Statement_Pdo
          if ($specialExecute) {
              return $this->_executeWithBinding($params);
          } else {
@@ -29,9 +35,13 @@ diff --git a/vendor/magento/framework/DB/Statement/Pdo/Mysql.php b/vendor/magent
 +                        $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
 +                    }
 +                    $logger->crit($errorMsg . $backTrace);
++                    $logger->info('message: ' . $e->getMessage());
 +                }
-+                throw new \Zend_Db_Statement_Exception($message, (int)$e->getCode(), $e);
++                throw $e;
 +            }
          }
      }
+
+--
+2.34.1
 
