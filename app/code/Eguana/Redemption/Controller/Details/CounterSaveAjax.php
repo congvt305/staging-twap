@@ -168,14 +168,14 @@ class CounterSaveAjax extends Action
                 $model->setData('last_name', $post['last_name']);
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
-                if ($this->redemptionConfig->getIsShowPostCodeRegionCity($storeId)) {
-                    $model->setData('region', $post['region_name']);
-                    $model->setData('city', $post['dm_city']);
-                    $model->setData('postcode', $post['dm_zipcode']);
-                }
 
                 $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($storeId);
                 if ($homeDeliveryEnabled) {
+                    if ($this->redemptionConfig->getIsShowPostCodeRegionCity($storeId)) {
+                        $model->setData('region', $post['region_name']);
+                        $model->setData('city', $post['dm_city']);
+                        $model->setData('postcode', $post['dm_zipcode']);
+                    }
                     $post['counter'] = $post['counter_auto_assign'];
                     try {
                         $redemption = $this->redemptionRepository->getById($post['redemption_id']);
