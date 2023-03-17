@@ -31,6 +31,8 @@ class Config
 
     const SAP_LOGGING_XML_PATH = 'sap/general/logging';
 
+    const SAP_STORE_LOG_SYNC_STOCK_XML_PATH = 'sap/general/store_log_sync_stock_in_operation';
+
     const SAP_SSL_VERIFICATION_XML_PATH = 'sap/general/ssl_verify_host';
 
     const SAP_EINVOICE_ENABLE_XML_PATH = 'sap/general/einvoice';
@@ -197,6 +199,20 @@ class Config
         );
     }
 
+    /**
+     * Get enable log sync stock
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getIsEnableStoreLogSyncStock($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_STORE_LOG_SYNC_STOCK_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
     /**
      * Get complete sap stock info api url
      *
