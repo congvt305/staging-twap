@@ -30,6 +30,13 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
+                <field id="store_log_sync_stock_in_operation" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Store Log Sync Stock In Operation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
                 <field id="ssl_verify_host" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>SSL Verification enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
