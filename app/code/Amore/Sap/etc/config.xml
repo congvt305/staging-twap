@@ -7,6 +7,9 @@
                 <cron_expr>0 * * * *</cron_expr>
                 <number_of_order>10</number_of_order>
             </send_order_to_sap_cron>
+            <general>
+                <store_log_sync_stock_in_operation>0</store_log_sync_stock_in_operation>
+            </general>
         </sap>
     </default>
 </config>

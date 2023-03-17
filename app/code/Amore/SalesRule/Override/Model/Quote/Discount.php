@@ -209,12 +209,13 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                         $this->aggregateItemDiscount($child, $total);
                         // Calculate odd Total
                         $oddTotal += $child->getOddDiscountAmount();
+                        $child->setOddDiscountAmount(0);
                     }
                 }
                 $this->aggregateItemDiscount($item, $total);
                 // Calculate odd Total
                 $oddTotal += $item->getOddDiscountAmount();
-
+                $item->setOddDiscountAmount(0);
                 if ($item->getExtensionAttributes()) {
                     $this->aggregateDiscountPerRule($item, $address);
                 }
