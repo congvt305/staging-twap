@@ -266,7 +266,7 @@ class Rma
                 $collection = $this->rmaCollFactory->create();
                 $collection->addFieldToFilter('main_table.store_id', ['in' => $this->getAllowStores()]);
                 $collection
-                    ->addFieldToFilter('main_table.date_requested', ['gteq' => $exportDate])
+                    ->addFieldToFilter('history.updated_at', ['gteq' => $exportDate])
                     ->getSelect()
                     ->joinLeft(['sales' => 'sales_order_payment'],
                         'sales.parent_id=main_table.order_id',
@@ -277,6 +277,11 @@ class Rma
                         'label.rma_entity_id=main_table.entity_id',
                         [
                             'track_number'
+                        ]
+                    )->joinLeft(['history' => $collection->getConnection()->select()->from('magento_rma_status_history', [  new \Zend_Db_Expr('MAX(created_at) as updated_at') , 'rma_entity_id'])->group('rma_entity_id')],
+                        'history.rma_entity_id=main_table.entity_id',
+                        [
+                            'updated_at'
                         ]
                     );
 
