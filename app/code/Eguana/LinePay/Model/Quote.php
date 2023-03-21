@@ -12,6 +12,8 @@ namespace Eguana\LinePay\Model;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Helper\Image;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -56,6 +58,11 @@ class Quote
     private $dateTime;
 
     /**
+     * @var MessageManagerInterface
+     */
+    private $messageManager;
+
+    /**
      * Quote constructor.
      * @param CheckoutSession $checkoutSession
      * @param ProductFactory $productFactory
@@ -70,7 +77,8 @@ class Quote
         Image $imageHelper,
         CartRepositoryInterface $quoteRepository,
         LoggerInterface $logger,
-        DateTime $dateTime
+        DateTime $dateTime,
+        MessageManagerInterface $messageManager
     ) {
         $this->checkoutSession                   = $checkoutSession;
         $this->productFactory                    = $productFactory;
@@ -78,6 +86,7 @@ class Quote
         $this->quoteRepository                   = $quoteRepository;
         $this->logger                            = $logger;
         $this->dateTime                          = $dateTime;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -97,33 +106,14 @@ class Quote
             $currentQuote = $this->quoteRepository->get($this->checkoutSession->getQuote()->getId());
             $shippingAddress = $currentQuote->getShippingAddress();
             if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
-                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-                $backTrace = '';
-                foreach ($debugBackTrace as $item) {
-                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
-                }
-                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
-                $logger = new \Zend_Log();
-                $logger->addWriter($writer);
-                $logger->crit('Missing data shipping address when get reserved order before save quote ' . $currentQuote->getId() . ' : ' . $backTrace);
-                $logger->info('Shipping when get reserved order before save data: ' . json_encode($shippingAddress->getData()));
+                throw new LocalizedException(__('The shipping address is missing. Set the address and try again.'));
             }
             $currentQuote->setData('reserved_order_id', $origReserveId);
             $this->quoteRepository->save($currentQuote);
-            $shippingAddress = $currentQuote->getShippingAddress();
-            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
-                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-                $backTrace = '';
-                foreach ($debugBackTrace as $item) {
-                    $backTrace .= @$item['class'] . ':' . @$item['line'] . @$item['type'] . @$item['function'] . " | ";
-                }
-                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-ITO0017-39.log');
-                $logger = new \Zend_Log();
-                $logger->addWriter($writer);
-                $logger->crit('Missing data shipping address when get reserved order after save quote ' . $currentQuote->getId() . ' : ' . $backTrace);
-                $logger->info('Shipping when get reserved order after save data: ' . json_encode($shippingAddress->getData()));
-            }
             return $reserveId;
+        } catch (LocalizedException $e) {
+            $this->messageManager->addErrorMessage(__($e->getMessage()));
+            throw new LocalizedException(__($e->getMessage()));
         } catch (\Exception $e) {
             $this->logger->error('Linepay-Error: ' . $e->getMessage());
             throw new \Exception('Something went wrong during the checkout process. Please try again');

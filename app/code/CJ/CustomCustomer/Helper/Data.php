@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace CJ\CustomCustomer\Helper;
 
 use Magento\Framework\Exception\LocalizedException;
@@ -10,6 +10,10 @@ use Magento\Framework\Exception\LocalizedException;
 class Data
 {
     const XML_PATH_LOGGING_ENABLED = 'cjcustomer/group/logging';
+
+    const XML_PATH_POS_CSTM_NO_LIMIT = 'cjcustomer/poscstmno/limit';
+
+    const XML_PATH_POS_CSTM_NO_CRON_ENABLED = 'cjcustomer/poscstmno/enable_cron';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -73,5 +77,19 @@ class Data
         } else {
             throw new LocalizedException(__('Store is not found for this customer integration sequence "%1"', [$cstmIntgSeq]));
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosCstmNOLimit(): int {
+        return (int) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_LIMIT);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPosCstmNOCronEnabled(): bool {
+        return (bool) $this->scopeConfig->getValue(self::XML_PATH_POS_CSTM_NO_CRON_ENABLED);
     }
 }
