@@ -129,6 +129,7 @@ define(
             couponCode: couponCode,
             fakeCouponCode: fakeCouponCode,
             errorMessage: messageError,
+            successMessage: message,
 
             /**
              * Applied flag
