@@ -242,6 +242,7 @@ define(
                         isLoading(false);
                     });
                 }
+                this.couponsArray(couponModel.renderCoupons(this.couponCode()));
             },
 
             /**
@@ -284,24 +285,26 @@ define(
 
                     setCouponCodesAction(codes, this.responseProcessor)
                         .done(function () {
-                            this.handleErrorMessages();
-                            this.inputCode(this.responseProcessor.errorCoupons.join(', '));
-                            let couponCodes = [];
-                            couponCodes = couponCodes
-                                .concat(this.responseProcessor.appliedCoupons)
-                                .concat(this.responseProcessor.notChangedCoupons);
-                            if (couponCodes.length > 0) {
-                                this.isApplied(true);
-                                this.couponCode(couponCodes.join(', '));
-                                let messages = this.getChild('errors');
-                                messages.messageContainer.clear();
-                                messages.messageContainer.addSuccessMessage({
-                                    'message': this.successMessage
-                                });
-                            }
+                            if (this.responseProcessor.errorCoupons.length > 0) {
+                                this.handleErrorMessages();
+                            } else {
+                                let couponCodes = [];
+                                couponCodes = couponCodes
+                                    .concat(this.responseProcessor.appliedCoupons)
+                                    .concat(this.responseProcessor.notChangedCoupons);
+                                if (couponCodes.length > 0) {
+                                    this.isApplied(true);
+                                    this.couponCode(couponCodes.join(', '));
+                                    let messages = this.getChild('errors');
+                                    messages.messageContainer.clear();
+                                    messages.messageContainer.addSuccessMessage({
+                                        'message': this.successMessage
+                                    });
+                                }
 
-                            $('.totals.discount .title').removeClass('negative');
-                            window.location.reload();
+                                $('.totals.discount .title').removeClass('negative');
+                                window.location.reload();
+                            }
                         }.bind(this))
                         .always(function () {
                             this.isLoading(false);
