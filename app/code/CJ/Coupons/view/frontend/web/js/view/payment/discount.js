@@ -119,6 +119,11 @@ define(
             },
             initialize: function () {
                 this._super();
+                if (this.couponCode()) {
+                    this.couponsArray(couponModel.renderCoupons(this.couponCode()));
+                }
+                _.bindAll(this,  'removeSelected', 'apply');
+                return this;
             },
 
             couponCode: couponCode,
