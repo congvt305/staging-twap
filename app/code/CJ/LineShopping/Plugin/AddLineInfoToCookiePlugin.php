@@ -96,7 +96,7 @@ class AddLineInfoToCookiePlugin
 
             if ($this->config->isEnable() && isset($params['ecid'])) {
                 $this->cookieLineInformation->setCookie(CookieLineInformation::LINE_SHOPPING_ECID_COOKIE_NAME, $params['ecid'] , $duration);
-                $this->logger->addInfo(Logger::LINE_COOKIE,
+                $this->logger->info(Logger::LINE_COOKIE,
                     [
                         'ecidCookie' => $params['ecid'],
                         'dataInfoCookie' => $dataLine
@@ -104,7 +104,7 @@ class AddLineInfoToCookiePlugin
                 );
             }
         } catch (Exception $exception) {
-            $this->logger->addError(Logger::LINE_COOKIE,
+            $this->logger->error(Logger::LINE_COOKIE,
                 [
                     'ecidCookie' => isset($params['ecid']) ? $params['ecid'] : null,
                     'message' => $exception->getMessage()

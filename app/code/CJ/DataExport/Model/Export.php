@@ -3,7 +3,7 @@
 namespace CJ\DataExport\Model;
 
 use Magento\Framework\Exception\LocalizedException;
-
+use Magento\Framework\Locale\ResolverInterface;
 /**
  * Class Export
  */
@@ -77,6 +77,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         \Magento\ImportExport\Model\Export\Adapter\Factory $exportAdapterFac,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Framework\Stdlib\DateTime\DateTime $coreDate,
+        ResolverInterface $localeResolver,
         \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
         \Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory $collectionFactory,
         array $data = []
@@ -92,6 +93,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             $exportAdapterFac,
             $resultRedirectFactory,
             $coreDate,
+            $localeResolver,
             $dataPersistor,
             $collectionFactory,
             $data

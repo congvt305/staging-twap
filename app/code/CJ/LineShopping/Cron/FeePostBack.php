@@ -83,7 +83,7 @@ class FeePostBack
                     }
                 }
             } catch (\Exception $exception) {
-                $this->logger->addError(Logger::FEE_POST_BACK,
+                $this->logger->error(Logger::FEE_POST_BACK,
                     [
                         'orderId' => $order->getId(),
                         'message' => $exception->getMessage()

@@ -94,7 +94,7 @@ class ExportPartialProduct
                     $this->feedOutput->createJsonFile(self::TYPE_EXPORT, $website->getId(), $listProduct);
                     $this->updateModifyProduct($products, $website->getDefaultStore()->getId());
                 } catch (Exception $exception) {
-                    $this->logger->addError(Logger::EXPORT_FEED_DATA,
+                    $this->logger->error(Logger::EXPORT_FEED_DATA,
                         [
                             'type' => self::TYPE_EXPORT,
                             'message' => $exception->getMessage()
@@ -122,7 +122,7 @@ class ExportPartialProduct
             }
             $this->productAction->updateAttributes($ids, array('line_sync_status' => false), $storeId);
         } catch (Exception $exception) {
-            $this->logger->addError(Logger::EXPORT_FEED_DATA,
+            $this->logger->error(Logger::EXPORT_FEED_DATA,
                 [
                     'type' => self::TYPE_EXPORT,
                     'message' => $exception->getMessage()

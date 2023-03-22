@@ -68,7 +68,7 @@ class OrderPostBack
                     $this->dataHelper->updateOrderData($order, DataHelper::IS_SENT_ORDER_POST_BACK, 1);
                 }
             } catch (\Exception $exception) {
-                $this->logger->addError(Logger::ORDER_POST_BACK,
+                $this->logger->error(Logger::ORDER_POST_BACK,
                     [
                         'orderId' => $order->getId(),
                         'message' => $exception->getMessage()

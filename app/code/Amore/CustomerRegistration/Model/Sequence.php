@@ -83,9 +83,9 @@ class Sequence implements SequenceInterface
         Data $configHelper,
         AppResource $resource,
         StoreManagerInterface $storeManager,
+        POSLogger $logger,
         $pattern = self::DEFAULT_PATTERN,
-        $customerType = self::DEFAULT_CUSTOMER_TYPE,
-        POSLogger $logger
+        $customerType = self::DEFAULT_CUSTOMER_TYPE
     ) {
         $this->connection = $resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
         $this->pattern = $pattern;
