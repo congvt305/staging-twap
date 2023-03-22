@@ -12,6 +12,7 @@ namespace Amore\CustomerRegistration\Observer\Customer;
 
 use Amore\CustomerRegistration\Model\POSLogger;
 use Amore\CustomerRegistration\Model\POSSystem;
+use Amore\CustomerRegistration\Plugin\CreateCustomer;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSyncAPI;
 use Magento\Framework\App\RequestInterface;
@@ -41,16 +42,23 @@ class AfterAddressSaveObserver implements ObserverInterface
      */
     private $request;
 
+    /**
+     * @var \Magento\Framework\Webapi\Rest\Request
+     */
+    private $requestApi;
+
     public function __construct(
         RequestInterface $request,
         POSLogger $logger,
         POSSystem $POSSystem,
-        POSSyncAPI $posSyncAPI
+        POSSyncAPI $posSyncAPI,
+        \Magento\Framework\Webapi\Rest\Request $requestApi,
     ) {
         $this->POSSystem = $POSSystem;
         $this->logger = $logger;
         $this->posSyncAPI = $posSyncAPI;
         $this->request = $request;
+        $this->requestApi = $requestApi;
     }
 
     public function execute(
@@ -63,8 +71,10 @@ class AfterAddressSaveObserver implements ObserverInterface
                 $address = $observer->getData('customer_address');
                 if ($address->getIsDefaultBilling()) {
                     $customer = $address->getCustomer();
-                    $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $address, 'update');
-                    $this->POSSystem->syncMember($APIParameters, $customer->getStoreId());
+                    if (!$this->isPOSRequest()) {
+                        $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $address, 'update');
+                        $this->POSSystem->syncMember($APIParameters, $customer->getStoreId());
+                    }
 
                 }
             }
@@ -72,5 +82,19 @@ class AfterAddressSaveObserver implements ObserverInterface
             $this->logger->addExceptionMessage($e->getMessage());
         }
 
+    }
+
+    /**
+     * check POS request
+     *
+     * @return bool
+     */
+    private function isPOSRequest()
+    {
+        $data = $this->requestApi->getRequestData();
+        if ($data && isset($data[CreateCustomer::IS_POS]) && $data[CreateCustomer::IS_POS] == 1) {
+            return true;
+        }
+        return false;
     }
 }
