@@ -8,7 +8,7 @@
  */
 $cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : '';
 $titleHtml = '';
-if (trim($block->getPageHeading())) {
+if ($block->getPageHeading() && trim($block->getPageHeading())) {
     $titleHtml = '<span class="base" data-ui-id="page-title-wrapper" '
         . $block->getAddBaseAttribute()
         . '>'
