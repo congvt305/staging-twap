@@ -1,0 +1,26 @@
+From a0d7f6b7c7a1fa9e69b059fca89829f42fc7b510 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Thu, 23 Mar 2023 15:53:07 +0700
+Subject: [PATCH] Apply patch to fix issue order filtering function on the
+ admin site is currently broken
+
+---
+ vendor/magento/module-sales/Plugin/Model/ResourceModel/Order/OrderGridCollectionFilter.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vendor/magento/module-sales/Plugin/Model/ResourceModel/Order/OrderGridCollectionFilter.php b/vendor/magento/module-sales/Plugin/Model/ResourceModel/Order/OrderGridCollectionFilter.php
+index 995bb83..cff4b89 100644
+--- a/vendor/magento/module-sales/Plugin/Model/ResourceModel/Order/OrderGridCollectionFilter.php
++++ b/vendor/magento/module-sales/Plugin/Model/ResourceModel/Order/OrderGridCollectionFilter.php
+@@ -52,7 +52,7 @@ class OrderGridCollectionFilter
+                 }
+             }
+
+-            $fieldName = $subject->getConnection()->quoteIdentifier($field);
++            $fieldName = $subject->getConnection()->quoteIdentifier('main_table.' . $field);
+             $condition = $subject->getConnection()->prepareSqlCondition($fieldName, $condition);
+             $subject->getSelect()->where($condition, null, Select::TYPE_CONDITION);
+
+--
+2.34.1
+
