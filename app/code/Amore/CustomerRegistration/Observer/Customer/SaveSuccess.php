@@ -209,9 +209,6 @@ class SaveSuccess implements ObserverInterface
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
-            if ($this->isPOSRequest()) {
-                return true;
-            }
             /**
              * @var Customer $newCustomerData
              */
@@ -221,6 +218,13 @@ class SaveSuccess implements ObserverInterface
              */
             $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
 
+            if ($this->isPOSRequest()) {
+                $data = $this->requestApi->getRequestData();
+                if ($data && isset($data['email_subscription_status']) && $data['email_subscription_status'] == 1) {
+                    $this->subscriberFactory->create()->subscribeCustomerById($newCustomerData->getId());
+                }
+                return true;
+            }
             if ($this->getArea() === 'adminhtml' && !$oldCustomerData) {
                 return;
             }
