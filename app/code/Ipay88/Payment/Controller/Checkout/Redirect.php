@@ -164,7 +164,7 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
         /**
          * @var \Magento\Sales\Model\Order $salesOrder
          */
-        $salesOrder = array_first($salesOrderCollection);
+        $salesOrder = reset($salesOrderCollection);
 
         if ($responseData['status'] === \Ipay88\Payment\Gateway\Config\Config::PAYMENT_STATUS_FAIL) {
             $this->redirectToCheckoutCartPage(__($responseData['err_desc']), $responseData, $salesOrder);
