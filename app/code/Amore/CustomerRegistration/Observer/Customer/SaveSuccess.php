@@ -102,6 +102,11 @@ class SaveSuccess implements ObserverInterface
      */
     private $requestApi;
 
+    /**
+     * @var \Magento\Newsletter\Model\SubscriptionManagerInterface
+     */
+    private $subscriptionManager;
+
     public function __construct(
         Request $requestApi,
         RequestInterface $request,
@@ -117,7 +122,8 @@ class SaveSuccess implements ObserverInterface
         AddressRepositoryInterface $addressRepository,
         AddressInterfaceFactory $addressDataFactory,
         \Magento\Framework\App\State $state,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
     ) {
         $this->requestApi = $requestApi;
         $this->sequence = $sequence;
@@ -134,6 +140,7 @@ class SaveSuccess implements ObserverInterface
         $this->addressDataFactory = $addressDataFactory;
         $this->state = $state;
         $this->storeManager = $storeManager;
+        $this->subscriptionManager = $subscriptionManager;
     }
 
     /**
@@ -170,7 +177,8 @@ class SaveSuccess implements ObserverInterface
                     foreach ($data['customer']['customAttributes'] as $customerAttribute) {
                         if (isset($customerAttribute['attributeCode']) && $customerAttribute['attributeCode'] == 'email_subscription_status') {
                             if (isset($customerAttribute['value']) && $customerAttribute['value'] == 1) {
-                                $this->subscriberFactory->create()->subscribeCustomerById($newCustomerData->getId());
+                                $customerStoreId = $this->getCustomerStoreId($data[CreateCustomer::SALOFFCD]);
+                                $this->subscriptionManager->subscribeCustomer((int)$newCustomerData->getId(), $customerStoreId);
                             }
                         }
                     }
@@ -228,6 +236,8 @@ class SaveSuccess implements ObserverInterface
             $this->logger->addExceptionMessage($e->getMessage());
         }
     }
+
+
 
     /**
      * check POS request
@@ -518,5 +528,19 @@ class SaveSuccess implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+    }
+
+    private function getCustomerStoreId($salOffCd)
+    {
+        $customerStoreId = 0;
+        foreach ($this->storeManager->getStores() as $store) {
+            $storeId = $store->getId();
+            $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+            if ($officeSaleCode == $salOffCd) {
+                $customerStoreId = $storeId;
+                break;
+            }
+        }
+        return $customerStoreId;
     }
 }
