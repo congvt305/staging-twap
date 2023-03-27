@@ -166,8 +166,8 @@ class SaveSuccess implements ObserverInterface
 
             if ($this->isPOSRequest()) {
                 $data = $this->requestApi->getRequestData();
-                if ($data && isset($data['customer']['custom_attributes'])) {
-                    foreach ($data['customer']['custom_attributes'] as $customerAttribute) {
+                if ($data && isset($data['customer']['customAttributes'])) {
+                    foreach ($data['customer']['customAttributes'] as $customerAttribute) {
                         if (isset($customerAttribute['attributeCode']) && $customerAttribute['attributeCode'] == 'email_subscription_status') {
                             if (isset($customerAttribute['value']) && $customerAttribute['value'] == 1) {
                                 $this->subscriberFactory->create()->subscribeCustomerById($newCustomerData->getId());
