@@ -1,0 +1,21 @@
+<script>
+    require([
+        'jquery',
+        'domReady!'
+    ], function ($) {
+        $(function () {
+           const resize_ob = new ResizeObserver(function(entries) {
+               let rect = entries[0].contentRect;
+               let height = rect.height;
+               const selector = '.breadcrumbs ~ .category-view .category-description';
+               if (height === 0) {
+                   $(selector).css('margin-top', '-74px');
+               } else {
+                   $(selector).css('margin-top', '-8px');
+               }
+           });
+
+           resize_ob.observe(document.querySelector('.page.messages'));
+        });
+    });
+</script>
