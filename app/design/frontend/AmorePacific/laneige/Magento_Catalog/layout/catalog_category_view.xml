@@ -5,9 +5,6 @@
         <move element="category.view.container" destination="page.wrapper" before="page.top"/>
         <move element="breadcrumbs" destination="page.wrapper" before="page.top"/>
         <move element="page.main.title" destination="content" before="category.products"/>
-        <move element="page.messages" destination="category.view.container" before="-"/>
-        <referenceContainer name="before.body.end">
-            <block name="notifymessages" after="-" template="Magento_Catalog::product/notifymessages.phtml"/>
-        </referenceContainer>
+        <move element="page.messages" destination="columns.top" before="-"/>
     </body>
 </page>
