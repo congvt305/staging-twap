@@ -66,6 +66,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     protected $_productCollection;
 
+    /**
+     * @var \Magento\CatalogInventory\Api\StockRegistryInterface
+     */
+    protected $stockRegistry;
+
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Message\ManagerInterface $messageManager,
@@ -77,9 +82,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
         \Amore\GaTagging\Helper\Data $helper,
+        \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         Template\Context $context,
         array $data = []
     ) {
+        $this->stockRegistry = $stockRegistry;
         parent::__construct($context, $data);
         $this->helper = $helper;
         $this->registry = $registry;
@@ -519,6 +526,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             'AP_PURCHASE_ORDERNUM' => 0,
             'AP_PURCHASE_BEAUTYACC' => 0,
             'AP_PURCHASE_SHIPPING' => 0,
+            'AP_PURCHASE_CURRENCY' => '',
 //            'AP_PURCHASE_TYPE' => '',
 //            'AP_PURCHASE_COUPONNAME' => '',
             'AP_PURCHASE_PRDS' => []
@@ -545,6 +553,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         $orderData['AP_PURCHASE_COUPON'] = $order->getCouponCode() ? intval($order->getDiscountAmount()) : 0; //여기가 복병이네.. 쿠폰할인가라??
         $orderData['AP_PURCHASE_ORDERNUM'] = $order->getIncrementId();
+        $orderData['AP_PURCHASE_CURRENCY'] = $this->getCurrentCurrencyCode();
         return $orderData;
     }
 
@@ -588,6 +597,41 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $canceledOrderData['AP_REFUND_ORDERNUM'] = intval($order->getGrandTotal());
         $canceledOrderData['AP_REFUND_CONTENT'] = '단순변심';
         return $canceledOrderData;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentCurrencyCode()
+    {
+        return $this->_storeManager->getStore()->getCurrentCurrency()->getCode();
+    }
+
+    /**
+     * @param $product
+     * @return float|mixed|null
+     */
+    public function getProductDefaultQty($product = null)
+    {
+        $qty = $this->getMinimalQty($product);
+        $config = $product->getPreconfiguredValues();
+        $configQty = $config->getQty();
+        if ($configQty > $qty) {
+            $qty = $configQty;
+        }
+
+        return $qty;
+    }
+
+    /**
+     * @param $product
+     * @return float|null
+     */
+    public function getMinimalQty($product)
+    {
+        $stockItem = $this->stockRegistry->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
+        $minSaleQty = $stockItem->getMinSaleQty();
+        return $minSaleQty > 0 ? $minSaleQty : null;
     }
 }
 
