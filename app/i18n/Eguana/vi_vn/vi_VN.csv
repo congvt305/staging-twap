@@ -16457,7 +16457,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "%1 people found this helpful", "%1 người thấy hữu ích"
 "Have","Có"
 "Pay with bank","Thanh toán qua thẻ nội địa"
-"Pay with wallet","Thanh toán qua ví điện tử"
+"Pay with wallet","Thanh toán qua QRCode (Ví điện tử và Ứng dụng ngân hàng)"
 "Pay with visa","Thanh toán qua thẻ quốc tế"
 "There are some out of stock product < %1 >","Sản phẩm ( %1 ) đã hết hàng"
 "You cannot purchase this product now. You have to delete the product <br> If you want to delete the products right now. Please click confirm button","Để tiếp tục mua hàng, xin vui lòng click xác nhận để xóa sản phẩm này ra khỏi giỏ hàng"
