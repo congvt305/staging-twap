@@ -8,9 +8,9 @@ use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 /**
  * Class Redemption
  */
-class Redemption
+class RedemptionPos
     extends \Magento\ImportExport\Model\Export\AbstractEntity
-    implements RedemptionInterface
+    implements RedemptionPosInterface
 {
 
     /**
@@ -81,9 +81,34 @@ class Redemption
             'store_view'
         ],
         [
+            'storeview',
+            'store_id',
+            'store_id'
+        ],
+        [
             'main_table',
             'email',
             'email'
+        ],
+        [
+            'main_table',
+            'address',
+            'homeAddr'
+        ],
+        [
+            'main_table',
+            'postcode',
+            'homeZip'
+        ],
+        [
+            'main_table',
+            'city',
+            'homeCity'
+        ],
+        [
+            'main_table',
+            'region',
+            'homeState'
         ]
     ];
 
@@ -91,18 +116,18 @@ class Redemption
      * @var array
      */
     protected $headColumnNames = [
-        RedemptionInterface::REDEEM_ID => RedemptionInterface::REDEEM_ID,
-        RedemptionInterface::REDEMPTION_CAMPAIGN_ID => RedemptionInterface::REDEMPTION_CAMPAIGN_ID,
-        RedemptionInterface::REDEMPTION_CAMPAIGN_NAME => RedemptionInterface::REDEMPTION_CAMPAIGN_NAME,
-        RedemptionInterface::REDEEM_DATE => RedemptionInterface::REDEEM_DATE,
-        RedemptionInterface::NAME => RedemptionInterface::NAME,
-        RedemptionInterface::TELEPHONE => RedemptionInterface::TELEPHONE,
-        RedemptionInterface::STATUS => RedemptionInterface::STATUS,
-        RedemptionInterface::STORE_COUNTER => RedemptionInterface::STORE_COUNTER,
+        RedemptionPosInterface::REDEEM_ID => RedemptionPosInterface::REDEEM_ID,
+        RedemptionPosInterface::REDEMPTION_CAMPAIGN_ID => RedemptionPosInterface::REDEMPTION_CAMPAIGN_ID,
+        RedemptionPosInterface::REDEMPTION_CAMPAIGN_NAME => RedemptionPosInterface::REDEMPTION_CAMPAIGN_NAME,
+        RedemptionPosInterface::REDEEM_DATE => RedemptionPosInterface::REDEEM_DATE,
+        RedemptionPosInterface::NAME => RedemptionPosInterface::NAME,
+        RedemptionPosInterface::TELEPHONE => RedemptionPosInterface::TELEPHONE,
+        RedemptionPosInterface::STATUS => RedemptionPosInterface::STATUS,
+        RedemptionPosInterface::STORE_COUNTER => RedemptionPosInterface::STORE_COUNTER,
     ];
 
     /**
-     * @var \CJ\DataExport\Model\Export\Adapter\RedemptionCsv
+     * @var \CJ\DataExport\Model\Export\Adapter\RedemptionPosCsv
      */
     protected $redemptionWriter;
 
@@ -151,6 +176,11 @@ class Redemption
     protected $configHelper;
 
     /**
+     * @var \CJ\Middleware\Helper\Data
+     */
+    protected $middlewareHelper;
+
+    /**
      * @inheritDoc
      */
     public function __construct(
@@ -158,7 +188,7 @@ class Redemption
         \Eguana\Redemption\Model\ResourceModel\Counter\CollectionFactory $counterCollectionFactory,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        \CJ\DataExport\Model\Export\Adapter\RedemptionCsv $redemptionWriter,
+        \CJ\DataExport\Model\Export\Adapter\RedemptionPosCsv $redemptionWriter,
         \CJ\DataExport\Model\Export\Redemption\AttributeCollectionProvider $attributeCollectionProvider,
         \Amore\GcrmDataExport\Helper\Data $dataHelper,
         \Eguana\Redemption\Model\ResourceModel\Redemption\CollectionFactory $redemptionColFactory,
@@ -168,6 +198,7 @@ class Redemption
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\ImportExport\Model\Export\Factory $collectionFactory,
         \Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory $resourceColFactory,
+        \CJ\Middleware\Helper\Data $middlewareHelper,
         array $data = []
     ) {
         $this->configHelper = $configHelper;
@@ -180,6 +211,7 @@ class Redemption
         $this->redemptionColFactory = $redemptionColFactory;
         $this->exportCollectionFactory = $exportCollectionFactory;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
         parent::__construct(
             $scopeConfig,
             $storeManager,
@@ -278,7 +310,14 @@ class Redemption
         $cnt = 0;
 
         foreach ($collection as $item) {
-            $itemData = $this->dataHelper->fixSingleRowData($item->getData());
+            $rowData = $item->getData();
+            // Add sales organization code, sales office code columns
+            $storeId = $rowData['store_id'] ? (int)$rowData['store_id'] : '';
+            $rowData['sales_organization_code'] = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+            $rowData['sales_office_code'] = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
+            unset($rowData['store_id']);
+
+            $itemData = $this->dataHelper->fixSingleRowData($rowData);
             $itemRow[$item->getIncrementId()][$cnt] = $itemData;
             $cnt++;
         }
@@ -321,7 +360,6 @@ class Redemption
             if ($exportDate == "NULL") {
                 $collection = $this->counterCollectionFactory->create();
             } else {
-
                 $collection = $this->counterCollectionFactory->create();
                 $connection = $collection->getConnection();
                 $collection
@@ -338,7 +376,7 @@ class Redemption
                     ->joinRight(['counter' => $connection->getTableName('eguana_redemption_counter')],
                         'main_table.counter_id = counter.offline_store_id', [])
                     ->joinLeft(['storeinfo' => 'storeinfo'], 'storeinfo.entity_id = counter.offline_store_id', [
-                        RedemptionInterface::STORE_COUNTER => 'title'
+                        RedemptionPosInterface::STORE_COUNTER => 'title'
                     ])
                     ->group(['main_table.entity_id', 'storeview.name'])
                     ->order('main_table.entity_id DESC');

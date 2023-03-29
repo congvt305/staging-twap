@@ -99,6 +99,9 @@
         <column xsi:type="varchar" name="customer_name" nullable="false" length="255" comment="Customer Name"/>
         <column xsi:type="varchar" name="email" nullable="true" length="255" comment="Email"/>
         <column xsi:type="varchar" name="address" nullable="true" length="255" comment="Customer Address"/>
+        <column xsi:type="varchar" name="postcode" nullable="true" length="64"/>
+        <column xsi:type="varchar" name="city" nullable="true" length="180"/>
+        <column xsi:type="varchar" name="region" nullable="true" length="100"/>
         <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Phone Number"/>
         <column xsi:type="smallint" name="counter_id" padding="10" unsigned="true" nullable="false" identity="false"
                 comment="Store Locator ID"/>
