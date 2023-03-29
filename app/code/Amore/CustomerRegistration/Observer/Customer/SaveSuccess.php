@@ -25,6 +25,8 @@ use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Webapi\Rest\Request;
+use Amore\CustomerRegistration\Plugin\CreateCustomer;
 
 /**
  * Call POS API on customer information change
@@ -95,7 +97,18 @@ class SaveSuccess implements ObserverInterface
      */
     private $state;
 
+    /**
+     * @var Request
+     */
+    private $requestApi;
+
+    /**
+     * @var \Magento\Newsletter\Model\SubscriptionManagerInterface
+     */
+    private $subscriptionManager;
+
     public function __construct(
+        Request $requestApi,
         RequestInterface $request,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
@@ -109,8 +122,10 @@ class SaveSuccess implements ObserverInterface
         AddressRepositoryInterface $addressRepository,
         AddressInterfaceFactory $addressDataFactory,
         \Magento\Framework\App\State $state,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
     ) {
+        $this->requestApi = $requestApi;
         $this->sequence = $sequence;
         $this->POSSystem = $POSSystem;
         $this->subscriberFactory = $subscriberFactory;
@@ -125,6 +140,7 @@ class SaveSuccess implements ObserverInterface
         $this->addressDataFactory = $addressDataFactory;
         $this->state = $state;
         $this->storeManager = $storeManager;
+        $this->subscriptionManager = $subscriptionManager;
     }
 
     /**
@@ -155,6 +171,21 @@ class SaveSuccess implements ObserverInterface
              */
             $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
 
+            if ($this->isPOSRequest()) {
+                $data = $this->requestApi->getRequestData();
+                if ($data && isset($data['customer']['customAttributes'])) {
+                    foreach ($data['customer']['customAttributes'] as $customerAttribute) {
+                        if (isset($customerAttribute['attributeCode']) && $customerAttribute['attributeCode'] == 'email_subscription_status') {
+                            if (isset($customerAttribute['value']) && $customerAttribute['value'] == 1) {
+                                $customerStoreId = $this->getCustomerStoreId($data[CreateCustomer::SALOFFCD]);
+                                $this->subscriptionManager->subscribeCustomer((int)$newCustomerData->getId(), $customerStoreId);
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
             if ($this->getArea() === 'adminhtml' && !$oldCustomerData) {
                 return;
             }
@@ -204,6 +235,22 @@ class SaveSuccess implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+    }
+
+
+
+    /**
+     * check POS request
+     *
+     * @return bool
+     */
+    private function isPOSRequest()
+    {
+        $data = $this->requestApi->getRequestData();
+        if ($data && isset($data[CreateCustomer::IS_POS]) && $data[CreateCustomer::IS_POS] == 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -481,5 +528,19 @@ class SaveSuccess implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
+    }
+
+    private function getCustomerStoreId($salOffCd)
+    {
+        $customerStoreId = 0;
+        foreach ($this->storeManager->getStores() as $store) {
+            $storeId = $store->getId();
+            $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+            if ($officeSaleCode == $salOffCd) {
+                $customerStoreId = $storeId;
+                break;
+            }
+        }
+        return $customerStoreId;
     }
 }
