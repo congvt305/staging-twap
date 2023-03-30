@@ -214,6 +214,7 @@ class PosReturnData
             }
         }
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
 
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -227,7 +228,8 @@ class PosReturnData
             'orderInfo' => $rmaItem,
             'PointAccount' => (int)$rewardPoints,
             'redemptionFlag' => $redemptionFlag,
-            'baReferralCode' => $baReferralCode
+            'baReferralCode' => $baReferralCode,
+            'friendReferral' => $friendReferralCode
         ];
 
         return $rmaData;
@@ -749,9 +751,12 @@ class PosReturnData
     }
 
 
+
     /**
-     * @param $order
-     * @param $websiteId
+     * Get BA referral code
+     *
+     * @param Order $order
+     * @param int $websiteId
      * @return float|mixed|string|null
      */
     protected function getReferralBACode($order, $websiteId)
@@ -759,10 +764,24 @@ class PosReturnData
         if ($order instanceof OrderInterface) {
             if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
                 return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
-            } elseif ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
-                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
-            } else {
-                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+            }
+            return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get friend referral code
+     *
+     * @param Order $order
+     * @return float|mixed|string|null
+     */
+    protected function getFriendReferralCode($order)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY);
             }
         }
 
