@@ -215,7 +215,7 @@ class PosOrderData
             }
         }
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
-
+        $friendReferralCode = $this->getFriendReferralCode($order);
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -226,7 +226,8 @@ class PosOrderData
             'orderType' => self::POS_ORDER_TYPE_ORDER,
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData,
-            'baReferralCode' => $baReferralCode
+            'baReferralCode' => $baReferralCode,
+            'friendReferral' => $friendReferralCode
         ];
         return array_merge($orderData, $redInvoiceData);
     }
@@ -258,6 +259,7 @@ class PosOrderData
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
 
         return [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -269,7 +271,8 @@ class PosOrderData
             'orderType' => self::POS_ORDER_TYPE_CANCEL,
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData,
-            'baReferralCode' => $baReferralCode
+            'baReferralCode' => $baReferralCode,
+            'friendReferral' => $friendReferralCode
         ];
     }
 
@@ -741,8 +744,10 @@ class PosOrderData
     }
 
     /**
-     * @param $order
-     * @param $websiteId
+     * Get BA referral code
+     *
+     * @param Order $order
+     * @param int $websiteId
      * @return float|mixed|string|null
      */
     protected function getReferralBACode($order, $websiteId)
@@ -750,10 +755,24 @@ class PosOrderData
         if ($order instanceof OrderInterface) {
             if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
                 return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
-            } elseif ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
-                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
-            } else {
-                return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+            }
+            return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get friend referral code
+     *
+     * @param Order $order
+     * @return float|mixed|string|null
+     */
+    protected function getFriendReferralCode($order)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY);
             }
         }
 
