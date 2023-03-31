@@ -63,13 +63,21 @@ class Quote
     private $messageManager;
 
     /**
+     * @var \Eguana\GWLogistics\Model\QuoteCvsLocationRepository
+     */
+    private $quoteCvsLocationRepository;
+
+    /**
      * Quote constructor.
+     *
      * @param CheckoutSession $checkoutSession
      * @param ProductFactory $productFactory
      * @param Image $imageHelper
      * @param CartRepositoryInterface $quoteRepository
      * @param LoggerInterface $logger
      * @param DateTime $dateTime
+     * @param MessageManagerInterface $messageManager
+     * @param \Eguana\GWLogistics\Model\QuoteCvsLocationRepository $quoteCvsLocationRepository
      */
     public function __construct(
         CheckoutSession $checkoutSession,
@@ -78,15 +86,17 @@ class Quote
         CartRepositoryInterface $quoteRepository,
         LoggerInterface $logger,
         DateTime $dateTime,
-        MessageManagerInterface $messageManager
+        MessageManagerInterface $messageManager,
+        \Eguana\GWLogistics\Model\QuoteCvsLocationRepository $quoteCvsLocationRepository
     ) {
-        $this->checkoutSession                   = $checkoutSession;
-        $this->productFactory                    = $productFactory;
-        $this->imageHelper                       = $imageHelper;
-        $this->quoteRepository                   = $quoteRepository;
-        $this->logger                            = $logger;
-        $this->dateTime                          = $dateTime;
+        $this->checkoutSession = $checkoutSession;
+        $this->productFactory = $productFactory;
+        $this->imageHelper = $imageHelper;
+        $this->quoteRepository = $quoteRepository;
+        $this->logger = $logger;
+        $this->dateTime = $dateTime;
         $this->messageManager = $messageManager;
+        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
     }
 
     /**
@@ -103,13 +113,56 @@ class Quote
             $timestamp = $this->dateTime->timestamp();
             $origReserveId = $this->checkoutSession->getQuote()->getReservedOrderId();
             $reserveId = $origReserveId.$timestamp;
-            $currentQuote = $this->quoteRepository->get($this->checkoutSession->getQuote()->getId());
+            $quoteId = $this->checkoutSession->getQuote()->getId();
+            $currentQuote = $this->quoteRepository->get($quoteId);
             $shippingAddress = $currentQuote->getShippingAddress();
-            if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet()) {
-                throw new LocalizedException(__('The shipping address is missing. Set the address and try again.'));
+            $billingAddress = $currentQuote->getBillingAddress();
+
+            //in case have shipping address but missing billing address
+            if ($shippingAddress->getFirstname() && $shippingAddress->getLastname() && $shippingAddress->getStreet()
+                && (!$billingAddress->getFirstname() || !$billingAddress->getLastname() || !$billingAddress->getStreet())
+            ) {
+                $billingAddress = $this->reAssignDataToAddress($shippingAddress, $billingAddress);
+                $currentQuote->setBillingAddress($billingAddress);
             }
+
+            //in case have billing address but missing shipping address
+            if ($billingAddress->getFirstname() && $billingAddress->getLastname() && $billingAddress->getStreet()
+                && (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname() || !$shippingAddress->getStreet())
+            ) {
+                $shippingAddress = $this->reAssignDataToAddress($billingAddress, $shippingAddress);
+                $currentQuote->setShippingAddress($shippingAddress);
+            }
+
+            //In case missing cvs location
+            if ($shippingAddress->getShippingMethod() == 'gwlogistics_CVS' && !$currentQuote->getShippingAddress()->getCvsLocationId()) {
+                $cvsLocation = $this->quoteCvsLocationRepository->getByQuoteId($quoteId);
+                if ($cvsLocation->getLocationId()) {
+                    $shippingAddress->setCvsLocationId($cvsLocation->getLocationId());
+                    $currentQuote->setShippingAddress($shippingAddress);
+                }
+            }
+
             $currentQuote->setData('reserved_order_id', $origReserveId);
             $this->quoteRepository->save($currentQuote);
+
+            //Check new quote after save
+            $newQuote = $this->quoteRepository->get($quoteId);
+            $newShippingAddress = $newQuote->getShippingAddress();
+            $newBillingAddress = $newQuote->getBillingAddress();
+
+            if (!$newShippingAddress->getFirstname() || !$newShippingAddress->getLastname() || !$newShippingAddress->getStreet()
+                || !$newBillingAddress->getFirstname() || !$newBillingAddress->getLastname() || !$newBillingAddress->getStreet()
+            ) {
+                throw new LocalizedException(__('The shipping address is missing. Set the address and try again.'));
+            }
+
+            //In case missing cvs location
+            if ($newShippingAddress->getShippingMethod() == 'gwlogistics_CVS' && !$newQuote->getShippingAddress()->getCvsLocationId()) {
+                throw new LocalizedException(__('Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center'));
+            }
+            //End check new quote
+
             return $reserveId;
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage(__($e->getMessage()));
@@ -289,5 +342,29 @@ class Quote
         $pointsPrice = $pointsPrice * $qty;
         $product['priceInPoints'] = $pointsPrice;
         return $product;
+    }
+
+    /**
+     * Reassign data
+     *
+     * @param \Magento\Quote\Api\Data\AddressInterface $address
+     * @param \Magento\Quote\Api\Data\AddressInterface $addressNeedToReAssign
+     * @return \Magento\Quote\Api\Data\AddressInterface
+     */
+    private function reAssignDataToAddress($address, $addressNeedToReAssign)
+    {
+        $addressNeedToReAssign->setEmail($address->getEmail());
+        $addressNeedToReAssign->setFirstname($address->getFirstname());
+        $addressNeedToReAssign->setCompany($address->getCompany());
+        $addressNeedToReAssign->setLastname($address->getLastname());
+        $addressNeedToReAssign->setStreet($address->getStreet());
+        $addressNeedToReAssign->setCity($address->getCity());
+        $addressNeedToReAssign->setRegion($address->getRegion());
+        $addressNeedToReAssign->setRegionId($address->getRegionId());
+        $addressNeedToReAssign->setPostCode($address->getPostCode());
+        $addressNeedToReAssign->setCountryId($address->getCountryId());
+        $addressNeedToReAssign->setTelephone($address->getTelephone());
+        $addressNeedToReAssign->setCustomerId($address->getCustomerId());
+        return $addressNeedToReAssign;
     }
 }
