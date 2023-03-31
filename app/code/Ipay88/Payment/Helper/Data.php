@@ -30,6 +30,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $ipay88PaymentLogger;
 
     /**
+     * @var array
+     */
+
+    /**
      * Data constructor.
      *
      * @param  \Magento\Framework\App\Helper\Context  $context
@@ -124,7 +128,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function validateResponseSignature(array $response): bool
+    public function isResponseSignatureExist(array $response): bool
+    {
+        return isset($response['signature']);
+    }
+
+    /**
+     * @param  array  $response
+     *
+     * @return bool
+     */
+    public function isResponseSignatureMatched(array $response): bool
     {
         $signature = $this->generateSignature([
             $this->magentoEncryptor->decrypt($this->ipay88PaymentGatewayConfig->getMerchantKey()), // merchant key
@@ -140,6 +154,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @return bool
+     */
+
+    /**
      * Generature
      *
      * @param  array  $source
@@ -151,8 +169,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $hashed = hash('sha256', implode('', $source));
 
         $this->ipay88PaymentLogger->info('[signature]', [
-            'source' => $source,
-            'signature' => $hashed
+            'source'    => $source,
+            'signature' => $hashed,
         ]);
 
         return $hashed;

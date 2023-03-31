@@ -2,15 +2,11 @@
 
 namespace Ipay88\Payment\Controller\Checkout;
 
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Request\InvalidRequestException;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResponseInterface;
-
-class Callback extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpPostActionInterface, \Magento\Framework\App\CsrfAwareActionInterface
+class Callback extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpPostActionInterface,
+                                                                       \Magento\Framework\App\CsrfAwareActionInterface
 {
     /**
-     * @var \Magento\Framework\App\CacheInterface 
+     * @var \Magento\Framework\App\CacheInterface
      */
     protected $magentoCache;
 
@@ -60,6 +56,11 @@ class Callback extends \Magento\Framework\App\Action\Action implements \Magento\
     protected $magentoSalesInvoiceRepository;
 
     /**
+     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+     */
+    protected $magentoSalesInvoiceSender;
+
+    /**
      * @var \Ipay88\Payment\Helper\Data
      */
     protected $ipay88PaymentDataHelper;
@@ -82,6 +83,7 @@ class Callback extends \Magento\Framework\App\Action\Action implements \Magento\
      * @param  \Magento\Sales\Model\Order\Config  $magentoSalesOrderConfig
      * @param  \Magento\Sales\Model\Order\InvoiceRepository  $magentoSalesInvoiceRepository
      * @param  \Magento\Sales\Model\Service\InvoiceService  $magentoSalesInvoiceService
+     * @param  \Magento\Sales\Model\Order\Email\Sender\InvoiceSender  $magentoSalesInvoiceSender
      * @param  \Ipay88\Payment\Helper\Data  $ipay88PaymentDataHelper
      * @param  \Ipay88\Payment\Logger\Logger  $ipay88PaymentLogger
      */
@@ -96,6 +98,7 @@ class Callback extends \Magento\Framework\App\Action\Action implements \Magento\
         \Magento\Sales\Model\Order\Config $magentoSalesOrderConfig,
         \Magento\Sales\Model\Order\InvoiceRepository $magentoSalesInvoiceRepository,
         \Magento\Sales\Model\Service\InvoiceService $magentoSalesInvoiceService,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $magentoSalesInvoiceSender,
         \Ipay88\Payment\Helper\Data $ipay88PaymentDataHelper,
         \Ipay88\Payment\Logger\Logger $ipay88PaymentLogger
     ) {
@@ -111,34 +114,44 @@ class Callback extends \Magento\Framework\App\Action\Action implements \Magento\
         $this->magentoSalesOrderConfig         = $magentoSalesOrderConfig;
         $this->magentoSalesInvoiceService      = $magentoSalesInvoiceService;
         $this->magentoSalesInvoiceRepository   = $magentoSalesInvoiceRepository;
+        $this->magentoSalesInvoiceSender       = $magentoSalesInvoiceSender;
         $this->ipay88PaymentDataHelper         = $ipay88PaymentDataHelper;
         $this->ipay88PaymentLogger             = $ipay88PaymentLogger;
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return void
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function execute()
+    public function execute(): void
     {
         $responseData = $this->ipay88PaymentDataHelper->normalizeResponseData($this->magentoRequest->getParams());
 
-        $salesOrderSearchCriteria = $this->magentoApiSearchCriteriaBuilder->addFilter(
-            \Magento\Sales\Api\Data\OrderInterface::INCREMENT_ID,
-            $responseData['ref_no']
-        )->create();
+        $salesOrder = $this->getOrderFromResponse($responseData);
 
-        $salesOrderCollection = $this->magentoSalesOrderRepository->getList($salesOrderSearchCriteria)->getItems();
-        if ( ! $salesOrderCollection) {
+        // check if order exist
+        if ( ! $salesOrder) {
             $this->handleError(__("No order #{$responseData['ref_no']} for processing found."), $responseData);
 
             return;
         }
 
-        /**
-         * @var \Magento\Sales\Model\Order $salesOrder
-         */
-        $salesOrder = reset($salesOrderCollection);
+        // restore cart and cancel order if signature empty
+        $isResponseSignatureExists = $this->ipay88PaymentDataHelper->isResponseSignatureExist($responseData);
+        if ( ! $isResponseSignatureExists) {
+            $this->handleEmptyResponseSignature($salesOrder, $responseData);
+
+            return;
+        }
+
+        // ignore request if signature mismatches
+        $isResponseSignatureMatched = $this->ipay88PaymentDataHelper->isResponseSignatureMatched($responseData);
+        if ( ! $isResponseSignatureMatched) {
+            $this->handleError(__("Returned signature `{$responseData['signature']}` not match."), $responseData);
+
+            return;
+        }
+
 
         if ($responseData['status'] === \Ipay88\Payment\Gateway\Config\Config::PAYMENT_STATUS_FAIL) {
             $this->handleError($responseData['err_desc'], $responseData, $salesOrder);
@@ -147,73 +160,126 @@ class Callback extends \Magento\Framework\App\Action\Action implements \Magento\
         }
 
         if ($responseData['status'] === \Ipay88\Payment\Gateway\Config\Config::PAYMENT_STATUS_SUCCESS) {
-            $isResponseSignatureValid = $this->ipay88PaymentDataHelper->validateResponseSignature($responseData);
-            if ( ! $isResponseSignatureValid) {
-                $this->handleError(__("Returned signature `{$responseData['signature']}` not match."), $responseData, $salesOrder);
+            $this->handleSuccessResponse($salesOrder, $responseData);
 
-                return;
-            }
+            return;
+        }
 
-            if ($salesOrder->getPayment()->getLastTransId()) {
-                $this->ipay88PaymentLogger->info('[callback] transaction existed', [
-                    'order'    => $salesOrder->getIncrementId(),
-                    'response' => $responseData,
-                ]);
+        $this->handleNoHandler($salesOrder, $responseData);
+    }
 
-                echo 'RECEIVEOK';
-                exit;
-            }
+    /**
+     * @param  array  $response
+     *
+     * @return \Magento\Sales\Model\Order|false
+     */
+    protected function getOrderFromResponse(array $response)
+    {
+        $salesOrderSearchCriteria = $this->magentoApiSearchCriteriaBuilder->addFilter(
+            \Magento\Sales\Api\Data\OrderInterface::INCREMENT_ID,
+            $response['ref_no']
+        )->create();
 
-            $isProcessing = (bool) $this->magentoCache->load("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-            if ($isProcessing) {
-                $this->ipay88PaymentLogger->info('[callback] processing by request', [
-                    'order'    => $salesOrder->getIncrementId(),
-                    'response' => $responseData,
-                ]);
+        $salesOrderCollection = $this->magentoSalesOrderRepository->getList($salesOrderSearchCriteria)->getItems();
 
-                sleep(1);
+        return reset($salesOrderCollection);
+    }
 
-                echo 'RECEIVEOK';
-                exit;
-            }
+    /**
+     * @param  \Magento\Sales\Model\Order  $salesOrder
+     * @param  array  $response
+     */
+    protected function handleEmptyResponseSignature(
+        \Magento\Sales\Model\Order $salesOrder,
+        array $response
+    ): void {
+        $this->handleError(__($response['err_desc']), $response, $salesOrder);
 
-            $this->magentoCache->save(1, "ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+        $salesOrder->addStatusToHistory(
+            false,
+            __('Order cancelled due to response signature is empty. Please check order status in merchant portal for confirmation.')
+        );
 
-            $salesInvoice = $this->magentoSalesInvoiceService->prepareInvoice($salesOrder);
-            $salesInvoice->setTransactionId($responseData['trans_id']);
-            //            $salesInvoice->setRequestedCaptureCase();
-            $salesInvoice->register();
+        $this->magentoSalesOrderRepository->save($salesOrder);
+    }
 
-            //            $salesOrder->setCustomerNoteNotify(! empty($data['send_email']));
-            $salesOrder->setIsInProcess(true);
-            $salesOrder->getPayment()->setLastTransId($responseData['trans_id']);
-            $salesOrder->setState(\Magento\Sales\Model\Order::STATE_PROCESSING);
-            $salesOrder->setStatus($this->magentoSalesOrderConfig->getStateDefaultStatus($salesOrder->getState()));
-            $salesOrder->addStatusToHistory($salesOrder->getStatus(), "Ipay88 transaction #{$salesInvoice->getTransactionId()} success.");
-
-            /**
-             * @var \Magento\Framework\DB\Transaction $dbTransaction ;
-             */
-            $dbTransaction = $this->magentoDbTransactionFactory->create();
-            $dbTransaction->addObject($salesOrder);
-            $dbTransaction->addObject($salesInvoice);
-            $dbTransaction->save();
-
-            $this->magentoCache->remove("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-
-            $this->ipay88PaymentLogger->info('[callback] success', [
+    /**
+     * @param  \Magento\Sales\Model\Order  $salesOrder
+     * @param  array  $response
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function handleSuccessResponse(
+        \Magento\Sales\Model\Order $salesOrder,
+        array $response
+    ): void {
+        if ($salesOrder->getPayment()->getLastTransId()) {
+            $this->ipay88PaymentLogger->info('[callback] transaction existed', [
                 'order'    => $salesOrder->getIncrementId(),
-                'invoice'  => $salesInvoice->getIncrementId(),
-                'response' => $responseData,
+                'response' => $response,
             ]);
 
             echo 'RECEIVEOK';
             exit;
         }
 
+        $isProcessing = (bool) $this->magentoCache->load("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+        if ($isProcessing) {
+            $this->ipay88PaymentLogger->info('[callback] processing by request', [
+                'order'    => $salesOrder->getIncrementId(),
+                'response' => $response,
+            ]);
+
+            sleep(1);
+
+            echo 'RECEIVEOK';
+            exit;
+        }
+
+        $this->magentoCache->save(1, "ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+
+        $salesInvoice = $this->magentoSalesInvoiceService->prepareInvoice($salesOrder);
+        $salesInvoice->setTransactionId($response['trans_id']);
+        //            $salesInvoice->setRequestedCaptureCase();
+        $salesInvoice->register();
+
+        //            $salesOrder->setCustomerNoteNotify(! empty($data['send_email']));
+        $salesOrder->setIsInProcess(true);
+        $salesOrder->getPayment()->setLastTransId($response['trans_id']);
+        $salesOrder->setState(\Magento\Sales\Model\Order::STATE_PROCESSING);
+        $salesOrder->setStatus($this->magentoSalesOrderConfig->getStateDefaultStatus($salesOrder->getState()));
+        $salesOrder->addStatusToHistory($salesOrder->getStatus(), "Ipay88 transaction #{$salesInvoice->getTransactionId()} success.");
+
+        $dbTransaction = $this->magentoDbTransactionFactory->create();
+        $dbTransaction->addObject($salesOrder);
+        $dbTransaction->addObject($salesInvoice);
+        $dbTransaction->save();
+
+        $this->magentoCache->remove("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+
+        $this->magentoSalesInvoiceSender->send($salesInvoice);
+
+        $this->ipay88PaymentLogger->info('[callback] success', [
+            'order'    => $salesOrder->getIncrementId(),
+            'invoice'  => $salesInvoice->getIncrementId(),
+            'response' => $response,
+        ]);
+
+        echo 'RECEIVEOK';
+        exit;
+    }
+
+    /**
+     * @param  \Magento\Sales\Model\Order  $salesOrder
+     * @param  array  $response
+     */
+    protected function handleNoHandler(
+        \Magento\Sales\Model\Order $salesOrder,
+        array $response
+    ): void {
         $this->ipay88PaymentLogger->notice('[callback] no handler', [
             'order'    => $salesOrder->getIncrementId(),
-            'response' => $responseData,
+            'response' => $response,
         ]);
     }
 
