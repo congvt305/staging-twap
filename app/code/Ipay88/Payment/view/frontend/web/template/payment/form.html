@@ -79,6 +79,21 @@
           </label>
           <!-- /ko -->
         <!-- /ko -->
+        <!-- ko if: getBuyNowPayLaterMethods().length -->
+          <!-- ko if: getGroupPaymentMethodsByTypeOnCheckout() -->
+          <h4
+            class="ipay88-payment-type-group-header"
+            data-bind="i18n: 'Buy Now Pay Later'"
+          ></h4>
+          <!-- /ko -->
+          <!-- ko foreach: getBuyNowPayLaterMethods() -->
+          <label class="ipay88-payment-type-label">
+            <input type="radio" name="ipay88_payment_id" data-bind="value: id, checked: $parent.selectedPaymentId" required>
+            <img class="ipay88-payment-type-logo" data-bind="attr: { src: require.toUrl('Ipay88_Payment/images/payments/' + logo ) }" />
+            <span data-bind="i18n: name"></span>
+          </label>
+          <!-- /ko -->
+        <!-- /ko -->
       <!-- /ko -->
     </div>
     <div class="actions-toolbar">
