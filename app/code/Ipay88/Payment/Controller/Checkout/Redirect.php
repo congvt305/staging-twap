@@ -2,8 +2,7 @@
 
 namespace Ipay88\Payment\Controller\Checkout;
 
-class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpPostActionInterface,
-                                                                       \Magento\Framework\App\CsrfAwareActionInterface
+class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpPostActionInterface, \Magento\Framework\App\CsrfAwareActionInterface
 {
     /**
      * @var \Magento\Framework\App\CacheInterface
@@ -81,11 +80,6 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
     protected $magentoSalesInvoiceRepository;
 
     /**
-     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
-     */
-    protected $magentoSalesInvoiceSender;
-
-    /**
      * @var \Ipay88\Payment\Helper\Data
      */
     protected $ipay88PaymentDataHelper;
@@ -109,7 +103,6 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
      * @param  \Magento\Sales\Model\Order\Config  $magentoSalesOrderConfig
      * @param  \Magento\Sales\Model\Order\InvoiceRepository  $magentoSalesInvoiceRepository
      * @param  \Magento\Sales\Model\Service\InvoiceService  $magentoSalesInvoiceService
-     * @param  \Magento\Sales\Model\Order\Email\Sender\InvoiceSender  $magentoSalesInvoiceSender
      * @param  \Ipay88\Payment\Helper\Data  $ipay88PaymentDataHelper
      * @param  \Ipay88\Payment\Logger\Logger  $ipay88PaymentLogger
      */
@@ -125,7 +118,6 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
         \Magento\Sales\Model\Order\Config $magentoSalesOrderConfig,
         \Magento\Sales\Model\Order\InvoiceRepository $magentoSalesInvoiceRepository,
         \Magento\Sales\Model\Service\InvoiceService $magentoSalesInvoiceService,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $magentoSalesInvoiceSender,
         \Ipay88\Payment\Helper\Data $ipay88PaymentDataHelper,
         \Ipay88\Payment\Logger\Logger $ipay88PaymentLogger
     ) {
@@ -145,33 +137,34 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
         $this->magentoSalesOrderConfig         = $magentoSalesOrderConfig;
         $this->magentoSalesInvoiceService      = $magentoSalesInvoiceService;
         $this->magentoSalesInvoiceRepository   = $magentoSalesInvoiceRepository;
-        $this->magentoSalesInvoiceSender       = $magentoSalesInvoiceSender;
         $this->ipay88PaymentDataHelper         = $ipay88PaymentDataHelper;
         $this->ipay88PaymentLogger             = $ipay88PaymentLogger;
     }
 
     /**
-     * @return void
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function execute(): void
+    public function execute()
     {
         $responseData = $this->ipay88PaymentDataHelper->normalizeResponseData($this->magentoRequest->getParams());
 
-        $salesOrder = $this->getOrderFromResponse($responseData);
+        $salesOrderSearchCriteria = $this->magentoApiSearchCriteriaBuilder->addFilter(
+            \Magento\Sales\Api\Data\OrderInterface::INCREMENT_ID,
+            $responseData['ref_no']
+        )->create();
 
-        // check if order exist
-        if ( ! $salesOrder) {
+        $salesOrderCollection = $this->magentoSalesOrderRepository->getList($salesOrderSearchCriteria)->getItems();
+        if ( ! $salesOrderCollection) {
             $this->redirectToCheckoutCartPage(__("No order #{$responseData['ref_no']} for processing found."), $responseData);
 
             return;
         }
-        // ignore request if signature mismatches
-        $isResponseSignatureMatched = $this->ipay88PaymentDataHelper->isResponseSignatureMatched($responseData);
-        if ( ! $isResponseSignatureMatched) {
-            $this->redirectToCheckoutCartPage(__("Returned signature `{$responseData['signature']}` not match."), $responseData);
 
-            return;
-        }
+        /**
+         * @var \Magento\Sales\Model\Order $salesOrder
+         */
+        $salesOrder = reset($salesOrderCollection);
 
         if ($responseData['status'] === \Ipay88\Payment\Gateway\Config\Config::PAYMENT_STATUS_FAIL) {
             $this->redirectToCheckoutCartPage(__($responseData['err_desc']), $responseData, $salesOrder);
@@ -191,57 +184,66 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
         }
 
         if ($responseData['status'] === \Ipay88\Payment\Gateway\Config\Config::PAYMENT_STATUS_SUCCESS) {
-            $this->handleSuccessResponse($salesOrder, $responseData);
+            $isResponseSignatureValid = $this->ipay88PaymentDataHelper->validateResponseSignature($responseData);
+            if ( ! $isResponseSignatureValid) {
+                $this->redirectToCheckoutCartPage(__("Returned signature `{$responseData['signature']}` not match."), $responseData, $salesOrder);
 
-            return;
-        }
+                return;
+            }
 
-        $this->handleNoHandler($salesOrder, $responseData);
-    }
+            if ($salesOrder->getPayment()->getLastTransId()) {
+                $this->ipay88PaymentLogger->info('[redirect] transaction existed', [
+                    'order'    => $salesOrder->getIncrementId(),
+                    'response' => $responseData,
+                ]);
 
-    /**
-     * @param  array  $response
-     *
-     * @return \Magento\Sales\Model\Order|false
-     */
-    protected function getOrderFromResponse(array $response)
-    {
-        $salesOrderSearchCriteria = $this->magentoApiSearchCriteriaBuilder->addFilter(
-            \Magento\Sales\Api\Data\OrderInterface::INCREMENT_ID,
-            $response['ref_no']
-        )->create();
+                $this->redirectToCheckoutSuccessPage();
 
-        $salesOrderCollection = $this->magentoSalesOrderRepository->getList($salesOrderSearchCriteria)->getItems();
+                return;
+            }
 
-        return reset($salesOrderCollection);
-    }
+            $isProcessing = (bool) $this->magentoCache->load("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+            if ($isProcessing) {
+                $this->ipay88PaymentLogger->info('[redirect] processing by callback', [
+                    'order'    => $salesOrder->getIncrementId(),
+                    'response' => $responseData,
+                ]);
 
-    /**
-     * @param  \Magento\Sales\Model\Order  $salesOrder
-     * @param  array  $response
-     */
-    protected function handleEmptyResponseSignature(
-        \Magento\Sales\Model\Order $salesOrder,
-        array $response
-    ): void {
-        $this->redirectToCheckoutCartPage(__($response['err_desc']), $response, $salesOrder);
+                sleep(1);
 
-        $salesOrder->addStatusToHistory(
-            false,
-            __('Order cancelled due to response signature is empty. Please check order status in merchant portal for confirmation.')
-        );
+                $this->redirectToCheckoutSuccessPage();
 
-        $this->magentoSalesOrderRepository->save($salesOrder);
-    }
+                return;
+            }
 
-    protected function handleSuccessResponse(
-        \Magento\Sales\Model\Order $salesOrder,
-        array $response
-    ): void {
-        if ($salesOrder->getPayment()->getLastTransId()) {
-            $this->ipay88PaymentLogger->info('[redirect] transaction existed', [
+            $this->magentoCache->save(1, "ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+
+            $salesInvoice = $this->magentoSalesInvoiceService->prepareInvoice($salesOrder);
+            $salesInvoice->setTransactionId($responseData['trans_id']);
+            //            $salesInvoice->setRequestedCaptureCase();
+            $salesInvoice->register();
+
+            //            $salesOrder->setCustomerNoteNotify(! empty($data['send_email']));
+            $salesOrder->setIsInProcess(true);
+            $salesOrder->getPayment()->setLastTransId($responseData['trans_id']);
+            $salesOrder->setState(\Magento\Sales\Model\Order::STATE_PROCESSING);
+            $salesOrder->setStatus($this->magentoSalesOrderConfig->getStateDefaultStatus($salesOrder->getState()));
+            $salesOrder->addStatusToHistory($salesOrder->getStatus(), "Ipay88 transaction #{$salesInvoice->getTransactionId()} success.");
+
+            /**
+             * @var \Magento\Framework\DB\Transaction $dbTransaction ;
+             */
+            $dbTransaction = $this->magentoDbTransactionFactory->create();
+            $dbTransaction->addObject($salesOrder);
+            $dbTransaction->addObject($salesInvoice);
+            $dbTransaction->save();
+
+            $this->magentoCache->remove("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
+
+            $this->ipay88PaymentLogger->info('[redirect] success', [
                 'order'    => $salesOrder->getIncrementId(),
-                'response' => $response,
+                'invoice'  => $salesInvoice->getIncrementId(),
+                'response' => $responseData,
             ]);
 
             $this->redirectToCheckoutSuccessPage();
@@ -249,60 +251,9 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
             return;
         }
 
-        $isProcessing = (bool) $this->magentoCache->load("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-        if ($isProcessing) {
-            $this->ipay88PaymentLogger->info('[redirect] processing by callback', [
-                'order'    => $salesOrder->getIncrementId(),
-                'response' => $response,
-            ]);
-
-            sleep(1);
-
-            $this->redirectToCheckoutSuccessPage();
-
-            return;
-        }
-
-        $this->magentoCache->save(1, "ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-
-        $salesInvoice = $this->magentoSalesInvoiceService->prepareInvoice($salesOrder);
-        $salesInvoice->setTransactionId($response['trans_id']);
-        //            $salesInvoice->setRequestedCaptureCase();
-        $salesInvoice->register();
-
-        //            $salesOrder->setCustomerNoteNotify(! empty($data['send_email']));
-        $salesOrder->setIsInProcess(true);
-        $salesOrder->getPayment()->setLastTransId($response['trans_id']);
-        $salesOrder->setState(\Magento\Sales\Model\Order::STATE_PROCESSING);
-        $salesOrder->setStatus($this->magentoSalesOrderConfig->getStateDefaultStatus($salesOrder->getState()));
-        $salesOrder->addStatusToHistory($salesOrder->getStatus(), "Ipay88 transaction #{$salesInvoice->getTransactionId()} success.");
-
-        $dbTransaction = $this->magentoDbTransactionFactory->create();
-        $dbTransaction->addObject($salesOrder);
-        $dbTransaction->addObject($salesInvoice);
-        $dbTransaction->save();
-
-        $this->magentoCache->remove("ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-
-        $this->magentoSalesInvoiceSender->send($salesInvoice);
-
-        $this->ipay88PaymentLogger->info('[redirect] success', [
-            'order'    => $salesOrder->getIncrementId(),
-            'invoice'  => $salesInvoice->getIncrementId(),
-            'response' => $response,
-        ]);
-
-        $this->redirectToCheckoutSuccessPage();
-    }
-
-
-    protected function handleNoHandler(
-        \Magento\Sales\Model\Order $salesOrder,
-        array $response
-    ): void {
         $this->ipay88PaymentLogger->notice('[redirect] no handler', [
             'order'    => $salesOrder->getIncrementId(),
-            'response' => $response,
+            'response' => $responseData,
         ]);
 
         $this->redirectToHomepage();
@@ -324,13 +275,13 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
 
         $this->magentoMessageManager->addErrorMessage($errorMessage);
 
-        $errorContext['response'] = $responseData;
-
         if ($salesOrder) {
             $this->magentoSalesOrderManagement->cancel($salesOrder->getId());
 
             $errorContext['order'] = $salesOrder->getIncrementId();
         }
+
+        $errorContext['response'] = $responseData;
 
         $this->ipay88PaymentLogger->error("[redirect] {$errorMessage}", $errorContext);
 

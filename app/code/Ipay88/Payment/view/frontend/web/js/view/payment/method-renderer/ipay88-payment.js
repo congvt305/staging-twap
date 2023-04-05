@@ -60,10 +60,6 @@ define([
       return this.getConfig().walletMethods || []
     },
 
-    getBuyNowPayLaterMethods () {
-      return this.getConfig().buyNowPayLaterMethods || []
-    },
-
     getGroupPaymentMethodsByTypeOnCheckout () {
       return !!this.getConfig().groupPaymentMethodsByTypeOnCheckout
     },

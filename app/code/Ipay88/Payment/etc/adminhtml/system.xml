@@ -47,15 +47,7 @@
                     </depends>
                     <can_be_empty>1</can_be_empty>
                 </field>
-                <field id="buy_now_pay_later_methods" translate="label" type="multiselect" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Wallet</label>
-                    <source_model>Ipay88\Payment\Model\Config\Source\BuyNowPayLater</source_model>
-                    <depends>
-                        <field id="show_available_payment_types">1</field>
-                    </depends>
-                    <can_be_empty>1</can_be_empty>
-                </field>
-                <field id="group_payment_methods_by_type_on_checkout" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="group_payment_methods_by_type_on_checkout" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Group payment methods by type on checkout</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
