@@ -103,7 +103,7 @@ class QuoteItems extends AbstractEntity implements QuoteItemsColumnsInterface
         self::QUOTE_ITEM_BASE_WEEE_TAX_DISPOSITION => 'base_weee_tax_disposition',
         self::QUOTE_ITEM_BASE_WEEE_TAX_ROW_DISPOSITION => 'base_weee_tax_row_disposition',
         self::QUOTE_ITEM_FREE_SHIPPING => 'free_shipping',
-        self::QUOTE_ITEM_GIFTREGISTRY_ITEM_ID => 'giftregistery_item_id'
+        self::QUOTE_ITEM_GIFTREGISTRY_ITEM_ID => 'giftregistry_item_id'
     ];
     /**#@-*/
 
