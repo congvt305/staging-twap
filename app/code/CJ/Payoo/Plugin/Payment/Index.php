@@ -79,10 +79,20 @@ class Index
         } else {
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             try {
-                $order = $this->_getLastRealOrder();
-                $payment = $order->getPayment();
-                $response = $payment->getAdditionalInformation('RESULT');
-                $resultRedirect->setUrl($response['order']['payment_url']);
+                $lastQuoteId = $this->checkoutSession->getQuote()->getId();
+                if ($lastQuoteId) {
+                    $reservedOrderId = $this->quoteRepository->get($lastQuoteId)->getReservedOrderId();
+                    $orderModel = $this->orderFactory->create();
+                    $order = $orderModel->loadByIncrementId($reservedOrderId);
+                    if (!$order->getId()) {
+                        throw new \Exception("ERROR CANNOT GET LAST ORDER ID");
+                    }
+                    $payment = $order->getPayment();
+                    $response = $payment->getAdditionalInformation('RESULT');
+                    $resultRedirect->setUrl($response['order']['payment_url']);
+                } else {
+                    throw new \Exception("ERROR CANNOT GET LAST QUOTE ID");
+                }
             } catch (\Exception $e) {
                 $this->messageManager->addExceptionMessage($e, __($e->getMessage()));
                 $this->logger->critical(json_encode([
@@ -95,43 +105,5 @@ class Index
 
             return $resultRedirect;
         }
-    }
-
-    /**
-     * @return \Magento\Sales\Model\Order
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
-     * @throws \Exception
-     */
-    protected function _getLastRealOrder(): \Magento\Sales\Model\Order
-    {
-        $order = $this->orderFactory->create();
-        $orderId = $this->_getLastRealOrderId();
-        if ($orderId) {
-            $order->load($orderId);
-        }
-        return $order;
-    }
-
-    /**
-     * @return int
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws \Exception
-     */
-    protected function _getLastRealOrderId(): int
-    {
-        $orderId = null;
-        $lastQuoteId = $this->checkoutSession->getLastQuoteId();
-        if ($lastQuoteId) {
-            $reservedOrderId = $this->quoteRepository->get($lastQuoteId)->getReservedOrderId();
-            $orderModel = $this->orderFactory->create();
-            $order = $orderModel->loadByIncrementId($reservedOrderId);
-            $orderId = (int)$order->getId();
-        }
-        if (!$orderId) {
-            throw new \Exception("ERROR CANNOT GET LAST ORDER ID");
-        }
-        return $orderId;
     }
 }
