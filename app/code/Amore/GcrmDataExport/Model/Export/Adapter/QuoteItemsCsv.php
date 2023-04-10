@@ -97,8 +97,9 @@ class QuoteItemsCsv extends AbstractAdapter
         CartItemRepositoryInterface $quoteItemRepositoryInterface,
         TimezoneInterface $timezoneInterface,
         Filesystem $filesystem,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
-        $destinationDirectoryCode = DirectoryList::VAR_DIR
+        $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
@@ -108,7 +109,8 @@ class QuoteItemsCsv extends AbstractAdapter
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid('QuoteItems_');
+            $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';
+            $destination = $dirPath . '/' . uniqid('QuoteItems_');
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {
