@@ -36,6 +36,7 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
                     'onlineBankingMethods'                => $this->ipay88PaymentGatewayConfig->getOnlineBankingMethods(),
                     'creditCardMethods'                   => $this->ipay88PaymentGatewayConfig->getCreditCardMethods(),
                     'walletMethods'                       => $this->ipay88PaymentGatewayConfig->getWalletMethods(),
+                    'buyNowPayLaterMethods'               => $this->ipay88PaymentGatewayConfig->getBuyNowPayLaterMethods(),
                     'groupPaymentMethodsByTypeOnCheckout' => $this->ipay88PaymentGatewayConfig->getGroupPaymentMethodsByTypeOnCheckout(),
                 ],
             ],
