@@ -104,7 +104,6 @@ class DeleteItems extends Action implements HttpPostActionInterface
                         $this->itemResourceModel->delete($item);
                     }
                 }
-                $this->quoteRepository->save($quote);
 
                 //must reset cookie message
                 //because code will run to class Magento\Persistent\Observer\EmulateQuoteObserver first
