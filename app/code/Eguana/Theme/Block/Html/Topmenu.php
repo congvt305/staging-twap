@@ -13,6 +13,7 @@ use Magento\Framework\Data\Tree\NodeFactory;
 use Magento\Framework\Data\TreeFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -160,18 +161,17 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             $parentCategoryName = 'MENU';
             if ($child->getParent()->getName()) {
                 $parentCategoryId = $child->getParent()->getId();
-                $storeId = 0;
-                try {
-                    $storeId = $this->_storeManager->getStore()->getId();
-                } catch (\Exception $e) {
-                }
-
-                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, $storeId)->getName();
+                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, 0)->getName();
             }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
 
-            $externalUrl = $childCategory->getData('satp_menu_block_external_url');
+            try {
+                $storeId = $this->_storeManager->getStore()->getId();
+            } catch (NoSuchEntityException $e) {
+                $storeId = 0;
+            }
+            $externalUrl = $this->getDefaultStoreCategory($child->getId(), $storeId)->getData('satp_menu_block_external_url');
 
             if ($externalUrl) {
                 $html .= '<a href="' . $externalUrl . '" ' . $outermostClassCode
