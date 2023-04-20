@@ -219,9 +219,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                     $this->aggregateDiscountPerRule($item, $address);
                 }
             }
-            // Custom for add odd number to first Item
+            // Custom for add odd number to first Item, avoid add discount over subtotal
             $oddTotal = round($oddTotal); // Should round or int
-            if ($oddTotal > 0) {
+            if ($oddTotal > 0 && $total->getSubtotal() + $total->getDiscountAmount() >= $oddTotal) {
                 foreach ($items as $item) {
                     // to determine the child item discount, we calculate the parent
                     if ($item->getDiscountAmount() > 0) {
