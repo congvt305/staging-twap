@@ -52,6 +52,7 @@ define([
                     });
                 }
                 window.AP_CART_ADDPRDS = apCartAddProds;
+                this.options.dataLayer.push({'event': 'addcart'});
                 this.options.dataLayer.push({
                     'event': 'productAddToCart',
                     'ecommerce': {
