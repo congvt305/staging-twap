@@ -38,26 +38,6 @@ class UpgradeData implements UpgradeDataInterface
     {
         $installer = $setup;
         $installer->startSetup();
-        if (version_compare($context->getVersion(), '2.2.0') < 0) {
-            // TODO
-            /** @var \Magento\Catalog\Setup\CategorySetup $categorySetup */
-            $categorySetup = $this->categorySetupFactory->create(['setup' => $setup]);
-            $attributeCodes = [
-                'satp_menu_block_bottom_content',
-                'satp_menu_block_left_content',
-                'satp_menu_block_left_width',
-                'satp_menu_block_top_content',
-                'satp_menu_font_icon',
-                'satp_menu_icon_img',
-                'satp_menu_cat_label',
-                'satp_menu_static_width',
-                'satp_menu_type',
-                'satp_menu_hide_item'
-            ];
-            foreach ($attributeCodes as $code) {
-                $categorySetup->removeAttribute(Category::ENTITY, $code);
-            }
-        }
 
         if (version_compare($context->getVersion(), '2.2.1') < 0) {
             /** @var \Magento\Catalog\Setup\CategorySetup $categorySetup */
