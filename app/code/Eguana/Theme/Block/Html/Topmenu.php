@@ -160,7 +160,13 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             $parentCategoryName = 'MENU';
             if ($child->getParent()->getName()) {
                 $parentCategoryId = $child->getParent()->getId();
-                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, 0)->getName();
+                $storeId = 0;
+                try {
+                    $storeId = $this->_storeManager->getStore()->getId();
+                } catch (\Exception $e) {
+                }
+
+                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, $storeId)->getName();
             }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
