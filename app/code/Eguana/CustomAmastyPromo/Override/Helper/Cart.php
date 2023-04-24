@@ -35,20 +35,13 @@ class Cart extends CartAlias
     private $product;
 
     /**
-     * @var \Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList
-     */
-    private \Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList $quoteItemQtyList;
-
-    /**
      * Cart constructor
      * @param Messages $promoMessagesHelper
      * @param ProductStock $product
-     * @param \Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList $quoteItemQtyList
      */
     public function __construct(
         Messages $promoMessagesHelper,
-        ProductStock $product,
-        \Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList $quoteItemQtyList
+        ProductStock $product
     ) {
         parent::__construct(
             $promoMessagesHelper,
@@ -56,7 +49,6 @@ class Cart extends CartAlias
         );
         $this->promoMessagesHelper = $promoMessagesHelper;
         $this->product = $product;
-        $this->quoteItemQtyList = $quoteItemQtyList;
     }
 
     /**
@@ -75,12 +67,6 @@ class Cart extends CartAlias
         array $requestParams,
         Quote $quote
     ) {
-       //Customize to reset singleton data and then set it again. Because when add automatically, it run check qty multiple time and get error data
-        $this->quoteItemQtyList->resetCheckQuoteItems();
-        foreach($quote->getAllVisibleItems() as $item) {
-            $item->checkData();
-        }
-        //End customize
         if ($product->getTypeId() == Type::TYPE_SIMPLE) {
             $qty = $this->resolveQty($product, $qty, $quote);
         }
