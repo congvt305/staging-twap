@@ -3,16 +3,13 @@ declare(strict_types=1);
 
 namespace CJ\Rewards\Plugin\Checkout\Controller;
 
-use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\Repository\RewardsRepository;
 use Amasty\Rewards\Model\RewardsProvider;
 use Amore\PointsIntegration\Logger\Logger;
 use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
+use Amore\PointsIntegration\Model\PointUpdate;
 use Amore\PointsIntegration\Model\Source\Config;
-use Magento\Framework\DB\Select;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 class IndexPlugin
 {
@@ -47,9 +44,9 @@ class IndexPlugin
     protected $logger;
 
     /**
-     * @var CollectionFactory
+     * @var PointUpdate
      */
-    private $orderCollectionFactory;
+    private $pointUpdate;
 
     /**
      * @param \Magento\Customer\Model\Session $_customerSession
@@ -58,7 +55,7 @@ class IndexPlugin
      * @param CustomerPointsSearch $customerPointsSearch
      * @param Config $config
      * @param Logger $logger
-     * @param CollectionFactory $orderCollectionFactory
+     * @param PointUpdate $pointUpdate
      */
     public function __construct(
         \Magento\Customer\Model\Session $_customerSession,
@@ -67,7 +64,7 @@ class IndexPlugin
         CustomerPointsSearch $customerPointsSearch,
         Config $config,
         Logger $logger,
-        CollectionFactory $orderCollectionFactory
+        PointUpdate $pointUpdate
     ) {
         $this->_customerSession = $_customerSession;
         $this->rewardsRepository = $rewardsRepository;
@@ -75,7 +72,7 @@ class IndexPlugin
         $this->customerPointsSearch = $customerPointsSearch;
         $this->config = $config;
         $this->logger = $logger;
-        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->pointUpdate = $pointUpdate;
     }
 
     public function beforeExecute(\Magento\Checkout\Controller\Cart\Index $subject)
@@ -92,12 +89,7 @@ class IndexPlugin
 //                $data['availablePoint'] = 500000;
                 $availablePoint = (int)$data['availablePoint']; //parse to int because if do not have availablePoint, availablePoint = ''
                 $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customer->getId());
-                $orderCollection = $this->orderCollectionFactory->create();
-                $orderCollection->getSelect()->reset(Select::COLUMNS)->columns(EntityInterface::POINTS_SPENT);
-                $orderCollection->addFieldToFilter('customer_id', $customer->getId())
-                    ->addFieldToFilter('pos_order_paid_sent', 0)
-                    ->addFieldToFilter(EntityInterface::POINTS_SPENT, ['neq' => 'NULL']);
-                if ($orderCollection->count()) {
+                if ($this->pointUpdate->isNeedUpdatePointFromPos($customer->getId())) {;
                     return;
                 }
                 $pointsDiscrepancy = $availablePoint - $customerRewards;

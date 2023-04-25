@@ -36,4 +36,9 @@
             <argument name="posOrderData" xsi:type="object">Amore\PointsIntegration\Model\PosStaleOrderData</argument>
         </arguments>
     </type>
+    <type name="Amasty\Rewards\Model\Calculation\Discount">
+        <plugin name="rewards_calculation_discount_plugin"
+                type="Amore\PointsIntegration\Plugin\RewardsCalculationDiscount"
+                sortOrder="1" disabled="false"/>
+    </type>
 </config>

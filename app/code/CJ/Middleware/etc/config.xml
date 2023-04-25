@@ -21,6 +21,7 @@
                 <redeem_search>IF_EC_005</redeem_search>
                 <point_search>IF_EC_006</point_search>
                 <customer_order>IF_EC_007</customer_order>
+                <point_update>IF_EC_018</point_update>
             </pos_interface_ids>
             <customer_interface_ids>
                 <member_info>IF_EC_001</member_info>

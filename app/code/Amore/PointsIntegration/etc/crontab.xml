@@ -10,5 +10,8 @@
         <job name="amore_points_cron" instance="Amore\PointsIntegration\Cron\PosOrderSynchronizer" method="execute">
             <config_path>crontab/default/jobs/amore_points_cron/schedule/cron_expr</config_path>
         </job>
+        <job name="amore_resend_points_cron" instance="Amore\PointsIntegration\Cron\PosPointSynchronizer" method="execute">
+            <config_path>crontab/default/jobs/amore_resend_points_cron/schedule/cron_expr</config_path>
+        </job>
     </group>
 </config>
