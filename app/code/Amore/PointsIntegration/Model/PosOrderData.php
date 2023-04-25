@@ -731,6 +731,36 @@ class PosOrderData
     }
 
     /**
+     * Get all order need to resend use point
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getOrdersNeedToResendUsePointToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_use_point_resend', true);
+        return $orderCollection->getItems();
+    }
+
+    /**
+     * Get all order need to resend return point
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getOrdersNeedToResendReturnPointToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_return_point_resend', true);
+        return $orderCollection->getItems();
+    }
+
+    /**
      * @param $storeId
      * @return DataObject[]
      */

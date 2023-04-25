@@ -64,6 +64,9 @@
                     <label>Member Order Path</label>
                     <comment>This is for replacing path: magento/member/order</comment>
                 </field>
+                <field id="point_update" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Point Update Path</label>
+                </field>
             </group>
             <group id="customer_interface_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Customer Interface IDs</label>

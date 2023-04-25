@@ -2,9 +2,10 @@
 
 namespace Amore\PointsIntegration\Observer;
 
+use Amore\PointsIntegration\Logger\Logger as PointsLogger;
+use Amore\PointsIntegration\Model\PointUpdate;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\AbstractAggregateException;
 use Magento\Sales\Api\Data\InvoiceInterface;
 use Amore\PointsIntegration\Model\Source\Config as PointConfig;
 use \Magento\Sales\Model\OrderRepository;
@@ -22,13 +23,32 @@ class POSSetOrderPaidSend implements ObserverInterface
      */
     protected $orderRepository;
 
+    /**
+     * @var PointUpdate
+     */
+    private $pointUpdate;
+
+    /**
+     * @var PointsLogger
+     */
+    private $logger;
+
+    /**
+     * @param PointConfig $pointConfig
+     * @param OrderRepository $orderRepository
+     * @param PointUpdate $pointUpdate
+     * @param PointsLogger $logger
+     */
     public function __construct(
         PointConfig $pointConfig,
-        OrderRepository $orderRepository
-    )
-    {
+        OrderRepository $orderRepository,
+        PointUpdate $pointUpdate,
+        PointsLogger $logger
+    ) {
         $this->pointConfig = $pointConfig;
         $this->orderRepository = $orderRepository;
+        $this->pointUpdate = $pointUpdate;
+        $this->logger = $logger;
     }
 
     /**
@@ -52,6 +72,15 @@ class POSSetOrderPaidSend implements ObserverInterface
                 } catch (\Exception $exception) {
                     throw new CouldNotSaveException(__("Order can not be saved"));
                 }
+            }
+        }
+
+        $pointAmount = $order->getData('am_spent_reward_points') ?: 0;
+        if ($pointAmount && $order->getCustomerId()) {
+            try {
+                $this->pointUpdate->pointUpdate($order, $pointAmount, PointUpdate::POINT_REDEEM,PointUpdate::POINT_REASON_PURCHASE);
+            } catch (\Exception $exception) {
+                $this->logger->error($exception->getMessage());
             }
         }
     }
