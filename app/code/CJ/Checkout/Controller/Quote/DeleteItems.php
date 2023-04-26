@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace CJ\Checkout\Controller\Quote;
 
-use Magento\CatalogInventory\Helper\Data;
+use Amasty\Promo\Model\Storage;
+use Magento\Checkout\Model\Cart as CustomerCart;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
@@ -57,10 +58,19 @@ class DeleteItems extends Action implements HttpPostActionInterface
     private $itemResourceModel;
 
     /**
+     * @var Storage
+     */
+    private $registry;
+
+    /**
+     * @var CustomerCart
+     */
+    private $cart;
+
+    /**
      * @param Context $context
      * @param RequestInterface $request
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
-     * @param QuoteRepository $quoteRepository
      * @param LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
@@ -70,19 +80,21 @@ class DeleteItems extends Action implements HttpPostActionInterface
         Context $context,
         RequestInterface $request,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        QuoteRepository $quoteRepository,
         LoggerInterface $logger,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
-        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel
+        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
+        CustomerCart $cart,
+        Storage $registry
     ) {
         $this->request = $request;
         $this->jsonHelper = $jsonHelper;
-        $this->quoteRepository = $quoteRepository;
         $this->logger = $logger;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->cookieManager = $cookieManager;
         $this->itemResourceModel = $itemResourceModel;
+        $this->cart = $cart;
+        $this->registry = $registry;
         parent::__construct($context);
     }
 
@@ -96,15 +108,13 @@ class DeleteItems extends Action implements HttpPostActionInterface
         if ($this->getRequest()->isAjax()) {
             $params = $this->request->getParams();
             try {
-                $quote = $this->quoteRepository->getActive($params['quote_id']);
                 foreach ($params['item_id'] as $itemId) {
-                    $item = $quote->getItemById($itemId);
-                    if ($item) {
-                        $this->_removeErrorsFromQuoteAndItem($item, Data::ERROR_QTY);
-                        $this->itemResourceModel->delete($item);
-                    }
+                    $this->cart->removeItem($itemId);
                 }
-
+                //prevent auto add again when collect quote
+                $this->registry->setIsAutoAddAllowed(false);
+                $this->cart->getQuote()->setTotalsCollectedFlag(false);
+                $this->cart->save();
                 //must reset cookie message
                 //because code will run to class Magento\Persistent\Observer\EmulateQuoteObserver first
                 //then check error item from quote
