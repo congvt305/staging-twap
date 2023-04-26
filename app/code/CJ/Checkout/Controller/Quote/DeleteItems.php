@@ -10,7 +10,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Quote\Model\Quote\Item;
 use Magento\Quote\Model\QuoteRepository;
 use Psr\Log\LoggerInterface;
@@ -53,11 +52,6 @@ class DeleteItems extends Action implements HttpPostActionInterface
     private $cookieMetadataFactory;
 
     /**
-     * @var \Magento\Quote\Model\ResourceModel\Quote\Item
-     */
-    private $itemResourceModel;
-
-    /**
      * @var Storage
      */
     private $registry;
@@ -68,33 +62,51 @@ class DeleteItems extends Action implements HttpPostActionInterface
     private $cart;
 
     /**
+     * @var \Amasty\Promo\Model\Registry
+     */
+    private $promoRegistry;
+
+    /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    private $promoItemHelper;
+
+    /**
      * @param Context $context
      * @param RequestInterface $request
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
+     * @param QuoteRepository $quoteRepository
      * @param LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
-     * @param \Magento\Quote\Model\ResourceModel\Quote\Item $itemResouceModel
+     * @param CustomerCart $cart
+     * @param Storage $registry
+     * @param \Amasty\Promo\Helper\Item $promoItemHelper
+     * @param \Amasty\Promo\Model\Registry $promoRegistry
      */
     public function __construct(
         Context $context,
         RequestInterface $request,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
+        QuoteRepository $quoteRepository,
         LoggerInterface $logger,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
-        \Magento\Quote\Model\ResourceModel\Quote\Item $itemResourceModel,
         CustomerCart $cart,
-        Storage $registry
+        Storage $registry,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
+        \Amasty\Promo\Model\Registry $promoRegistry,
     ) {
         $this->request = $request;
         $this->jsonHelper = $jsonHelper;
+        $this->quoteRepository = $quoteRepository;
         $this->logger = $logger;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->cookieManager = $cookieManager;
-        $this->itemResourceModel = $itemResourceModel;
         $this->cart = $cart;
         $this->registry = $registry;
+        $this->promoItemHelper = $promoItemHelper;
+        $this->promoRegistry = $promoRegistry;
         parent::__construct($context);
     }
 
@@ -108,10 +120,18 @@ class DeleteItems extends Action implements HttpPostActionInterface
         if ($this->getRequest()->isAjax()) {
             $params = $this->request->getParams();
             try {
+                $quote = $this->quoteRepository->getActive($params['quote_id']);
                 foreach ($params['item_id'] as $itemId) {
+                    $item = $quote->getItemById($itemId);
                     $this->cart->removeItem($itemId);
+                    //mark this item as delete is registry to avoid add again when place order
+                    if (!$item->getParentId()
+                        && $this->promoItemHelper->isPromoItem($item)
+                    ) {
+                        $this->promoRegistry->deleteProduct($item);
+                    }
                 }
-                //prevent auto add again when collect quote
+                //prevent auto add again when save quote
                 $this->registry->setIsAutoAddAllowed(false);
                 $this->cart->getQuote()->setTotalsCollectedFlag(false);
                 $this->cart->save();
