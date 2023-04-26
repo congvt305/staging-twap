@@ -2,6 +2,7 @@ define([], function () {
     'use strict';
 
     function notify(eventName) {
+        window.dataLayer.push({'event': eventName});
         if (eventName === 'product') {
             window.dataLayer.push({
                 'event': 'productViewContent'  ,
@@ -18,10 +19,7 @@ define([], function () {
                     ]
                 }
             });
-        } else {
-            window.dataLayer.push({'event': eventName});
         }
-
     }
 
     return function (config, element) {
