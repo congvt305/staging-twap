@@ -10,6 +10,7 @@
 
 namespace Eguana\OrderDeliveryMessage\Plugin\Checkout\Model;
 
+use Amasty\Promo\Model\Storage;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Quote\Model\QuoteRepository;
 use Magento\Framework\Escaper;
@@ -31,16 +32,23 @@ class ShippingInformationManagement
     private $escaper;
 
     /**
-     * ShippingInformationManagement constructor.
-     * @param DataPersistorInterface $dataPersistor
+     * @var Storage
+     */
+    private $registry;
+
+    /**
+     * @param QuoteRepository $quoteRepository
+     * @param Escaper $escaper
+     * @param Storage $registry
      */
     public function __construct(
         QuoteRepository $quoteRepository,
-        Escaper $escaper
+        Escaper $escaper,
+        Storage $registry
     ) {
-
         $this->quoteRepository = $quoteRepository;
         $this->escaper = $escaper;
+        $this->registry = $registry;
     }
 
     /**
@@ -68,6 +76,8 @@ class ShippingInformationManagement
         $deliveryMessage = $deliveryMessage ? $this->escaper->escapeHtml(strip_tags($deliveryMessage)) : $deliveryMessage;
         $quote = $this->quoteRepository->getActive($cartId);
         $quote->setDeliveryMessage($deliveryMessage);
+        //prevent auto add product when colelct total quote
+        $this->registry->setIsAutoAddAllowed(false);
         $this->quoteRepository->save($quote);
 
     }
