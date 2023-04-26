@@ -76,7 +76,7 @@ class ShippingInformationManagement
         $deliveryMessage = $deliveryMessage ? $this->escaper->escapeHtml(strip_tags($deliveryMessage)) : $deliveryMessage;
         $quote = $this->quoteRepository->getActive($cartId);
         $quote->setDeliveryMessage($deliveryMessage);
-        //prevent auto add product when colelct total quote
+        //prevent auto add product when collect total quote
         $this->registry->setIsAutoAddAllowed(false);
         $this->quoteRepository->save($quote);
 
