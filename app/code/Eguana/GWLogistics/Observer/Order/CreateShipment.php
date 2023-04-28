@@ -42,7 +42,7 @@ class CreateShipment implements ObserverInterface
         $invoice = $observer->getEvent()->getData('invoice');
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
-        $this->logger->info('gwlogistics | event sales_order_invoice_pay fired: order id ', [$order->getId()]);
+        $this->logger->info('gwlogistics | event sales_order_invoice_save_after fired: order id ', [$order->getId()]);
         try {
             $this->createShipmentCommand->execute($order);
         } catch (\Exception $e) {
