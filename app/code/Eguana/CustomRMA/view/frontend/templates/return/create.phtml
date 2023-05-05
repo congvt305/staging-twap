@@ -175,7 +175,10 @@
                        class="input-text validate-address-name">
             </div>
             <?php } else {?>
-                <div class="control"><span><?= $block->escapeHtml($_order->getCustomerLastname() .' '. $_order->getCustomerFirstname()) ?></span></div>
+                <div class=" control">
+                    <input type="text" name='rma_customer_name' value="<?= $_order->getShippingAddress()->getLastname() .' '. $_order->getShippingAddress()->getFirstname() ?>"
+                           class="input-text validate-address-name">
+                </div>
                 <?php } ?>
         </div>
         <div class="field email">
