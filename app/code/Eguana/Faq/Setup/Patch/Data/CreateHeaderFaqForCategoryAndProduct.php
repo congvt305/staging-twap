@@ -67,7 +67,6 @@ class CreateHeaderFaqForCategoryAndProduct implements DataPatchInterface
             'user_defined' => true,
             'visible' => true,
             'required' => false,
-            'default' => false,
             'is_used_in_grid' => true,
             'is_visible_in_grid' => false,
             'is_filterable_in_grid' => false,
