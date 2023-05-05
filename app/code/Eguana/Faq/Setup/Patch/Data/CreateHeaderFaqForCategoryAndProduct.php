@@ -5,6 +5,7 @@ namespace Eguana\Faq\Setup\Patch\Data;
 
 use Magento\Catalog\Model\Category as CategoryModel;
 use Magento\Catalog\Model\Product as ProductModel;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Catalog\Setup\CategorySetupFactory;
@@ -59,20 +60,18 @@ class CreateHeaderFaqForCategoryAndProduct implements DataPatchInterface
 
         $eavSetup->addAttribute(ProductModel::ENTITY, self::HEADER_TITLE_FAQ, [
             'type' => 'text',
-            'backend' => '',
-            'frontend' => '',
             'label' => 'Header Title FAQ',
             'input' => 'textarea',
-            'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+            'source' => \Magento\Catalog\Model\Product\Attribute\Source\Layout::class,
+            'global' => ScopedAttributeInterface::SCOPE_STORE,
+            'user_defined' => true,
             'visible' => true,
             'required' => false,
-            'user_defined' => true,
-            'searchable' => false,
-            'filterable' => false,
-            'comparable' => false,
-            'visible_on_front' => false,
-            'used_in_product_listing' => true,
-            'source' => \Magento\Catalog\Model\Product\Attribute\Source\Layout::class,
+            'default' => false,
+            'is_used_in_grid' => true,
+            'is_visible_in_grid' => false,
+            'is_filterable_in_grid' => false,
+            'is_visible_on_front' => true
         ]);
 
         $eavSetup->addAttribute(CategoryModel::ENTITY, self::HEADER_TITLE_FAQ, [
