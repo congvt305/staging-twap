@@ -49,16 +49,15 @@ class CreateShipment implements ObserverInterface
         $invoice = $observer->getEvent()->getData('invoice');
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
-        if ($orderId = $order->getId()) {
-            $order = $this->orderFactory->create()->load($orderId);
-        }
+
         $this->logger->info('gwlogistics | event sales_order_invoice_save_after fired: order id ', [$order->getId()]);
         if ($order->getShippingMethod() == 'gwlogistics_CVS') {
             try {
+                $this->reloadOrder($order);
                 if (!$order->hasShipments()) {
                     $this->createShipmentCommand->execute($order);
-                    $this->orderFactory->create()
-                        ->load($order->getId())
+                    $this->reloadOrder($order);
+                    $order
                         ->setState('processing')
                         ->setStatus('processing_with_shipment')
                         ->save();
@@ -66,6 +65,15 @@ class CreateShipment implements ObserverInterface
             } catch (\Exception $e) {
                 $this->logger->error('gwlogistics | ' . $e->getMessage());
             }
+        }
+    }
+
+    /**
+     *  If payment method is linepay, we will reload order to avoid load missing data
+     */
+    protected function reloadOrder(&$order) {
+        if ($order->getPayment()->getMethod() == 'linepay_payment' && $orderId = $order->getId()){
+            $order = $this->orderFactory->create()->load($orderId);
         }
     }
 }
