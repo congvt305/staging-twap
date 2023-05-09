@@ -465,11 +465,16 @@ require([
                 $("#fward").val("");
                 $("#ward_txt").val("");
                 $.ajax({
-                    dataType : 'html',
+                    dataType : 'json',
                     showLoader: false,
                     url : '<?php echo $directoryHelper->getAjaxWardUrl() ?>?city_id='+_cityId,
-                    success : function(data){
-                        $("#fward").html(data);
+                    success : function(response){
+                        var wardSelect = $('#fward');
+                        wardSelect.empty();
+                        wardSelect.append('<option value=""><?php echo __('Please select a ward'); ?></option>');
+                        $.each(response, function (index, value) {
+                            wardSelect.append($('<option class="opt" value="' +value.value + '">' + value.label + '</option>'));
+                        });
                     }
                 });
             });
