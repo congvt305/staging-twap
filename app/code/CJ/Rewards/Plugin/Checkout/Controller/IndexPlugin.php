@@ -89,7 +89,7 @@ class IndexPlugin
 //                $data['availablePoint'] = 500000;
                 $availablePoint = (int)$data['availablePoint']; //parse to int because if do not have availablePoint, availablePoint = ''
                 $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customer->getId());
-                if ($this->pointUpdate->isNeedUpdatePointFromPos($customer->getId())) {;
+                if (!$this->pointUpdate->isNeedUpdatePointFromPos($customer->getId())) {
                     return;
                 }
                 $pointsDiscrepancy = $availablePoint - $customerRewards;
