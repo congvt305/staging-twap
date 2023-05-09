@@ -41,10 +41,7 @@ class OrderStatePlugin
             if ($order->getData('sap_order_send_check') === NULL) {
                 $order->setState(Order::STATE_PROCESSING)
                     ->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-                $hasShipments = $order->hasShipments();
-                if ($order->getPayment()->getMethod() == 'linepay_payment') {
-                    $hasShipments = $this->orderFactory->create()->load($order->getId())->hasShipments();
-                }
+                $hasShipments = $order->hasShipments() || $this->orderFactory->create()->load($order->getId())->hasShipments();
                 if (($order->getStatus() === $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))
                     && ($hasShipments || $order->getData('sent_to_ninjavan'))){
                     $order->setStatus('processing_with_shipment');
