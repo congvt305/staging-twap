@@ -113,7 +113,7 @@ class PosPointSynchronizer
              * @var Order $order
              */
             $pointAmount = $order->getData('am_spent_reward_points') ?: 0;
-            $this->pointUpdate->pointUpdate($order, $pointAmount);
+            $this->pointUpdate->pointUpdate($order, $pointAmount, $this->pointUpdate::POINT_REDEEM);
         }
     }
 
@@ -131,7 +131,7 @@ class PosPointSynchronizer
              * @var Order $order
              */
             $pointAmount = $order->getData('am_spent_reward_points') ?: 0;
-            $this->pointUpdate->pointUpdate($order, $pointAmount, $this->pointUpdate::POINT_REDEEM);
+            $this->pointUpdate->pointUpdate($order, $pointAmount);
         }
     }
 }
