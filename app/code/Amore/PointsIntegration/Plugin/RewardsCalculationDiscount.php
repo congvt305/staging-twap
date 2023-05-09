@@ -81,11 +81,14 @@ class RewardsCalculationDiscount
                 $quote = $firstItem->getQuote();
                 $response = [];
                 if ($customerId = $quote->getCustomerId()) {
+                    if (!$this->pointUpdate->isNeedUpdatePointFromPos($customerId)) {
+                        return [$quoteItems, $total, $appliedPoints];
+                    }
                     $websiteId = $quote->getStore()->getWebsiteId();
                     $response = $this->getCustomerPointsResults($customerId, $websiteId);
                 }
 //                $response['availablePoint'] = 50000;
-                if ($response && $this->pointUpdate->isNeedUpdatePointFromPos($customerId)) {
+                if ($response) {
                     $availablePoint = $response['availablePoint'];
                     $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customerId);
                     $pointsDiscrepancy = $availablePoint - $customerRewards;
