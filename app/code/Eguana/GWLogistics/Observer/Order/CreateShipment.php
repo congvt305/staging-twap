@@ -53,14 +53,8 @@ class CreateShipment implements ObserverInterface
         $this->logger->info('gwlogistics | event sales_order_invoice_save_after fired: order id ', [$order->getId()]);
         if ($order->getShippingMethod() == 'gwlogistics_CVS') {
             try {
-                $this->reloadOrder($order);
-                if (!$order->hasShipments()) {
+                if (!$this->orderHasShipments($order)) {
                     $this->createShipmentCommand->execute($order);
-                    $this->reloadOrder($order);
-                    $order
-                        ->setState('processing')
-                        ->setStatus('processing_with_shipment')
-                        ->save();
                 }
             } catch (\Exception $e) {
                 $this->logger->error('gwlogistics | ' . $e->getMessage());
@@ -69,11 +63,16 @@ class CreateShipment implements ObserverInterface
     }
 
     /**
-     *  If payment method is linepay, we will reload order to avoid load missing data
+     * @param $order
+     * @return bool
      */
-    protected function reloadOrder(&$order) {
-        if ($order->getPayment()->getMethod() == 'linepay_payment' && $orderId = $order->getId()){
-            $order = $this->orderFactory->create()->load($orderId);
+    protected function orderHasShipments($order):bool {
+        $hasShipments = $order->hasShipments();
+        // If payment method is linepay, we will reload order to avoid load missing data
+        if ($order->getPayment()->getMethod() == 'linepay_payment') {
+            $hasShipments = $this->orderFactory->create()->load($order->getId())->hasShipments();
         }
+        return $hasShipments;
     }
+
 }
