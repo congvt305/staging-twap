@@ -145,7 +145,7 @@ class RewardsCalculationDiscount
             return false;
         }
         $code = $data['statusCode'] ?? null;
-        if ($code && $code == 'S') {
+        if ($code && $code == '200') {
             return true;
         }
         return false;
