@@ -138,13 +138,20 @@ class PointUpdate
             $this->logger->info('POINT UPDATE RESPONSE', $dataResponse);
             $message = 'Something when wrong while updating point.';
             if ($data) {
-                $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($order->getCustomerId());
-                $pointUpdate = $data['availablePoint'] - $customerRewards;
-                $type = Actions::ACTION_ADD_POINT;
-                if ($pointUpdate < 0) {
-                    $type = Actions::ACTION_DEDUCT_POINT;
+                $messageResponse = $data['statusCode'] ?? null;
+                // Check if have not been sent to POS yet so update point
+                if ($messageResponse == 'S') {
+                    $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($order->getCustomerId());
+                    $pointUpdate = $data['availablePoint'] - $customerRewards;
+                    $type = Actions::ACTION_ADD_POINT;
+                    if ($pointUpdate < 0) {
+                        $type = Actions::ACTION_DEDUCT_POINT;
+                    }
+                    if ($pointUpdate != 0) {
+                        $this->updatePoints($order->getCustomerId(), abs($pointUpdate), $type);
+                    }
                 }
-                $this->updatePoints($order->getCustomerId(), abs($pointUpdate), $type);
+
                 if ($pointType == self::POINT_REDEEM) {
                     $order->setData('pos_order_use_point_resend', false);
                 } else {
@@ -181,7 +188,7 @@ class PointUpdate
             return false;
         }
         $message = $data['statusCode'] ?? null;
-        if ($message && $message == 'S') {
+        if (($message == 'S') || ($message == 'E' && $data['statusMessage'] == 'The points have already been reflected.')) {
             return $data;
         }
         return false;

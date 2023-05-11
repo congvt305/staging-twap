@@ -106,7 +106,7 @@ class RewardsCalculationDiscount
                         }
                     }
                 } else {
-                    throw new LocalizedException(__('Something went wrong while validating points.'));
+                    throw new LocalizedException(__("Point discount function is under maintenance, you can't use this now, thanks"));
                 }
             } else {
                 $message = __('Applied points must be greater than or equal %1 and multiples of %2',
