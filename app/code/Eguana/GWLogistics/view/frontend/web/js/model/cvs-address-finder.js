@@ -1,8 +1,10 @@
 define([
+    'mage/url',
     'underscore',
     'jquery',
     'uiRegistry'
 ], function (
+    urlBuilder,
     _,
     $,
     registry
@@ -169,9 +171,20 @@ define([
             if (!addressString) {
                 return {};
             }
-            return  _.filter(checkoutProvider.get('dictionaries').city_id, function (city) {
-                return city.region_id === regionId;
+            var cityData;
+             $.ajax({
+                url: urlBuilder.build('custom_directory/checkout/getCityids'),
+                method: 'GET',
+                data: {region_id: regionId},
+                dataType: 'json',
+                async:false,
+                success: function (response) {
+                    if (response) {
+                        cityData = response;
+                    }
+                }
             });
+             return cityData;
         },
 
         findRegionByName: function (regionString) {
@@ -208,7 +221,7 @@ define([
         },
 
         getCityName: function (city) {
-            return city.title ? city.title : 'XXXX';
+            return city.label ? city.label : 'XXXX';
         },
 
         getPostcode: function (city) {
