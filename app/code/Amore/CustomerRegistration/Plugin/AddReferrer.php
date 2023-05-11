@@ -75,9 +75,8 @@ class AddReferrer
     ) {
         if (!$this->session->isLoggedIn()) {
             $params = $subject->getRequest()->getParams();
-            $referrerCode = $params['referrer_code'];
-            $partnerId = $params['partner_id'];
-            $redirectParams = ['referrer_code' => $referrerCode, 'favorite_store' => $partnerId];
+            $referrerCode = isset($params['referrer_code']) ? $params['referrer_code'] : '';
+            $partnerId = isset($params['partner_id']) ? $params['partner_id'] : '';
             if (!empty($referrerCode) && !empty($partnerId)) {
                 $url = $this->urlModel->getUrl('customer/account/create/referrer_code/' . $referrerCode . '/favorite_store/' . $partnerId, ['_secure' => true]);
                 $result = $this->resultRedirectFactory->create()
