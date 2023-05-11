@@ -101,17 +101,6 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 //        }
 //        return $this;
 //    }
-    public function addRegionIdFilter($regionId)
-    {
-        if (!empty($regionId)) {
-            if (is_array($regionId)) {
-                $this->addFieldToFilter('main_table.region_id', ['in' => $regionId]);
-            } else {
-                $this->addFieldToFilter('main_table.region_id', $regionId);
-            }
-        }
-        return $this;
-    }
 
     /**
      * @param $regionId
