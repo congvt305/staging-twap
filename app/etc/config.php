@@ -167,7 +167,8 @@ return [
             ],
             'advanced' => [
                 'modules_disable_output' => [
-                    'Magento_Banner' => '1'
+                    'Magento_Banner' => '1',
+                    'Amasty_Geoip' => '1'
                 ]
             ],
             'dev' => [
@@ -714,10 +715,10 @@ return [
         'Amasty_CronScheduleList' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Amasty_Checkout' => 1,
-        'Amasty_GoogleAddressAutocomplete' => 1,
+        'Amasty_GoogleAddressAutocomplete' => 0,
         'Amasty_ImageOptimizer' => 1,
         'Amasty_ImageOptimizerUi' => 1,
-        'Amasty_InvisibleCaptcha' => 1,
+        'Amasty_InvisibleCaptcha' => 0,
         'Amasty_LazyLoad' => 1,
         'Amasty_LazyLoadUi' => 1,
         'Amasty_LegacyTemplates' => 1,
@@ -729,7 +730,7 @@ return [
         'Amasty_Rgrid' => 1,
         'Amasty_SalesRuleWizard' => 1,
         'Amasty_SocialLogin' => 0,
-        'Amasty_ThankYouPage' => 1,
+        'Amasty_ThankYouPage' => 0,
         'Amazon_Core' => 0,
         'Amazon_Login' => 0,
         'Amazon_Payment' => 0,
