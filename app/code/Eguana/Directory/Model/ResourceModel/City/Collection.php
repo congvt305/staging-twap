@@ -45,7 +45,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     {
         $this->_init(\Eguana\Directory\Model\City::class, \Eguana\Directory\Model\ResourceModel\City::class);
         $this->regionTable = $this->getTable('directory_country_region');
-        $this->addOrder('region_id', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
+        $this->addOrder('region.region_id', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
     }
 
     /**
@@ -101,17 +101,17 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 //        }
 //        return $this;
 //    }
-//    public function addRegionIdFilter($regionId)
-//    {
-//        if (!empty($regionId)) {
-//            if (is_array($regionId)) {
-//                $this->addFieldToFilter('main_table.region_id', ['in' => $regionId]);
-//            } else {
-//                $this->addFieldToFilter('main_table.region_id', $regionId);
-//            }
-//        }
-//        return $this;
-//    }
+    public function addRegionIdFilter($regionId)
+    {
+        if (!empty($regionId)) {
+            if (is_array($regionId)) {
+                $this->addFieldToFilter('main_table.region_id', ['in' => $regionId]);
+            } else {
+                $this->addFieldToFilter('main_table.region_id', $regionId);
+            }
+        }
+        return $this;
+    }
 
     /**
      * @param $regionId
