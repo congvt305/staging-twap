@@ -35,7 +35,7 @@ class City extends \Magento\Eav\Model\Entity\Attribute\Source\Table
     public function getAllOptions($withEmpty = true, $defaultValues = false)
     {
         if (!$this->_options) {
-            $this->_options[] = ['title' => '', 'value' => '0000', 'label' => __('Please select a ward')];
+            $this->_options[] = ['title' => '', 'value' => '0000', 'label' => __('Please select a city or district.')];
         }
         return $this->_options;
     }
