@@ -22,10 +22,6 @@
             "type": "composer",
             "url": "https://repo.magento.com"
         },
-        "magento-baler": {
-            "type": "vcs",
-            "url": "git@github.com:magento/m2-baler.git"
-        },
         "amasty_1": {
             "type": "composer",
             "url": "https://composer1.amasty.com/community/"
@@ -38,7 +34,6 @@
         "amasty/base": "1.13.6",
         "amasty/coupons": "2.1.1",
         "amasty/cron-schedule-list": ">=1.0.5",
-        "amasty/customer-group-assign": "^1.0",
         "amasty/feed": "^2.7.0",
         "amasty/groupcat": "^1.8",
         "amasty/module-advanced-conditions": ">=1.5.3",
@@ -56,7 +51,7 @@
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
         "magento/product-recommendations": "^3.1",
-        "phpoffice/phpspreadsheet": "^1.18"
+        "phpoffice/phpspreadsheet": "^1.19"
     },
     "suggest": {
         "ext-pcntl": "Need for run processes in parallel mode"
@@ -111,7 +106,7 @@
             "twbs/bootstrap": [
                 "lib/web/jquery/jquery.tabs.js"
             ],
-            "tinymce/tinymce": "lib/web/tiny_mce_5"
+            "tinymce/tinymce": "lib/web/tiny_mce_4"
         },
         "magento-force": true,
         "magento-deploystrategy": "copy"

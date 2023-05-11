@@ -13,6 +13,7 @@ use Magento\Framework\Data\Tree\NodeFactory;
 use Magento\Framework\Data\TreeFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -165,18 +166,41 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
 
-            $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode
-                . 'ap-click-area="GNB"'
-                . 'ap-click-name="'. $parentCategoryName .'"'
-                . 'ap-click-data="'. $childCategory->getName() .'"'
-                .'><span>' . $this->escapeHtml(
-                    $child->getName()
-                ) . '</span></a>' . $this->_addSubMenu(
-                    $child,
-                $childLevel,
-                $childrenWrapClass,
-                $limit
-            ) . '</li>';
+            try {
+                $storeId = $this->_storeManager->getStore()->getId();
+            } catch (NoSuchEntityException $e) {
+                $storeId = 0;
+            }
+            $externalUrl = $this->getDefaultStoreCategory($child->getId(), $storeId)->getData('satp_menu_block_external_url');
+
+            if ($externalUrl) {
+                $html .= '<a href="' . $externalUrl . '" ' . $outermostClassCode
+                    . 'target="_blank"'
+                    . 'ap-click-area="GNB"'
+                    . 'ap-click-name="'. $parentCategoryName .'"'
+                    . 'ap-click-data="'. $childCategory->getName() .'"'
+                    .'><span>' . $this->escapeHtml(
+                        $child->getName()
+                    ) . '</span></a>' . $this->_addSubMenu(
+                        $child,
+                        $childLevel,
+                        $childrenWrapClass,
+                        $limit
+                    ) . '</li>';
+            } else {
+                $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode
+                    . 'ap-click-area="GNB"'
+                    . 'ap-click-name="'. $parentCategoryName .'"'
+                    . 'ap-click-data="'. $childCategory->getName() .'"'
+                    .'><span>' . $this->escapeHtml(
+                        $child->getName()
+                    ) . '</span></a>' . $this->_addSubMenu(
+                        $child,
+                        $childLevel,
+                        $childrenWrapClass,
+                        $limit
+                    ) . '</li>';
+            }
             $counter++;
         }
 

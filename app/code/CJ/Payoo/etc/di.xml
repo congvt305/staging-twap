@@ -13,6 +13,9 @@
     <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
         <plugin name="add_guest_payment_current_method" type="CJ\Payoo\Plugin\Checkout\Model\GuestAddPaymentCurrentMethod" sortOrder="2"/>
     </type>
+    <type name="Payoo\PayNow\Controller\Payment\Index">
+        <plugin name="cj_payoo_custom_payment_index" type="CJ\Payoo\Plugin\Payment\Index"/>
+    </type>
     <type name="CJ\Payoo\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>

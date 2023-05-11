@@ -34,6 +34,7 @@ class RedemptionConfiguration
     const XML_PATH_MAXIMUM_MOBILE_NUMBER_DIGITS = 'redemption/configuration/maximum_mobile_number_digits';
     const XML_PATH_PRIVACY_POLICY_TEXT = 'redemption/configuration/privacy_policy_text';
     const XML_PATH_HOME_DELIVERY_ENABLED = 'redemption/configuration/home_delivery_enabled';
+    const XML_PATH_SHOW_POSTCODE_REGION_CITY_ENABLED = 'redemption/configuration/show_postcode_region_city';
     const XML_PATH_FIXED_TEXT_BANNER_ENABLED = 'redemption/configuration/fixed_text_banner_enabled';
     const XML_PATH_INDIVIDUAL_NUMBERS = 'redemption/configuration/individual_numbers';
 
@@ -273,6 +274,19 @@ class RedemptionConfiguration
     }
 
     /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function getIsShowPostCodeRegionCity($storeId)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_SHOW_POSTCODE_REGION_CITY_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getIndividualNumber($storeId)
@@ -285,7 +299,7 @@ class RedemptionConfiguration
 
         $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
         $individualNumbers = $this->getIndividualNumbers($websiteId);
-        $individualNumbers = explode(',', $individualNumbers);
+        $individualNumbers = explode(',', $individualNumbers ?? '');
         $usableNumbers = array_diff($individualNumbers, $usedNumbers);
 
         return reset($usableNumbers) ?: '';

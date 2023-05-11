@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Payment Method Facade configuration -->
+    <virtualType name="HoolahPaymentGatewayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\Hoolah\Hoolah\Model\Checkout\ConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Hoolah\Hoolah\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">HoolahPaymentGatewayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">HoolahPaymentGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <virtualType name="HoolahPaymentGatewayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\Hoolah\Hoolah\Model\Checkout\ConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Logger, initialized with HoolahPaymentGatewayConfig -->
+    <virtualType name="HoolahPaymentGatewayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <!--<type name="Hoolah\Hoolah\Gateway\Http\Client\ClientMock">
+        <arguments>
+            <argument name="logger" xsi:type="object">HoolahPaymentGatewayLogger</argument>
+        </arguments>
+    </type>-->
+
+    <!-- Commands infrastructure -->
+    <virtualType name="HoolahPaymentGatewayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="refund" xsi:type="string">Hoolah\Hoolah\Gateway\Command\Refund</item>
+                <!--<item name="authorize" xsi:type="string">HoolahPaymentGatewayAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">HoolahPaymentGatewayCaptureCommand</item>
+                <item name="void" xsi:type="string">HoolahPaymentGatewayVoidCommand</item>-->
+            </argument>
+        </arguments>
+    </virtualType>
+    
+    <!-- Refund command -->
+    <!--<virtualType name="HoolahPaymentGatewayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">HoolahPaymentGatewayRefundRequest</argument>
+            <argument name="handler" xsi:type="object">HoolahPaymentGatewayResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Hoolah\Hoolah\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Hoolah\Hoolah\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>-->
+
+    <!-- Refund Request -->
+    <!--<virtualType name="HoolahPaymentGatewayRefundRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">Hoolah\Hoolah\Gateway\Request\RefundRequest</item>
+                <item name="mockData" xsi:type="string">Hoolah\Hoolah\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Hoolah\Hoolah\Gateway\Request\RefundRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </type>-->
+    
+    <!-- Authorize command -->
+    <!--<virtualType name="HoolahPaymentGatewayAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">HoolahPaymentGatewayAuthorizationRequest</argument>
+            <argument name="handler" xsi:type="object">HoolahPaymentGatewayResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Hoolah\Hoolah\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Hoolah\Hoolah\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>-->
+
+    <!-- Authorization Request -->
+    <!--<virtualType name="HoolahPaymentGatewayAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">Hoolah\Hoolah\Gateway\Request\AuthorizationRequest</item>
+                <item name="mockData" xsi:type="string">Hoolah\Hoolah\Gateway\Request\MockDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Hoolah\Hoolah\Gateway\Request\AuthorizationRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </type>-->
+
+    <!-- Capture command -->
+    <!--<virtualType name="HoolahPaymentGatewayCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Hoolah\Hoolah\Gateway\Request\CaptureRequest</argument>
+            <argument name="handler" xsi:type="object">Hoolah\Hoolah\Gateway\Response\TxnIdHandler</argument>
+            <argument name="transferFactory" xsi:type="object">Hoolah\Hoolah\Gateway\Http\TransferFactory</argument>
+            <argument name="validator" xsi:type="object">Hoolah\Hoolah\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">Hoolah\Hoolah\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>-->
+
+    <!-- Capture Request -->
+    <!--<type name="Hoolah\Hoolah\Gateway\Request\CaptureRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </type>-->
+
+    <!-- Void command -->
+    <!--<virtualType name="HoolahPaymentGatewayVoidCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Hoolah\Hoolah\Gateway\Request\VoidRequest</argument>
+            <argument name="handler" xsi:type="object">Hoolah\Hoolah\Gateway\Response\TxnIdHandler</argument>
+            <argument name="transferFactory" xsi:type="object">Hoolah\Hoolah\Gateway\Http\TransferFactory</argument>
+            <argument name="validator" xsi:type="object">Hoolah\Hoolah\Gateway\Validator\ResponseCodeValidator</argument>
+            <argument name="client" xsi:type="object">Hoolah\Hoolah\Gateway\Http\Client\ClientMock</argument>
+        </arguments>
+    </virtualType>-->
+
+    <!-- Void Request -->
+    <!--<type name="Hoolah\Hoolah\Gateway\Request\VoidRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </type>-->
+
+    <!-- Response handlers -->
+    <!--<virtualType name="HoolahPaymentGatewayResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="txnid" xsi:type="string">Hoolah\Hoolah\Gateway\Response\TxnIdHandler</item>
+                <item name="fraud" xsi:type="string">Hoolah\Hoolah\Gateway\Response\FraudHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>-->
+
+    <!-- Value handlers infrastructure -->
+    <virtualType name="HoolahPaymentGatewayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">HoolahPaymentGatewayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HoolahPaymentGatewayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Hoolah\Hoolah\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">HoolahPaymentGatewayConfig</argument>
+        </arguments>
+    </type>
+
+</config>

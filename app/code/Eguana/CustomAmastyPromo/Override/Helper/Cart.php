@@ -35,7 +35,7 @@ class Cart extends CartAlias
     private $product;
 
     /**
-     * Cart constructor.
+     * Cart constructor
      * @param Messages $promoMessagesHelper
      * @param ProductStock $product
      */

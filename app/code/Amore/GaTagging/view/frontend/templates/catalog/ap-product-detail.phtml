@@ -10,16 +10,22 @@
 /** @var \Amore\GaTagging\Block\GaTagging $block */
 $currentProduct = $block->getCurrentProduct();
 $productInfo = $block->getProductInfo($currentProduct);
+if ($currentProduct->getTypeId() == 'bundle') {
+    $price = $currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
+} else {
+    $price = round($currentProduct->getFinalPrice());
+}
+$qty = ($currentProduct->isSaleable()) ? $block->getProductDefaultQty($currentProduct) * 1 : 0;
 ?>
 <script>
     var AP_DATA_PAGETYPE = "<?= $block->getPageType()?>";
-
     //상품상세 todo additional AP
     var AP_PRD_NAME = "<?= $block->escapeHtml($currentProduct->getName())?>";
     var AP_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
-    var AP_PRD_PRICE = "<?= $block->escapeHtml($currentProduct->getFinalPrice())?>";
+    var AP_PRD_PRICE = "<?= $block->escapeHtml($price)?>";
     var AP_PRD_BRAND = "<?= $block->escapeHtml($currentProduct->getBctxten())?>";
     var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getRooCategory())?>";
+    var AP_PRD_QTY = <?= $block->escapeHtml($qty) ?>;
     var PRD_DATA = [
         <?php foreach($productInfo as $info) : ?>
         <?= $info ?>,

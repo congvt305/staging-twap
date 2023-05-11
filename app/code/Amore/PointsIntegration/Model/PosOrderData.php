@@ -9,6 +9,8 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use Amore\StaffReferral\Api\Data\ReferralInformationInterface;
+use Amore\StaffReferral\Helper\Config as ReferralConfig;
 use CJ\Middleware\Helper\Data;
 use CJ\PointRedemption\Setup\Patch\Data\AddRedemptionAttributes;
 use Exception;
@@ -121,6 +123,11 @@ class PosOrderData
     private $amConfig;
 
     /**
+     * @var ReferralConfig
+     */
+    private $referralConfig;
+
+    /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -155,7 +162,8 @@ class PosOrderData
         StoreManagerInterface          $storeManager,
         Data                           $middlewareConfig,
         OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
-        \Amasty\Rewards\Model\Config $amConfig
+        \Amasty\Rewards\Model\Config $amConfig,
+        ReferralConfig $referralConfig
     ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
@@ -174,6 +182,7 @@ class PosOrderData
         $this->middlewareConfig = $middlewareConfig;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
         $this->amConfig = $amConfig;
+        $this->referralConfig = $referralConfig;
     }
 
     /**
@@ -230,7 +239,8 @@ class PosOrderData
                 $redemptionFlag = 'Y';
             }
         }
-
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -242,7 +252,9 @@ class PosOrderData
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData,
             'PointAccount' => (int)$rewardPoints,
-            'redemptionFlag' => $redemptionFlag
+            'redemptionFlag' => $redemptionFlag,
+            'baReferralCode' => $baReferralCode,
+            'friendReferral' => $friendReferralCode
         ];
         return array_merge($orderData, $redInvoiceData);
     }
@@ -273,6 +285,8 @@ class PosOrderData
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
 
         return [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -283,7 +297,9 @@ class PosOrderData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_CANCEL,
             'promotionKey' => $couponCode,
-            'orderInfo' => $orderItemData
+            'orderInfo' => $orderItemData,
+            'baReferralCode' => $baReferralCode,
+            'friendReferral' => $friendReferralCode
         ];
     }
 
@@ -545,6 +561,11 @@ class PosOrderData
 
                         $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
                     }
+                } else {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
+                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
+                    }
                 }
             }
         }
@@ -699,7 +720,7 @@ class PosOrderData
             $order->addCommentToStatusHistory($comment);
             $this->orderRepository->save($order);
         } catch (Exception $exception) {
-            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $this->pointsIntegrationLogger->error($exception->getMessage());
         }
     }
 
@@ -769,7 +790,8 @@ class PosOrderData
         $orderCollection = $this->orderCollectionFactory->create();
         $orderCollection
             ->addFieldToFilter('store_id', $storeId)
-            ->addFieldToFilter('pos_order_cancel_send', true);
+            ->addFieldToFilter('pos_order_cancel_send', true)
+            ->addFieldToFilter('pos_order_paid_sent', true);
 
         return $orderCollection->getItems();
     }
@@ -821,5 +843,41 @@ class PosOrderData
     {
         $precision = $isDecimal ? 2 : 0;
         return round($price, $precision);
+    }
+
+    /**
+     * Get BA referral code
+     *
+     * @param Order $order
+     * @param int $websiteId
+     * @return float|mixed|string|null
+     */
+    protected function getReferralBACode($order, $websiteId)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
+            }
+            return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get friend referral code
+     *
+     * @param Order $order
+     * @return float|mixed|string|null
+     */
+    protected function getFriendReferralCode($order)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY);
+            }
+        }
+
+        return '';
     }
 }

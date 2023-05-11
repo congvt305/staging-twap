@@ -1,0 +1,101 @@
+<script>
+    require([
+        'jquery',
+        'prototype',
+    ], function($){
+        $('#send_logs_button').click(function(e) {
+            e.preventDefault();
+            
+            var $button = $(this),
+                $form, $merchant_id, $merchant_secret_test, $merchant_secret, $mode, $merchant_cdn_id, $messages;
+                
+            // >= m2.2.10
+            if ($button.closest('#payment_other_hoolah').length) {
+                $form = $button.closest('#payment_other_hoolah');
+                $merchant_id = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_id');
+                $merchant_secret_test = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_secret_test_mode');
+                $merchant_secret = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_secret');
+                $mode = $form.find('select#payment_other_hoolah_hoolah_mc_mode');
+                $merchant_cdn_id = $form.find('input#payment_other_hoolah_hoolah_mc_merchant_cdn_id');
+                
+                $merchant_send_logs_time_scope = $form.find('select#payment_other_hoolah_hoolah_about_send_logs_time_scope');
+                $merchant_send_logs_relates = $form.find('select#payment_other_hoolah_hoolah_about_send_logs_relates');
+                $merchant_send_logs_details = $form.find('input#payment_other_hoolah_hoolah_about_send_logs_details');
+                $merchant_send_logs_lines_scope = $form.find('select#payment_other_hoolah_hoolah_about_send_logs_lines_scope');
+            }
+            else
+            {
+                $form = $button.closest('#payment_us_hoolah');
+                $merchant_id = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_id');
+                $merchant_secret_test = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_secret_test_mode');
+                $merchant_secret = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_secret');
+                $mode = $form.find('select#payment_us_hoolah_hoolah_mc_mode');
+                $merchant_cdn_id = $form.find('input#payment_us_hoolah_hoolah_mc_merchant_cdn_id');
+                
+                $merchant_send_logs_time_scope = $form.find('select#payment_us_hoolah_hoolah_about_send_logs_time_scope');
+                $merchant_send_logs_relates = $form.find('select#payment_us_hoolah_hoolah_about_send_logs_relates');
+                $merchant_send_logs_details = $form.find('input#payment_us_hoolah_hoolah_about_send_logs_details');
+                $merchant_send_logs_lines_scope = $form.find('select#payment_us_hoolah_hoolah_about_send_logs_lines_scope');
+            }
+            
+            $messages = $form.find('.send_logs_button_messages');
+            
+            if (!$merchant_send_logs_relates.val())
+                $merchant_send_logs_relates.addClass('mage-error');
+            else
+                $merchant_send_logs_relates.removeClass('mage-error');
+            
+            if (!$merchant_send_logs_details.val())
+                $merchant_send_logs_details.addClass('mage-error');
+            else
+                $merchant_send_logs_details.removeClass('mage-error');
+            
+            if (!$merchant_send_logs_relates.val() || !$merchant_send_logs_details.val())
+            {
+                $messages.html('All fields are required');
+            }
+            else //if ($button.html() != 'Processing...')
+            {
+                $messages.html('');
+                $button.html('Processing...');
+                
+                $.post(
+                    '<?php echo $block->getAjaxUrl() ?>',
+                    {
+                        'action': 'send_logs',
+                        'merchant_id': $merchant_id.val(),
+                        'merchant_secret_test': $merchant_secret_test.val(),
+                        'merchant_secret': $merchant_secret.val(),
+                        'mode': $mode.val(),
+                        'merchant_cdn_id': $merchant_cdn_id.val(),
+                        'logs_time_scope' : $merchant_send_logs_time_scope.val(),
+                        'logs_relates' : $merchant_send_logs_relates.val(),
+                        'logs_details' : $merchant_send_logs_details.val(),
+                        'logs_lines_scope' : $merchant_send_logs_lines_scope.val()
+                    }, function(response) {
+                        if (response.ok)
+                        {
+                            $button.html('Sent');
+                            $messages.html('');
+                        }
+                        else
+                        {
+                            $button.html('Failed');
+                            if (response.error.response.code == 403 || response.error.response.code == 401)
+                                $messages.html('Could not send logs. Please make sure that the credentials are valid before sending a log');
+                            else
+                                $messages.html('Code: ' + response.error.response.code + '. ' + response.error.body);
+                        }
+                    }
+                ) .fail(function() {
+                    $button.html('Failed');
+                    $messages.html('Please, try again later');
+                });
+            }
+        })
+    });
+</script>
+ 
+<?php echo $block->getInfoHtml() ?>
+ 
+<?php echo $block->getButtonHtml() ?>

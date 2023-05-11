@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5360fd0438f0f7f97d2c42a02ef57304",
+    "content-hash": "6b6971d5a536e0bb6fd94028d50286d6",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -23623,11 +23623,11 @@
         },
         {
             "name": "magento/quality-patches",
-            "version": "1.1.23",
+            "version": "1.1.27",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.23.0.zip",
-                "shasum": "955a249e001188e11c56d788c3a0c8347b487af2"
+                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.27.0.zip",
+                "shasum": "ad2e6eff50dbcfb03bfff39861f4522c55707035"
             },
             "require": {
                 "ext-json": "*",

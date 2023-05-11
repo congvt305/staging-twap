@@ -30,7 +30,7 @@ class PosCustomerGradeUpdater
 
 
     /**
-     * @var Data
+     * @var \CJ\CouponCustomer\Helper\Data
      */
     protected $helperData;
 

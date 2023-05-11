@@ -1,0 +1,180 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .block-product-link,
+    .block-category-link {
+        &.widget {
+            display: block;
+        }
+    }
+
+    .block-product-link-inline {
+        &.widget {
+            margin: 0;
+        }
+    }
+
+    .block-product-recommendations {
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1240px;
+        padding-left: @indent__base;
+        padding-right: @indent__base;
+
+        .block-title {
+            text-align: center;
+        }
+
+        .product-image {
+            &-container {
+                width: 320px;
+            }
+
+            &-wrapper {
+                padding-bottom: 120%;
+            }
+        }
+    }
+    /* 20230302 mod */
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-new-in"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-limited-editions"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-product-type"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-skin-needs"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-product-series"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper {
+        top: 100px
+    }
+
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-new-in"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-limited-editions"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-freeze-product-type"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-freeze-skin-needs"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-skin-care"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title,
+    [class*="categorypath-freeze-product-series"].catalog-category-view.page-layout-1column:not(.checkout-onepage-success) .page-main > .page-title-wrapper .page-title {
+        font-size: 32px
+    }
+    /* //20230302 mod */
+
+    .block.widget {
+        .pager {
+            padding: 0;
+
+            .toolbar-amount {
+                float: none;
+                .lib-font-size(12);
+            }
+
+            .pages-item-previous {
+                padding-left: 0;
+            }
+
+            .pages-item-next {
+                position: relative;
+            }
+
+            .items {
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block.widget .products-grid .product-item {
+        .sidebar & {
+            margin-left: 0;
+            width: 100%;
+
+            .actions-secondary {
+                display: block;
+                padding: 10px 0;
+            }
+        }
+    }
+
+    .widget-product-carousel {
+        .product-item {
+            width: 100%/3;
+        }
+    }
+
+    .block-product-recommendations {
+        padding-left: @indent__l;
+        padding-right: @indent__l;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .sidebar .block.widget .pager {
+        .item:not(.pages-item-next):not(.pages-item-previous) {
+            &:extend(.abs-no-display-desktop all);
+        }
+
+        .pages-item-next {
+            padding: 0;
+
+            .action {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    /* 20230302 mod */
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-new-in"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-limited-editions"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-freeze-product-type"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-freeze-skin-needs"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-freeze-product-series"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter {
+        padding-bottom: 50px
+    }
+
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-new-in"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-limited-editions"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-product-type"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-skin-needs"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-freeze-product-series"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper {
+        top: 60px
+    }
+    /* //20230302 mod */
+}

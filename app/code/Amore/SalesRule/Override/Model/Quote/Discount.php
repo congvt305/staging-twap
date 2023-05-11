@@ -125,6 +125,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             //Customize here
             $address->setDiscountAmount(0);
             $address->setBaseDiscountAmount(0);
+            $address->setBaseGrandTotal($address->getBaseSubtotal());
+            $address->setGrandTotal($address->getSubtotal());
             //End of customize
             $itemsAggregate = [];
             foreach ($shippingAssignment->getItems() as $item) {
@@ -207,19 +209,20 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
                         $this->aggregateItemDiscount($child, $total);
                         // Calculate odd Total
                         $oddTotal += $child->getOddDiscountAmount();
+                        $child->setOddDiscountAmount(0);
                     }
                 }
                 $this->aggregateItemDiscount($item, $total);
                 // Calculate odd Total
                 $oddTotal += $item->getOddDiscountAmount();
-
+                $item->setOddDiscountAmount(0);
                 if ($item->getExtensionAttributes()) {
                     $this->aggregateDiscountPerRule($item, $address);
                 }
             }
-            // Custom for add odd number to first Item
+            // Custom for add odd number to first Item, avoid add discount over subtotal
             $oddTotal = round($oddTotal); // Should round or int
-            if ($oddTotal > 0) {
+            if ($oddTotal > 0 && $total->getSubtotal() + $total->getDiscountAmount() >= $oddTotal) {
                 foreach ($items as $item) {
                     // to determine the child item discount, we calculate the parent
                     if ($item->getDiscountAmount() > 0) {

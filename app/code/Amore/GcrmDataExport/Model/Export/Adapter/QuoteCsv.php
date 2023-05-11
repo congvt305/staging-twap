@@ -9,6 +9,7 @@
  */
 namespace Amore\GcrmDataExport\Model\Export\Adapter;
 
+use Amore\GcrmDataExport\Model\Export\Quote\Quote;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\ImportExport\Model\Export\Adapter\AbstractAdapter;
 use Magento\ImportExport\Model\Export\Adapter\Csv;
@@ -96,8 +97,9 @@ class QuoteCsv extends AbstractAdapter
         CartItemRepositoryInterface $quoteRepositoryInterface,
         TimezoneInterface $timezoneInterface,
         Filesystem $filesystem,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
-        $destinationDirectoryCode = DirectoryList::VAR_DIR
+        $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
@@ -107,7 +109,8 @@ class QuoteCsv extends AbstractAdapter
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid('Quotes_');
+            $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';
+            $destination = $dirPath . '/' . uniqid('Quotes_');
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {
@@ -212,12 +215,8 @@ class QuoteCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
-        $headersData = [];
-        foreach ($rowData as $key => $data) {
-            $headersData[] = $key;
-        }
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue($headersData))),
+            array_merge(array_intersect_key($rowData, $this->getArrayValue(Quote::HEADER_COLUMN_NAME))),
             $this->_delimiter,
             $this->_enclosure
         );

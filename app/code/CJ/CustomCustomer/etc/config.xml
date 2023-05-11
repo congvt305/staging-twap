@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cjcustomer>
+            <group>
+                <logging>0</logging>
+            </group>
+            <poscstmno>
+                <limit>50</limit>
+                <enable_cron>1</enable_cron>
+                <cron_schedule>0 0 * * *</cron_schedule>
+            </poscstmno>
+        </cjcustomer>
+    </default>
+</config>

@@ -16,6 +16,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
@@ -80,28 +81,22 @@ class Register extends Action
      */
     public function execute()
     {
-        $counterId = $this->getRequest()->getParam('counter_id');
+        $counterId = $this->getRequest()->getParam('counter_id', '');
         if (!$counterId) {
-            $counterId = $this->getRequest()->getParam('counter-id');
+            $counterId = $this->getRequest()->getParam('counter-id', '');
         }
         $token = $this->getRequest()->getParam('token');
-        if (isset($counterId)) {
-            try {
-                $counter = $this->counterRepository->getById($counterId);
-                if ($token === $counter->getToken()) {
-                    return $this->resultPageFactory->create();
-                } else {
-                    $this->messageManager->addErrorMessage(__('You are not authorized for this redemption.'));
-                    $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-                    return $resultRedirect->setUrl('/');
-                }
-            } catch (\Exception $e) {
-                $this->managerInterface->addErrorMessage(__('No counter exist with ' . $counterId . ' id'));
-                $resultRedirect = $this->result->create(ResultFactory::TYPE_REDIRECT);
-                $resultRedirect->setUrl('/');
-                return $resultRedirect;
+        try {
+            $counter = $this->counterRepository->getById($counterId);
+            if ($token === $counter->getToken()) {
+                return $this->resultPageFactory->create();
+            } else {
+                $this->messageManager->addErrorMessage(__('You are not authorized for this redemption.'));
+                return $this->result->create(ResultFactory::TYPE_REDIRECT)->setUrl('/');
             }
+        } catch(NoSuchEntityException $e) {
+            $this->managerInterface->addErrorMessage(__('No counter exist with ' . $counterId . ' id'));
+            return $this->result->create(ResultFactory::TYPE_REDIRECT)->setUrl('/');
         }
-        return $this->resultPageFactory->create();
     }
 }

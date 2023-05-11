@@ -36,14 +36,28 @@ class DeleteSuccess implements ObserverInterface
      */
     private $posSyncAPI;
 
+    /**
+     * @var \Magento\Framework\App\State
+     */
+    private $state;
+
+
+    /**
+     * @param POSLogger $logger
+     * @param POSSystem $POSSystem
+     * @param POSSyncAPI $posSyncAPI
+     * @param \Magento\Framework\App\State $state
+     */
     public function __construct(
         POSLogger $logger,
         POSSystem $POSSystem,
-        POSSyncAPI $posSyncAPI
+        POSSyncAPI $posSyncAPI,
+        \Magento\Framework\App\State $state
     ) {
         $this->POSSystem = $POSSystem;
         $this->logger = $logger;
         $this->posSyncAPI = $posSyncAPI;
+        $this->state = $state;
     }
 
     /**
@@ -68,8 +82,10 @@ class DeleteSuccess implements ObserverInterface
                     }
                 }
             }
-            $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $customerDefaultBillingAddress, 'delete');
-            $this->POSSystem->syncMember($APIParameters, $customer->getStoreId());
+            if ($this->state->getAreaCode() != 'webapi_rest') {
+                $APIParameters = $this->posSyncAPI->getAPIParameters($customer, $customerDefaultBillingAddress, 'delete');
+                $this->POSSystem->syncMember($APIParameters, $customer->getStoreId());
+            }
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }

@@ -18,7 +18,7 @@ index 7d5c4d8..0d3101f 100644
 +        if (!$tempOutput) {
 +            $tempOutput = $output;
 +        }
-+        
++
          foreach ($this->regexPatterns as $patternKey => $regexConfig) {
              $this->currentRegexPattern = $patternKey;
              if (preg_match_all('/' . $this->getRegex($regexConfig) . '/is', $tempOutput, $images)) {

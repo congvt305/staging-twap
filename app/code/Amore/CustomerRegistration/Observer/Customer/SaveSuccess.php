@@ -147,6 +147,11 @@ class SaveSuccess implements ObserverInterface
      */
     private $requestApi;
 
+    /**
+     * @var \Magento\Newsletter\Model\SubscriptionManagerInterface
+     */
+    private $subscriptionManager;
+
     public function __construct(
         Request $requestApi,
         RequestInterface $request,
@@ -167,7 +172,8 @@ class SaveSuccess implements ObserverInterface
         GroupRepositoryInterface $groupRepository,
         SearchCriteriaBuilder $searchCriteria,
         ManagerInterface $eventManager,
-        \Magento\Framework\App\State $state
+        \Magento\Framework\App\State $state,
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
     ) {
         $this->requestApi = $requestApi;
         $this->sequence = $sequence;
@@ -189,6 +195,7 @@ class SaveSuccess implements ObserverInterface
         $this->searchCriteria = $searchCriteria;
         $this->eventManager = $eventManager;
         $this->state = $state;
+        $this->subscriptionManager = $subscriptionManager;
     }
 
     /**
@@ -209,9 +216,6 @@ class SaveSuccess implements ObserverInterface
         \Magento\Framework\Event\Observer $observer
     ) {
         try {
-            if ($this->isPOSRequest()) {
-                return true;
-            }
             /**
              * @var Customer $newCustomerData
              */
@@ -221,6 +225,21 @@ class SaveSuccess implements ObserverInterface
              */
             $oldCustomerData = $observer->getEvent()->getData('orig_customer_data_object');
 
+            if ($this->isPOSRequest()) {
+                $data = $this->requestApi->getRequestData();
+                if ($data && isset($data['customer']['customAttributes'])) {
+                    foreach ($data['customer']['customAttributes'] as $customerAttribute) {
+                        if (isset($customerAttribute['attributeCode']) && $customerAttribute['attributeCode'] == 'email_subscription_status') {
+                            if (isset($customerAttribute['value']) && $customerAttribute['value'] == 1) {
+                                $customerStoreId = $this->getCustomerStoreId($data[CreateCustomer::SALOFFCD]);
+                                $this->subscriptionManager->subscribeCustomer((int)$newCustomerData->getId(), $customerStoreId);
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
             if ($this->getArea() === 'adminhtml' && !$oldCustomerData) {
                 return;
             }
@@ -286,6 +305,8 @@ class SaveSuccess implements ObserverInterface
             $this->logger->addExceptionMessage($e->getMessage());
         }
     }
+
+
 
     /**
      * check POS request
@@ -636,5 +657,19 @@ class SaveSuccess implements ObserverInterface
             $this->logger->addExceptionMessage($e->getMessage());
             return $groupId;
         }
+    }
+
+    private function getCustomerStoreId($salOffCd)
+    {
+        $customerStoreId = 0;
+        foreach ($this->storeManager->getStores() as $store) {
+            $storeId = $store->getId();
+            $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+            if ($officeSaleCode == $salOffCd) {
+                $customerStoreId = $storeId;
+                break;
+            }
+        }
+        return $customerStoreId;
     }
 }

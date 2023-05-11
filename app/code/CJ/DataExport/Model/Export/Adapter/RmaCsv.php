@@ -81,8 +81,9 @@ class RmaCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter
         \Magento\Rma\Api\RmaRepositoryInterface $rmaRepository,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface,
         \Magento\Framework\Filesystem $filesystem,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
-        string $destinationDirectoryCode = DirectoryList::VAR_DIR
+        string $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
@@ -92,7 +93,8 @@ class RmaCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapter
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid($this->_namePrefix);
+            $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';
+            $destination = $dirPath . '/' . uniqid($this->_namePrefix);
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {

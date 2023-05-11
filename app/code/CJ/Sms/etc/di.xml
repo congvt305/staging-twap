@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="CJ\Sms\Api\Data\SmsHistorySearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults" />
+    <preference for="CJ\Sms\Api\Data\SmsHistoryInterface" type="CJ\Sms\Model\SmsHistory" />
+    <preference for="CJ\Sms\Api\SmsHistoryRepositoryInterface" type="CJ\Sms\Model\SmsHistoryRepository" />
+
+</config>

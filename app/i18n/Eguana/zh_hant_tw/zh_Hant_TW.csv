@@ -5064,7 +5064,7 @@ new products will be created. Use this step to customize images and price for yo
 "No Password","沒有密碼",module,Magento_Customer
 "Confirm New Password","確認新密碼",module,Magento_Customer
 "Save","儲存",module,Magento_Customer
-"Please enter your email address below to receive a password reset link.","請在下面輸入您的電子郵件地址，以接收密碼重置鏈接。",module,Magento_Customer
+"Please enter your email address below to receive a password reset link.","請輸入您的註冊E-MAIL，系統將發送認證郵件到該信箱。",module,Magento_Customer
 "Reset My Password","重置我的密碼",module,Magento_Customer
 "Registered Customers","Registered Customers",module,Magento_Customer
 "If you have an account, sign in with your email address.","如果您有一個帳戶，請使用您的電子郵件地址登錄。",module,Magento_Customer
@@ -13224,7 +13224,7 @@ Usage limit enforced for logged in customers only.,module,Magento_SalesRule
 "Min Time Between Password Reset Requests","Min Time Between Password Reset Requests",module,Magento_Security
 "Delay in minutes between password reset requests. Use 0 to disable.","Delay in minutes between password reset requests. Use 0 to disable.",module,Magento_Security
 "Your account is temporarily disabled. Please try again later.","Your account is temporarily disabled. Please try again later.",module,Magento_Security
-"We received too many requests for password resets. Please wait and try again later or contact %1.","我們收到太多要求重設密碼的請求。 請稍候再試或聯繫 %1.",module,Magento_Security
+"We received too many requests for password resets. Please wait and try again later or contact %1.","如需重新發送郵件，請於五分鐘後重新嘗試，謝謝。",module,Magento_Security
 "Page not found.","找不到頁面。",module,Magento_SendFriend
 "You can't send messages more than %1 times an hour.","You can't send messages more than %1 times an hour.",module,Magento_SendFriend
 "The link to a friend was sent.","The link to a friend was sent.",module,Magento_SendFriend
@@ -16400,6 +16400,7 @@ formElements/*[name(.)=../../@formElement]/settings/title,module,Magento_Ui
 "Please select a file.","請選擇一個文件。",lib,web
 "The field isn't complete.","The field isn't complete.",lib,web
 "This is a required field.","此為必填欄位。",lib,web
+"Please enter in numbers."," 請輸入數字。",lib,web
 "Please select one of the options.","請選擇一個選項。",lib,web
 "Please enter a value less than or equal to %s.","請輸入一個小於或等於的值 %s。",lib,web
 "Please enter a value greater than or equal to %s.","請輸入一個大於或等於的值 %s。",lib,web
@@ -16487,4 +16488,5 @@ sample,樣本
 "You Have <strong>%1</strong> points left","目前剩餘總點數: <strong>%1</strong>點"
 "Maximum point: <strong>%1</strong>","本次可用點數: <strong>%1</strong>點"
 "Deducted amount: <strong>%1</strong>","等於折抵金額: <strong>%1</strong>元"
+"The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you","已超過每日最高發送%1次之限制，敬請隔日再次嘗試，謝謝"
 "Point discount function is under maintenance, you can't use this now, thanks","點數折抵功能維護中，暫時無法使用，謝謝"

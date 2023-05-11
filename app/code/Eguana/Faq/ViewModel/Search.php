@@ -223,18 +223,22 @@ class Search implements ArgumentInterface
      */
     public function highlightSearchValue($str, $searchValue)
     {
-        $occurrences = substr_count(strtolower($str), strtolower($searchValue));
-        $newString = $str;
-        $match = [];
+        $newString = '';
+        if ($str && $searchValue) {
+            $occurrences = substr_count(strtolower($str), strtolower($searchValue));
+            $newString = $str;
+            $match = [];
 
-        for ($i=0; $i < $occurrences; $i++) {
-            $match[$i] = stripos($str, $searchValue, $i);
-            $match[$i] = substr($str, $match[$i], strlen($searchValue));
-            $newString = str_replace($match[$i], '[#]' . $match[$i] . '[@]', $newString);
+            for ($i=0; $i < $occurrences; $i++) {
+                $match[$i] = stripos($str, $searchValue, $i);
+                $match[$i] = substr($str, $match[$i], strlen($searchValue));
+                $newString = str_replace($match[$i], '[#]' . $match[$i] . '[@]', $newString);
+            }
+            $newString = strip_tags($newString);
+            $newString = str_replace('[#]', '<b class="search-word">', $newString);
+            $newString = str_replace('[@]', '</b>', $newString);
         }
-        $newString = strip_tags($newString);
-        $newString = str_replace('[#]', '<b class="search-word">', $newString);
-        $newString = str_replace('[@]', '</b>', $newString);
+
         return $newString;
     }
 

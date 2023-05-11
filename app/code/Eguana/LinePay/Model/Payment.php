@@ -10,6 +10,8 @@
 namespace Eguana\LinePay\Model;
 
 use Eguana\LinePay\Model\Quote as LinePayModel;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\Client\Curl;
 use Eguana\LinePay\Helper\Data;
 use Magento\Framework\UrlInterface;
@@ -145,7 +147,15 @@ class Payment
         }
 
         //request payment api call
-        $response = $this->requestPayment();
+        try{
+            $response = $this->requestPayment();
+        } catch (LocalizedException $e) {
+            return [
+                'status' => 'missing',
+                'url' => 'checkout/cart'
+            ];
+        }
+
         if ($response['returnCode'] == '0000') {
             try {
                 $quote->getPayment()->setAdditionalInformation(
@@ -190,7 +200,9 @@ class Payment
 
     /**
      * Request payment api
+     *
      * @return array|bool|float|int|string|null
+     * @throws \Exception
      */
     private function requestPayment()
     {
@@ -241,7 +253,6 @@ class Payment
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_TIMEOUT => 60,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $request,
                 CURLOPT_HEADER => false,
                 CURLOPT_VERBOSE => true,
                 CURLOPT_SSL_VERIFYPEER => false,
@@ -253,7 +264,7 @@ class Payment
                 ]
             ]
         );
-        $this->curlClient->post($apiUrl, []);
+        $this->curlClient->post($apiUrl, $request);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
         $message = 'Request Payment API Call';
         $logParameters['response'] = $response;
@@ -289,7 +300,6 @@ class Payment
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_TIMEOUT => 60,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $request,
                 CURLOPT_HEADER => false,
                 CURLOPT_VERBOSE => true,
                 CURLOPT_SSL_VERIFYPEER => false,
@@ -301,7 +311,7 @@ class Payment
                 ]
             ]
         );
-        $this->curlClient->post($apiUrl, []);
+        $this->curlClient->post($apiUrl, $request);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
         $logParameters['response'] = $response;
         $message = 'Confirm Payment API Call';
@@ -394,7 +404,6 @@ class Payment
                 CURLOPT_HEADER => false,
                 CURLOPT_VERBOSE => true,
                 CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_POSTFIELDS => $request,
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
                     'X-LINE-ChannelId: '.$channelId,
@@ -403,7 +412,7 @@ class Payment
                 ]
             ]
         );
-        $this->curlClient->post($apiUrl, []);
+        $this->curlClient->post($apiUrl, $request);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
         $logParameters['response'] = $response;
         $message = 'Refund Payment API Call';
@@ -438,7 +447,6 @@ class Payment
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_TIMEOUT => 60,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $request,
                 CURLOPT_HEADER => false,
                 CURLOPT_VERBOSE => true,
                 CURLOPT_SSL_VERIFYPEER => false,
@@ -450,7 +458,7 @@ class Payment
                 ]
             ]
         );
-        $this->curlClient->post($apiUrl, []);
+        $this->curlClient->post($apiUrl, $request);
         $response = $this->serializer->unserialize($this->curlClient->getBody());
         $logParameters['response'] = $response;
         $message = 'Capture Payment API Call';

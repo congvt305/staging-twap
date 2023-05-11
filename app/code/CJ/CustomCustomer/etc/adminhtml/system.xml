@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cjcustomer" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Custom Customer</label>
+            <tab>cj_extensions_tab</tab>
+            <resource>CJ_CustomCustomer::customer</resource>
+            <group id="group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Customer Group</label>
+                <field id="logging" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Logging Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="poscstmno" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>POS Customer ID</label>
+                <field id="enable_cron" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable Cron to syn POS Customer ID automatically</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="limit" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Limit</label>
+                    <comment>Number of customers to sync per cron</comment>
+                    <validate>required-entry validate-digits validate-not-negative-number</validate>
+                </field>
+                <field id="cron_schedule" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Sync POS Customer ID Cron Schedule</label>
+                    <source_model>CJ\CustomCustomer\Model\Source\CronExpressions</source_model>
+                </field>
+            </group>
+        </section>
+
+    </system>
+</config>
