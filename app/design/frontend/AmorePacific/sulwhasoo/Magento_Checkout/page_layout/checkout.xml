@@ -8,6 +8,7 @@
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
     <referenceContainer name="page.wrapper">
         <container name="page.top" as="page_top" label="After Page Header" after="checkout.header.container"/>
+        <referenceBlock name="navigation.sections" remove="true" />
         <container name="footer-container" as="footer" before="before.body.end" label="Page Footer Container" htmlTag="footer" htmlClass="page-footer"/>
     </referenceContainer>
 </layout>
