@@ -229,7 +229,7 @@ class PosReturnData
             'PointAccount' => (int)$rewardPoints,
             'redemptionFlag' => $redemptionFlag,
             'baReferralCode' => $baReferralCode,
-            'friendReferral' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode
         ];
 
         return $rmaData;

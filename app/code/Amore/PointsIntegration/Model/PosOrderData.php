@@ -254,7 +254,7 @@ class PosOrderData
             'PointAccount' => (int)$rewardPoints,
             'redemptionFlag' => $redemptionFlag,
             'baReferralCode' => $baReferralCode,
-            'friendReferral' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode
         ];
         return array_merge($orderData, $redInvoiceData);
     }
@@ -299,7 +299,7 @@ class PosOrderData
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData,
             'baReferralCode' => $baReferralCode,
-            'friendReferral' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode
         ];
     }
 
