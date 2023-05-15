@@ -125,7 +125,7 @@ class DeleteItems extends Action implements HttpPostActionInterface
                     $item = $quote->getItemById($itemId);
                     $this->cart->removeItem($itemId);
                     //mark this item as delete is registry to avoid add again when place order
-                    if (!$item->getParentId()
+                    if ($item && !$item->getParentId()
                         && $this->promoItemHelper->isPromoItem($item)
                     ) {
                         $this->promoRegistry->deleteProduct($item);
