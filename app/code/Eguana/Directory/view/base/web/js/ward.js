@@ -34,7 +34,7 @@ define([
             this._super();
 
             if ( this.indexedOptions[value] && this.indexedOptions[value] !== '0000') {
-                this.wardValue = this.indexedOptions[value]['title'];
+                this.wardValue = this.indexedOptions[value]['labeltitle'];
             }
         },
 
@@ -46,9 +46,8 @@ define([
             if (value == '0000') {
                 return;
             }
-            option = options[value]; //value: city_id
 
-            this.loadWards(value);
+            this.loadWards(value);//value: city_id
 
         },
 
