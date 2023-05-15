@@ -201,7 +201,7 @@ class PosReturnData
             'promotionKey' => $couponCode,
             'orderInfo' => $rmaItem,
             'baReferralCode' => $baReferralCode,
-            'friendReferral' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode
         ];
 
         return $rmaData;
