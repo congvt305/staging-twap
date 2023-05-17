@@ -88,4 +88,19 @@ class AddFriends implements ArgumentInterface
     {
         return $this->helperData->getStoreId();
     }
+
+    public function getLineMarketingMessage()
+    {
+        return $this->helperData->getLineMarketingMessage();
+    }
+
+    public function getLineLogoUrl()
+    {
+        return $this->helperData->getLineLogoUrl();
+    }
+
+    public function getLineQRCodeUrl()
+    {
+        return $this->helperData->getLineQRCode();
+    }
 }
