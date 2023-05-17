@@ -45,6 +45,29 @@
                 <field id="line_messages_agreement" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Line Messages Agreement Text</label>
                 </field>
+                <field id="line_marketing_message" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Marketing Message</label>
+                </field>
+                <field id="line_logo_image" translate="label comment" type="image" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Line Logo</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">linebanner</upload_dir>
+                    <base_url type="media" scope_info="1">linebanner</base_url>
+                    <comment><![CDATA[Allowed file types: 'png', 'jpg', 'jpe', 'jpeg', 'gif']]></comment>
+                    <depends>
+                        <field id="display">1</field>
+                    </depends>
+                </field>
+                <field id="line_qr_code" translate="label comment" type="image" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Line QR Code</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">linebanner</upload_dir>
+                    <base_url type="media" scope_info="1">linebanner</base_url>
+                    <comment><![CDATA[Allowed file types: 'png', 'jpg', 'jpe', 'jpeg', 'gif']]></comment>
+                    <depends>
+                        <field id="display">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="facebook" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Facebook</label>

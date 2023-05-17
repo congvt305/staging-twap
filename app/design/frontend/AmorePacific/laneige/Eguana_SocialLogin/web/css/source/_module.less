@@ -181,6 +181,26 @@
         .note {
             display: block;
         }
+
+        .line-banner {
+
+            margin-top: 36px;
+            a > div {
+                margin: 5px 0;
+            }
+            .line-logo, .line-qr-code {
+                height: auto;
+            }
+            .marketing-message {
+                .line-logo {}
+                .content {
+                    display: none;
+                }
+            }
+            .qr-code {
+
+            }
+        }
     }
 }
 
@@ -223,6 +243,36 @@
             position: relative;
             top: -@indent__l;
             text-align: right;
+
+            .line-banner {
+
+                margin-top: 36px;
+                a > div {
+                    margin: 5px 0;
+                }
+                .line-logo, .line-qr-code {
+                    height: auto;
+                }
+                .marketing-message {
+                    position: relative;
+                    .line-logo {
+                        position: absolute;
+                        right: 8px;
+                        top: 6px;
+                        height: 58px;
+                    }
+                    .content {
+                        display: block;
+                        padding: 20px;
+                        text-align: center;
+                        font-size: 20px;
+                        color: black;
+                    }
+                }
+                .qr-code {
+                    display: none;
+                }
+            }
         }
     }
 }
