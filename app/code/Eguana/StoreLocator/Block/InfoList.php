@@ -119,6 +119,11 @@ class InfoList extends Template implements IdentityInterface
     private $storeCollectionFactory;
 
     /**
+     * @var \Eguana\SocialLogin\Helper\Data
+     */
+    protected $lineHelper;
+
+    /**
      * InfoList constructor.
      * @param Context $context
      * @param ConfigData $storesHelper
@@ -152,6 +157,7 @@ class InfoList extends Template implements IdentityInterface
         Json $json,
         ManagerInterface $messageManager,
         StoreCollectionFactory $storeCollectionFactory,
+        \Eguana\SocialLogin\Helper\Data $lineHelper,
         array $data
     ) {
         parent::__construct($context, $data);
@@ -170,6 +176,7 @@ class InfoList extends Template implements IdentityInterface
         $this->json = $json;
         $this->messageManager = $messageManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
+        $this->lineHelper = $lineHelper;
     }
 
     /**
@@ -392,5 +399,30 @@ class InfoList extends Template implements IdentityInterface
     public function getBottomBlockIdValue()
     {
         return $this->storesHelper->getBottomBlockId();
+    }
+
+    public function getLineMarketingMessage()
+    {
+        return $this->lineHelper->getLineMarketingMessage();
+    }
+
+    public function getLineLogoUrl()
+    {
+        return $this->lineHelper->getLineLogoUrl();
+    }
+
+    public function getLineQRCodeUrl()
+    {
+        return $this->lineHelper->getLineQRCode();
+    }
+
+    public function lineAddFriendLink()
+    {
+        return $this->lineHelper->getLineAddFriendLink();
+    }
+
+    public function getLineBannerEnabled()
+    {
+        return $this->lineHelper->getLineBannerEnabled();
     }
 }
