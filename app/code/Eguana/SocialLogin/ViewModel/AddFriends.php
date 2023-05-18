@@ -103,4 +103,9 @@ class AddFriends implements ArgumentInterface
     {
         return $this->helperData->getLineQRCode();
     }
+
+    public function getLineBannerEnabled()
+    {
+        return $this->helperData->getLineBannerEnabled();
+    }
 }
