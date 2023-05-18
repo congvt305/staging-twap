@@ -1,9 +1,11 @@
 define([
+    'jquery',
+    'mage/url',
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
     'Magento_Ui/js/form/element/region'
-], function (_, registry, Select) {
+], function ($, urlBuilder, _, registry, Select) {
     'use strict';
 
     return Select.extend({
@@ -32,8 +34,21 @@ define([
             this._super();
 
             if ( this.indexedOptions[value] && this.indexedOptions[value] !== '0000') {
-                this.wardValue = this.indexedOptions[value]['title'];
+                this.wardValue = this.indexedOptions[value]['labeltitle'];
             }
+        },
+
+        update:function(value) {
+            this.resetFields();
+            var city = registry.get(this.parentName + '.' + 'city_id'),
+                options = city.indexedOptions,
+                option;
+            if (value == '0000') {
+                return;
+            }
+
+            this.loadWards(value);//value: city_id
+
         },
 
         hideOrigWard: function () {
@@ -41,9 +56,22 @@ define([
                 ward.validation['required-entry'] = false;
                 ward.visible(false);
             });
-            registry.get((this.parentName + '.' + 'ward_id'), function (wardId) {
-                wardId.validation['required-entry'] = false;
-                wardId.visible(false);
+        },
+
+        loadWards: function (cityId) {
+            var self = this;
+            $.ajax({
+                url: urlBuilder.build('custom_directory/account/getWard'),
+                method: 'GET',
+                data: {city_id: cityId},
+                dataType: 'json',
+                showLoader: true,
+                success: function (response) {
+                    if (response) {
+                        // Populate the city select field with the returned ward IDs
+                        self.setOptions(response);
+                    }
+                }
             });
         },
 
