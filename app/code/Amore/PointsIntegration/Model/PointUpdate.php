@@ -206,7 +206,7 @@ class PointUpdate
     public function updatePoints($customerId, $points, $action = Actions::ACTION_ADD_POINT, $comment = 'Updated from POS')
     {
         $modelRewards = $this->rewardsRepository->getEmptyModel();
-        $modelRewards->setCustomerId($customerId);
+        $modelRewards->setCustomerId((int)$customerId);
         $modelRewards->setAmount((float)$points);
         $modelRewards->setComment($comment);
         $modelRewards->setAction(Actions::SYSTEM_REWARDS_SYNC);
