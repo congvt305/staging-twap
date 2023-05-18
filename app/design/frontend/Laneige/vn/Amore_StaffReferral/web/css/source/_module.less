@@ -1,0 +1,72 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .referral-code {
+        .payment-option-title {
+            border-bottom: 2px solid #000000;
+        }
+        .referral-content {
+            padding-top: 22px !important;
+            padding-bottom: 0 !important;
+        }
+    }
+
+    .referral-form {
+        margin-top: 20px;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        .amcp-title {
+            font-size: 15px;
+            font-weight: 400;
+        }
+    }
+    .referral-main-container {
+        display: table;
+        width: 100%;
+        padding-left: 0 !important;
+    }
+    #referral-form {
+        display: block;
+    }
+
+    .payments{
+        .referral-title {
+            font-size: 1.75rem !important;
+        }
+    }
+    #bc-radio {
+        float:left;
+    }
+    #ff-radio {
+        float:left;
+        margin-left: 50px;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .referral-form {
+        .referral-main-container {
+            padding-right: 0 !important;
+            display: table;
+            width: 100%;
+        }
+    }
+    #referral-form {
+        display: block;
+        .payment-option-title {
+            padding-left: 0;
+        }
+    }
+    #ff-radio, #bc-radio {
+        padding-bottom: 0px;
+    }
+    #ff-radio {
+        margin-left: 30px !important;
+    }
+}

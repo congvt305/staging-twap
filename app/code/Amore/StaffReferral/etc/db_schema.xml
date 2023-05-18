@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule" resource="default" engine="innodb" comment="Salesrule">
+        <column xsi:type="smallint" name="is_ba_referral" unsigned="false" nullable="true" identity="false"
+                default="null" comment="Is BA Referral"/>
+        <column xsi:type="smallint" name="is_ff_referral" unsigned="false" nullable="true" identity="false"
+                default="null" comment="Is FF Referral"/>
+    </table>
+    <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+        <column xsi:type="varchar" name="referral_ba_code" nullable="true" length="255" comment="BA Referral Code"/>
+        <column xsi:type="varchar" name="referral_ff_code" nullable="true" length="255" comment="FF Referral Code"/>
+    </table>
+    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="varchar" name="referral_ba_code" nullable="true" length="255" comment="BA Referral Code"/>
+        <column xsi:type="varchar" name="referral_ff_code" nullable="true" length="255" comment="FF Referral Code"/>
+    </table>
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="varchar" name="referral_ba_code" nullable="true" length="255" comment="BA Referral Code"/>
+        <column xsi:type="varchar" name="referral_ff_code" nullable="true" length="255" comment="FF Referral Code"/>
+    </table>
+</schema>

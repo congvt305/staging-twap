@@ -9,6 +9,8 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use Amore\StaffReferral\Api\Data\ReferralInformationInterface;
+use Amore\StaffReferral\Helper\Config as ReferralConfig;
 use CJ\Middleware\Helper\Data;
 use Exception;
 use Magento\Bundle\Api\Data\LinkInterface;
@@ -115,6 +117,11 @@ class PosOrderData
     private $orderStatusHistoryRepository;
 
     /**
+     * @var ReferralConfig
+     */
+    private $referralConfig;
+
+    /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -148,9 +155,9 @@ class PosOrderData
         Logger                         $pointsIntegrationLogger,
         StoreManagerInterface          $storeManager,
         Data                           $middlewareConfig,
-        OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository
-    )
-    {
+        OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
+        ReferralConfig $referralConfig
+    ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -167,6 +174,7 @@ class PosOrderData
         $this->storeManager = $storeManager;
         $this->middlewareConfig = $middlewareConfig;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
+        $this->referralConfig = $referralConfig;
     }
 
     /**
@@ -206,6 +214,8 @@ class PosOrderData
                 ];
             }
         }
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
         $orderData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -215,7 +225,9 @@ class PosOrderData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_ORDER,
             'promotionKey' => $couponCode,
-            'orderInfo' => $orderItemData
+            'orderInfo' => $orderItemData,
+            'baReferralCode' => $baReferralCode,
+            'ffReferralCode' => $friendReferralCode
         ];
         return array_merge($orderData, $redInvoiceData);
     }
@@ -246,6 +258,8 @@ class PosOrderData
         $orderItemData = $this->getItemData($order);
         $couponCode = $order->getCouponCode();
         $invoice = $this->getInvoice($order->getEntityId());
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
 
         return [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
@@ -256,7 +270,9 @@ class PosOrderData
             'cstmIntgSeq' => $posIntegrationNumber,
             'orderType' => self::POS_ORDER_TYPE_CANCEL,
             'promotionKey' => $couponCode,
-            'orderInfo' => $orderItemData
+            'orderInfo' => $orderItemData,
+            'baReferralCode' => $baReferralCode,
+            'ffReferralCode' => $friendReferralCode
         ];
     }
 
@@ -644,7 +660,7 @@ class PosOrderData
             $order->addCommentToStatusHistory($comment);
             $this->orderRepository->save($order);
         } catch (\Exception $exception) {
-            $this->pointsIntegrationLogger->err($exception->getMessage());
+            $this->pointsIntegrationLogger->error($exception->getMessage());
         }
     }
 
@@ -725,5 +741,41 @@ class PosOrderData
     {
         $precision = $isDecimal ? 2 : 0;
         return round($price, $precision);
+    }
+
+    /**
+     * Get BA referral code
+     *
+     * @param Order $order
+     * @param int $websiteId
+     * @return float|mixed|string|null
+     */
+    protected function getReferralBACode($order, $websiteId)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
+            }
+            return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get friend referral code
+     *
+     * @param Order $order
+     * @return float|mixed|string|null
+     */
+    protected function getFriendReferralCode($order)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY);
+            }
+        }
+
+        return '';
     }
 }
