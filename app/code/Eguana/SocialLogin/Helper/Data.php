@@ -40,15 +40,10 @@ class Data extends AbstractHelperAlias
     const XML_SOCIAL_GOOGLE_CALLBACK_URL    = 'SocialLogin/google/oauth_redirect_uri';
     const XML_LINE_ADD_FRIEND               = 'SocialLogin/line/line_add_friend';
     const XML_LINE_AGREEMENT_TEXT           = 'SocialLogin/line/line_messages_agreement';
-
     const XML_LINE_MARKETING_MESSAGE        = 'SocialLogin/line/line_marketing_message';
-
-    const XML_LINE_LOGO_URL               = 'SocialLogin/line/line_logo_image';
-
+    const XML_LINE_LOGO_URL                 = 'SocialLogin/line/line_logo_image';
     const XML_LINE_QR_CODE                  = 'SocialLogin/line/line_qr_code';
     const XML_LINE_BANNER_ENABLED           = 'SocialLogin/line/line_banner_enabled';
-
-
 
     /**
      * @var PageFactory
@@ -296,11 +291,18 @@ class Data extends AbstractHelperAlias
         return $this->scopeConfig->getValue(self::XML_FACEBOOK_ADD_FRIEND, ScopeInterface::SCOPE_STORE);
     }
 
+    /**
+     * @return mixed
+     */
     public function getLineMarketingMessage()
     {
         return $this->scopeConfig->getValue(self::XML_LINE_MARKETING_MESSAGE, ScopeInterface::SCOPE_STORE);
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineLogoUrl()
     {
         $path = $this->scopeConfig->getValue(self::XML_LINE_LOGO_URL, ScopeInterface::SCOPE_STORE);
@@ -308,6 +310,10 @@ class Data extends AbstractHelperAlias
         return $mediaUrl . 'linebanner' . '/' . $path;
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineQRCode()
     {
         $path = $this->scopeConfig->getValue(self::XML_LINE_QR_CODE, ScopeInterface::SCOPE_STORE);
@@ -315,6 +321,9 @@ class Data extends AbstractHelperAlias
         return $mediaUrl . 'linebanner' . '/' . $path;
     }
 
+    /**
+     * @return bool
+     */
     public function getLineBannerEnabled()
     {
         $enabled =  (bool) $this->scopeConfig->getValue(
