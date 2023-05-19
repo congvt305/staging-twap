@@ -401,26 +401,43 @@ class InfoList extends Template implements IdentityInterface
         return $this->storesHelper->getBottomBlockId();
     }
 
+    /**
+     * @return mixed
+     */
     public function getLineMarketingMessage()
     {
         return $this->lineHelper->getLineMarketingMessage();
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineLogoUrl()
     {
         return $this->lineHelper->getLineLogoUrl();
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineQRCodeUrl()
     {
         return $this->lineHelper->getLineQRCode();
     }
 
+    /**
+     * @return mixed
+     */
     public function lineAddFriendLink()
     {
         return $this->lineHelper->getLineAddFriendLink();
     }
 
+    /**
+     * @return bool
+     */
     public function getLineBannerEnabled()
     {
         return $this->lineHelper->getLineBannerEnabled();
