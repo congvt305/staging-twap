@@ -664,10 +664,12 @@ class SaveSuccess implements ObserverInterface
         $customerStoreId = 0;
         foreach ($this->storeManager->getStores() as $store) {
             $storeId = $store->getId();
-            $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
-            if ($officeSaleCode == $salOffCd) {
-                $customerStoreId = $storeId;
-                break;
+            if ($storeId) {
+                $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+                if ($officeSaleCode == $salOffCd) {
+                    $customerStoreId = $storeId;
+                    break;
+                }
             }
         }
         return $customerStoreId;
