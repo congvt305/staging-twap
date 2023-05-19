@@ -117,12 +117,10 @@ class CreateCustomer
         $websiteIds = $this->getWebsiteIds();
         asort($websiteIds);
         foreach ($websiteIds as $websiteId) {
-            if ($websiteId) {
-                $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
-                if ($officeSaleCode == $salOffCd) {
-                    $customerWebsiteId = $websiteId;
-                    break;
-                }
+            $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
+            if ($officeSaleCode == $salOffCd) {
+                $customerWebsiteId = $websiteId;
+                break;
             }
         }
         return $customerWebsiteId;
@@ -137,7 +135,7 @@ class CreateCustomer
         $websiteIds = [];
 
         foreach ($stores as $store) {
-            if ($store->getIsActive()) {
+            if ($store->getIsActive() && $store["website_id"]) {
                 $websiteIds[] = $store["website_id"];
             }
         }
