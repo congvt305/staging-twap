@@ -89,21 +89,35 @@ class AddFriends implements ArgumentInterface
         return $this->helperData->getStoreId();
     }
 
+    /**
+     * @return mixed
+     */
     public function getLineMarketingMessage()
     {
         return $this->helperData->getLineMarketingMessage();
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineLogoUrl()
     {
         return $this->helperData->getLineLogoUrl();
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLineQRCodeUrl()
     {
         return $this->helperData->getLineQRCode();
     }
 
+    /**
+     * @return bool
+     */
     public function getLineBannerEnabled()
     {
         return $this->helperData->getLineBannerEnabled();
