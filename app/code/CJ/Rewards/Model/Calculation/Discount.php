@@ -57,6 +57,11 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
     private TaxConfig $taxConfig;
 
     /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    private $promoItemHelper;
+
+    /**
      * @param Config $rewardsConfig
      * @param Applier $discountApplier
      * @param Distributor $discountDistributor
@@ -72,7 +77,8 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         StoreManagerInterface $storeManager,
         SpendingChecker $spendingChecker,
         ToMoney $toMoney,
-        TaxConfig $taxConfig
+        TaxConfig $taxConfig,
+        \Amasty\Promo\Helper\Item $promoItemHelper
     ) {
         $this->rewardsConfig = $rewardsConfig;
         $this->discountApplier = $discountApplier;
@@ -81,6 +87,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $this->spendingChecker = $spendingChecker;
         $this->toMoney = $toMoney;
         $this->taxConfig = $taxConfig;
+        $this->promoItemHelper = $promoItemHelper;
         parent::__construct(
             $rewardsConfig,
             $discountApplier,
@@ -119,13 +126,19 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $percent = ($basePoints * 100) / $allCartPrice;
         $itemsDiscount = $this->discountDistributor->distribute($items, $basePoints, $percent);
         $discountValue = 0;
-
+        $oddTotal = 0;
         foreach ($items as $item) {
             $itemDiscount = $itemsDiscount[$item->getId()] ?? 0;
-            $this->discountApplier->apply($item, $total, (float)$itemDiscount, $rate);
+            if ($itemDiscount > 0 ) {
+                $oddDiscountAmount = $itemDiscount - ((int)$itemDiscount);
+                if ($oddDiscountAmount > 0) {
+                    $oddTotal += $oddDiscountAmount;
+                }
+            }
+            $this->discountApplier->apply($item, $total, (int)$itemDiscount, $rate);
             $discountValue += $itemsDiscount[$item->getId()];
         }
-
+        $this->addOddTotal($items, $total, $oddTotal, $rate);
         $appliedPoints = $discountValue * $rate;
 
         if ($roundRule === 'up') {
@@ -150,7 +163,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
                 $item->setData(EntityInterface::POINTS_SPENT, 0);
                 continue;
             }
-            $filteredItems[] = $item;
+            $filteredItems[$item->getId()] = $item;
         }
         return $filteredItems;
     }
@@ -210,5 +223,48 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         }
 
         return 0;
+    }
+
+    /**
+     * Add odd total to discount to round discount
+     *
+     * @param array $items
+     * @param Total $total
+     * @param float $oddTotal
+     * @param float $rate
+     * @return void
+     */
+    private function addOddTotal($items, $total, $oddTotal, $rate)
+    {
+        $oddTotal = round($oddTotal); // Should round or int
+        $isAddOddTotal = false;
+        if ($oddTotal > 0 && $total->getSubtotal() + $total->getDiscountAmount() >= $oddTotal) {
+            foreach ($items as $item) {
+                // to determine the child item discount, we calculate the parent
+                if ($item->getDiscountAmount() > 0) {
+                    $isAddOddTotal = true;
+                    $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
+                    $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
+                    $item->setBaseDiscountAmount($item->getBaseDiscountAmount() + $oddTotal);
+                    $total->addTotalAmount('discount', -$oddTotal);
+                    $total->addBaseTotalAmount('discount', -$oddTotal);
+                    break;
+                }
+            }
+
+            //Add in case the discount amount for each item < 1 so get item which is not gift to add discount
+            if (!$isAddOddTotal) {
+                foreach ($items as $item) {
+                    if ($item->getPrice() && !$this->promoItemHelper->isPromoItem($item)) {
+                        $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
+                        $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
+                        $item->setBaseDiscountAmount($item->getBaseDiscountAmount() + $oddTotal);
+                        $total->addTotalAmount('discount', -$oddTotal);
+                        $total->addBaseTotalAmount('discount', -$oddTotal);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
