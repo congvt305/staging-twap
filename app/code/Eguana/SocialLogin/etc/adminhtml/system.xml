@@ -46,7 +46,7 @@
                     <label>Line Messages Agreement Text</label>
                 </field>
                 <field id="line_banner_enabled" translate="label" type="select" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable</label>
+                    <label>Enable Line Banner</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="line_marketing_message" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
