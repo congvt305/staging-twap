@@ -171,12 +171,12 @@
             <span class="label"><span><?= $block->escapeHtml(__('Customer Name')) ?></span></span>
             <?php if ($_order->getShippingMethod() == 'blackcat_homedelivery') {?>
             <div class=" control">
-                <input type="text" name='rma_customer_name' value="<?= $_order->getCustomerLastname() .' '. $_order->getCustomerFirstname() ?>"
+                <input type="text" name='rma_customer_name' value="<?= preg_replace('/\s+/', '', $_order->getCustomerLastname() . $_order->getCustomerFirstname())?>"
                        class="input-text validate-address-name">
             </div>
             <?php } elseif ($_order->getShippingMethod() == 'gwlogistics_CVS') {?>
                 <div class=" control">
-                    <input type="text" name='rma_customer_name' value="<?= $_order->getShippingAddress()->getLastname() .' '. $_order->getShippingAddress()->getFirstname() ?>"
+                    <input type="text" name='rma_customer_name' value="<?= preg_replace('/\s+/', '', $_order->getShippingAddress()->getLastname() . $_order->getShippingAddress()->getFirstname()) ?>"
                            class="input-text validate-address-name">
                 </div>
                 <?php } else {?>
