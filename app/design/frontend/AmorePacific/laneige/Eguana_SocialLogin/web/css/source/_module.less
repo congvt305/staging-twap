@@ -183,7 +183,7 @@
         }
 
         .line-banner {
-
+            width: calc(~"100% - 28px");
             margin-top: 36px;
             a > div {
                 margin: 5px 0;
@@ -192,7 +192,11 @@
                 height: auto;
             }
             .marketing-message {
-                .line-logo {}
+                text-align: center;
+                .line-logo {
+                    width: calc(~"100% - 18px");
+                    margin-bottom: 12px;
+                }
                 .content {
                     display: none;
                 }
@@ -309,7 +313,7 @@
             text-align: right;
 
             .line-banner {
-
+                width: auto;
                 margin: 0 -4px;
                 a > div {
                     margin: 5px 0;
@@ -326,6 +330,7 @@
                         right: 10px;
                         top: 10px;
                         height: 48px;
+                        width: auto;
                     }
                     .content {
                         display: block;
