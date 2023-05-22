@@ -181,6 +181,64 @@
         .note {
             display: block;
         }
+
+        .line-banner {
+
+            margin-top: 36px;
+            a > div {
+                margin: 5px 0;
+            }
+            .line-logo, .line-qr-code {
+                height: auto;
+            }
+            .marketing-message {
+                .line-logo {}
+                .content {
+                    display: none;
+                }
+            }
+            .qr-code {
+
+            }
+        }
+    }
+
+    .checkout-onepage-success {
+        .column.main {
+            .checkout-success {
+                margin-bottom: 50px;
+            }
+        }
+        .line-banner {
+            border: 1px solid black;
+            margin: 0 auto;
+            width: 900px;
+            color: #000;
+            background-color: #f1f1f1;
+            .marketing-message {
+                position: relative;
+                font-size: 28px;
+                .content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: left;
+                    min-height: 147px;
+                    padding-left: 50px;
+                }
+                .line-logo {
+                    position: absolute;
+                    top: 20px;
+                    right: 170px;
+                    height: 100px;
+                }
+                .line-qr-code {
+                    position: absolute;
+                    top: 20px;
+                    right: 50px;
+                    height: 100px;
+                }
+            }
+        }
     }
 }
 
@@ -189,6 +247,32 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .checkout-onepage-success {
+        .line-banner{
+            width: auto;
+            border: unset;
+            background-color: unset;
+            .marketing-message {
+                .content {
+                    min-height: 89px;
+                    padding-left: 38px;
+                }
+                .line-logo {
+                    top: 14px;
+                    right: 0;
+                    height: 56px;
+                }
+                .line-qr-code {
+                    display: none;
+                }
+            }
+        }
+        #registration{
+            border-top: unset;
+            border-left: unset;
+            width: auto;
+        }
+    }
     .socialloginlogin-login {
         margin-top: 75px;
 
@@ -223,6 +307,38 @@
             position: relative;
             top: -@indent__l;
             text-align: right;
+
+            .line-banner {
+
+                margin: 0 -4px;
+                a > div {
+                    margin: 5px 0;
+                }
+                .line-logo, .line-qr-code {
+                    height: auto;
+                }
+                .marketing-message {
+                    position: relative;
+                    border: 1px solid #000;
+                    background-color: #f1f1f1;
+                    .line-logo {
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        height: 48px;
+                    }
+                    .content {
+                        display: block;
+                        padding: 20px;
+                        text-align: center;
+                        font-size: 20px;
+                        color: black;
+                    }
+                }
+                .qr-code {
+                    display: none;
+                }
+            }
         }
     }
 }
