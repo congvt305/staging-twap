@@ -1,0 +1,29 @@
+Subject: [PATCH] Create path fix preg_match
+---
+Index: vendor/magento/framework/Exception/NoSuchEntityException.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/framework/Exception/NoSuchEntityException.php b/vendor/magento/framework/Exception/NoSuchEntityException.php
+--- a/vendor/magento/framework/Exception/NoSuchEntityException.php	(revision 2db47b4fc20cba6c658403f2c3488be2f17fee32)
++++ b/vendor/magento/framework/Exception/NoSuchEntityException.php	(date 1684822679559)
+@@ -47,6 +47,18 @@
+      */
+     public static function singleField($fieldName, $fieldValue)
+     {
++        if ($fieldName == 'customerId') {
++            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++            $backTrace = '';
++            foreach ($debugBackTrace as $debug) {
++                $backTrace .= @$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function'] . " | ";
++            }
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-4388.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->crit('Back trace : ' . $backTrace);
++        }
++
+         return new self(
+             new Phrase(
+                 'No such entity with %fieldName = %fieldValue',
