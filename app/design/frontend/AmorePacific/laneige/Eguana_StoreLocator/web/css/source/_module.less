@@ -336,28 +336,30 @@
             border: 1px solid #000;
             background-color: #f1f1f1;
             box-sizing: border-box;
-            padding: 16px;
             font-size: 18px;
             .marketing-message {
-                position: relative;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 20px 10px 20px 10px;
                 .content {
-                    display: flex;
                     align-items: center;
                     justify-content: left;
-                    min-height: 100px;
-                    padding-left: 26px;
+                    padding: 0 0 0 46px;
                     font-size: 22px;
                     color: #000;
+                    width: calc(~"100% - 200px");
+                }
+                img {
+                    margin: 0 8px;
                 }
             }
             .line-logo {
-                position: absolute;
                 right: 122px;
                 top: 12px;
                 height: 80px;
             }
             .line-qr-code {
-                position: absolute;
                 right: 0;
                 top: 0;
                 height: 100px;
@@ -584,9 +586,9 @@
         .line-banner {
 
             .marketing-message {
-                padding-right: 65px;
                 .content {
-                    min-height: 60px;
+                    width: calc(~"100% - 10px");
+                    padding: 0 0 0 16px;
                 }
             }
             .line-logo {
