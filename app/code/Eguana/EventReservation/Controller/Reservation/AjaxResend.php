@@ -90,23 +90,25 @@ class AjaxResend extends Action
         try {
             $reservationId = $this->getRequest()->getParam('reserved_id');
             $storeId = $this->storeManager->getStore()->getId();
-            $this->smsSender->sendSms($reservationId);
-            if ($this->configHelper->getCustomerEmailEnabled($storeId) == 1) {
-                $this->emailSender->sendEmailToCustomer(
-                    $reservationId,
-                    'pending'
-                );
+            if ($reservationId) {
+                $this->smsSender->sendSms($reservationId);
+                if ($this->configHelper->getCustomerEmailEnabled($storeId) == 1) {
+                    $this->emailSender->sendEmailToCustomer(
+                        $reservationId,
+                        'pending'
+                    );
+                }
+                if ($this->configHelper->getStaffEmailEnabled($storeId) == 1) {
+                    $this->emailSender->sendEmailToStaff(
+                        $reservationId,
+                        'pending'
+                    );
+                }
+                $response = [
+                    'success' => true,
+                    'resendMessage' => __('Successfully booked an event')
+                ];
             }
-            if ($this->configHelper->getStaffEmailEnabled($storeId) == 1) {
-                $this->emailSender->sendEmailToStaff(
-                    $reservationId,
-                    'pending'
-                );
-            }
-            $response = [
-                'success' => true,
-                'resendMessage' => __('Successfully booked an event')
-            ];
         } catch (\Exception $exception) {
             $this->logger->debug($exception->getMessage());
         }
