@@ -1,0 +1,25 @@
+From 10bf8a839d31a4f28617260dcc3277da7318c189 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Fri, 18 Nov 2022 02:35:49 -0500
+Subject: [PATCH] ITO0016-43 HOTFIX Customer group is empty when order by Guest
+
+---
+ vendor/magento/module-quote/Model/QuoteManagement.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/magento/module-quote/Model/QuoteManagement.php
+index 6245912..75b2181 100644
+--- a/vendor/magento/module-quote/Model/QuoteManagement.php
++++ b/vendor/magento/module-quote/Model/QuoteManagement.php
+@@ -424,7 +424,7 @@ class QuoteManagement implements CartManagementInterface
+                 }
+             }
+             $quote->setCustomerIsGuest(true);
+-            $groupId = $customer ? $customer->getGroupId() : GroupInterface::NOT_LOGGED_IN_ID;
++            $groupId = $quote->getCustomerId() ? $customer->getGroupId() : GroupInterface::NOT_LOGGED_IN_ID;
+             $quote->setCustomerGroupId($groupId);
+         }
+
+--
+2.25.1
+

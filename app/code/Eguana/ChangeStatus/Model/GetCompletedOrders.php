@@ -193,7 +193,10 @@ class GetCompletedOrders
         $completeOrderList = [];
         foreach ($orderList->getItems() as $order) {
             $payment = $order->getPayment();
-            $eInvoiceData = json_decode($payment->getAdditionalData(), true);
+            $eInvoiceData = null;
+            if ($payment->getAdditionalData()) {
+                $eInvoiceData = json_decode($payment->getAdditionalData(), true);
+            }
 
             if (in_array($payment->getMethod(), ['ecpay_ecpaypayment', 'linepay_payment'])) {
                 if (!empty($eInvoiceData) && $eInvoiceData["RtnCode"] == 1) {

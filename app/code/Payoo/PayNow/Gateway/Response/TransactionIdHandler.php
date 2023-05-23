@@ -61,7 +61,7 @@ class TransactionIdHandler implements HandlerInterface
                 $orderPayment->setIsTransactionClosed($this->shouldCloseTransaction());
                 $closed = $this->shouldCloseParentTransaction($orderPayment);
                 $orderPayment->setShouldCloseParentTransaction($closed);
-                $this->logger->addInfo(PayooLogger::TYPE_LOG_REFUND,
+                $this->logger->info(PayooLogger::TYPE_LOG_REFUND,
                     [
                         'OrderNo' => $paymentDO->getOrder()->getOrderIncrementId(),
                         'refundSuccess' => $responseData

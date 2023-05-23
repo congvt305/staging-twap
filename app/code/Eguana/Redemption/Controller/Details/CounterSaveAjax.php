@@ -165,10 +165,20 @@ class CounterSaveAjax extends Action
                 $model->setData('redemption_id', $post['redemption_id']);
                 $model->setData('redeem_date', null);
                 $model->setData('customer_name', $post['name']);
+                if (isset($post['last_name'])) {
+                    $model->setData('last_name', $post['last_name']);
+                }
+
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
+
                 $homeDeliveryEnabled = $this->redemptionConfig->getHomeDeliveryEnabled($storeId);
                 if ($homeDeliveryEnabled) {
+                    if ($this->redemptionConfig->getIsShowPostCodeRegionCity($storeId)) {
+                        $model->setData('region', $post['region_name']);
+                        $model->setData('city', $post['dm_city']);
+                        $model->setData('postcode', $post['dm_zipcode']);
+                    }
                     $post['counter'] = $post['counter_auto_assign'];
                     try {
                         $redemption = $this->redemptionRepository->getById($post['redemption_id']);
@@ -194,7 +204,7 @@ class CounterSaveAjax extends Action
                 }
                 $model->setData('counter_id', $post['counter']);
                 $model->setData('store_id', $storeId);
-                if (!$homeDeliveryEnabled) {
+                if (!$homeDeliveryEnabled && isset($post['line'])) {
                     $model->setData('line_id', $post['line']);
                 }
                 $model->setData('token', $token);
@@ -292,7 +302,7 @@ class CounterSaveAjax extends Action
             $fbFunEnable = ($isFbEnabled && $isRedemptionApplied) ? true : false;
             $resultJson->setData(
                 [
-                    "message" => __('You have successfully applied for redemption, please check your email and newsletter.'),
+                    "message" => __('You have successfully registered for a redemption, please check your email and SMS for further details.'),
                     "success" => true,
                     'fbFunEnable' => $fbFunEnable,
                     'entity_id' => $entity

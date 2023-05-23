@@ -206,7 +206,7 @@ class Index extends Template
         $pageSize   = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 5;
         $collection = $this->ticketCollectionFactory->create();
         $collection->addFieldToFilter('customer_id', ['eq' => $customerId]);
-        $collection->setOrder('ticket_id', $sortOrder);
+        $collection->setOrder('ticket_id', $sortOrder ?? '');
         $collection->setPageSize($pageSize);
         $collection->setCurPage($page);
         return $collection;

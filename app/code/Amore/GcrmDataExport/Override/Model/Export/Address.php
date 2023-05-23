@@ -37,6 +37,35 @@ class Address extends MainAddress
      */
     const ENTITY_ID = 'entity_id';
     const PARENT_ID = 'parent_id';
+
+    const DEFAULT_COLUMNS = [
+        '_website',
+        '_email',
+        'city',
+        'city_id',
+        'company',
+        'country_id',
+        'fax',
+        'firstname',
+        'lastname',
+        'middlename',
+        'postcode',
+        'prefix',
+        'region',
+        'region_id',
+        'street',
+        'suffix',
+        'telephone',
+        'vat_id',
+        'vat_is_valid',
+        'vat_request_date',
+        'vat_request_id',
+        'vat_request_success',
+        'ward',
+        'ward_id',
+        '_address_default_billing_',
+        '_address_default_shipping_'
+    ];
     /**#@-*/
 
     /**
@@ -123,8 +152,9 @@ class Address extends MainAddress
         if ($this->dataPersistor->get('gcrm_export_check')) {
             $this->_permanentAttributes = array_merge(
                 $this->includeColumns,
-                [self::COLUMN_WEBSITE, self::COLUMN_EMAIL]
+                self::DEFAULT_COLUMNS
             );
+            return $this->_permanentAttributes;
         }
         return array_merge(
             $this->_permanentAttributes,

@@ -72,7 +72,7 @@ class RedirectProductPermanent
             $product = $this->getProduct($subject);
             if ($this->dataHelper->isAutomaticRedirectEnabled() && !$this->canShow($product)) {
                 $redirect = $this->redirectFactory->create();
-                if (str_contains($product->getRedirectUrl(), 'http')) {
+                if ($product->getRedirectUrl() && str_contains($product->getRedirectUrl(), 'http')) {
                     $redirect->setPath($product->getRedirectUrl());
                 } else if ($product->getRedirectUrl()) {
                     $redirect->setPath($this->storeManager->getStore()->getBaseUrl() . $product->getRedirectUrl() . $this->dataHelper->getSuffixProduct());

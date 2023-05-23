@@ -37,6 +37,31 @@ $customerLink = $block->getCustomerLink();
                     <?php endif; ?>
                 </td>
             </tr>
+            <?php if ($block->getOrder()->getShippingMethod() == 'blackcat_homedelivery'): ?>
+            <tr>
+                <th><?= $block->escapeHtml(__('Customer Name To Return')) ?></th>
+                <td>
+                    <input type="text"
+                           class="input-text admin__control-text validate-address-name-admin"
+                           name="rma_customer_name"
+                           value="<?=$block->getCustomerName()?>"
+                           id="rma_customer_name"/>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if ($block->getOrder()->getShippingMethod() == 'gwlogistics_CVS'):?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Customer Name To Return')) ?></th>
+                    <?php $shippingAddress = $block->getOrder()->getShippingAddress() ?>
+                    <td>
+                        <input type="text"
+                               class="input-text admin__control-text validate-address-name-admin"
+                               name="rma_customer_name"
+                               value="<?=$shippingAddress->getLastName() . ' ' . $shippingAddress->getFirstName()?>"
+                               id="rma_customer_name"/>
+                    </td>
+                </tr>
+            <?php endif;?>
             <tr>
                 <th><?= $block->escapeHtml(__('Email Address')) ?></th>
                 <td>

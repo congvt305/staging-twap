@@ -17,7 +17,10 @@ define(
                 const dataForm = $('#ecpay_payment_form');
                 const choosenPayment = dataForm.find('select[name="ecpay_choosen_payment"]').val();
                 const paymentMethods = window.checkoutConfig.payment.ecpay_ecpaypayment.ecpayPaymentMethods;
-
+                const errorMessage = {
+                    please_enter_in_numbers: $t('Please enter in numbers.'),
+                    this_is_a_required_field: $t('This is a required field.')
+                };
                 let barCodeValid = true;
                 const eInvoiceForm = $('#custom-checkout-form');
                 const choosenEInvoice = eInvoiceForm.find('input:radio[name="ecpay_einvoice_type"]:checked').val();
@@ -34,6 +37,7 @@ define(
                 if (choosenEInvoice == 'triplicate-invoice') {
 
                     let requiredFieldEntered = true;
+                    let validateResult = true;
                     let ecPayTriplicateTitle = $("input:text[id=triplicate_title]").val();
                     if (ecPayTriplicateTitle == '') {
                         $('.triplicate-title-error-msg').show();
@@ -41,11 +45,20 @@ define(
                     }
                     let ecPayTaxIdNumber = $("input:text[id=tax_id_number]").val();
                     if (ecPayTaxIdNumber == '') {
-                        $('.tax-id-number-error-msg').show();
+                        $('.tax-id-number-error-msg').text(errorMessage.this_is_a_required_field).show();
                         requiredFieldEntered = false;
+                    } else {
+                        let isNum = ecPayTaxIdNumber.match(/^[0-9]+$/) != null;
+                        if (!isNum) {
+                            validateResult = false;
+                            $('.tax-id-number-error-msg').text(errorMessage.please_enter_in_numbers).show();
+                        }
                     }
                     if (requiredFieldEntered == false) {
-                        return requiredFieldEntered;
+                        validateResult = false;
+                    }
+                    if (!validateResult) {
+                        return validateResult;
                     }
                 }
                 const barCodeValue = $("input:text[id=cellphone_barcode]").val();

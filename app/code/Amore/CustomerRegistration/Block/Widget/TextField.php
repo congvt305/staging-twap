@@ -59,7 +59,6 @@ class TextField extends AbstractWidget
         $this->options = $options;
         parent::__construct($context, $addressHelper, $customerMetadata, $data);
         $this->addressMetadata = $addressMetadata;
-        $this->_isScopePrivate = true;
     }
 
     /**

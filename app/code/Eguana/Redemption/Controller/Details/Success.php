@@ -14,6 +14,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\Controller\Result\Redirect;
@@ -60,12 +61,13 @@ class Success extends Action
         $redirect = $this->resultRedirectFactory->create();
         $redemptionId = $this->_request->getParam('redemption_id');
         if ($redemptionId) {
-            $redemption = $this->redemptionRepository->getById($redemptionId);
-            if(!$redemption->getId()) {
+            try {
+                $this->redemptionRepository->getById($redemptionId);
+                return $this->pageFactory->create();
+            } catch (NoSuchEntityException $e) {
                 $this->messageManager->addErrorMessage(__('This redemption no longer exists.'));
                 return $redirect->setUrl('/');
             }
-            return $this->pageFactory->create();
         } else {
             return $redirect->setUrl('/');
         }

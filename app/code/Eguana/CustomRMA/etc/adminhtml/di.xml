@@ -14,4 +14,8 @@
         <plugin name="eguana_customrma_admin_save_shipping_preference"
                 type="Eguana\CustomRMA\Plugin\RmaSaveShippingPreference" sortOrder="10"/>
     </type>
+    <type name="Magento\Rma\Model\Rma\RmaDataMapper">
+        <plugin name="eguana_customrma_admin_save_rma_customer_name"
+                type="Eguana\CustomRMA\Plugin\RmaSaveCustomerName" sortOrder="10"/>
+    </type>
 </config>

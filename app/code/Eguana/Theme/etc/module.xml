@@ -6,9 +6,10 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Eguana_Theme" setup_version="1.0.0">
+    <module name="Eguana_Theme" setup_version="2.2.1" active="true">
         <sequence>
             <module name="Magento_Theme"/>
+            <module name="Magento_Catalog"/>
             <module name="Magento_Enterprise"/> <!-- For Enterprise versions only -->
         </sequence>
     </module>

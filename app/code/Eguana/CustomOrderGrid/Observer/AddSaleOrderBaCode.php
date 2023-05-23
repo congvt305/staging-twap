@@ -53,6 +53,9 @@ class AddSaleOrderBaCode implements ObserverInterface
     {
         try {
             $customerId = $observer->getEvent()->getOrder()->getCustomerId();
+            if (!$customerId) {
+                return $this;
+            }
             $customer = $this->customerRepository->getById($customerId);
 
             if ($customer->getId()) {

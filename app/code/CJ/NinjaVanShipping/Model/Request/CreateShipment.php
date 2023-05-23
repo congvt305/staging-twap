@@ -18,8 +18,10 @@ use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionColl
 class CreateShipment
 {
     const INVALID_TOKEN_CODE = 2001;
+
     const DUPLICATE_TRACKING_CODE = 109201;
 
+    const TRACKING_NUMBER_FREFIX = 'MYL';
     /**
      * @var NinjaVanToken
      */
@@ -108,7 +110,7 @@ class CreateShipment
         $tokenData = $this->authToken->getToken($storeId);
         if (!$tokenData || !$tokenData->getToken()) {
             $auth = $this->authToken->requestAuthToken('array', $storeId);
-            $this->logger->addInfo('auth: ', $auth);
+            $this->logger->info('auth: ', $auth);
             if (isset($auth['access_token']) && $auth['access_token']) {
                 $token = $auth['access_token'];
             } else {
@@ -146,7 +148,7 @@ class CreateShipment
             if (isset($contents['error'])) {
                 if ($response->getStatusCode() == 401 || isset($contents['error']['code'])) {
                     if ($contents['error']['code'] == self::INVALID_TOKEN_CODE) {
-                        $this->logger->addError('Error when creating order in Ninjavan: ' .
+                        $this->logger->error('Error when creating order in Ninjavan: ' .
                             $this->json->serialize($contents)
                         );
                         try {
@@ -156,7 +158,7 @@ class CreateShipment
                                 $tokenDataFactory->save();
                             }
                         } catch (\Exception $exception) {
-                            $this->logger->addError('Error when disable access token: ' . $exception->getMessage());
+                            $this->logger->error('Error when disable access token: ' . $exception->getMessage());
                         }
 
                         $numOfRetry = $this->ninjavanHelper->getNinjaVanNumberRetry() ?? 4;
@@ -165,10 +167,14 @@ class CreateShipment
                             $this->logger->info(__("Retry to make create Order #{$order->getIncrementId()} request {$this->retryCount} time(s)"));
 
                             $auth = $this->authToken->requestAuthToken('array', $order->getStoreId());
-                            $this->logger->addInfo('retry to get request token: ', $auth);
+                            $this->logger->info('retry to get request token: ', $auth);
                             if (empty($auth['access_token'])) {
                                 throw new \Exception('Cannot get access token from NinjaVan.');
                             }
+
+                            $trackNumber = $this->generateTrackNumber($order);
+                            // Send the order's information to NinjaVan to create new delivery order
+                            $data = $this->payloadSendToNinjaVan($order, $trackNumber);
 
                             $headers[RequestOptions::HEADERS] = ['Authorization' => 'Bearer ' . $auth['access_token']];
                             $this->logger->info('ninjavan | request header: ' . $this->json->serialize($headers));
@@ -178,7 +184,7 @@ class CreateShipment
                             $contentsRetry = $this->json->unserialize($response->getBody()->getContents());
 
                             if (isset($contentsRetry['error'])) {
-                                $this->logger->addError('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
+                                $this->logger->error('Error when retrying to create NV Order: ' . $this->json->serialize($contentsRetry['error']));
                                 continue;
                             }
                             $contents = $contentsRetry;
@@ -187,7 +193,7 @@ class CreateShipment
                     }
 
                     if (isset($contents['error'], $contents['error']['code']) && $contents['error']['code'] == self::DUPLICATE_TRACKING_CODE) {
-                        $this->logger->addError('Error when creating order in Ninjavan: ' .
+                        $this->logger->error('Error when creating order in Ninjavan: ' .
                             $this->json->serialize($contents)
                         );
                     }
@@ -237,6 +243,9 @@ class CreateShipment
         $stateFrom = $stateIdFrom ? $this->getRegionById($stateIdFrom) : '';
 
         $nameTo = $order->getCustomerFirstname() .' '. $order->getCustomerLastname();
+        if (!$nameTo) {
+            $nameTo = $order->getShippingAddress()->getFirstname() .' '. $order->getShippingAddress()->getLastname();
+        }
         $phoneTo = $order->getShippingAddress()->getTelephone();
         $mailTo = $order->getCustomerEmail();
         $addressTo = implode(" ",$order->getShippingAddress()->getStreet());
@@ -339,5 +348,17 @@ class CreateShipment
         $regionCollection = $this->regionCollectionFactory->create();
         $region = $regionCollection->addFieldToFilter('main_table.region_id', $regionId)->getFirstItem();
         return $region->getDefaultName() ?? '';
+    }
+
+    /**
+     * Generate tracking number
+     *
+     * @param $order
+     * @return string
+     */
+    public function generateTrackNumber($order): string
+    {
+        $orderPrefix = self::TRACKING_NUMBER_FREFIX;
+        return $orderPrefix.substr($order->getIncrementId(), -6);
     }
 }

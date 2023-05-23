@@ -237,7 +237,7 @@ $autofilledFlag = $directoryHelper->isZipCodeAutofilled();
     ], function($){
         $(document).ready(function(){
 
-            $(document).on("change", "#city_id", function(){
+            $(document).on("change", "#city_id, #region_id", function(){
                 var _cityTxt = $(this).find("option:selected").text();
                 $("#city").val(_cityTxt);
                 var _cityId = $(this).val();
@@ -246,11 +246,17 @@ $autofilledFlag = $directoryHelper->isZipCodeAutofilled();
                 $("#fward").val("");
                 $("#ward_txt").val("");
                 $.ajax({
-                    dataType : 'html',
+                    dataType : 'json',
                     showLoader: false,
                     url : '<?php echo $directoryHelper->getAjaxWardUrl() ?>?city_id='+_cityId+'&ward_id='+_cWardId,
-                    success : function(data){
-                        $("#fward").html(data);
+                    success : function(response) {
+                        var wardSelect = $('#fward');
+                        wardSelect.empty();
+                        wardSelect.append('<option value=""><?php echo __('Please select a ward'); ?></option>');
+                        $.each(response, function (index, value) {
+                            wardSelect.append($('<option class="opt" value="' +value.value + '">' + value.label + '</option>'));
+                        });
+                        wardSelect.find('option[value="' + _cWardId + '"').attr('selected', 'selected');
                     }
                 });
             });

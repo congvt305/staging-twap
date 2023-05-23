@@ -27,12 +27,11 @@ class ForceNoneSameSite
         $value,
         \Magento\Framework\Stdlib\Cookie\PublicCookieMetadata $metadata = null
     ) {
-        if (in_array($name, $this->affectedKeys) && $metadata) {
+        if (in_array($name, $this->affectedKeys) && $metadata && method_exists($metadata, 'setSameSite')) {
             $metadata->setSecure(true);
             $metadata->setSameSite('None');
         }
+
         return [$name, $value, $metadata];
     }
-
-
 }

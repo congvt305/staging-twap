@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="checkout.cart.coupon2" template="Amasty_Coupons::coupon.phtml">
+        <referenceBlock name="checkout.cart.multicoupons" template="Amasty_Coupons::coupon.phtml">
             <arguments>
                 <argument name="jsLayout" xsi:type="array">
                     <item name="types" xsi:type="array">
@@ -35,10 +35,15 @@
                                 </item>
                             </item>
                         </item>
+                        <item name="discount-coupons" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                            </item>
+                        </item>
                     </item>
                 </argument>
             </arguments>
         </referenceBlock>
-        <move element="checkout.cart.coupon2" destination="sidebar.additional" before="-"/>
+        <move element="checkout.cart.multicoupons" destination="sidebar.additional" before="-"/>
     </body>
 </page>

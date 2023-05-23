@@ -3,7 +3,7 @@
 namespace CJ\DataExport\Model;
 
 use Magento\Framework\Exception\LocalizedException;
-
+use Magento\Framework\Locale\ResolverInterface;
 /**
  * Class Export
  */
@@ -18,6 +18,11 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      * @var \CJ\DataExport\Model\Export\Adapter\RedemptionCsv
      */
     protected $cjRedemptionWriter;
+
+    /**
+     * @var \CJ\DataExport\Model\Export\Adapter\RedemptionPosCsv
+     */
+    protected $cjRedemptionPosWriter;
 
     /**
      * @var \CJ\DataExport\Model\Export\Adapter\RmaCsv
@@ -47,6 +52,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
     const ENTITY_RMA = 'cj_rma';
     const ENTITY_ORDER = 'cj_sales_order';
     const ENTITY_REDEMPTION = 'cj_redemption';
+    const ENTITY_REDEMPTION_POS = 'cj_redemption_pos';
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
@@ -66,6 +72,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
     public function __construct(
         \CJ\DataExport\Model\Export\Adapter\OrderCsv $orderCsv,
         \CJ\DataExport\Model\Export\Adapter\RedemptionCsv $redemptionCsv,
+        \CJ\DataExport\Model\Export\Adapter\RedemptionPosCsv $redemptionPosCsv,
         \CJ\DataExport\Model\Export\Adapter\RmaCsv $rmaCsv,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Event\ManagerInterface $eventManager,
@@ -77,6 +84,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         \Magento\ImportExport\Model\Export\Adapter\Factory $exportAdapterFac,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Framework\Stdlib\DateTime\DateTime $coreDate,
+        ResolverInterface $localeResolver,
         \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
         \Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory $collectionFactory,
         array $data = []
@@ -92,6 +100,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             $exportAdapterFac,
             $resultRedirectFactory,
             $coreDate,
+            $localeResolver,
             $dataPersistor,
             $collectionFactory,
             $data
@@ -102,6 +111,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         $this->cjRmaWriter = $rmaCsv;
         $this->cjOrderWriter = $orderCsv;
         $this->cjRedemptionWriter = $redemptionCsv;
+        $this->cjRedemptionPosWriter = $redemptionPosCsv;
         $this->fileFormats = $this->_exportConfig->getFileFormats();
     }
 
@@ -115,6 +125,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         }
 
         switch ($this->getEntity()) {
+            case self::ENTITY_REDEMPTION_POS:
             case self::ENTITY_REDEMPTION:
             case self::ENTITY_RMA:
             case self::ENTITY_ORDER:
@@ -154,6 +165,8 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         switch ($this->getEntity()) {
             case self::ENTITY_REDEMPTION:
                 return $this->cjRedemptionWriter;
+            case self::ENTITY_REDEMPTION_POS:
+                return $this->cjRedemptionPosWriter;
             case self::ENTITY_RMA:
                 return $this->cjRmaWriter;
             case self::ENTITY_ORDER:
@@ -177,6 +190,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             case self::ENTITY_ORDER:
             case self::ENTITY_RMA:
             case self::ENTITY_REDEMPTION:
+            case self::ENTITY_REDEMPTION_POS:
                 $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
                 $this->collectionFactory
                     ->create()

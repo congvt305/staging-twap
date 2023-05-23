@@ -1,0 +1,17 @@
+Index: vendor/magento/framework/View/Element/Template.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento/framework/View/Element/Template.php
+--- a/vendor/magento/framework/View/Element/Template.php	(revision b58d4e98617e1e4550086c9ed22b957d4245b8aa)
++++ b/vendor/magento/framework/View/Element/Template.php	(date 1675302204057)
+@@ -297,7 +297,7 @@
+      */
+     protected function _toHtml()
+     {
+-        if (!$this->getTemplate()) {
++        if (!$this->getTemplate() || !$this->getTemplateFile()) {
+             return '';
+         }
+         return $this->fetchView($this->getTemplateFile());

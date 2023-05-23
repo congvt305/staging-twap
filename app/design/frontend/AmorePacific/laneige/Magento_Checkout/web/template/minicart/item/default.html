@@ -37,7 +37,7 @@
                 <!-- ko if: ap_size -->
                     <dt class="label" data-bind="i18n: 'size'"></dt>
                     <dd>
-                        <span data-bind="text: ap_size"/>
+                        <span data-bind="text: ap_size"></span>
                     </dd>
                 <!-- /ko -->
                 <!-- ko if: options.length -->
@@ -76,7 +76,7 @@
                            'data-item-qty': qty,
                            'data-cart-item-id': product_sku
                            }, text: qty"
-                          class="item-qty cart-item-qty"/>
+                          class="item-qty cart-item-qty"></span>
 
                 </div>
                 <!-- ko ifnot: canApplyMsrp -->

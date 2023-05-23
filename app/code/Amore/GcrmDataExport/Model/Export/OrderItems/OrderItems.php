@@ -48,7 +48,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
     /**#@+
      * Constants for Order Items Attributes.
      */
-    protected $headColumnNames = [
+    const HEAD_COLUMN_NAMES = [
         self::ORDER_ITEM_ITEM_ID => 'item_id',
         self::ORDER_ITEM_ORDER_ID => 'order_id',
         self::ORDER_ITEM_PARENT_ITEM_ID => 'parent_item_id',
@@ -58,7 +58,6 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         self::ORDER_ITEM_UPDATED_AT => 'updated_at',
         self::ORDER_ITEM_PRODUCT_ID => 'product_id',
         self::ORDER_ITEM_PRODUCT_TYPE => 'product_type',
-        self::ORDER_ITEM_PRODUCT_OPTIONS => 'product_options',
         self::ORDER_ITEM_WEIGHT => 'weight',
         self::ORDER_ITEM_IS_VIRTUAL => 'is_virtual',
         self::ORDER_ITEM_PRODUCT_SKU => 'sku',
@@ -152,11 +151,6 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
         self::ORDER_ITEM_SAP_ITEM_SLAMT => 'sap_item_slamt',
         self::ORDER_ITEM_SAP_ITEM_NETWR => 'sap_item_netwr',
     ];
-
-    /**
-     * @var array
-     */
-    protected $headerColumns = [];
 
     /**#@-*/
 
@@ -300,41 +294,15 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
             return false;
         }
 
-        $index = 0;
+        $writer->setHeaderCols($this->_getHeaderColumns());
         foreach ($orderItemData as $orderData) {
             foreach ($orderData as $itemData) {
-                if ($index == 0) {
-                    $writer->setHeaderCols($this->getHeaderColumns());
-                    $index = 1;
-                }
-                $writer->writeSourceRowWithCustomColumns($itemData, $this->getHeaderColumns());
+                $writer->writeSourceRowWithCustomColumns($itemData, $this->_getHeaderColumns());
             }
         }
         return $writer->getContents();
     }
 
-    /**
-     * Get CSV file header colums
-     *
-     * @return array
-     */
-    public function getHeaderColumns()
-    {
-        if (!$this->headerColumns) {
-            $collection = $this->orderItemsColFactory->create();
-            $collection->getSelect()->limit(1);
-
-            if (isset($collection->getData()[0])) {
-                $item = $collection->getData()[0];
-                unset($item['product_option']);
-                unset($item['product_options']);
-                unset($item['parent_item']);
-                $this->headerColumns = array_keys($item);
-            }
-        }
-
-        return $this->headerColumns;
-    }
 
     /**
      * Return Data of orders
@@ -387,11 +355,7 @@ class OrderItems extends AbstractEntity implements OrderItemsColumnsInterface
      */
     protected function _getHeaderColumns()
     {
-        $header = [];
-        foreach ($this->headColumnNames as $englishColumn) {
-            $header[] = $englishColumn;
-        }
-        return $header;
+        return self::HEAD_COLUMN_NAMES;
     }
 
     /**

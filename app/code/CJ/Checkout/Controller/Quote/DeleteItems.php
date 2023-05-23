@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace CJ\Checkout\Controller\Quote;
 
-use Magento\CatalogInventory\Helper\Data;
+use Amasty\Promo\Model\Storage;
+use Magento\Checkout\Model\Cart as CustomerCart;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Quote\Model\Quote\Item;
 use Magento\Quote\Model\QuoteRepository;
 use Psr\Log\LoggerInterface;
@@ -52,6 +52,26 @@ class DeleteItems extends Action implements HttpPostActionInterface
     private $cookieMetadataFactory;
 
     /**
+     * @var Storage
+     */
+    private $registry;
+
+    /**
+     * @var CustomerCart
+     */
+    private $cart;
+
+    /**
+     * @var \Amasty\Promo\Model\Registry
+     */
+    private $promoRegistry;
+
+    /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    private $promoItemHelper;
+
+    /**
      * @param Context $context
      * @param RequestInterface $request
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
@@ -59,6 +79,10 @@ class DeleteItems extends Action implements HttpPostActionInterface
      * @param LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
+     * @param CustomerCart $cart
+     * @param Storage $registry
+     * @param \Amasty\Promo\Helper\Item $promoItemHelper
+     * @param \Amasty\Promo\Model\Registry $promoRegistry
      */
     public function __construct(
         Context $context,
@@ -67,7 +91,11 @@ class DeleteItems extends Action implements HttpPostActionInterface
         QuoteRepository $quoteRepository,
         LoggerInterface $logger,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
-        \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
+        \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
+        CustomerCart $cart,
+        Storage $registry,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
+        \Amasty\Promo\Model\Registry $promoRegistry,
     ) {
         $this->request = $request;
         $this->jsonHelper = $jsonHelper;
@@ -75,6 +103,10 @@ class DeleteItems extends Action implements HttpPostActionInterface
         $this->logger = $logger;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->cookieManager = $cookieManager;
+        $this->cart = $cart;
+        $this->registry = $registry;
+        $this->promoItemHelper = $promoItemHelper;
+        $this->promoRegistry = $promoRegistry;
         parent::__construct($context);
     }
 
@@ -90,11 +122,19 @@ class DeleteItems extends Action implements HttpPostActionInterface
             try {
                 $quote = $this->quoteRepository->getActive($params['quote_id']);
                 foreach ($params['item_id'] as $itemId) {
-                    $quote = $quote->removeItem($itemId);
-                    $this->_removeErrorsFromQuoteAndItem($quote->getItemById($itemId), Data::ERROR_QTY);
+                    $item = $quote->getItemById($itemId);
+                    $this->cart->removeItem($itemId);
+                    //mark this item as delete is registry to avoid add again when place order
+                    if ($item && !$item->getParentId()
+                        && $this->promoItemHelper->isPromoItem($item)
+                    ) {
+                        $this->promoRegistry->deleteProduct($item);
+                    }
                 }
-                $this->quoteRepository->save($quote);
-
+                //prevent auto add again when save quote
+                $this->registry->setIsAutoAddAllowed(false);
+                $this->cart->getQuote()->setTotalsCollectedFlag(false);
+                $this->cart->save();
                 //must reset cookie message
                 //because code will run to class Magento\Persistent\Observer\EmulateQuoteObserver first
                 //then check error item from quote

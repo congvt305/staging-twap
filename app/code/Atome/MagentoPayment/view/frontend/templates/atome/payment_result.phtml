@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var \Atome\MagentoPayment\Block\Payment\PaymentResult $block
+ */
+?>
+
+<div id="atome-payment-result" style="text-align: center">
+    <img src="<?php echo \Atome\MagentoPayment\Services\Config\Atome::LOADING_IMAGE; ?>"
+         width="100"
+         height="100"
+    />
+</div>
+
+
+<script>
+    require(['Atome_MagentoPayment/js/view/result/render'], function (plugin) {
+        plugin.init(
+            "<?php echo $block->getData('orderId');  ?>"
+        );
+    });
+</script>

@@ -57,7 +57,7 @@ $apProductPosition = "";
     /**
      * Position for actions regarding image size changing in vde if needed
      */
-    $pos = $block->getPositioned();
+    $pos = $block->getPositioned() ?? 1;
     $i = 0;
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>" data-mage-init='{"listProducts":{}}'>
@@ -109,7 +109,7 @@ $apProductPosition = "";
                                     ap-prd-brand="<?= $apProductBrand ?>"
                                     ap-prd-position="<?= $apProductPosition ?>"
                                     ap-prd-list="<?= $categoryName ?>"
-                                <? endif; ?>
+                                <?php endif; ?>
                             >
                                 <?= $productImage->toHtml() ?>
                             </a>
@@ -131,7 +131,7 @@ $apProductPosition = "";
                                             ap-prd-brand="<?= $apProductBrand ?>"
                                             ap-prd-position="<?= $apProductPosition ?>"
                                             ap-prd-list="<?= $categoryName ?>"
-                                        <? endif; ?>
+                                        <?php endif; ?>
                                     >
                                         <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                     </a>
@@ -168,7 +168,7 @@ $apProductPosition = "";
                                                         ap-prd-brand="<?= $apProductBrand ?>"
                                                         ap-prd-position="<?= $apProductPosition ?>"
                                                         ap-prd-list="<?= $categoryName ?>"
-                                                    <? endif; ?>
+                                                    <?php endif; ?>
                                                 >
                                                     <span><?= $block->escapeHtml(__('Detail')) ?></span>
                                                 </a>

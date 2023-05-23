@@ -75,6 +75,4 @@ interface QuoteItemsColumnsInterface
     const QUOTE_ITEM_BASE_WEEE_TAX_ROW_DISPOSITION = 'base_weee_tax_row_disposition';
     const QUOTE_ITEM_FREE_SHIPPING = 'free_shipping';
     const QUOTE_ITEM_GIFTREGISTRY_ITEM_ID = 'giftregistery_item_id';
-    const QUOTE_ITEM_PAYPAL_PRICE = 'paypal_price';
-    const QUOTE_ITEM_PAYPAL_ROW_TOATL = 'paypal_row_total';
 }

@@ -1,0 +1,63 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .referral-form {
+        margin-top: 20px;
+        .payment-option-title {
+            display: block;
+            width: 100%;
+        }
+    }
+    .payments{
+        .referral-title {
+            color: #555555;
+            line-height: 1.2;
+            font-size: 1.75rem;
+        }
+    }
+    .refferral-button {
+        width: 100% !important;
+    }
+    #bc-radio {
+        float:left;
+    }
+    #ff-radio {
+        float:left;
+        margin-left: 50px;
+    }
+    .referral-main-container {
+        display: table;
+        width: 100%;
+    }
+
+    .referral-form {
+        margin-top: 20px;
+        .amcp-title {
+            font-size: 15px;
+            font-weight: 400;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .referral-main-container {
+        display: table;
+        width: 100%;
+        .payment-option-inner {
+            .field{
+                width: 30% !important;
+            }
+        }
+        .actions-toolbar {
+            .primary {
+                width: 100%;
+            }
+        }
+    }
+}

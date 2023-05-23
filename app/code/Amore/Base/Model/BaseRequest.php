@@ -47,7 +47,7 @@ abstract class BaseRequest
      * @param string $type
      * @return string
      */
-    public function send($url, $requestData, $scope = 'store', $websiteId, $type = 'confirm')
+    public function send($url, $requestData, $scope = 'store', $websiteId = null, $type = 'confirm')
     {
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled($scope, $websiteId);
         if (!is_array($requestData)) {

@@ -82,11 +82,13 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
         $ruleTotals = $this->validator->getRuleItemTotalsInfo($rule->getId());
         $baseRuleTotals = $ruleTotals['base_items_price'] ?? 0.0;
+        $baseRuleTotalsDiscount = $ruleTotals['base_items_discount_amount'] ?? 0.0;
+        $ruleItemsCount = $ruleTotals['items_count'] ?? 0;
 
         $address = $item->getAddress();
+        $quote = $item->getQuote();
         $shippingMethod = $address->getShippingMethod();
         $isAppliedToShipping = (int) $rule->getApplyToShipping();
-        $quote = $item->getQuote();
         $ruleDiscount = (float) $rule->getDiscountAmount();
 
         $isMultiShipping = $this->cartFixedDiscountHelper->checkMultiShippingQuote($quote);
@@ -94,6 +96,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         $baseItemPrice = $this->validator->getItemBasePrice($item);
         $itemOriginalPrice = $this->validator->getItemOriginalPrice($item);
         $baseItemOriginalPrice = $this->validator->getItemBaseOriginalPrice($item);
+        $baseItemDiscountAmount = (float) $item->getBaseDiscountAmount();
 
         $cartRules = $quote->getCartFixedRules();
         if (!isset($cartRules[$rule->getId()])) {
@@ -116,6 +119,9 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 }
                 return $discountData;
             }
+            $shippingPrice = $this->cartFixedDiscountHelper->applyDiscountOnPricesIncludedTax()
+                ? (float) $address->getShippingInclTax()
+                : (float) $address->getShippingExclTax();
             $baseRuleTotals = $shippingMethod ?
                 $this->cartFixedDiscountHelper
                     ->getBaseRuleTotals(
@@ -123,24 +129,38 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                         $quote,
                         $isMultiShipping,
                         $address,
-                        $baseRuleTotals
+                        $baseRuleTotals,
+                        $shippingPrice
                     ) : $baseRuleTotals;
             foreach ($address->getAllVisibleItems() as $_item) {
                 if ($this->promoItemHelper->isPromoItem($_item)) {
                     $baseRuleTotals -= $_item->getRowTotal();
+                    $baseRuleTotalsDiscount -= $_item->getRowTotal();
                 }
             }
-            $maximumItemDiscount = $this->cartFixedDiscountHelper
-                ->getDiscountAmount(
-                    $ruleDiscount,
-                    $qty,
-                    $baseItemPrice,
-                    $baseRuleTotals,
-                    $discountType
-                );
-            $quoteAmount = $this->priceCurrency->convert($maximumItemDiscount, $store);
-            $baseDiscountAmount = min($baseItemPrice * $qty, $maximumItemDiscount);
-            if ($ruleTotals['items_count'] <= 1) {
+            if ($isAppliedToShipping) {
+                $baseDiscountAmount = $this->cartFixedDiscountHelper
+                    ->getDiscountAmount(
+                        $ruleDiscount,
+                        $qty,
+                        $baseItemPrice,
+                        $baseRuleTotals,
+                        $discountType
+                    );
+            } else {
+                $baseDiscountAmount = $this->cartFixedDiscountHelper
+                    ->getDiscountedAmountProportionally(
+                        $ruleDiscount,
+                        $qty,
+                        $baseItemPrice,
+                        $baseItemDiscountAmount,
+                        $baseRuleTotals - $baseRuleTotalsDiscount,
+                        $discountType
+                    );
+            }
+            $discountAmount = $this->priceCurrency->convert($baseDiscountAmount, $store);
+            $baseDiscountAmount = min($baseItemPrice * $qty, $baseDiscountAmount);
+            if ($ruleItemsCount <= 1) {
                 $this->deltaPriceRound->reset($discountType);
             } else {
                 $this->validator->decrementRuleItemTotalsCount($rule->getId());
@@ -171,7 +191,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 $cartRules[$rule->getId()] -= $shippingDiscountAmount;
                 if ($cartRules[$rule->getId()] < 0.0) {
                     $baseDiscountAmount += $cartRules[$rule->getId()];
-                    $quoteAmount += $cartRules[$rule->getId()];
+                    $discountAmount += $cartRules[$rule->getId()];
                 }
             }
             if ($availableDiscountAmount <= 0) {
@@ -181,13 +201,13 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             //Customize here to fix the diffirent discount for last item (do not equal with discount amount)
             if ($cartRules[$rule->getId()] < 0.0 || ($cartRules[$rule->getId()] <= 0.1 && $cartRules[$rule->getId()] > 0.0 )) {
                 $baseDiscountAmount += $cartRules[$rule->getId()];
-                $quoteAmount += $cartRules[$rule->getId()];
+                $discountAmount += $cartRules[$rule->getId()];
                 $cartRules[$rule->getId()] = 0;
             }
 
-            $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $quoteAmount)));
+            $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $discountAmount)));
             $discountData->setBaseAmount($baseDiscountAmount);
-            $discountData->setOriginalAmount(min($itemOriginalPrice * $qty, $quoteAmount));
+            $discountData->setOriginalAmount(min($itemOriginalPrice * $qty, $discountAmount));
             $discountData->setBaseOriginalAmount($this->priceCurrency->roundPrice($baseItemOriginalPrice));
         }
         $quote->setCartFixedRules($cartRules);

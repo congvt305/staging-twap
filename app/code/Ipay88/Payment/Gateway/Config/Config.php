@@ -107,7 +107,7 @@ class Config extends \Magento\Payment\Gateway\Config\Config
      */
     public function getOnlineBankingMethods(): array
     {
-        $enabledMethodIds = explode(',', $this->getValue(self::KEY_ONLINE_BANKING_METHODS));
+        $enabledMethodIds = explode(',', $this->getValue(self::KEY_ONLINE_BANKING_METHODS) ?? '');
 
         return array_values(array_Filter(self::PAYMENT_TYPES['ONLINE_BANKING'], function ($type) use ($enabledMethodIds) {
             return in_array($type['id'], $enabledMethodIds);
@@ -121,7 +121,7 @@ class Config extends \Magento\Payment\Gateway\Config\Config
      */
     public function getCreditCardMethods(): array
     {
-        $enabledMethodIds = explode(',', $this->getValue(self::KEY_CREDIT_CARD_METHODS));
+        $enabledMethodIds = explode(',', $this->getValue(self::KEY_CREDIT_CARD_METHODS) ?? '');
 
         return array_values(array_Filter(self::PAYMENT_TYPES['CREDIT_CARD'], function ($type) use ($enabledMethodIds) {
             return in_array($type['id'], $enabledMethodIds);
@@ -135,7 +135,7 @@ class Config extends \Magento\Payment\Gateway\Config\Config
      */
     public function getWalletMethods(): array
     {
-        $enabledMethodIds = explode(',', $this->getValue(self::KEY_WALLET_METHODS));
+        $enabledMethodIds = explode(',', $this->getValue(self::KEY_WALLET_METHODS) ?? '');
 
         return array_values(array_Filter(self::PAYMENT_TYPES['WALLET'], function ($type) use ($enabledMethodIds) {
             return in_array($type['id'], $enabledMethodIds);

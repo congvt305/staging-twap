@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="hoolah_extsettings_cronjob" instance="Hoolah\Hoolah\Helper\ExtSettings" method="cron">
+            <schedule>0 * * * *</schedule>
+        </job>
+        <job name="hoolah_orders_cronjob" instance="Hoolah\Hoolah\Helper\Order" method="cron">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

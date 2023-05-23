@@ -158,7 +158,7 @@ class CreateShipmentAutomatically implements ObserverInterface
         $invoice = $observer->getEvent()->getData('invoice');
         /** @var \Magento\Sales\Model\Order $order */
         $order = $invoice->getOrder();
-        $this->logger->info('ninjavan | event sales_order_invoice_pay fired: order id ', [$order->getId()]);
+        $this->logger->info('ninjavan | event sales_order_invoice_save_after fired: order id ' . $order->getId() . ' with payment method is: ' . $order->getPayment()->getMethod());
 
         if ($order->getShippingMethod() === 'ninjavan_tablerate') {
             $this->logger->info('ninjavan | start creating shipment: return state ');
@@ -192,8 +192,7 @@ class CreateShipmentAutomatically implements ObserverInterface
             // Send the order's information to NinjaVan to create new delivery order
             $trackNumber = $this->generateTrackNumber($order);
             $data = $this->createShipment->payloadSendToNinjaVan($order, $trackNumber);
-            $this->logger->info('request body to create delivery order: ');
-            $this->logger->info($this->json->serialize($data));
+            $this->logger->info('request body to create delivery order: ' . $this->json->serialize($data));
             $response = $this->createShipment->requestCreateOrder($data, $order);
             $this->logger->info('response from api create delivery order: ');
             $this->logger->info('ninjavan | response: ', $response);

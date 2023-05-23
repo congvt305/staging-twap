@@ -143,10 +143,12 @@ class Category implements OptionSourceInterface
                 ];
                 $index++;
             }
-            $storeCategoryList[$key] = [
-                'label'   => $this->storeManager->getStore($key)->getName(),
-                'value'   => $categoryList[$key]
-            ];
+            if (isset($categoryList[$key])) {
+                $storeCategoryList[$key] = [
+                    'label'   => $this->storeManager->getStore($key)->getName(),
+                    'value'   => $categoryList[$key]
+                ];
+            }
         }
         return $storeCategoryList;
     }

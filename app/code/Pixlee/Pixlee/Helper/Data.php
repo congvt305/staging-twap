@@ -398,7 +398,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if (count($images) > 0) {
             foreach ($images as $image) {
                 $photoURL = $image->getUrl();
-                if (in_array($photoURL, $productPhotos) == false) {
+                if ($photoURL && in_array($photoURL, $productPhotos) == false) {
                     array_push($productPhotos, $photoURL);
                 }
             }

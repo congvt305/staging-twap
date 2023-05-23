@@ -1,0 +1,215 @@
+/**
+ * @author Eguana Team
+ * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: arslan
+ * Date: 22/10/20
+ * Time: 7:00 PM
+ */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .redemption-details-index{
+        .modal-popup {
+            .modal-content {
+                max-height: 85px;
+                padding: 2rem 5rem;
+            }
+
+            .modal-inner-wrap {
+                max-width: 400px;
+            }
+
+            .action-close {
+                padding: 0px;
+            }
+
+            .modal-footer {
+                padding-bottom: 0px;
+                padding-top: 0px;
+                display: none;
+
+                button {
+                    display: none;
+                }
+            }
+
+            .modal-body-content {
+                text-align: center;
+                margin-bottom: 100px;
+            }
+        }
+    }
+    /* 20230302 mod */
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-make-up"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-skin-care-category-lip-care"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-skin-care-category-eye-care"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-skin-care-category-moisturizer"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-skin-care-category-sun-care"].catalog-category-view.page-layout-1column .category-view~.page-main,
+    [class*="categorypath-skin-care-category-mask"].catalog-category-view.page-layout-1column .category-view~.page-main {
+        position: relative;
+    }
+
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care-category-lip-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care-category-eye-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care-category-moisturizer"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care-category-sun-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper,
+    [class*="categorypath-skin-care-category-mask"].catalog-category-view.page-layout-1column .category-view ~ .page-main .page-title-wrapper {
+        display: block;
+    }
+
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care-category-lip-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care-category-eye-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care-category-moisturizer"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care-category-sun-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter,
+    [class*="categorypath-skin-care-category-mask"].catalog-category-view.page-layout-1column .category-view ~ .page-main .filter {
+        padding-bottom: 0
+    }
+
+    [class*="categorypath-whats-new"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-makeup"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skincare"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-online-exclusive"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-best-sellers"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skin-care-category-lip-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skin-care-category-eye-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skin-care-category-moisturizer"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skin-care-category-sun-care"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products,
+    [class*="categorypath-skin-care-category-mask"].catalog-category-view.page-layout-1column .category-view ~ .page-main .toolbar-products {
+        padding-bottom: 60px
+    }
+    /* //20230302 mod */
+    .block-redemption-detail {
+        .block {
+            &:extend(.abs-account-blocks all);
+        }
+
+        .block-image-banner {
+            text-align: center;
+        }
+
+        .redemption-form > .block-content {
+            padding-top: 0 !important;
+
+            .block-title {
+                margin: 0 0 20px 0;
+            }
+
+            .privacy-policy-box {
+                max-height: 78px;
+                overflow-y: scroll;
+            }
+        }
+    }
+
+    .redemption-confirm-page .redemption-image {
+        text-align: center;
+    }
+
+    .block-redemption-detail,
+    .redemption-confirm-page {
+        .actions-toolbar {
+            margin-top: @indent__xl;
+
+            .action {
+                &:extend(.abs-button-l all);
+            }
+        }
+    }
+
+    .redemption-details-index {
+        .column.main {
+            .lib-vendor-prefix-display(flex);
+            .lib-vendor-prefix-flex-direction(column);
+
+            > div {
+                &.message {
+                    .lib-vendor-prefix-order(0);
+                }
+
+                &.redemption-cms-block {
+                    .lib-vendor-prefix-order(1);
+                }
+
+                &.block-redemption-detail {
+                    .lib-vendor-prefix-order(2);
+                }
+            }
+        }
+    }
+
+    #popup-modal-vvip-denied {
+        display: none;
+        color:red;
+    }
+
+    .popup-container {
+        #popup-modal {
+            display: none;
+        }
+    }
+}
+
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .block-redemption-detail,
+    .redemption-confirm-page {
+        .actions-toolbar .action {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 4;
+        }
+    }
+
+    .redemption-details-index {
+        .modal-inner-wrap {
+            margin: 5rem auto;
+            max-width: 350px;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .block-redemption-detail,
+    .redemption-confirm-page {
+        .actions-toolbar {
+            text-align: center;
+
+            div.primary {
+                float: none !important;
+            }
+
+            .action {
+                margin: 0 auto;
+                width: 380px !important;
+            }
+        }
+    }
+}

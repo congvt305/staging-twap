@@ -190,7 +190,13 @@
         <column name="customer_name" sortOrder="40">
             <settings>
                 <filter>text</filter>
-                <label translate="true">Name</label>
+                <label translate="true">First Name</label>
+            </settings>
+        </column>
+        <column name="last_name" sortOrder="41">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Last Name</label>
             </settings>
         </column>
         <column name="email" sortOrder="50">
@@ -263,6 +269,24 @@
             <settings>
                 <filter>text</filter>
                 <label translate="true">Address</label>
+            </settings>
+        </column>
+        <column name="region" sortOrder="150">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Region</label>
+            </settings>
+        </column>
+        <column name="city" sortOrder="160">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">City</label>
+            </settings>
+        </column>
+        <column name="postcode" sortOrder="170">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Post Code</label>
             </settings>
         </column>
     </columns>

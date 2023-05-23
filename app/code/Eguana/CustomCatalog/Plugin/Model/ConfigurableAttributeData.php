@@ -124,7 +124,7 @@ class ConfigurableAttributeData
                 'products' => isset($config[$attribute->getAttributeId()][$optionId])
                     ? $config[$attribute->getAttributeId()][$optionId]
                     : [],
-                'stockStatus' => $status,
+                'stockStatus' => $status ?? 0,
             ];
         }
         return $attributeOptionsData;

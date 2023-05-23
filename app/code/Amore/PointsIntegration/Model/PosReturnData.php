@@ -9,6 +9,8 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
+use Amore\StaffReferral\Api\Data\ReferralInformationInterface;
+use Amore\StaffReferral\Helper\Config as ReferralConfig;
 use CJ\Middleware\Helper\Data;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -22,6 +24,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Rma\Api\Data\CommentInterfaceFactory;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -114,6 +117,11 @@ class PosReturnData
     private $amConfig;
 
     /**
+     * @var ReferralConfig
+     */
+    private $referralConfig;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -148,6 +156,7 @@ class PosReturnData
         Logger                                                 $pointsIntegrationLogger,
         CommentInterfaceFactory                                $commentInterfaceFactory,
         Data                                                   $middlewareHelper,
+        ReferralConfig $referralConfig,
         \Amasty\Rewards\Model\Config $amConfig
     ) {
         $this->config = $config;
@@ -166,6 +175,7 @@ class PosReturnData
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->middlewareHelper = $middlewareHelper;
+        $this->referralConfig = $referralConfig;
         $this->amConfig = $amConfig;
     }
 
@@ -185,6 +195,8 @@ class PosReturnData
         $rmaItem = $this->getRmaItemData($rma);
         $invoice = $order->getInvoiceCollection()->getFirstItem();
         $couponCode = $order->getCouponCode();
+        $baReferralCode = $this->getReferralBACode($order, $websiteId);
+        $friendReferralCode = $this->getFriendReferralCode($order);
 
         $redemptionFlag = 'N';
         $rewardPoints = 0;
@@ -214,6 +226,8 @@ class PosReturnData
             'orderType' => self::POS_ORDER_TYPE_RETURN,
             'promotionKey' => $couponCode,
             'orderInfo' => $rmaItem,
+            'baReferralCode' => $baReferralCode,
+            'ffReferralCode' => $friendReferralCode,
             'PointAccount' => (int)$rewardPoints,
             'redemptionFlag' => $redemptionFlag
         ];
@@ -685,5 +699,43 @@ class PosReturnData
         }
 
         return (int)$price;
+    }
+
+
+
+    /**
+     * Get BA referral code
+     *
+     * @param Order $order
+     * @param int $websiteId
+     * @return float|mixed|string|null
+     */
+    protected function getReferralBACode($order, $websiteId)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_BA_CODE_KEY);
+            }
+            return $this->referralConfig->getDefaultBcReferralCode($websiteId);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get friend referral code
+     *
+     * @param Order $order
+     * @return float|mixed|string|null
+     */
+    protected function getFriendReferralCode($order)
+    {
+        if ($order instanceof OrderInterface) {
+            if ($order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY)) {
+                return $order->getData(ReferralInformationInterface::REFERRAL_FF_CODE_KEY);
+            }
+        }
+
+        return '';
     }
 }

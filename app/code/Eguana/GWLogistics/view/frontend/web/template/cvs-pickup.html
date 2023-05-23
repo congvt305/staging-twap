@@ -2,7 +2,7 @@
     if="isAvailable"
     css="'selected-shipping': !isCvsPickupSelected(), 'selected-cvs-pickup': isCvsPickupSelected()"
 >
-    <render args="deliveryMethodSelectorTemplate"/>
+    <render args="deliveryMethodSelectorTemplate"></render>
     <each args="getRegion('shipping-messages')">
         <div template=" {name: getTemplate()}"></div>
     </each>
