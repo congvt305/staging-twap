@@ -44,7 +44,7 @@ $customerLink = $block->getCustomerLink();
                     <input type="text"
                            class="input-text admin__control-text validate-address-name-admin"
                            name="rma_customer_name"
-                           value="<?=$block->getCustomerName()?>"
+                           value="<?=preg_replace('/\s+/', '', $block->getCustomerName())?>"
                            id="rma_customer_name"/>
                 </td>
             </tr>
@@ -57,7 +57,7 @@ $customerLink = $block->getCustomerLink();
                         <input type="text"
                                class="input-text admin__control-text validate-address-name-admin"
                                name="rma_customer_name"
-                               value="<?=$shippingAddress->getLastName() . ' ' . $shippingAddress->getFirstName()?>"
+                               value="<?=preg_replace('/\s+/', '', $shippingAddress->getLastName() . $shippingAddress->getFirstName())?>"
                                id="rma_customer_name"/>
                     </td>
                 </tr>

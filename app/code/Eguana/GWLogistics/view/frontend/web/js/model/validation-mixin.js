@@ -22,7 +22,7 @@ define(['jquery'], function($) {
         $.validator.addMethod(
             'validate-address-name',
             function(value, element) {
-                return /^[a-zA-Z\s]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value) || /^\s/.test(value);
+                return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value);
             },
             $.mage.__('Last name + first name must be the most 5 Chinese alphabets or 10 English alphabets and should not contain spaces.')
         );
