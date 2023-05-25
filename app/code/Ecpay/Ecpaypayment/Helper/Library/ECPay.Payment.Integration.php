@@ -735,10 +735,12 @@ class ECPay_CheckOutFeedback extends ECPay_Aio
             }
         }
 
-        $CheckMacValue = ECPay_CheckMacValue::generate($arParameters,$HashKey,$HashIV,$EncryptType);
+        if (isset($arParameters['CheckMacValue'])) {
+            $CheckMacValue = ECPay_CheckMacValue::generate($arParameters, $HashKey, $HashIV, $EncryptType);
 
-        if ($CheckMacValue != $arParameters['CheckMacValue']) {
-            array_push($arErrors, 'CheckMacValue verify fail.');
+            if ($CheckMacValue != $arParameters['CheckMacValue']) {
+                array_push($arErrors, 'CheckMacValue verify fail.');
+            }
         }
 
         if (sizeof($arErrors) > 0) {
