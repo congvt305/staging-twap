@@ -112,6 +112,7 @@ define([
                 url: counterUrl,
                 type: 'POST',
                 data : {form_key: window.FORM_KEY, eventId: window.eventId, counterId: window.counterId},
+                async: false,
                 beforeSend: function() {
                     jQuery('body').loader('show');
                 },
@@ -126,41 +127,36 @@ define([
                 }
             });
             $('#counterModal').modal(options).modal('openModal');
-            $("body").delegate(".modal-date-picker", "focusin", function() {
-                $('#counter_from_date').datepicker({
-                    changeYear:true,
-                    changeMonth:true,
-                    yearRange: "1970:2050",
-                    buttonText:"Select Date",
-                    dateFormat:"yy-mm-dd",
-                    minDate: 0,
-                    autoclose: true,
-                    onSelect: function(date) {
-                        var dates = date.split('-');
-                        var lastDate = new Date(dates[0], dates[1]-1, dates[2]);
-
-                        $('#counter_to_date').datepicker("option", "minDate", lastDate);
-                    }
-                });
-                var fromDate = $('#counter_from_date').val();
-                var date = fromDate.split('-');
-                fromDate = new Date(date[0], date[1]-1, date[2]);
-                $('#counter_to_date').datepicker({
-                    changeYear:true,
-                    changeMonth:true,
-                    yearRange: "1970:2050",
-                    buttonText:"Select Date",
-                    dateFormat:"yy-mm-dd",
-                    autoclose: true,
-                    minDate: fromDate
-                });
+            $('#counter_from_date').calendar({
+                changeYear:true,
+                changeMonth:true,
+                yearRange: "1970:2050",
+                buttonText:"Select Date",
+                dateFormat:"yy-mm-dd",
+                minDate: 0,
+                autoclose: true
             });
-            $("body").delegate(".modal-time-picker", "focusin", function() {
+
+            $('#counter_to_date').calendar({
+                changeYear:true,
+                changeMonth:true,
+                yearRange: "1970:2050",
+                buttonText:"Select Date",
+                dateFormat:"yy-mm-dd",
+                minDate: 0,
+                autoclose: true
+            });
+
+            $(".ui-datepicker-trigger").on("click", function (event) {
+                $('#ui-datepicker-div').css('top', "5%");
+            })
+            $(".modal-time-picker").on("click focusin", function(event) {
                 $(this).timepicker({
                     stepMinute: 1,
                     dateFormat:'yy-mm-dd'
                 });
-            });
+                $('#ui-datepicker-div').css('top','35%');
+            })
         },
     }
     return new $.Counterjs();

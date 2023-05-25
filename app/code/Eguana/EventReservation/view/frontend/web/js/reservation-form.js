@@ -11,7 +11,7 @@ define([
     'jquery',
     'mage/translate',
     'domReady!'
-], function ($) {
+], function ($, $t) {
     /**
      * @param config.reservationUrl
      * @param config.counterTime
@@ -71,25 +71,32 @@ define([
 
         $("#reservation-resend-btn").click(function(e) {
             e.preventDefault();
-            $.ajax({
-                url: resendUrl,
-                type: 'POST',
-                data: { 'reserved_id': reserveId, 'form_key': window.FORM_KEY },
-                beforeSend: function () {
-                    jQuery('body').loader('show');
-                },
-                success: function (data) {
-                    startTimer();
-                    jQuery('body').loader('hide');
-                    successErrorDiv.removeClass("message info")
-                        .addClass("message success")
-                        .html("<span>" + data['resendMessage'] + "</span>");
-                    $('#reservation-btn').hide();
-                    $('#reservation-btn, #reservation-resend-btn').prop('disabled', true);
-                    $('#info-message, #countTime, #reservation-resend-btn').show();
-                    window.scrollTo(500, 0);
-                }
-            });
+            if (reserveId){
+                $.ajax({
+                    url: resendUrl,
+                    type: 'POST',
+                    data: { 'reserved_id': reserveId, 'form_key': window.FORM_KEY },
+                    beforeSend: function () {
+                        jQuery('body').loader('show');
+                    },
+                    success: function (data) {
+                        startTimer();
+                        jQuery('body').loader('hide');
+                        successErrorDiv.removeClass("message info")
+                            .addClass("message success")
+                            .html("<span>" + data['resendMessage'] + "</span>");
+                        $('#reservation-btn').hide();
+                        $('#reservation-btn, #reservation-resend-btn').prop('disabled', true);
+                        $('#info-message, #countTime, #reservation-resend-btn').show();
+                        window.scrollTo(500, 0);
+                    }
+                });
+            } else {
+                successErrorDiv.removeClass("message success")
+                    .addClass("message error")
+                    .html("<span>" + $t("Something went wrong while reserving the event") + "</span>");
+                window.scrollTo(500, 0);
+            }
         });
 
         function startTimer() {

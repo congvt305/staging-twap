@@ -130,6 +130,9 @@ class Save extends Action
 
         $data = $post;
         if (!isset($data['reserved_users'])) {
+            if ($data['to_date'] < $data['from_date'] ) {
+                $error['startDayIsGreater'] = true;
+            }
             $slot_time = $data['slot_time'];
             if (strpos($slot_time, ':') !== false) {
                 $slot = explode(':', $slot_time);
@@ -223,7 +226,9 @@ class Save extends Action
         $response = ['success' => true];
         if (isset($error)) {
             $response = ['success' => false];
-
+            if (isset($error['startDayIsGreater'])) {
+                $response['errorMessage'] = 'The Start day should be less than End day.';
+            }
             if (isset($error['startTimeIsGreater'])) {
                 $response['errorMessage'] = 'The Start time should be less than End time.';
             }
