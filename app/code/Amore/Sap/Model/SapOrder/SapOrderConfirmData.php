@@ -328,6 +328,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
             }
 
+            $orderDiscountAmount = $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal) - $mileageUsedAmount;
+            $isMileageOrder = bcsub($orderSubTotal, $orderDiscountAmount) == $mileageUsedAmount && $mileageUsedAmount > 0;
             $bindData[] = [
                 'vkorg' => $this->config->getSalesOrg('store', $storeId),
                 'kunnr' => $this->config->getClient('store', $storeId),
@@ -345,8 +347,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'insurance' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? 'Y' : '',
                 'insurnaceValue' => $orderData->getShippingMethod() === 'eguanadhl_tablerate' ? $orderGrandTotal : null, //todo null is okay?
                 // added for VN start end
-                'auart' => self::NORMAL_ORDER,
-                'augru' => '',
+                'auart' => $isMileageOrder ? self::SAMPLE_ORDER : self::NORMAL_ORDER,
+                'augru' => $isMileageOrder ? 'F07' : 'A08',
                 'augruText' => 'ORDER REASON TEXT',
                 // 주문자회원코드-직영몰자체코드
                 'custid' => $customer != '' ? $orderData->getCustomerId() : '',
@@ -366,7 +368,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
                 'waerk' => $orderData->getOrderCurrencyCode(),
                 'nsamt' => $orderSubTotal,
-                'dcamt' => $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal, $isDecimalFormat) - $mileageUsedAmount,
+                'dcamt' => $orderDiscountAmount,
                 'slamt' => $orderGrandTotal + $mileageUsedAmount,
                 'miamt' => $mileageUsedAmount,
                 'shpwr' => $this->roundingPrice($orderData->getShippingAmount(), $isDecimalFormat),
