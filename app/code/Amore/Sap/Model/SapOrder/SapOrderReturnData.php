@@ -318,7 +318,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
         $bundleExtraAmount = $this->getBundleExtraAmount($rma);
         $catalogRuleDiscountAmount = $this->getCatalogRuleDiscountAmount($rma);
-        $orderSubTotal = abs($this->roundingPrice($order->getSubtotalInclTax() + $bundleExtraAmount + $catalogRuleDiscountAmount, $isDecimalFormat));
+        $orderSubtotal = abs($this->roundingPrice($order->getSubtotalInclTax() + $bundleExtraAmount + $catalogRuleDiscountAmount, $isDecimalFormat));
         $mileageUsedAmount = $order->getRewardPointsBalance();
         $originPosnr = $this->getOrderItemPosnr($rma);
         $mileageUsedAmountExisted = 0;
@@ -353,7 +353,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
                 $mileagePerItem = $this->mileageSpentRateByItem(
-                    $orderSubTotal,
+                    $orderSubtotal,
                     $orderItem->getRowTotalInclTax(),
                     $mileageUsedAmount,
                     $isDecimalFormat
@@ -438,7 +438,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
                         $bundleChildrenItem->getDiscountAmount();
                     $mileagePerItem = $this->mileageSpentRateByItem(
-                        $orderSubTotal,
+                        $orderSubtotal,
                         $this->getProportionOfBundleChild(
                             $orderItem,
                             $bundleChildrenItem,
@@ -894,12 +894,12 @@ class SapOrderReturnData extends AbstractSapOrder
     public function getRmaDiscountAmount($rma, $isDecimalFormat)
     {
         $order = $rma->getOrder();
-        $orderSubTotal = abs($this->roundingPrice(
+        $orderSubtotal = abs($this->roundingPrice(
             $order->getSubtotalInclTax() + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma),
             $isDecimalFormat));
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : abs($this->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat));
 
-        return $orderSubTotal - $orderGrandTotal;
+        return $orderSubtotal - $orderGrandTotal;
     }
 
     /**
