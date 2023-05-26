@@ -556,7 +556,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
         $bundleExtraAmount = $this->getBundleExtraAmount($order);
         $catalogRuleDiscountAmount = $this->getCatalogRuleDiscountAmount($order);
-        $orderSubTotal = abs($this->roundingPrice($order->getSubtotalInclTax() + $bundleExtraAmount + $catalogRuleDiscountAmount, $isDecimalFormat));
+        $orderSubtotal = abs($this->roundingPrice($order->getSubtotalInclTax() + $bundleExtraAmount + $catalogRuleDiscountAmount, $isDecimalFormat));
         $invoice = $this->getInvoice($order->getEntityId());
         $mileageUsedAmount = is_null($order->getRewardPointsBalance()) ? '0' : $order->getRewardPointsBalance();
         $spendingRate = $this->amConfig->getPointsRate($storeId);
@@ -598,7 +598,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             foreach ($orderItems as $orderItem) {
                 if ($orderItem->getProductType() != 'bundle') {
                     $mileagePerItem = $this->mileageSpentRateByItem(
-                        $orderSubTotal,
+                        $orderSubtotal,
                         $orderItem->getRowTotalInclTax(),
                         $mileageUsedAmount,
                         $isDecimalFormat);
@@ -686,7 +686,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()), $isDecimalFormat) :
                             $this->roundingPrice($bundleChild->getDiscountAmount(), $isDecimalFormat);
                         $mileagePerItem = $this->mileageSpentRateByItem(
-                            $orderSubTotal,
+                            $orderSubtotal,
                             $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax()),
                             $mileageUsedAmount,
                             $isDecimalFormat);
