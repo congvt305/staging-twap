@@ -389,7 +389,9 @@ require([
         console.log('start');
         if (dataForm.validation() && dataForm.validation('isValid')) {
             console.log('yyy!');
-            window.dataLayer.push({'event': 'join'})
+            if (window.dataLayer != undefined && window.dataLayer) {
+                window.dataLayer.push({'event': 'join'})
+            }
         }
 
         return true;
