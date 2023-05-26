@@ -35,6 +35,10 @@ class SapOrderReturnData extends AbstractSapOrder
 
     const ABRVW_RETURN_CODE = 'R51';
 
+    const AUGRU_MILEAGE_ALL_RETURN_CODE = 'F07';
+
+    const ABRVW_MILEAGE_ALL_RETURN_CODE = 'FZ1';
+
     /**
      * @var RmaRepositoryInterface
      */
@@ -224,6 +228,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 abs($this->roundingPrice($this->getRmaGrandTotal($rma, $orderTotal, $pointUsed), $isDecimalFormat)) + $pointUsed;
         }
 
+        $isMileageOrder = bcsub($nsamt, $dcamt) == $miamt && $miamt > 0;
         $bindData[] = [
             'vkorg' => $this->config->getSalesOrg('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
@@ -239,10 +244,10 @@ class SapOrderReturnData extends AbstractSapOrder
             'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
             'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
             'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
-            'auart' => self::RETURN_ORDER,
-            'augru' => self::AUGRU_RETURN_CODE,
+            'auart' => $isMileageOrder ? self::SAMPLE_RETURN : self::RETURN_ORDER,
+            'augru' => $isMileageOrder ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
             'augruText' => '',
-            'abrvw' => self::ABRVW_RETURN_CODE,
+            'abrvw' => $isMileageOrder ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
             // 주문자회원코드-직영몰자체코드
             'custid' => $customer != '' ? $rma->getCustomerId() : '',
             'custnm' => $rma->getData('rma_customer_name') ?: $order->getCustomerLastname() . $order->getCustomerFirstname(),
@@ -482,6 +487,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         $itemSlamt = $item->getData('sap_item_slamt');
                         $itemNetwr = $item->getData('sap_item_netwr');
                     }
+                    $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $mileagePerItem;
 
                     $rmaItemData[] = [
                         'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
@@ -499,9 +505,9 @@ class SapOrderReturnData extends AbstractSapOrder
                         // 상품이 무상제공인 경우 Y 아니면 N
                         'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
                         'itemMilfg' => ((bcsub($itemSubtotal, $itemDiscountAmount) == $mileagePerItem) && $itemSlamt > 0) ? 'Y' : 'N',
-                        'itemAuart' => self::RETURN_ORDER,
-                        'itemAugru' => self::AUGRU_RETURN_CODE,
-                        'itemAbrvw' => self::ABRVW_RETURN_CODE,
+                        'itemAuart' => $isMileageOrderItem ? self::SAMPLE_RETURN : self::RETURN_ORDER,
+                        'itemAugru' => $isMileageOrderItem ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
+                        'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
                         'itemNetwr' => $itemNetwr,
                         'itemMwsbp' => $itemTaxAmount,
                         'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
