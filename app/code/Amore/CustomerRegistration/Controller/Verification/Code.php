@@ -102,14 +102,23 @@ class Code extends Action
     {
         $result['send'] = false;
         $mobileNumber = $this->request->getParam('mobileNumber');
-        $firstName = trim($this->request->getParam('firstName'));
-        $lastName = trim($this->request->getParam('lastName'));
+        $firstName = $this->request->getParam('firstName') ? trim($this->request->getParam('firstName')) : null;
+        $lastName = $this->request->getParam('lastName') ? trim($this->request->getParam('lastName')) : null;
         /**
          *  Json result
          *
          * @var Json $jsonResult
          */
         $jsonResult = $this->resultJsonFactory->create();
+        if (!$firstName || !$lastName) {
+            if (!$firstName) {
+                $result['message'] = __('Please enter a first name.');
+            } else {
+                $result['message'] = __(' Please enter a last name.');
+            }
+            $jsonResult->setData($result);
+            return $jsonResult;
+        }
         try {
             $isEnabledSmsVerification = $this->smsConfig->isEnabledSmsVerification();
             if ($isEnabledSmsVerification) {
@@ -131,6 +140,7 @@ class Code extends Action
                     $item->setData(SmsHistoryInterface::LIMIT_NUMBER, 1);
                 }
             }
+
             $sendVerificationCodeResult = $this->verification
                 ->sendVerificationCode($mobileNumber, $firstName, $lastName);
 
