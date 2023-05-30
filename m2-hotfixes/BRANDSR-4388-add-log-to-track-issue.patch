@@ -6,8 +6,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/vendor/magento/framework/Exception/NoSuchEntityException.php b/vendor/magento/framework/Exception/NoSuchEntityException.php
---- a/vendor/magento/framework/Exception/NoSuchEntityException.php	(revision 2db47b4fc20cba6c658403f2c3488be2f17fee32)
-+++ b/vendor/magento/framework/Exception/NoSuchEntityException.php	(date 1684822679559)
+--- a/vendor/magento/framework/Exception/NoSuchEntityException.php	(revision 23399d90fa5e9e483a016b99f8978f874502e7c7)
++++ b/vendor/magento/framework/Exception/NoSuchEntityException.php	(date 1685427770668)
 @@ -47,6 +47,18 @@
       */
      public static function singleField($fieldName, $fieldValue)
@@ -27,3 +27,45 @@ diff --git a/vendor/magento/framework/Exception/NoSuchEntityException.php b/vend
          return new self(
              new Phrase(
                  'No such entity with %fieldName = %fieldValue',
+Index: vendor/magento/module-customer/Model/CustomerRegistry.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-customer/Model/CustomerRegistry.php b/vendor/magento/module-customer/Model/CustomerRegistry.php
+--- a/vendor/magento/module-customer/Model/CustomerRegistry.php	(revision 23399d90fa5e9e483a016b99f8978f874502e7c7)
++++ b/vendor/magento/module-customer/Model/CustomerRegistry.php	(date 1685427259016)
+@@ -9,6 +9,7 @@
+
+ use Magento\Customer\Model\Data\CustomerSecure;
+ use Magento\Customer\Model\Data\CustomerSecureFactory;
++use Magento\Framework\App\RequestInterface;
+ use Magento\Framework\Exception\NoSuchEntityException;
+ use Magento\Store\Model\StoreManagerInterface;
+
+@@ -61,11 +62,13 @@
+     public function __construct(
+         CustomerFactory $customerFactory,
+         CustomerSecureFactory $customerSecureFactory,
+-        StoreManagerInterface $storeManager
++        StoreManagerInterface $storeManager,
++        RequestInterface $request
+     ) {
+         $this->customerFactory = $customerFactory;
+         $this->customerSecureFactory = $customerSecureFactory;
+         $this->storeManager = $storeManager;
++        $this->request = $request;
+     }
+
+     /**
+@@ -83,6 +86,10 @@
+         /** @var Customer $customer */
+         $customer = $this->customerFactory->create()->load($customerId);
+         if (!$customer->getId()) {
++            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-4388.log');
++            $logger = new \Zend_Log();
++            $logger->addWriter($writer);
++            $logger->crit('Post data: ' . json_encode($this->request->getParams()));
+             // customer does not exist
+             throw NoSuchEntityException::singleField('customerId', $customerId);
+         } else {
