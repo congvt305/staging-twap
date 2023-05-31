@@ -54,7 +54,7 @@ class Data
      */
     public function getWebsiteIdByIntgSeq(?string $cstmIntgSeq): int
     {
-        return $this->_getStoreByIntgSeq($cstmIntgSeq)->getWebsiteId();
+        return (int)$this->_getStoreByIntgSeq($cstmIntgSeq)->getWebsiteId();
     }
 
     /**
