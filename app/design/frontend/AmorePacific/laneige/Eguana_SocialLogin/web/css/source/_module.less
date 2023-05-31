@@ -181,6 +181,72 @@
         .note {
             display: block;
         }
+
+        .line-banner {
+            width: calc(~"100% - 28px");
+            margin-top: 36px;
+            a > div {
+                margin: 5px 0;
+            }
+            .line-logo, .line-qr-code {
+                height: auto;
+            }
+            .marketing-message {
+                text-align: center;
+                .line-logo {
+                    width: calc(~"100% - 18px");
+                    margin-bottom: 12px;
+                }
+                .content {
+                    display: none;
+                }
+            }
+            .qr-code {
+
+            }
+        }
+    }
+
+    .checkout-onepage-success {
+        .column.main {
+            .checkout-success {
+                margin-bottom: 50px;
+            }
+        }
+        .line-banner {
+            border: 1px solid black;
+            margin: 0 auto;
+            width: 900px;
+            color: #000;
+            background-color: #f1f1f1;
+            .marketing-message {
+                font-size: 28px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 12px;
+                img {
+                    margin: 0 6px;
+                }
+                .content {
+                    width: calc(~"100% - 246px");
+                    padding: 0 12px;
+                    text-align: left;
+                    margin-left: 18px;
+                    box-sizing: border-box;
+                }
+                .line-logo {
+                    top: 32px;
+                    right: 170px;
+                    width: 80px;
+                }
+                .line-qr-code {
+                    top: 20px;
+                    right: 50px;
+                    height: 100px;
+                }
+            }
+        }
     }
 }
 
@@ -189,6 +255,35 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .checkout-onepage-success {
+        .line-banner{
+            width: auto;
+            border: unset;
+            background-color: unset;
+            margin-top: 56px;
+            .marketing-message {
+                .content {
+                    font-size: 24px;
+                    width: calc(~"100% - 50px");
+                    text-align: left;
+                    padding: 8px;
+                }
+                .line-logo {
+                    height: auto;
+                    display: block;
+                    width: 50px;
+                }
+                .line-qr-code {
+                    display: none;
+                }
+            }
+        }
+        #registration{
+            border-top: unset;
+            border-left: unset;
+            width: auto;
+        }
+    }
     .socialloginlogin-login {
         margin-top: 75px;
 
@@ -223,6 +318,42 @@
             position: relative;
             top: -@indent__l;
             text-align: right;
+
+            .line-banner {
+                width: auto;
+                margin: 0 -4px;
+                a > div {
+                    margin: 5px 0;
+                }
+                .line-logo, .line-qr-code {
+                    height: auto;
+                }
+                .marketing-message {
+                    border: 1px solid #000;
+                    background-color: #f1f1f1;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    .line-logo {
+                        right: 10px;
+                        top: 10px;
+                        height: 48px;
+                        width: auto;
+                        margin: 10px;
+                    }
+                    .content {
+                        display: block;
+                        padding: 20px 0 20px 10px;
+                        text-align: center;
+                        font-size: 20px;
+                        color: black;
+                        width: calc(~"100% - 68px");
+                    }
+                }
+                .qr-code {
+                    display: none;
+                }
+            }
         }
     }
 }

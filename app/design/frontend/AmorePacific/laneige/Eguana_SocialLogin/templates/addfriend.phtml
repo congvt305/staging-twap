@@ -19,7 +19,19 @@ $viewModel = $block->getData('add_friend_view_model');
                 <?= $block->escapeHtml(__('You can enquire about your point information!')) ?>
             </p>
             <a href="<?= $block->escapeUrl($viewModel->lineAddFriendLink()) ?>" target="_blank">
-                <img src="<?= $block->escapeUrl("https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png") ?>" alt="<?= $block->escapeHtml(__('Add as friend')) ?>" height="36" border="0">
+                <?php if ($viewModel->getLineBannerEnabled()): ?>
+                    <div class="line-banner">
+                        <div class="marketing-message">
+                            <div class="content"><?=$block->escapeHtml($viewModel->getLineMarketingMessage())?></div>
+                            <img class="line-logo" alt="line logo" src="<?=$block->escapeUrl($viewModel->getLineLogoUrl())?>"/>
+                        </div>
+                        <div class="qr-code">
+                            <img class="line-qr-code" alt="line qr code" src="<?=$block->escapeUrl($viewModel->getLineQRCodeUrl())?>"/>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <img src="<?= $block->escapeUrl("https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png") ?>" alt="<?= $block->escapeHtml(__('Add as friend')) ?>" height="36" border="0">
+                <?php endif; ?>
             </a>
         </div>
     <?php endif; ?>

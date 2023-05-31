@@ -410,6 +410,15 @@
                 @_icon-font-position: after
             );
         }
+
+        &.line {
+            &:after {
+                background: url('../images/Line-messenger-black.svg') no-repeat;
+                content: ' ';
+                height: 24px;
+                width: 28px;
+            }
+        }
     }
 }
 
@@ -497,6 +506,13 @@
 
         .social:after {
             font-size: 30px !important;
+        }
+        .social.line:after {
+            width: 45px;
+            height: 27px;
+            position: relative;
+            left: 3px;
+            top: -3px;
         }
     }
 }
