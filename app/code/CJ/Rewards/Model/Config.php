@@ -10,6 +10,12 @@ class Config
     const ENABLED_REWARDS_POINT_FOR_ONLY_BUNDLE = 'enabled_rewards_point_for_only_bundle';
 
     const EXCLUDE_DAYS = 'exclude_days';
+
+    const POINT_OR_MONEY = 'use_point_or_money';
+
+    const USE_POINT_TO_GET_DISCOUNT = 1;
+
+    const USE_MONEY_TO_GET_DISCOUNT = 2;
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -64,5 +70,16 @@ class Config
     public function getExcludeDays($store = null)
     {
         return $this->getScopeValue(AmastyConfig::GENERAL_GROUP, self::EXCLUDE_DAYS, $store);
+    }
+
+    /**
+     * Get config use point or money to get discount
+     *
+     * @param $store
+     * @return string
+     */
+    public function isUsePointOrMoney($store = null)
+    {
+        return $this->getScopeValue(AmastyConfig::GENERAL_GROUP, self::POINT_OR_MONEY, $store);
     }
 }
