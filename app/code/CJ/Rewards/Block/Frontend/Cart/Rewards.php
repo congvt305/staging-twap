@@ -13,10 +13,6 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
      */
     private $rewardData;
 
-    /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    private $session;
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
@@ -24,7 +20,6 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
      * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param \Amasty\Rewards\Model\Config $configProvider
      * @param Data $rewardData
-     * @param \Magento\Checkout\Model\Session $session
      * @param array $data
      */
     public function __construct(
@@ -33,7 +28,6 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         \Amasty\Rewards\Model\Config $configProvider,
         Data $rewardData,
-        \Magento\Checkout\Model\Session $session,
         array $data
     ) {
         parent::__construct(
@@ -44,7 +38,6 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
             $data
         );
         $this->rewardData = $rewardData;
-        $this->session = $session;
     }
 
     /**
@@ -58,30 +51,6 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
     }
 
     /**
-     * Get count visible item in quote
-     *
-     * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getCountQuote()
-    {
-        return $this->rewardData->countQuote();
-    }
-
-    /**
-     * Recollect quote so can get correct items data
-     *
-     * @return void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function reCollectQuote()
-    {
-        $this->session->getQuote()->setTotalsCollectedFlag(false)->collectTotals();
-    }
-
-    /**
      * Get maximum point
      *
      * @return mixed|string|void
@@ -90,5 +59,15 @@ class Rewards extends \Amasty\Rewards\Block\Frontend\Cart\Rewards
     public function getMaximumPoint()
     {
         return $this->rewardData->getMaximumPoint();
+    }
+
+    /**
+     * Get config is use point or money
+     *
+     * @return string
+     */
+    public function isUsePointOrMoney()
+    {
+        return $this->rewardData->isUsePointOrMoney();
     }
 }

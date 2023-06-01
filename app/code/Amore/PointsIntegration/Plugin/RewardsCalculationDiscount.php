@@ -2,6 +2,8 @@
 
 namespace Amore\PointsIntegration\Plugin;
 
+use Amasty\Rewards\Model\Config;
+use CJ\Rewards\Model\Config as CJConfig;
 use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Amasty\Rewards\Model\Repository\RewardsRepository;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
@@ -36,20 +38,36 @@ class RewardsCalculationDiscount
     private $pointUpdate;
 
     /**
+     * @var Config
+     */
+    private $amastyConfig;
+
+    /**
+     * @var CJConfig
+     */
+    private $cjCustomConfig;
+
+    /**
      * @param CustomerPointsSearch $customerPointsSearch
      * @param RewardsRepository $rewardsRepository
      * @param ScopeConfigInterface $config
+     * @param Config $amastyConfig
+     * @param CJConfig $cjCustomConfig
      * @param PointUpdate $pointUpdate
      */
     public function __construct(
         CustomerPointsSearch $customerPointsSearch,
         RewardsRepository $rewardsRepository,
         ScopeConfigInterface $config,
+        Config $amastyConfig,
+        CJConfig $cjCustomConfig,
         PointUpdate $pointUpdate
     ) {
         $this->customerPointsSearch = $customerPointsSearch;
         $this->rewardsRepository = $rewardsRepository;
         $this->config = $config;
+        $this->amastyConfig = $amastyConfig;
+        $this->cjCustomConfig = $cjCustomConfig;
         $this->pointUpdate = $pointUpdate;
     }
 
@@ -70,9 +88,10 @@ class RewardsCalculationDiscount
     ): array
     {
         if ($appliedPoints) {
+            $isUsePointOrMoney = $this->cjCustomConfig->isUsePointOrMoney();
             $appliedPoints = $this->formatPoints($appliedPoints);
-            $minPointsApplied = $this->config->getValue('amrewards/points/minimum_reward');
-            $spendingRate = $this->config->getValue('amrewards/points/rate');
+            $minPointsApplied = $this->amastyConfig->getMinPointsRequirement(null);
+            $spendingRate = $this->amastyConfig->getPointsRate();
             $multiplesPoints = $appliedPoints % $spendingRate;
             if ($appliedPoints >= $minPointsApplied &&
                 $multiplesPoints == 0 && isset($quoteItems[0])
@@ -94,7 +113,12 @@ class RewardsCalculationDiscount
                     $pointsDiscrepancy = $availablePoint - $customerRewards;
                     if ($availablePoint < $appliedPoints) {
                         $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
-                        throw new LocalizedException(__('Too much point(s) used.'));
+                        if ($isUsePointOrMoney == CJConfig::USE_MONEY_TO_GET_DISCOUNT) {
+                            $errorMessage = __('Exceed limit of the deductible amount');
+                        } else {
+                            $errorMessage = __('Too much point(s) used.');
+                        }
+                        throw new LocalizedException($errorMessage);
                     } else {
                         if (abs($pointsDiscrepancy) > 0) {
                             if ($availablePoint < $customerRewards) {

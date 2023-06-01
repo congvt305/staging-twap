@@ -5,6 +5,7 @@
         <amrewards>
             <general>
                 <enabled>0</enabled>
+                <use_point_or_money>1</use_point_or_money>
             </general>
         </amrewards>
     </default>
@@ -14,6 +15,7 @@
                 <general>
                     <enabled>1</enabled>
                     <enabled_rewards_point_for_only_bundle>1</enabled_rewards_point_for_only_bundle>
+                    <use_point_or_money>2</use_point_or_money>
                 </general>
                 <points>
                     <rate>30</rate>
@@ -25,6 +27,7 @@
                 <general>
                     <enabled>1</enabled>
                     <enabled_rewards_point_for_only_bundle>0</enabled_rewards_point_for_only_bundle>
+                    <use_point_or_money>2</use_point_or_money>
                 </general>
                 <points>
                     <rate>20</rate>
