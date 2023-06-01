@@ -52,7 +52,7 @@ if ($blockId) {
                     <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
                         <tr>
                             <td data-th="<?=$block->escapeHtmlAttr(__('Date')) ?>" class="col points-history-date"><?=$pointsHistory['date'] ?></td>
-                            <td data-th="<?=$block->escapeHtmlAttr(__('Store Name')) ?>" class="col points-history-store"><?=$pointsHistory['storeCD']??'' ?> - <?=$pointsHistory['storeNM']??''?></td>
+                            <td data-th="<?=$block->escapeHtmlAttr(__('Store Name')) ?>" class="col points-history-store"><?=$pointsHistory['storeNM']??''?></td>
                             <td data-th="<?=$block->escapeHtmlAttr(__('Points Reason')) ?>" class="col points-history-reason"><?=$pointsHistory['reason'] ?></td>
                             <td data-th="<?=$block->escapeHtmlAttr(__('Name of Point')) ?>" class="col points-history-name"><?=$pointsHistory['typeNM'] ?></td>
                             <td data-th="<?=$block->escapeHtmlAttr(__('Customer Points')) ?>" class="col points-history-available-points"><?=$pointsHistory['point'] ?></td>
