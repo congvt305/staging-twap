@@ -122,15 +122,25 @@ class Data
     }
 
     /**
-     * Count visible item in quote
+     * Get config is use point or money
      *
-     * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @param $storeId
+     * @return string
      */
-    public function countQuote() {
-        $quote = $this->session->getQuote();
-        return count($quote->getAllVisibleItems());
+    public function isUsePointOrMoney($storeId = null)
+    {
+        return $this->config->isUsePointOrMoney($storeId);
+    }
+
+    /**
+     * Get point rate
+     *
+     * @param $storeId
+     * @return float
+     */
+    public function getPointsRate($storeId = null)
+    {
+        return $this->amastyConfig->getPointsRate($storeId);
     }
 
     /**

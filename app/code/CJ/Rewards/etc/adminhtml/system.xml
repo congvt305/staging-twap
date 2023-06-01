@@ -23,6 +23,13 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="use_point_or_money" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Point Or Money To Get Discount</label>
+                    <source_model>CJ\Rewards\Model\Config\Source\PointOrMoney</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

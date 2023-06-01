@@ -96,7 +96,10 @@ class RewardPost implements HttpPostActionInterface
                 $result['message'] = __('You can\'t use point right now');
                 $result['success'] = false;
             }
-
+            $isUsePointOrMoney = $this->rewardsData->isUsePointOrMoney();
+            if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_MONEY_TO_GET_DISCOUNT) {
+                $usedPoints = $usedPoints * $this->rewardsData->getPointsRate();
+            }
             try {
                 if ($result['success']) {
                     $this->rewardsManagement->set($cartQuote->getId(), $usedPoints);
