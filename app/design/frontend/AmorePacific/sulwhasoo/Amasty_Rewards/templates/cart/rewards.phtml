@@ -93,12 +93,12 @@ if ($block->getCustomerId() && $block->canShowConvertPoint()) :
                                     echo __('Enter reward amount') ?></span></label>
                             <div class="control">
                                 <?php if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_POINT_TO_GET_DISCOUNT): ?>
-                                    <input type="text" class="input-text" id="amreward_amount" name="amreward_amount"
+                                    <input type="number" class="input-text" id="amreward_amount" name="amreward_amount"
                                            value="<?= $pointsUsed ?>"
                                            placeholder="<?= $block->escapeHtml(__('Enter reward amount')); ?>"
                                            <?php if ($pointsUsed) : ?>disabled<?php endif; ?>/>
                                 <?php else: ?>
-                                    <input type="text" class="input-text" id="amreward_amount" name="amreward_amount"
+                                    <input type="number" class="input-text" id="amreward_amount" name="amreward_amount"
                                            value="<?= $amountUsed ?>"
                                            placeholder="<?= $block->escapeHtml(__('Enter reward amount')); ?>"
                                            <?php if ($amountUsed) : ?>disabled<?php endif; ?>/>

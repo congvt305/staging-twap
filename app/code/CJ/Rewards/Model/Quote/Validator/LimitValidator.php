@@ -15,12 +15,20 @@ class LimitValidator extends \Amasty\Rewards\Model\Quote\Validator\LimitValidato
     private $configProvider;
 
     /**
+     * @var \CJ\Rewards\Model\Config
+     */
+    private $cjCustomConfig;
+
+    /**
      * @param Config $configProvider
+     * @param \CJ\Rewards\Model\Config $cjCustomConfig
      */
     public function __construct(
-        Config $configProvider
+        Config $configProvider,
+        \CJ\Rewards\Model\Config $cjCustomConfig
     ) {
         $this->configProvider = $configProvider;
+        $this->cjCustomConfig = $cjCustomConfig;
         parent::__construct($configProvider);
     }
 
@@ -38,11 +46,18 @@ class LimitValidator extends \Amasty\Rewards\Model\Quote\Validator\LimitValidato
         $isEnableLimit = (int)$this->configProvider->isEnableLimit($storeId);
         //Customize here
         $rate = $this->configProvider->getPointsRate($storeId);
+        $isUsePointOrMoney = $this->cjCustomConfig->isUsePointOrMoney($storeId);
         if ($usedPoints % $rate != 0) {
             $multiple = $usedPoints / $rate;
             $pointsData['allowed_points'] = (int)$multiple * $rate;
-            $pointsData['notice'] =
-                __('Number of redeemed reward points must be multiple of %1 for this order.', $rate);
+            if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_POINT_TO_GET_DISCOUNT) {
+                $pointsData['notice'] =
+                    __('Number of redeemed reward points must be multiple of %1 for this order.', $rate);
+            } else {
+                $pointsData['notice'] =
+                    __('The amount must be greater than 0 and must be integer');
+            }
+
             //End of customize
         } elseif ($isEnableLimit === RedemptionLimitTypes::LIMIT_AMOUNT) {
 
