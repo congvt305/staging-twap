@@ -679,7 +679,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $itemsSubtotal += $this->roundingPrice($orderItem->getOriginalPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat);
                     $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)));
                     $itemsGrandTotalInclTax += $itemNetwr;
-                    $itemsDiscountAmount += $this->roundingPrice($orderItem->getDiscountAmount() + (($orderItem->getOriginalPrice() - $orderItem->getPrice()) * $orderItem->getQtyOrdered()), $isDecimalFormat) - $mileagePerItem;
+                    $itemsDiscountAmount += $itemTotalDiscount;
                     $itemsMileage += $this->roundingPrice($mileagePerItem, $isDecimalFormat);
                 } else {
                     /** @var \Magento\Catalog\Model\Product $bundleProduct */
