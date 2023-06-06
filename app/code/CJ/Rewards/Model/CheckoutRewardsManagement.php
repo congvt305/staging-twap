@@ -72,9 +72,9 @@ class CheckoutRewardsManagement extends \Amasty\Rewards\Model\CheckoutRewardsMan
 
         if (!$usedPoints || $usedPoints < 0) {
             if ($isUsePointOrMoney == CJCustomConfig::USE_MONEY_TO_GET_DISCOUNT) {
-                throw new LocalizedException(__('Amount "%1" not valid.', $usedPoints * $this->config->getPointsRate()));
+                throw new LocalizedException(__('Amount %1 not valid.', $usedPoints * $this->config->getPointsRate()));
             } else {
-                throw new LocalizedException(__('Points "%1" not valid.', $usedPoints));
+                throw new LocalizedException(__('Points %1 not valid.', $usedPoints));
             }
 
         }
