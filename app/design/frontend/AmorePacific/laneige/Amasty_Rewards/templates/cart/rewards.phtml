@@ -96,7 +96,7 @@ if ($block->getCustomerId() && $block->canShowConvertPoint()) :
                                        <?php if ($pointsUsed) : ?>disabled<?php endif; ?>/>
                             <?php else: ?>
                                 <input type="number" class="input-text" id="amreward_amount" name="amreward_amount"
-                                       value="<?= $amountUsed ?>"
+                                       value="<?= $amountUsed ?: '';  ?>"
                                        placeholder="<?= $block->escapeHtml(__('Enter reward amount')); ?>"
                                        <?php if ($amountUsed) : ?>disabled<?php endif; ?>/>
                             <?php endif; ?>
