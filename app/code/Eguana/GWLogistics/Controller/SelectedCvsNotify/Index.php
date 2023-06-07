@@ -8,18 +8,16 @@
 
 namespace Eguana\GWLogistics\Controller\SelectedCvsNotify;
 
-use Eguana\GWLogistics\Model\QuoteCvsLocation;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RawFactory;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
-class Index extends Action implements CsrfAwareActionInterface
+class Index extends Action implements CsrfAwareActionInterface, HttpPostActionInterface
 {
 
     /**
@@ -79,27 +77,12 @@ class Index extends Action implements CsrfAwareActionInterface
 
     public function execute()
     {
-        $refundData = null;
-        $httpBadRequestCode = 400;
-        $httpErrorCode = 502;
-        $httpSuccessCode = 200;
-
-        /** @var \Magento\Framework\App\ResponseInterface $response */
-        $response = $this->getResponse();
-        $html = '';
 
         $cvsStoreData = $this->getRequest()->getParams();
         $resultRedirect = $this->resultRedirectFactory->create();
         $redirectUrl = $this->isMobile() ? 'checkout/index/index/#shipping' : '*/index/index';
 //        $redirectUrl = $this->isMobile() ? 'checkout/#shipping' : '*/index/index';
 //        $redirectUrl = $this->isLineApp() ? 'checkout/index/index/#shipping' : '*/index/index';
-
-        if (!$cvsStoreData || $this->getRequest()->getMethod() !== 'POST') {
-            $response->setHttpResponseCode($httpBadRequestCode);
-            $response->setHeader('Content-Type', 'text/plain');
-            $response->setBody($html);
-            $response->sendResponse();
-        }
 
         try {
             $this->saveQuoteCvsLocation->process($cvsStoreData);
