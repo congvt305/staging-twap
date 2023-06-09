@@ -7,12 +7,14 @@ use Amasty\AdvancedReview\Model\Email\CouponConditionsProvider;
 use Amasty\AdvancedReview\Model\Email\CouponDataProvider;
 use Amasty\AdvancedReview\Model\Email\Flag;
 use Amasty\Base\Model\Serializer;
+use Magento\Customer\Model\ResourceModel\Group\CollectionFactory as GroupCollectionFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\SalesRule\Api\Data\RuleInterface;
 use Magento\SalesRule\Api\RuleRepositoryInterface;
 use Magento\SalesRule\Model\Converter\ToDataModel;
 use Magento\SalesRule\Model\Converter\ToModel;
+use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\SalesRule\Model\Rule;
 use Magento\SalesRule\Model\Rule\Condition\Address;
 use Magento\SalesRule\Model\Rule\Condition\Combine as RuleConditionCombine;
@@ -26,6 +28,16 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProvider
 {
+    /**
+     * @var string
+     */
+    public static $baseRuleName = 'Amasty Review Reminder Coupons';
+
+    /**
+     * @var int
+     */
+    public const STATUS_ACTIVE = 1;
+
     /**
      * @var Config
      */
@@ -82,6 +94,16 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
     protected $date;
 
     /**
+     * @var GroupCollectionFactory
+     */
+    private $groupCollectionFactory;
+
+    /**
+     * @var RuleCollectionFactory
+     */
+    private $ruleCollectionFactory;
+
+    /**
      * @param RuleFactory $ruleFactory
      * @param RuleRepositoryInterface $ruleRepository
      * @param StoreManagerInterface $storeManager
@@ -93,6 +115,8 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
      * @param Flag $flag
      * @param DateTime $date
      * @param \CJ\CustomAmastyReview\Helper\Config $configHelper
+     * @param GroupCollectionFactory $groupCollectionFactory
+     * @param RuleCollectionFactory $ruleCollectionFactory
      */
     public function __construct(
         RuleFactory $ruleFactory,
@@ -105,10 +129,14 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
         Serializer $serializer,
         Flag $flag,
         DateTime $date,
-        \CJ\CustomAmastyReview\Helper\Config $configHelper
+        \CJ\CustomAmastyReview\Helper\Config $configHelper,
+        GroupCollectionFactory $groupCollectionFactory,
+        RuleCollectionFactory $ruleCollectionFactory
     )
     {
         $this->configHelper = $configHelper;
+        $this->groupCollectionFactory = $groupCollectionFactory;
+        $this->ruleCollectionFactory  = $ruleCollectionFactory;
         parent::__construct($ruleFactory, $ruleRepository, $storeManager, $couponDataProvider, $couponConditionsProvider, $toDataModelConverter, $toModelConverter, $serializer, $flag, $date);
         $this->ruleFactory = $ruleFactory;
         $this->ruleRepository = $ruleRepository;
@@ -157,7 +185,7 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
     {
         $storeId = $this->_getStoreIdByWebsite($website);
         $rule->loadPost(array_merge(
-            $this->couponDataProvider->generateCouponData($website),
+            $this->_generateCouponData($website, $storeId),
             $this->_generateConditions($storeId)
         ));
         $this->convertDateTimeIntoDates($rule);
@@ -200,7 +228,7 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
      * @param $storeId
      * @return array[]
      */
-    protected function _generateConditions($storeId): array
+    private function _generateConditions($storeId): array
     {
         return [
             'conditions' => [
@@ -228,5 +256,69 @@ class SalesRuleProvider extends \Amasty\AdvancedReview\Model\Email\SalesRuleProv
                 ]
             ]
         ];
+    }
+
+    /**
+     * Override function from CouponDataProvider to change scope config
+     *
+     * @param WebsiteInterface $website
+     * @param int $storeId
+     * @return array
+     */
+    private function _generateCouponData(WebsiteInterface $website, $storeId): array
+    {
+        $collection = $this->ruleCollectionFactory->create()
+            ->addFieldToFilter(
+                'name',
+                ['like' => sprintf('%s - %s', self::$baseRuleName, $website->getName()) . '%']
+            );
+
+        $days = (int) $this->configHelper->getModuleConfig('coupons/coupon_days', $storeId);
+        $ruleName = sprintf(
+            '%s - %s - %d',
+            self::$baseRuleName,
+            $website->getName(),
+            $collection->getSize() + 1
+        );
+
+        return [
+            'name'                  => $ruleName,
+            'is_active'             => self::STATUS_ACTIVE,
+            'coupon_type'           => Rule::COUPON_TYPE_SPECIFIC,
+            'use_auto_generation'   => 1,
+            'stop_rules_processing' => 0,
+            'uses_per_coupon'       =>
+                (int) $this->configHelper->getModuleConfig('coupons/coupon_uses', $storeId),
+            'uses_per_customer'     => (int) $this->configHelper->getModuleConfig(
+                'coupons/uses_per_customer',
+                $storeId
+            ),
+            'from_date'             => $this->date->date('Y-m-d'),
+            'to_date'               => $this->date->date('Y-m-d', strtotime("+$days days")),
+            'simple_action'         =>
+                $this->configHelper->getModuleConfig('coupons/discount_type', $storeId),
+            'discount_amount'       =>
+                $this->configHelper->getModuleConfig('coupons/discount_amount', $storeId),
+            'website_ids'           => [$website->getId()],
+            'customer_group_ids'    => $this->getCustomerGroupIds($storeId)
+        ];
+    }
+
+    /**
+     * Get customer group id from config
+     *
+     * @param int $storeId
+     * @return array
+     */
+    private function getCustomerGroupIds($storeId): array
+    {
+        if (empty($customerGroupIds = $this->configHelper->getModuleConfig('coupons/customer_group', $storeId))) {
+            $customerGroups = $this->groupCollectionFactory->create();
+            foreach ($customerGroups as $group) {
+                $customerGroupIds[] = $group->getId();
+            }
+        }
+
+        return is_array($customerGroupIds) ? $customerGroupIds : explode(',', $customerGroupIds);
     }
 }
