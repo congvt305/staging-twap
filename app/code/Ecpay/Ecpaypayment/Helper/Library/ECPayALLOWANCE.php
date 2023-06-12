@@ -173,7 +173,7 @@ class ECPayALLOWANCE
                 }
 
                 $bFind_Tag = strpos($value['ItemAmount'], '|') ;
-                if($bFind_Tag != false || empty($value['ItemAmount'])) {
+                if($bFind_Tag != false || $value['ItemAmount'] === '') {
                     $bError_Tag = true ;
                     array_push($arErrors, '25:Invalid ItemAmount.');
                     break;
