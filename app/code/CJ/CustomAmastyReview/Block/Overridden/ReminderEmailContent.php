@@ -7,6 +7,7 @@ use Magento\Catalog\Helper\Image;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Filter\Input\MaliciousCode;
 use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 
 /**
@@ -55,6 +56,11 @@ class ReminderEmailContent extends \Amasty\AdvancedReview\Block\Email\ReminderEm
     private $imageHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * @param Template\Context $context
      * @param ProductRepositoryInterface $productRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -62,6 +68,7 @@ class ReminderEmailContent extends \Amasty\AdvancedReview\Block\Email\ReminderEm
      * @param \Magento\Framework\Url $url
      * @param MaliciousCode $maliciousCode
      * @param Image $imageHelper
+     * @param StoreManagerInterface $storeManager
      * @param array $data
      */
     public function __construct(
@@ -72,6 +79,7 @@ class ReminderEmailContent extends \Amasty\AdvancedReview\Block\Email\ReminderEm
         \Magento\Framework\Url     $url,
         MaliciousCode              $maliciousCode,
         Image                      $imageHelper,
+        StoreManagerInterface $storeManager,
         array                      $data = []
     )
     {
@@ -81,6 +89,7 @@ class ReminderEmailContent extends \Amasty\AdvancedReview\Block\Email\ReminderEm
         $this->url = $url;
         $this->maliciousCode = $maliciousCode;
         $this->imageHelper = $imageHelper;
+        $this->storeManager = $storeManager;
         parent::__construct($context, $productRepository, $searchCriteriaBuilder, $urlFinder, $url, $maliciousCode, $imageHelper, $data);
     }
 
@@ -91,9 +100,10 @@ class ReminderEmailContent extends \Amasty\AdvancedReview\Block\Email\ReminderEm
     {
         $ids = $this->getProductIds();
         $ids = array_unique($ids);
-
+        $websiteId = $this->storeManager->getWebsite()->getId();
         $this->searchCriteriaBuilder->addFilter('entity_id', $ids, 'in');
         $this->searchCriteriaBuilder->addFilter('visibility', 4);
+        $this->searchCriteriaBuilder->addFilter('website_id', $websiteId);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $products = $this->productRepository->getList($searchCriteria)->getItems();
 
