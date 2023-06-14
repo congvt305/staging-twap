@@ -1,0 +1,33 @@
+From 984c6e62813c42ee58e82f70fa27c7961c986293 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 14 Jun 2023 06:26:45 +0700
+Subject: [PATCH] BRANDSR-4782 Fix error Environment emulation nesting
+
+---
+ vendor/amasty/advanced-review/Model/EmailSender.php | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/vendor/amasty/advanced-review/Model/EmailSender.php b/vendor/amasty/advanced-review/Model/EmailSender.php
+index 37eace5..31b90be 100644
+--- a/vendor/amasty/advanced-review/Model/EmailSender.php
++++ b/vendor/amasty/advanced-review/Model/EmailSender.php
+@@ -226,7 +226,7 @@ class EmailSender
+             $firstReceiver = array_shift($emailsBCC);
+             $transport->addBcc($firstReceiver)->addBcc($emailsBCC);
+         }
+-
++        $this->emulation->stopEnvironmentEmulation();
+         $transport->getTransport()->sendMessage();
+         $status = Status::SENT;
+
+@@ -236,7 +236,6 @@ class EmailSender
+             $status = Status::SENT_WITH_COUPON;
+         }
+
+-        $this->emulation->stopEnvironmentEmulation();
+         $this->scopeCodeResolver->setNeedClean(false);
+
+         if (!$force && !$isTestEmail) {
+--
+2.34.1
+
