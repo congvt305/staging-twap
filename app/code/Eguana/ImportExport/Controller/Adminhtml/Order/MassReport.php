@@ -255,7 +255,7 @@ class MassReport extends Action
                 $itemData[] = $order->getData('increment_id');
                 $itemData[] = str_replace("\n", " ", $order->getData('store_name'));
                 $itemData[] = $this->formatDateForStore($order->getData('created_at'), $order->getData('store_id'));
-                $itemData[] = $this->getCustomerMobile($order->getCustomerId());
+                $itemData[] = $order->getCustomerId() ? $this->getCustomerMobile($order->getCustomerId()) : '';
                 $itemData[] = $this->getShippingAddressMobile($order->getShippingAddressId());
                 $itemData[] = $order->getData('billing_name');
                 $itemData[] = $order->getData('shipping_name');
@@ -456,7 +456,7 @@ class MassReport extends Action
                 $mobileNo = $customerInfo->getCustomAttribute('mobile_number')->getValue();
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error(__('Cannot get customer mobile because %1', $e->getMessage()));
         }
         return $mobileNo;
     }
