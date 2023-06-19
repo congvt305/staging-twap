@@ -1,0 +1,22 @@
+Subject: [PATCH] Create path fix preg_match
+---
+Index: vendor/magento/module-checkout/Model/Session.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vendor/magento/module-checkout/Model/Session.php b/vendor/magento/module-checkout/Model/Session.php
+--- a/vendor/magento/module-checkout/Model/Session.php	(revision a415e7f59f73ef2cd35e9e39faad422c61a50613)
++++ b/vendor/magento/module-checkout/Model/Session.php	(date 1686885538197)
+@@ -312,6 +312,11 @@
+             /** @var $quoteIdMask \Magento\Quote\Model\QuoteIdMask */
+             $quoteIdMask = $this->quoteIdMaskFactory->create()->load($quoteId, 'quote_id');
+             if ($quoteIdMask->getMaskedId() === null) {
++                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-4382.log');
++                $logger = new \Zend_Log();
++                $logger->addWriter($writer);
++                $logger->crit('Quote id before save mask data: ' . json_encode($quoteId));
++
+                 $quoteIdMask->setQuoteId($quoteId)->save();
+             }
+             $this->setIsQuoteMasked(true);
