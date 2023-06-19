@@ -1,9 +1,11 @@
 define([
+    'jquery',
+    'mage/url',
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
     'Magento_Ui/js/form/element/region'
-], function (_, registry, Select) {
+], function ($, urlBuilder, _, registry, Select) {
     'use strict';
 
     return Select.extend({
@@ -40,7 +42,7 @@ define([
             this._super();
 
             if ( this.indexedOptions[value] && this.indexedOptions[value] !== '0000') {
-                this.cityValue = this.indexedOptions[value]['title'];
+                this.cityValue = this.indexedOptions[value]['labeltitle'];
                 if (this.postCodeAutoFill){
                     this.postcodeValue = this.indexedOptions[value]['code'];
                 }
@@ -62,6 +64,8 @@ define([
             }
             this.currentRegion = value;
             option = options[value]; //value: region_id
+
+            this.loadCityIds(value);
 
             if (typeof option === 'undefined') {
                 return;
@@ -93,6 +97,23 @@ define([
                 }
                 this.required(this.is_city_required);
             }
+        },
+
+        loadCityIds: function (regionId) {
+            var self = this;
+            $.ajax({
+                url: urlBuilder.build('custom_directory/checkout/getCityids'),
+                method: 'GET',
+                data: {region_id: regionId},
+                dataType: 'json',
+                showLoader: true,
+                success: function (response) {
+                    if (response) {
+                        // Populate the city select field with the returned city IDs
+                        self.setOptions(response);
+                    }
+                }
+            });
         },
 
         hideOrigCity: function () {
