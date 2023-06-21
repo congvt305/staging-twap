@@ -402,6 +402,11 @@ class Product extends MainProduct
                 $productLinkId = $item->getData($this->getProductEntityLinkField());
                 foreach ($this->_getExportAttrCodes() as $code) {
                     $attrValue = $item->getData($code);
+                    if ($attrValue) {
+                        //remove pesky carriage returns
+                        $attrValue = preg_replace('/[\x0D][\x0A]/', '', $attrValue);
+                        $attrValue = preg_replace('/[\x0D]/', '', $attrValue);
+                    }
                     if (!$this->isValidAttributeValue($code, $attrValue)) {
                         continue;
                     }
