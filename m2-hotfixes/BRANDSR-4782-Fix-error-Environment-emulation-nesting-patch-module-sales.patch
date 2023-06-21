@@ -1,0 +1,77 @@
+From e15dcaf85e2fe03756e4c026150c496de305b291 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 14 Jun 2023 06:36:45 +0700
+Subject: [PATCH] BRANDSR-4782 Fix error Environment emulation nesting
+
+---
+ vendor/magento/module-sales/Model/Order/Email/Sender/CreditmemoSender.php | 3 ++-
+ vendor/magento/module-sales/Model/Order/Email/Sender/InvoiceSender.php    | 3 ++-
+ vendor/magento/module-sales/Model/Order/Email/Sender/ShipmentSender.php   | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/vendor/magento/module-sales/Model/Order/Email/Sender/CreditmemoSender.php b/vendor/magento/module-sales/Model/Order/Email/Sender/CreditmemoSender.php
+index 19dc627..22d5bc2 100644
+--- a/vendor/magento/module-sales/Model/Order/Email/Sender/CreditmemoSender.php
++++ b/vendor/magento/module-sales/Model/Order/Email/Sender/CreditmemoSender.php
+@@ -118,6 +118,7 @@ class CreditmemoSender extends Sender
+
+         if (!$this->globalConfig->getValue('sales_email/general/async_sending') || $forceSyncMode) {
+             $order = $creditmemo->getOrder();
++            $paymentHTML = $this->getPaymentHtml($order);
+             $this->appEmulation->startEnvironmentEmulation($order->getStoreId(), Area::AREA_FRONTEND, true);
+             $transport = [
+                 'order' => $order,
+@@ -126,7 +127,7 @@ class CreditmemoSender extends Sender
+                 'creditmemo_id' => $creditmemo->getId(),
+                 'comment' => $creditmemo->getCustomerNoteNotify() ? $creditmemo->getCustomerNote() : '',
+                 'billing' => $order->getBillingAddress(),
+-                'payment_html' => $this->getPaymentHtml($order),
++                'payment_html' => $paymentHTML,
+                 'store' => $order->getStore(),
+                 'formattedShippingAddress' => $this->getFormattedShippingAddress($order),
+                 'formattedBillingAddress' => $this->getFormattedBillingAddress($order),
+diff --git a/vendor/magento/module-sales/Model/Order/Email/Sender/InvoiceSender.php b/vendor/magento/module-sales/Model/Order/Email/Sender/InvoiceSender.php
+index 1ca2efe..585da4d 100644
+--- a/vendor/magento/module-sales/Model/Order/Email/Sender/InvoiceSender.php
++++ b/vendor/magento/module-sales/Model/Order/Email/Sender/InvoiceSender.php
+@@ -126,6 +126,7 @@ class InvoiceSender extends Sender
+                 $order->setBaseTaxAmount((float) $invoice->getBaseTaxAmount());
+                 $order->setBaseShippingAmount((float) $invoice->getBaseShippingAmount());
+             }
++            $paymentHTML = $this->getPaymentHtml($order);
+             $this->appEmulation->startEnvironmentEmulation($order->getStoreId(), Area::AREA_FRONTEND, true);
+             $transport = [
+                 'order' => $order,
+@@ -134,7 +135,7 @@ class InvoiceSender extends Sender
+                 'invoice_id' => $invoice->getId(),
+                 'comment' => $invoice->getCustomerNoteNotify() ? $invoice->getCustomerNote() : '',
+                 'billing' => $order->getBillingAddress(),
+-                'payment_html' => $this->getPaymentHtml($order),
++                'payment_html' => $paymentHTML,
+                 'store' => $order->getStore(),
+                 'formattedShippingAddress' => $this->getFormattedShippingAddress($order),
+                 'formattedBillingAddress' => $this->getFormattedBillingAddress($order),
+diff --git a/vendor/magento/module-sales/Model/Order/Email/Sender/ShipmentSender.php b/vendor/magento/module-sales/Model/Order/Email/Sender/ShipmentSender.php
+index ba6d65a..78aaf1a 100644
+--- a/vendor/magento/module-sales/Model/Order/Email/Sender/ShipmentSender.php
++++ b/vendor/magento/module-sales/Model/Order/Email/Sender/ShipmentSender.php
+@@ -120,6 +120,7 @@ class ShipmentSender extends Sender
+         if (!$this->globalConfig->getValue('sales_email/general/async_sending') || $forceSyncMode) {
+             $order = $shipment->getOrder();
+             $this->identityContainer->setStore($order->getStore());
++            $paymentHTML = $this->getPaymentHtml($order);
+             $this->appEmulation->startEnvironmentEmulation($order->getStoreId(), Area::AREA_FRONTEND, true);
+             $transport = [
+                 'order' => $order,
+@@ -128,7 +129,7 @@ class ShipmentSender extends Sender
+                 'shipment_id' => $shipment->getId(),
+                 'comment' => $shipment->getCustomerNoteNotify() ? $shipment->getCustomerNote() : '',
+                 'billing' => $order->getBillingAddress(),
+-                'payment_html' => $this->getPaymentHtml($order),
++                'payment_html' => $paymentHTML,
+                 'store' => $order->getStore(),
+                 'formattedShippingAddress' => $this->getFormattedShippingAddress($order),
+                 'formattedBillingAddress' => $this->getFormattedBillingAddress($order),
+--
+2.34.1
+
