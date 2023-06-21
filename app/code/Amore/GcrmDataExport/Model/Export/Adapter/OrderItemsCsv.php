@@ -97,8 +97,9 @@ class OrderItemsCsv extends AbstractAdapter
         OrderRepositoryInterface $orderRepositoryInterface,
         TimezoneInterface $timezoneInterface,
         Filesystem $filesystem,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
-        $destinationDirectoryCode = DirectoryList::VAR_DIR
+        $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT,
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
@@ -108,7 +109,8 @@ class OrderItemsCsv extends AbstractAdapter
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid('OrderItems_');
+            $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';
+            $destination = $dirPath . uniqid('OrderItems_');
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {
@@ -214,8 +216,17 @@ class OrderItemsCsv extends AbstractAdapter
     public function writeSourceRowWithCustomColumns(array $rowData, array $headerColumns = [])
     {
         unset($rowData['product_options']);
+        $itemData = [];
+        foreach($this->getArrayValue(OrderItems::HEAD_COLUMN_NAMES) as $attribute => $data) {
+            if (isset($rowData[$attribute])) {
+                $itemData[$attribute] = $rowData[$attribute];
+            } else {
+                $itemData[$attribute] = null;
+            }
+        }
+
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, $this->getArrayValue(OrderItems::HEAD_COLUMN_NAMES))),
+            $itemData,
             $this->_delimiter,
             $this->_enclosure
         );

@@ -85,8 +85,9 @@ class OrderCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapte
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepositoryInterface,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface,
         \Magento\Framework\Filesystem $filesystem,
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
-        string $destinationDirectoryCode = DirectoryList::VAR_DIR
+        string $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->resourceConnection = $resourceConnection;
@@ -96,7 +97,8 @@ class OrderCsv extends \Magento\ImportExport\Model\Export\Adapter\AbstractAdapte
         $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
-            $destination = uniqid($this->_namePrefix);
+            $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';
+            $destination = $dirPath . '/' . uniqid($this->_namePrefix);
             $this->_directoryHandle->touch($destination);
         }
         if (!is_string($destination)) {
