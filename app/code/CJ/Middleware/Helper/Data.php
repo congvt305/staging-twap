@@ -19,6 +19,7 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_POS_REDEEM_SEARCH = 'middleware/pos_interface_ids/redeem_search';
     const XML_PATH_MIDDLEWARE_POS_CUSTOMER_ORDER = 'middleware/pos_interface_ids/customer_order';
     const XML_PATH_MIDDLEWARE_POS_POINT_SEARCH = 'middleware/pos_interface_ids/point_search';
+    const XML_PATH_MIDDLEWARE_POS_POINT_UPDATE = 'middleware/pos_interface_ids/point_update';
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_INFO = 'middleware/customer_interface_ids/member_info';
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_JOIN = 'middleware/customer_interface_ids/member_join';
     const XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO = 'middleware/customer_interface_ids/bacode_info';
@@ -77,6 +78,11 @@ class Data extends AbstractHelper
     public function getPointSearchInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_POINT_SEARCH, $type, $storeId);
+    }
+
+    public function getPointUpdateInterfaceId($type, $storeId)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_POINT_UPDATE, $type, $storeId);
     }
 
     public function getMemberInfoInterfaceId($type, $storeId)

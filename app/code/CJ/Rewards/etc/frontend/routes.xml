@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="cj_amrewards" frontName="cj_amrewards">
+            <module name="CJ_Rewards" before="Magento_Core" after="Amasty_Rewards" />
+        </route>
+    </router>
+</config>

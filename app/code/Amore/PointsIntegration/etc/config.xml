@@ -14,6 +14,10 @@
             <configurable_cron>
                 <cron_expr>0 * * * *</cron_expr>
             </configurable_cron>
+            <resend_point_cron>
+                <active>1</active>
+                <cron_expr>*/5 * * * *</cron_expr>
+            </resend_point_cron>
         </points_integration>
     </default>
 </config>

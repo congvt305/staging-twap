@@ -122,6 +122,11 @@ class PosOrderData
     private $referralConfig;
 
     /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
+    /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -156,7 +161,8 @@ class PosOrderData
         StoreManagerInterface          $storeManager,
         Data                           $middlewareConfig,
         OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
-        ReferralConfig $referralConfig
+        ReferralConfig $referralConfig,
+        \Amasty\Rewards\Model\Config $amConfig
     ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
@@ -175,6 +181,7 @@ class PosOrderData
         $this->middlewareConfig = $middlewareConfig;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
         $this->referralConfig = $referralConfig;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -214,6 +221,24 @@ class PosOrderData
                 ];
             }
         }
+
+        $redemptionFlag = 'N';
+        $rewardPoints = 0;
+        $storeId = $order->getStoreId();
+        if($this->amConfig->isEnabled($storeId)) {
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'));
+            }
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $discountFromPoints = $rewardPoints / $spendingRate;
+            if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
+                $redemptionFlag = 'Y';
+            }
+        }
+
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
         $friendReferralCode = $this->getFriendReferralCode($order);
         $orderData = [
@@ -227,7 +252,9 @@ class PosOrderData
             'promotionKey' => $couponCode,
             'orderInfo' => $orderItemData,
             'baReferralCode' => $baReferralCode,
-            'ffReferralCode' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode,
+            'PointAccount' => (int)$rewardPoints,
+            'redemptionFlag' => $redemptionFlag
         ];
         return array_merge($orderData, $redInvoiceData);
     }
@@ -688,6 +715,36 @@ class PosOrderData
                 ->addFieldToFilter('store_id', $storeId)
                 ->addFieldToFilter('pos_order_paid_send', true);
         }
+        return $orderCollection->getItems();
+    }
+
+    /**
+     * Get all order need to resend use point
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getOrdersNeedToResendUsePointToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_use_point_resend', true);
+        return $orderCollection->getItems();
+    }
+
+    /**
+     * Get all order need to resend return point
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getOrdersNeedToResendReturnPointToPOS($storeId): array
+    {
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection
+            ->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('pos_order_return_point_resend', true);
         return $orderCollection->getItems();
     }
 

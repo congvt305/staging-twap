@@ -12773,7 +12773,7 @@ target=""_blank"">DevDocs' Release Information</a>.,module,Magento_ReleaseNotifi
 "Specified rule only allows auto generated coupons","Specified rule only allows auto generated coupons",module,Magento_SalesRule
 "Specified rule does not allow auto generated coupons","Specified rule does not allow auto generated coupons",module,Magento_SalesRule
 "Error occurred when saving coupon: %1","Error occurred when saving coupon: %1",module,Magento_SalesRule
-"Discount (%1)",活動共折抵 (%1)",module,Magento_SalesRule
+"Discount (%1)","活動共折抵 (%1)",module,Magento_SalesRule
 "Discount","活動共折抵",module,Magento_SalesRule
 "Coupon with the same code","Coupon with the same code",module,Magento_SalesRule
 "No Coupon","No Coupon",module,Magento_SalesRule
@@ -16485,3 +16485,16 @@ sample,樣本
 "Items cannot be deleted. Please try again","無法刪除缺貨商品，請重新再試一次**"
 "The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!","因系統已安排出貨，目前無法取消訂單。如有需要取消訂單請使用退貨流程，謝謝!"
 "The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you","已超過每日最高發送%1次之限制，敬請隔日再次嘗試，謝謝"
+"Apply Rewards","使用點數折現"
+"You Have <strong>%1</strong> points left","目前剩餘總點數: <strong>%1</strong>點"
+"Maximum point: <strong>%1</strong>","本次可用點數: <strong>%1</strong>點"
+"Deducted amount: <strong>%1</strong>","等於折抵金額: <strong>%1</strong>元"
+"Point discount function is under maintenance, you can't use this now, thanks","點數折抵功能維護中，暫時無法使用，謝謝"
+"Up to %1 discount","最多可折抵 %1 元"
+"(%1 points available)","(可用點數 %1 點)"
+"Used %1 reward points","折抵點數%1點"
+"Enter reward amount","輸入折抵金額"
+"Exceed limit of the deductible amount","超過可折抵金額上限"
+"%1 has been discounted","已折抵%1元"
+"You Canceled Reward","取消點數折抵"
+"Amount %1 not valid.","不可輸入為 “ %1 “ 的金額"

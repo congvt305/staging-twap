@@ -110,6 +110,12 @@ class PosReturnData
      */
     private $middlewareHelper;
 
+
+    /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
     /**
      * @var ReferralConfig
      */
@@ -150,7 +156,8 @@ class PosReturnData
         Logger                                                 $pointsIntegrationLogger,
         CommentInterfaceFactory                                $commentInterfaceFactory,
         Data                                                   $middlewareHelper,
-        ReferralConfig $referralConfig
+        ReferralConfig $referralConfig,
+        \Amasty\Rewards\Model\Config $amConfig
     ) {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -169,6 +176,7 @@ class PosReturnData
         $this->commentInterfaceFactory = $commentInterfaceFactory;
         $this->middlewareHelper = $middlewareHelper;
         $this->referralConfig = $referralConfig;
+        $this->amConfig = $amConfig;
     }
 
     /**
@@ -190,6 +198,24 @@ class PosReturnData
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
         $friendReferralCode = $this->getFriendReferralCode($order);
 
+        $redemptionFlag = 'N';
+        $rewardPoints = 0;
+        $storeId = $order->getStoreId();
+        if($this->amConfig->isEnabled($storeId)) {
+            if ($order->getData('am_spent_reward_points')) {
+                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'));
+            }
+
+            $spendingRate = $this->amConfig->getPointsRate($storeId);
+            if (!$spendingRate) {
+                $spendingRate = 1;
+            }
+            $discountFromPoints = $rewardPoints / $spendingRate;
+            if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
+                $redemptionFlag = 'Y';
+            }
+        }
+
         $rmaData = [
             'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
             'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
@@ -201,7 +227,9 @@ class PosReturnData
             'promotionKey' => $couponCode,
             'orderInfo' => $rmaItem,
             'baReferralCode' => $baReferralCode,
-            'ffReferralCode' => $friendReferralCode
+            'ffReferralCode' => $friendReferralCode,
+            'PointAccount' => (int)$rewardPoints,
+            'redemptionFlag' => $redemptionFlag
         ];
 
         return $rmaData;

@@ -100,6 +100,9 @@ abstract class BaseRequest
             case 'pointSearch':
                 $path = $this->middlewareHelper->getPointSearchInterfaceId($scope, $websiteId);
                 break;
+            case 'pointUpdate':
+                $path = $this->middlewareHelper->getPointUpdateInterfaceId($scope, $websiteId);
+                break;
             case 'customerOrder':
                 $path = $this->middlewareHelper->getCustomerSearchInterfaceId($scope, $websiteId);
                 break;

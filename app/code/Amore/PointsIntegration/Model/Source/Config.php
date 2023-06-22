@@ -57,6 +57,8 @@ class Config
 
     const POINTS_BLOCK_ID_PATH = 'points_integration/general/points_block_id';
 
+    const RESEND_POINT_TO_POS_CRON_ACTIVE = 'points_integration/resend_point_cron/active';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -273,6 +275,21 @@ class Config
     {
         return $this->getValue(
             self::POINTS_BLOCK_ID_PATH,
+            ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        );
+    }
+
+    /**
+     * Get is active resend point cron
+     *
+     * @param int $websiteId
+     * @return mixed
+     */
+    public function getResendPointCronActive($websiteId)
+    {
+        return $this->getValue(
+            self::RESEND_POINT_TO_POS_CRON_ACTIVE,
             ScopeInterface::SCOPE_WEBSITE,
             $websiteId
         );
