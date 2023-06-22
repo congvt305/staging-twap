@@ -1,0 +1,26 @@
+From 2cd9d9b14f79c534f461bc610aa7be98696ffd58 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 21 Jun 2023 17:43:57 +0700
+Subject: [PATCH] BRANDSR-4903 Fix issue Undefined array key updated_in in
+ /app/vendor/magento/module-staging/Model/Operation/Update.php
+
+---
+ vendor/magento/module-staging/Model/Operation/Update.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vendor/magento/module-staging/Model/Operation/Update.php b/vendor/magento/module-staging/Model/Operation/Update.php
+index 76a8b5b..cc964b9 100644
+--- a/vendor/magento/module-staging/Model/Operation/Update.php
++++ b/vendor/magento/module-staging/Model/Operation/Update.php
+@@ -171,7 +171,7 @@ class Update implements UpdateInterface
+         $needReschedule = false;
+         if (isset($arguments['origin_in'])) {
+             $needReschedule = $arguments['created_in'] != $arguments['origin_in']
+-                || $update->getRollbackId() != $entityData['updated_in'];
++                || (isset($entityData['updated_in']) && $update->getRollbackId() != $entityData['updated_in']);
+             if ($needReschedule) {
+                 $this->rescheduleUpdate->reschedule($arguments['origin_in'], $arguments['created_in'], $entity);
+             }
+--
+2.34.1
+
