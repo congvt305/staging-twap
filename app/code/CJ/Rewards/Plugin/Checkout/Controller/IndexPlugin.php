@@ -10,6 +10,8 @@ use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\PointUpdate;
 use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Rewards\Model\Data;
+use Magento\Checkout\Model\Session;
 
 class IndexPlugin
 {
@@ -47,6 +49,15 @@ class IndexPlugin
      * @var PointUpdate
      */
     private $pointUpdate;
+    /**
+     * @var Data
+     */
+    private $rewardsData;
+
+    /**
+     * @var Session
+     */
+    private $checkoutSession;
 
     /**
      * @param \Magento\Customer\Model\Session $_customerSession
@@ -56,6 +67,8 @@ class IndexPlugin
      * @param Config $config
      * @param Logger $logger
      * @param PointUpdate $pointUpdate
+     * @param Data $rewardsData
+     * @param Session $checkoutSession
      */
     public function __construct(
         \Magento\Customer\Model\Session $_customerSession,
@@ -64,7 +77,9 @@ class IndexPlugin
         CustomerPointsSearch $customerPointsSearch,
         Config $config,
         Logger $logger,
-        PointUpdate $pointUpdate
+        PointUpdate $pointUpdate,
+        Data $rewardsData,
+        Session $checkoutSession
     ) {
         $this->_customerSession = $_customerSession;
         $this->rewardsRepository = $rewardsRepository;
@@ -73,11 +88,14 @@ class IndexPlugin
         $this->config = $config;
         $this->logger = $logger;
         $this->pointUpdate = $pointUpdate;
+        $this->rewardsData = $rewardsData;
+        $this->checkoutSession = $checkoutSession;
     }
 
     public function beforeExecute(\Magento\Checkout\Controller\Cart\Index $subject)
     {
-        if ($this->_customerSession->isLoggedIn()) {
+        $quote = $this->checkoutSession->getQuote();
+        if ($this->_customerSession->isLoggedIn() && $this->rewardsData->canUseRewardPoint($quote)) {
             $customer = $this->_customerSession->getCustomer();
             $customerPointsInfo = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
             if ($this->config->getLoggerActiveCheck($customer->getWebsiteId())) {
@@ -95,6 +113,9 @@ class IndexPlugin
                 $pointsDiscrepancy = $availablePoint - $customerRewards;
                 if (abs($pointsDiscrepancy) > 0) {
                     if ($availablePoint < $customerRewards) {
+                        if ($availablePoint < 0) {
+                            $pointsDiscrepancy = $customerRewards;
+                        }
                         $this->updatePoints((int)$customer->getId(), abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
                     }
                     if ($availablePoint > $customerRewards) {

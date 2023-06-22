@@ -8,6 +8,7 @@ use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Amasty\Rewards\Model\Repository\RewardsRepository;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\PointUpdate;
+use CJ\Rewards\Model\Data;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -48,12 +49,18 @@ class RewardsCalculationDiscount
     private $cjCustomConfig;
 
     /**
+     * @var Data
+     */
+    private $rewardsData;
+
+    /**
      * @param CustomerPointsSearch $customerPointsSearch
      * @param RewardsRepository $rewardsRepository
      * @param ScopeConfigInterface $config
      * @param Config $amastyConfig
      * @param CJConfig $cjCustomConfig
      * @param PointUpdate $pointUpdate
+     * @param Data $rewardsData
      */
     public function __construct(
         CustomerPointsSearch $customerPointsSearch,
@@ -61,7 +68,8 @@ class RewardsCalculationDiscount
         ScopeConfigInterface $config,
         Config $amastyConfig,
         CJConfig $cjCustomConfig,
-        PointUpdate $pointUpdate
+        PointUpdate $pointUpdate,
+        Data $rewardsData,
     ) {
         $this->customerPointsSearch = $customerPointsSearch;
         $this->rewardsRepository = $rewardsRepository;
@@ -69,6 +77,7 @@ class RewardsCalculationDiscount
         $this->amastyConfig = $amastyConfig;
         $this->cjCustomConfig = $cjCustomConfig;
         $this->pointUpdate = $pointUpdate;
+        $this->rewardsData = $rewardsData;
     }
 
     /**
@@ -87,55 +96,58 @@ class RewardsCalculationDiscount
         float $appliedPoints
     ): array
     {
-        if ($appliedPoints) {
-            $isUsePointOrMoney = $this->cjCustomConfig->isUsePointOrMoney();
-            $appliedPoints = $this->formatPoints($appliedPoints);
-            $minPointsApplied = $this->amastyConfig->getMinPointsRequirement(null);
-            $spendingRate = $this->amastyConfig->getPointsRate();
-            $multiplesPoints = $appliedPoints % $spendingRate;
-            if ($appliedPoints >= $minPointsApplied &&
-                $multiplesPoints == 0 && isset($quoteItems[0])
-            ) {
-                $firstItem = $quoteItems[0];
-                $quote = $firstItem->getQuote();
-                $response = [];
-                if ($customerId = $quote->getCustomerId()) {
-                    if (!$this->pointUpdate->isNeedUpdatePointFromPos($customerId)) {
-                        return [$quoteItems, $total, $appliedPoints];
+        if ($appliedPoints && isset($quoteItems[0])) {
+            $firstItem = $quoteItems[0];
+            $quote = $firstItem->getQuote();
+            if ($this->rewardsData->canUseRewardPoint($quote)) {
+                $isUsePointOrMoney = $this->cjCustomConfig->isUsePointOrMoney();
+                $appliedPoints = $this->formatPoints($appliedPoints);
+                $minPointsApplied = $this->amastyConfig->getMinPointsRequirement(null);
+                $spendingRate = $this->amastyConfig->getPointsRate();
+                $multiplesPoints = $appliedPoints % $spendingRate;
+                if ($appliedPoints >= $minPointsApplied && $multiplesPoints == 0) {
+                    $response = [];
+                    if ($customerId = $quote->getCustomerId()) {
+                        if (!$this->pointUpdate->isNeedUpdatePointFromPos($customerId)) {
+                            return [$quoteItems, $total, $appliedPoints];
+                        }
+                        $websiteId = $quote->getStore()->getWebsiteId();
+                        $response = $this->getCustomerPointsResults($customerId, $websiteId);
                     }
-                    $websiteId = $quote->getStore()->getWebsiteId();
-                    $response = $this->getCustomerPointsResults($customerId, $websiteId);
-                }
 //                $response['availablePoint'] = 50000;
-                if ($response) {
-                    $availablePoint = $response['availablePoint'];
-                    $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customerId);
-                    $pointsDiscrepancy = $availablePoint - $customerRewards;
-                    if ($availablePoint < $appliedPoints) {
-                        $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
-                        if ($isUsePointOrMoney == CJConfig::USE_MONEY_TO_GET_DISCOUNT) {
-                            $errorMessage = __('Exceed limit of the deductible amount');
+                    if ($response) {
+                        $availablePoint = $response['availablePoint'];
+                        $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customerId);
+                        $pointsDiscrepancy = $availablePoint - $customerRewards;
+                        if ($availablePoint < $appliedPoints) {
+                            if ($availablePoint < 0) {
+                                $pointsDiscrepancy = $customerRewards;
+                            }
+                            $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
+                            if ($isUsePointOrMoney == CJConfig::USE_MONEY_TO_GET_DISCOUNT) {
+                                $errorMessage = __('Exceed limit of the deductible amount');
+                            } else {
+                                $errorMessage = __('Too much point(s) used.');
+                            }
+                            throw new LocalizedException($errorMessage);
                         } else {
-                            $errorMessage = __('Too much point(s) used.');
+                            if (abs($pointsDiscrepancy) > 0) {
+                                if ($availablePoint < $customerRewards) {
+                                    $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
+                                }
+                                if ($availablePoint > $customerRewards) {
+                                    $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy));
+                                }
+                            }
                         }
-                        throw new LocalizedException($errorMessage);
                     } else {
-                        if (abs($pointsDiscrepancy) > 0) {
-                            if ($availablePoint < $customerRewards) {
-                                $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy), Actions::ACTION_DEDUCT_POINT);
-                            }
-                            if ($availablePoint > $customerRewards) {
-                                $this->pointUpdate->updatePoints($customerId, abs($pointsDiscrepancy));
-                            }
-                        }
+                        throw new LocalizedException(__("Point discount function is under maintenance, you can't use this now, thanks"));
                     }
                 } else {
-                    throw new LocalizedException(__("Point discount function is under maintenance, you can't use this now, thanks"));
+                    $message = __('Applied points must be greater than or equal %1 and multiples of %2',
+                        $minPointsApplied, $spendingRate);
+                    throw new LocalizedException($message);
                 }
-            } else {
-                $message = __('Applied points must be greater than or equal %1 and multiples of %2',
-                    $minPointsApplied, $spendingRate);
-                throw new LocalizedException($message);
             }
         }
         return [$quoteItems, $total, $appliedPoints];
