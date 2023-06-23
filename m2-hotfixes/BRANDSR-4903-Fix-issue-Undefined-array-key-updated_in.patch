@@ -1,15 +1,17 @@
-From 2cd9d9b14f79c534f461bc610aa7be98696ffd58 Mon Sep 17 00:00:00 2001
+From 8454a2e10071ad6ef739e50e71603028630e3696 Mon Sep 17 00:00:00 2001
 From: Hoang Phan <hoangphan@amorepacific.com>
-Date: Wed, 21 Jun 2023 17:43:57 +0700
+Date: Fri, 23 Jun 2023 09:01:33 +0700
 Subject: [PATCH] BRANDSR-4903 Fix issue Undefined array key updated_in in
- /app/vendor/magento/module-staging/Model/Operation/Update.php
+ vendor/magento/module-staging/Model/Operation/Update.php Undefined array key
+ "created_in" in
+ vendor/magento/module-staging/Model/Operation/Delete/UpdateIntersectedRollbacks.php
 
 ---
- vendor/magento/module-staging/Model/Operation/Update.php | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ vendor/magento/module-staging/Model/Operation/Update.php | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/vendor/magento/module-staging/Model/Operation/Update.php b/vendor/magento/module-staging/Model/Operation/Update.php
-index 76a8b5b..cc964b9 100644
+index 76a8b5b..a0cc925 100644
 --- a/vendor/magento/module-staging/Model/Operation/Update.php
 +++ b/vendor/magento/module-staging/Model/Operation/Update.php
 @@ -171,7 +171,7 @@ class Update implements UpdateInterface
@@ -21,6 +23,16 @@ index 76a8b5b..cc964b9 100644
              if ($needReschedule) {
                  $this->rescheduleUpdate->reschedule($arguments['origin_in'], $arguments['created_in'], $entity);
              }
+@@ -189,8 +189,8 @@ class Update implements UpdateInterface
+                 $arguments['updated_in'] = $version->getUpdatedIn();
+             }
+             $arguments[$metadata->getLinkField()] = $version->getRowId();
+-            $rollbackEntity = clone $entity;
+             $this->updateEntityVersion->execute($entity, $arguments);
++            $rollbackEntity = clone $entity;
+         } else {
+             $this->updateVersion->execute($entityType, $identifier);
+             $arguments['updated_in'] = ($update->getRollbackId()) ?:
 --
 2.34.1
 
