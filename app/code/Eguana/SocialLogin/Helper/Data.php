@@ -44,6 +44,7 @@ class Data extends AbstractHelperAlias
     const XML_LINE_LOGO_URL                 = 'SocialLogin/line/line_logo_image';
     const XML_LINE_QR_CODE                  = 'SocialLogin/line/line_qr_code';
     const XML_LINE_BANNER_ENABLED           = 'SocialLogin/line/line_banner_enabled';
+    const XML_LINE_BANNER_CMS_BLOCK_ID      = 'SocialLogin/line/line_banner_cms_block';
 
     /**
      * @var PageFactory
@@ -332,5 +333,10 @@ class Data extends AbstractHelperAlias
         );
 
         return $enabled;
+    }
+
+    public function getLineBannerCMSBlockId()
+    {
+        return $this->scopeConfig->getValue(self::XML_LINE_BANNER_CMS_BLOCK_ID, ScopeInterface::SCOPE_STORE);
     }
 }
