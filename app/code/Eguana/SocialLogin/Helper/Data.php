@@ -335,6 +335,9 @@ class Data extends AbstractHelperAlias
         return $enabled;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLineBannerCMSBlockId()
     {
         return $this->scopeConfig->getValue(self::XML_LINE_BANNER_CMS_BLOCK_ID, ScopeInterface::SCOPE_STORE);

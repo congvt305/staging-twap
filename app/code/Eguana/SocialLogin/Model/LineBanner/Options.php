@@ -4,6 +4,9 @@ namespace Eguana\SocialLogin\Model\LineBanner;
 
 use Magento\Cms\Model\ResourceModel\Block\CollectionFactory;
 
+/**
+ * Class Options
+ */
 class Options implements  \Magento\Framework\Option\ArrayInterface
 {
     /**
@@ -21,7 +24,9 @@ class Options implements  \Magento\Framework\Option\ArrayInterface
         $this->_blockCollectionFactory = $_blockCollectionFactory;
     }
 
-
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         $options = $this->_blockCollectionFactory->create()->load()->toOptionArray();
