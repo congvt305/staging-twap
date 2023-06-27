@@ -214,11 +214,9 @@
             }
         }
         .line-banner {
-            border: 1px solid black;
-            margin: 0 auto;
-            width: 900px;
-            color: #000;
-            background-color: #f1f1f1;
+            .pagebuilder-tablet-only {
+                display: none;
+            }
             .marketing-message {
                 font-size: 28px;
                 display: flex;
@@ -257,10 +255,6 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .checkout-onepage-success {
         .line-banner{
-            width: auto;
-            border: unset;
-            background-color: unset;
-            margin-top: 56px;
             .marketing-message {
                 .content {
                     font-size: 24px;
