@@ -75,6 +75,13 @@
                         <field id="line_banner_enabled">1</field>
                     </depends>
                 </field>
+                <field id="line_banner_cms_block" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Line Banner CMS Block</label>
+                    <source_model>Eguana\SocialLogin\Model\LineBanner\Options</source_model>
+                    <depends>
+                        <field id="line_banner_enabled">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="facebook" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Facebook</label>

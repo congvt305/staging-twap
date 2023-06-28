@@ -2,6 +2,7 @@
 /** @var  \Eguana\StoreLocator\Block\InfoList $block */
 /** @var \Eguana\StoreLocator\ViewModel\StoreLocator $viewModel */
 $viewModel = $block->getData('storelocator_view_model');
+$helper = $this->helper('Eguana\SocialLogin\Helper\Data');
 $country = $block->getDefaultCountryName();
 $locations = [];
 $selectedSearch = $block->getSelectedSearchTerm();
@@ -172,15 +173,14 @@ if ($defaultCountry != null) {
         <?php endif;?>
     </div>
     <?php if ($block->getLineBannerEnabled()): ?>
-    <a href="<?= $block->escapeUrl($block->lineAddFriendLink()) ?>" target="_blank">
-        <div class="line-banner">
-            <div class="marketing-message">
-                <div class="content"><?=$block->escapeHtml($block->getLineMarketingMessage())?></div>
-                <img class="line-logo" alt="line logo" src="<?=$block->escapeUrl($block->getLineLogoUrl())?>"/>
-                <img class="line-qr-code" alt="line qr code" src="<?=$block->escapeUrl($block->getLineQRCodeUrl())?>"/>
-            </div>
-        </div>
-    </a>
+        <?php
+        $lineBannerBlockId = $helper->getLineBannerCMSBlockId();
+        $lineBannerBlock = $this->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setBlockId($lineBannerBlockId)
+            ->toHtml();
+        ?>
+        <?= $lineBannerBlock ?>
     <?php endif; ?>
 </div>
 <script type="text/javascript"
