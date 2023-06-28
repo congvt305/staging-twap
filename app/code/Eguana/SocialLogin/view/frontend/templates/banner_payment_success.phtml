@@ -2,16 +2,14 @@
 /** @var \Eguana\SocialLogin\ViewModel\AddFriends $viewModel */
 $viewModel = $block->getData('add_friend_view_model');
 $helper = $this->helper('Eguana\SocialLogin\Helper\Data');
-$lineBannerBlockId = $helper->getLineBannerCMSBlockId();
-$lineBannerBlock = $this->getLayout()
-    ->createBlock('Magento\Cms\Block\Block')
-    ->setBlockId($lineBannerBlockId)
-    ->toHtml();
 ?>
 <?php if ($viewModel->getLineBannerEnabled()): ?>
-    <a href="<?= $block->escapeUrl($viewModel->lineAddFriendLink()) ?>" target="_blank">
-        <div class="line-banner">
-            <?=$lineBannerBlock?>
-        </div>
-    </a>
+    <?php
+    $lineBannerBlockId = $helper->getLineBannerCMSBlockId();
+    $lineBannerBlock = $this->getLayout()
+        ->createBlock('Magento\Cms\Block\Block')
+        ->setBlockId($lineBannerBlockId)
+        ->toHtml();
+    ?>
+    <?= $lineBannerBlock ?>
 <?php endif; ?>
