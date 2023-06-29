@@ -226,7 +226,14 @@ class Callback
 
         try {
             $connection->beginTransaction();
-
+            //Customize remove qty cancel
+            if ($this->order->getState() == ORDER::STATE_CANCELED) {
+                foreach ($this->order->getAllItems() as $item) {
+                    if ($item->getQtyCanceled()) {
+                        $item->setQtyCanceled(0);
+                    }
+                }
+            }
             if (!$this->hasInvoice()) {
                 $this->createInvoice();
             }
@@ -353,6 +360,11 @@ class Callback
             Order::STATE_COMPLETE,
             $this->paymentGatewayConfig->getNewOrderState()
         ]);
+
+        //Customize to fix the case after 15mins customer paid success but the order is canceled
+        if ($this->getPaymentResponse->getStatus() == PaymentStatus::PAID && Order::STATE_CANCELED) {
+            $isOrderStateMismatch = false;
+        }
 
         if ($isOrderStateMismatch) {
             throw new LocalizedException(__("The order has wrong state: {$this->order->getStatus()}"));
