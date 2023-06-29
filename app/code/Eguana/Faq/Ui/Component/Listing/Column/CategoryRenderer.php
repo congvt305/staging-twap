@@ -119,15 +119,17 @@ class CategoryRenderer extends Column
         $content = '';
         try {
             foreach ($name as $value) {
-                $categoryStoreId = explode('.', $value);
-                $categories = $this->faqConfiguration->getCategory($categoryStoreId[0]);
-                if (isset($categories)) {
-                    $content .= "<b>" . $this->storeManager->getStore($categoryStoreId[0])->getName() . "</b><br/>";
-                    if (isset($categories[$categoryStoreId[1]])) {
-                        $content .= str_repeat('&nbsp;', 4) . $categories[$categoryStoreId[1]] . "<br/>";
-                    } else {
-                        $del= "Deleted";
-                        $content .= str_repeat('&nbsp;', 4) . $del . "<br/>";
+                if ($value) {
+                    $categoryStoreId = explode('.', $value);
+                    $categories = $this->faqConfiguration->getCategory($categoryStoreId[0]);
+                    if (isset($categories)) {
+                        $content .= "<b>" . $this->storeManager->getStore($categoryStoreId[0])->getName() . "</b><br/>";
+                        if (isset($categories[$categoryStoreId[1]])) {
+                            $content .= str_repeat('&nbsp;', 4) . $categories[$categoryStoreId[1]] . "<br/>";
+                        } else {
+                            $del= "Deleted";
+                            $content .= str_repeat('&nbsp;', 4) . $del . "<br/>";
+                        }
                     }
                 }
             }
