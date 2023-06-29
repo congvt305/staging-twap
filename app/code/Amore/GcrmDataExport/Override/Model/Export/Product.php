@@ -398,7 +398,6 @@ class Product extends MainProduct
         foreach ($items as $itemId => $itemByStore) {
             foreach ($this->_storeIdToCode as $storeId => $storeCode) {
                 $item = $itemByStore[$storeId];
-                $additionalAttributes = [];
                 $productLinkId = $item->getData($this->getProductEntityLinkField());
                 foreach ($this->_getExportAttrCodes() as $code) {
                     $attrValue = $item->getData($code);
@@ -445,31 +444,14 @@ class Product extends MainProduct
 
                     if ($this->_attributeTypes[$code] !== 'multiselect') {
                         if (is_scalar($attrValue)) {
-                            if (!in_array($fieldName, $this->_getExportMainAttrCodes())) {
-                                $additionalAttributes[$fieldName] = $fieldName .
-                                    ImportProduct::PAIR_NAME_VALUE_SEPARATOR . $this->wrapValue($attrValue);
-                            }
                             $data[$itemId][$storeId][$fieldName] = htmlspecialchars_decode($attrValue);
                         }
                     } else {
                         $this->collectMultiselectValues($item, $code, $storeId);
-                        if (!empty($this->collectedMultiselectsData[$storeId][$productLinkId][$code])) {
-                            $additionalAttributes[$code] = $fieldName .
-                                ImportProduct::PAIR_NAME_VALUE_SEPARATOR . implode(
-                                    ImportProduct::PSEUDO_MULTI_LINE_SEPARATOR,
-                                    $this->wrapValue($this->collectedMultiselectsData[$storeId][$productLinkId][$code])
-                                );
-                        }
                     }
                 }
 
-                if (!empty($additionalAttributes)) {
-                    $additionalAttributes = array_map('htmlspecialchars_decode', $additionalAttributes);
-                    $data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES] =
-                        implode(Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $additionalAttributes);
-                } else {
-                    unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
-                }
+                unset($data[$itemId][$storeId][self::COL_ADDITIONAL_ATTRIBUTES]);
                 $attrSetId = $item->getAttributeSetId();
                 if ($this->dataPersistor->get('gcrm_export_check')) {
                     $data[$itemId][$storeId][self::ENTITY_ID] = $item->getId();
