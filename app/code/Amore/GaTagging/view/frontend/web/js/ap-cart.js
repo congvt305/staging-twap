@@ -86,9 +86,11 @@ define([
                 'prdprice': parseInt(product.product_original_price),
                 'variant': '',
                 'promotion': '',
-                'cate': '',
+                'cate': product.product_category,
                 'catecode': '',
                 'quantity': product.qty,
+                'url': product.product_url,
+                'img_url': product.image_url
             }
             productInfosArr.push(productInfo);
             return productInfosArr;
