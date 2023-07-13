@@ -185,8 +185,6 @@ class Data extends AbstractHelper
             // Validate choose payment
             $choosenPayment = $this->getChoosenPayment();
             $paymentName = $this->getPaymentTranslation($choosenPayment);
-            $isPaymentMethod = $this->_ecpayPaymentModel->isValidPayment($choosenPayment);
-            $this->logger->error('EcPay Valid Payment: ' . $isPaymentMethod);
             if (!$choosenPayment) {
                 return [
                     'status' => 'Success'
