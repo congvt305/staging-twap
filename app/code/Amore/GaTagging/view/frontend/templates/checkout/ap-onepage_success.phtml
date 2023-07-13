@@ -27,6 +27,8 @@ $orderData = $block->getPurchaseData();
     var AP_PURCHASE_BEAUTYACC = <?= $block->escapeHtml($orderData['AP_PURCHASE_BEAUTYACC'])?>;
     var AP_PURCHASE_SHIPPING = <?= $block->escapeHtml($orderData['AP_PURCHASE_SHIPPING'])?>;
     var AP_PURCHASE_CURRENCY = "<?= $block->escapeHtml($orderData['AP_PURCHASE_CURRENCY']) ?>";
+    var AP_PURCHASE_DATE = "<?= $block->escapeHtml($orderData['AP_PURCHASE_DATE']) ?>";
+    var AP_PURCHASE_COUPONNAME = "<?= $block->escapeHtml($orderData['AP_PURCHASE_COUPONNAME']) ?>";
     var AP_PURCHASE_PRDS = [
         <?php foreach($orderData['AP_PURCHASE_PRDS'] as $prod) : ?>
         <?= $prod ?>,
