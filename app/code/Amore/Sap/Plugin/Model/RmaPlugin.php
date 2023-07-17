@@ -145,7 +145,8 @@ class RmaPlugin
         $rmaSendCheck = $order->getData('sap_return_send_check');
         //handle case bundle item is missing
         $rmaItems = $subject->getItems();
-        if (isset($data['items']) && count($data['items']) != count($rmaItems)) {
+        $needToUpdateStatus = false;
+        if (isset($data['items']) && count($rmaItems) > 0 && count($data['items']) != count($rmaItems)) {
             foreach ($data['items'] as $id => $rmaItem) {
                 $orderItem = $subject->getOrder()->getItemById($rmaItem['order_item_id']);
                 if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
@@ -155,6 +156,7 @@ class RmaPlugin
                         ->addFieldToFilter('rma_entity_id', $subject->getEntityId())
                         ->getFirstItem();
                     if ($bundleRmaItem && !array_key_exists($bundleRmaItem->getId(), $data['items'])) {
+                        $needToUpdateStatus = true;
                         $bundleItem = [
                             'entity_id' => $bundleRmaItem->getId(),
                             'order_item_id' => $bundleRmaItem->getOrderItemId(),
@@ -172,9 +174,11 @@ class RmaPlugin
                     }
                 }
             }
-            $itemStatuses = $this->rmaDataMaper->combineItemStatuses($data['items'], $subject->getId());
-            $rmaStatus = $this->rmaSourceStatus->getStatusByItems($itemStatuses);
-            $subject->setStatus($rmaStatus)->setIsUpdate(1);
+            if ($needToUpdateStatus) {
+                $itemStatuses = $this->rmaDataMaper->combineItemStatuses($data['items'], $subject->getId());
+                $rmaStatus = $this->rmaSourceStatus->getStatusByItems($itemStatuses);
+                $subject->setStatus($rmaStatus)->setIsUpdate(1);
+            }  
         }
 
         if ($enableSapCheck && $enableRmaCheck) {
