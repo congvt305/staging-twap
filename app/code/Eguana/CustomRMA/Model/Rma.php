@@ -359,10 +359,10 @@ class Rma extends \Magento\Rma\Model\Rma
                             foreach ($qtyKeys as $qtyKey) {
                                 if ($itemModel->getData($qtyKey)) {
                                     $bundleRmaItem->setData($qtyKey, $bundleRmaItem->getQtyRequested());
-                                    $bundleRmaItem->save();
                                 }
                                 $bundleRmaItem->setData($key, $itemModel->getData($key));
                             }
+                            $bundleRmaItem->setStatus($itemModel->getStatus());
                             $itemModels[] = $bundleRmaItem;
                         }
                     }
