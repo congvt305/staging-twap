@@ -18,4 +18,7 @@
         <plugin name="eguana_customrma_admin_save_rma_customer_name"
                 type="Eguana\CustomRMA\Plugin\RmaSaveCustomerName" sortOrder="10"/>
     </type>
+    <!--   ITO0306-122 remove bundle selection item, only allow full bundle return     -->
+    <preference for="Magento\Rma\Block\Adminhtml\Product\Bundle\Product" type="Magento\Backend\Block\Widget\Grid\Column\Renderer\Text"/>
+    <preference for="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Grid\Column\Renderer\Quantity" type="Eguana\CustomRMA\Block\Adminhtml\Rma\Edit\Tab\Items\Grid\Column\Renderer\Quantity" />
 </config>
