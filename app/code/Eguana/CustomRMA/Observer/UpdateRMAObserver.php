@@ -23,31 +23,23 @@ class UpdateRMAObserver implements ObserverInterface
     private $sourceStatus;
 
     /**
-     * @var $rmaDataMapper
-     */
-    private $rmaDataMapper;
-
-    /**
      * @param Status $status
      * @param RmaDataMapper $rmaDataMapper
      */
     public function __construct(
-        Status $status,
-        RmaDataMapper $rmaDataMapper
+        Status $status
     ) {
         $this->sourceStatus = $status;
-        $this->rmaDataMapper = $rmaDataMapper;
     }
 
     public function execute(Observer $observer)
     {
         /** @var \Eguana\CustomRMA\Model\Rma $rma */
         $rma = $observer->getRma();
-        $items = [];
+        $itemStatuses = [];
         foreach ($rma->getItems() as $rmaItem) {
-            $items[] = $rmaItem->getData();
+            $itemStatuses[] = $rmaItem->getData('status');
         }
-        $itemStatuses = $this->rmaDataMapper->combineItemStatuses($items, $rma->getId());
-        $rma->setStatus($this->sourceStatus->getStatusByItems($itemStatuses)->setIsUpdate(1));
+        $rma->setStatus($this->sourceStatus->getStatusByItems($itemStatuses))->setIsUpdate(1);
     }
 }
