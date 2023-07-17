@@ -47,7 +47,7 @@ class UpdateRMAObserver implements ObserverInterface
         foreach ($rma->getItems() as $rmaItem) {
             $items[] = $rmaItem->getData();
         }
-        $itemStatuses = $this->rmaDataMapper->create()->combineItemStatuses($items, $rma->getId());
-        $rma->setStatus($this->sourceStatus->create()->getStatusByItems($itemStatuses)->setIsUpdate(1));
+        $itemStatuses = $this->rmaDataMapper->combineItemStatuses($items, $rma->getId());
+        $rma->setStatus($this->sourceStatus->getStatusByItems($itemStatuses)->setIsUpdate(1));
     }
 }
