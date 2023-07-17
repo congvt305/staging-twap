@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="rma_save_save_before">
+        <observer name="cj_update_rma_status" instance="Eguana\CustomRMA\Observer\UpdateRMAObserver" />
+    </event>
+</config>
