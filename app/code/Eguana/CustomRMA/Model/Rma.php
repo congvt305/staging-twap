@@ -336,7 +336,7 @@ class Rma extends \Magento\Rma\Model\Rma
                 }
 
                 $itemPost = $this->_preparePost($item);
-
+                $itemPost['rma_entity_id'] = $itemModel->getRmaEntityId();
                 $itemModel->setData($itemPost)->prepareAttributes($itemPost, $key);
                 // @codingStandardsIgnoreStart
                 $errors = array_merge($itemModel->getErrors(), $errors);
@@ -352,10 +352,15 @@ class Rma extends \Magento\Rma\Model\Rma
                         $qtyKeys = ['qty_authorized', 'qty_returned', 'qty_approved'];
                         $bundleRmaItem = $this->_itemsFactory->create()
                             ->addFieldToFilter('order_item_id', $realItem->getParentItem()->getItemId())
+                            ->addFieldToFilter('rma_entity_id', $itemModel->getRmaEntityId())
                             ->getFirstItem();
                         if ($bundleRmaItem->getId() && $bundleRmaItem->getId() != $parentId && !array_key_exists($bundleRmaItem->getId(), $data['items'])) {
                             $parentId = $bundleRmaItem->getId();
-                            foreach ($qtyKeys as $key) {
+                            foreach ($qtyKeys as $qtyKey) {
+                                if ($itemModel->getData($qtyKey)) {
+                                    $bundleRmaItem->setData($qtyKey, $bundleRmaItem->getQtyRequested());
+                                    $bundleRmaItem->save();
+                                }
                                 $bundleRmaItem->setData($key, $itemModel->getData($key));
                             }
                             $itemModels[] = $bundleRmaItem;
