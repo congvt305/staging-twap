@@ -350,8 +350,12 @@ class SapOrderReturnData extends AbstractSapOrder
         $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
         foreach ($rmaItems as $rmaItem) {
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    continue;
+                }
                 $mileagePerItem = $this->mileageSpentRateByItem(
                     $orderSubtotal,
                     $orderItem->getRowTotalInclTax(),
