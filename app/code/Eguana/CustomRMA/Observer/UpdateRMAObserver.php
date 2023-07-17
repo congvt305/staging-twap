@@ -12,8 +12,8 @@ namespace Eguana\CustomRMA\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Rma\Model\Rma\Source\StatusFactory;
-use Magento\Rma\Model\Rma\RmaDataMapperFactory;
+use Magento\Rma\Model\Rma\Source\Status;
+use Magento\Rma\Model\Rma\RmaDataMapper;
 
 class UpdateRMAObserver implements ObserverInterface
 {
