@@ -415,6 +415,11 @@ class Rma extends \Magento\Rma\Model\Rma
         }
         $this->setItems($itemModels);
 
+        $itemStatuses = [];
+        foreach ($this->getItems() as $rmaItem) {
+            $itemStatuses[] = $rmaItem->getData('status');
+        }
+        $this->setStatus($this->_statusFactory->create()->getStatusByItems($itemStatuses))->setIsUpdate(1);
         return $this->getItems();
     }
 
