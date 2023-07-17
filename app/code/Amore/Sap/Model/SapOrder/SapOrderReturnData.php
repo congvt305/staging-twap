@@ -239,11 +239,11 @@ class SapOrderReturnData extends AbstractSapOrder
             'paydt' => '',
             'paytm' => '',
             'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
-            'dhlId' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
-            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
-            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
-            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
-            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
+            'dhlId' => '',
+            'shpSvccd' => '',
+            'ordWgt' => '',
+            'insurance' => '',
+            'insurnaceValue' => null,
             'auart' => $isMileageOrder ? self::SAMPLE_RETURN : self::RETURN_ORDER,
             'augru' => $isMileageOrder ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -636,11 +636,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $itemCount = 0;
         foreach ($rma->getItems() as $item) {
             $orderItem = $this->orderItemRepository->get($item->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                foreach ($orderItem->getChildrenItems() as $childrenItem) {
-                    $itemCount++;
-                }
-            } else {
+            if ($orderItem->getProductType() != 'bundle') {
                 $itemCount++;
             }
         }
