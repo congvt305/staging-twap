@@ -239,11 +239,11 @@ class SapOrderReturnData extends AbstractSapOrder
             'paydt' => '',
             'paytm' => '',
             'payMode' => $order->getPayment()->getMethod() === 'cashondelivery' ? 'COD' : '',
-            'dhlId' => $shippingMethod === 'eguanadhl_tablerate' ? 'TBD' : '',
-            'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
-            'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
-            'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
-            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
+            'dhlId' => '',
+            'shpSvccd' => '',
+            'ordWgt' => '',
+            'insurance' => '',
+            'insurnaceValue' => null,
             'auart' => $isMileageOrder ? self::SAMPLE_RETURN : self::RETURN_ORDER,
             'augru' => $isMileageOrder ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -350,8 +350,12 @@ class SapOrderReturnData extends AbstractSapOrder
         $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    continue;
+                }
                 $mileagePerItem = $this->mileageSpentRateByItem(
                     $orderSubtotal,
                     $orderItem->getRowTotalInclTax(),
@@ -630,13 +634,10 @@ class SapOrderReturnData extends AbstractSapOrder
     public function calculateItems($rma)
     {
         $itemCount = 0;
+        $order = $rma->getOrder();
         foreach ($rma->getItems() as $item) {
-            $orderItem = $this->orderItemRepository->get($item->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                foreach ($orderItem->getChildrenItems() as $childrenItem) {
-                    $itemCount++;
-                }
-            } else {
+            $orderItem = $order->getItemById($item->getOrderItemId());
+            if ($orderItem->getProductType() != 'bundle') {
                 $itemCount++;
             }
         }
@@ -855,9 +856,9 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $grandTotal = 0;
         $rmaItems = $rma->getItems();
-
+        $order = $rma->getOrder();
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() == 'bundle') {
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
                 $bundlePriceType = $bundleProduct->getPriceType();
@@ -933,7 +934,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $order = $rma->getOrder();
         $rmaItems = $rma->getItems();
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
                 if ($this->roundingPrice($orderItem->getPrice(), $isDecimalFormat)) {
                     $catalogRuleDiscount += ($orderItem->getOriginalPrice() - $orderItem->getPrice()) *
@@ -969,8 +970,9 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $subtotalInclTax = 0;
         $rmaItems = $rma->getItems();
+        $order = $rma->getOrder();
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
         }
         return $subtotalInclTax;
@@ -990,7 +992,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
 
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             $mileagePerItem = $this->mileageSpentRateByItem(
                 $orderTotal,
                 $orderItem->getRowTotalInclTax(),
@@ -1009,9 +1011,9 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         $taxAmount = 0;
         $rmaItems = $rma->getItems();
-
+        $order = $rma->getOrder();
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             $taxAmount += $orderItem->getTaxAmount();
         }
         return $taxAmount;
@@ -1088,7 +1090,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $rmaItems = $rma->getItems();
         $order = $rma->getOrder();
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() == 'bundle') {
                 /** @var \Magento\Catalog\Model\Product $bundleProduct */
                 $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());

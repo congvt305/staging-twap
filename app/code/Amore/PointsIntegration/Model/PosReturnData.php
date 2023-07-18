@@ -256,6 +256,9 @@ class PosReturnData
         foreach ($rmaItems as $rmaItem) {
             $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    continue;
+                }
                 $itemGrandTotal = $orderItem->getRowTotal() - $orderItem->getDiscountAmount();
                 $itemSubtotal = abs($this->roundingPrice($orderItem->getOriginalPrice() * $rmaItem->getQtyRequested(), $isDecimalFormat));
                 $itemTotalDiscount = abs($this->roundingPrice(

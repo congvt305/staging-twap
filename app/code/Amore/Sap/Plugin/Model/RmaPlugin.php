@@ -23,6 +23,9 @@ use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Status\HistoryFactory;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use Magento\Rma\Model\Rma\RmaDataMapper;
+use Magento\Rma\Model\Rma\Source\Status;
+use Magento\Rma\Model\ResourceModel\Item\CollectionFactory as RmaItemCollectionFactory;
 
 class RmaPlugin
 {
@@ -75,6 +78,22 @@ class RmaPlugin
     protected $middlewareHelper;
 
     /**
+     * @var RmaDataMapper
+     */
+    private $rmaDataMaper;
+
+    /**
+     * @var Status
+     */
+    private $rmaSourceStatus;
+
+    /**
+     * @var RmaItemCollectionFactory
+     */
+    private $rmaItemCollectionFactory;
+
+
+    /**
      * @param Json $json
      * @param Request $request
      * @param Config $config
@@ -84,6 +103,9 @@ class RmaPlugin
      * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param MiddlewareHelper $middlewareHelper
+     * @param RmaDataMapper $rmaDataMapper
+     * @param Status $rmaSourceStatus
+     * @param RmaItemCollectionFactory $rmaItemCollectionFactory
      */
     public function __construct(
         Json $json,
@@ -94,7 +116,10 @@ class RmaPlugin
         SapOrderReturnData $sapOrderReturnData,
         ManagerInterface $messageManager,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        MiddlewareHelper $middlewareHelper
+        MiddlewareHelper $middlewareHelper,
+        RmaDataMapper $rmaDataMapper,
+        Status $rmaSourceStatus,
+        RmaItemCollectionFactory $rmaItemCollectionFactory
     ) {
         $this->json = $json;
         $this->request = $request;
@@ -105,6 +130,9 @@ class RmaPlugin
         $this->messageManager = $messageManager;
         $this->eventManager = $eventManager;
         $this->middlewareHelper = $middlewareHelper;
+        $this->rmaDataMaper = $rmaDataMapper;
+        $this->rmaSourceStatus = $rmaSourceStatus;
+        $this->rmaItemCollectionFactory = $rmaItemCollectionFactory;
     }
 
     public function beforeSaveRma(Rma $subject, $data)
@@ -114,6 +142,43 @@ class RmaPlugin
         $availableStatus = 'authorized';
         $order = $subject->getOrder();
         $rmaSendCheck = $order->getData('sap_return_send_check');
+        //handle case bundle item is missing
+        $rmaItems = $subject->getItems();
+        $needToUpdateStatus = false;
+        if (isset($data['items']) && count($rmaItems) > 0 && count($data['items']) != count($rmaItems)) {
+            foreach ($data['items'] as $id => $rmaItem) {
+                $orderItem = $subject->getOrder()->getItemById($rmaItem['order_item_id']);
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    $bundleRmaItem = $this->rmaItemCollectionFactory->create()
+                        ->addAttributeToSelect('*')
+                        ->addFieldToFilter('order_item_id', $orderItem->getParentItem()->getItemId())
+                        ->addFieldToFilter('rma_entity_id', $subject->getEntityId())
+                        ->getFirstItem();
+                    if ($bundleRmaItem && !array_key_exists($bundleRmaItem->getId(), $data['items'])) {
+                        $needToUpdateStatus = true;
+                        $bundleItem = [
+                            'entity_id' => $bundleRmaItem->getId(),
+                            'order_item_id' => $bundleRmaItem->getOrderItemId(),
+                            'resolution' => $bundleRmaItem->getResolution(),
+                            'status' => $rmaItem['status']
+                        ];
+                        if ($rmaItem['status'] == 'authorized') {
+                            $bundleItem['qty_authorized'] = $bundleRmaItem->getQtyRequested();
+                        } elseif ($rmaItem['status'] == 'returned') {
+                            $bundleItem['qty_returned'] = $bundleRmaItem->getQtyRequested();
+                        } elseif ($rmaItem['status'] == 'approved') {
+                            $bundleItem['qty_approved'] = $bundleRmaItem->getQtyRequested();
+                        }
+                        $data['items'][$bundleRmaItem->getId()] = $bundleItem;
+                    }
+                }
+            }
+            if ($needToUpdateStatus) {
+                $itemStatuses = $this->rmaDataMaper->combineItemStatuses($data['items'], $subject->getId());
+                $rmaStatus = $this->rmaSourceStatus->getStatusByItems($itemStatuses);
+                $subject->setStatus($rmaStatus)->setIsUpdate(1);
+            }
+        }
 
         if ($enableSapCheck && $enableRmaCheck) {
             if ($subject->getStatus() == $availableStatus) {
