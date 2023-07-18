@@ -18,7 +18,6 @@ use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\MessageQueue\Topology\Config\QueueConfigItem\DataMapper;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -178,7 +177,7 @@ class RmaPlugin
                 $itemStatuses = $this->rmaDataMaper->combineItemStatuses($data['items'], $subject->getId());
                 $rmaStatus = $this->rmaSourceStatus->getStatusByItems($itemStatuses);
                 $subject->setStatus($rmaStatus)->setIsUpdate(1);
-            }  
+            }
         }
 
         if ($enableSapCheck && $enableRmaCheck) {
