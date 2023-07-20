@@ -2,4 +2,10 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Rewards\Model\Quote\Validator\LimitValidator" type="CJ\Rewards\Model\Quote\Validator\LimitValidator"/>
+    <preference for="Amasty\Rewards\Block\Frontend\LayoutProcessor" type="CJ\Rewards\Block\Frontend\LayoutProcessor"/>
+    <type name="CJ\Rewards\Block\Frontend\LayoutProcessor">
+        <arguments>
+            <argument name="checkouSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
 </config>

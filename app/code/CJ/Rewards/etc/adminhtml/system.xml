@@ -30,6 +30,23 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="enabled_show_list_option_reward_point" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled  Show List Option Reward Point</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="use_point_or_money">1</field>
+                    </depends>
+                </field>
+                <field id="list_option_reward_point" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>List Option Reward Point</label>
+                    <backend_model>CJ\Rewards\Model\Config\Backend\ListOptionRewardPointMultipleField</backend_model>
+                    <frontend_model>CJ\Rewards\Block\System\Config\Form\Field\ListOptionRewardPointMultipleField</frontend_model>
+                    <depends>
+                        <field id="enabled_show_list_option_reward_point">1</field>
+                        <field id="use_point_or_money">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>
