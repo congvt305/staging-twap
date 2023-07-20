@@ -41,7 +41,9 @@
             .products-grid & {
                 display: inline-block;
                 padding: 0;
-                width: (100% / 2);
+                width: calc(~'(100% - 2%)/2');
+                margin-left: 2%;
+                margin-bottom: 22px;
 
                 .product-item-details {
                     .actions-primary {
@@ -593,7 +595,6 @@
     .page-products,
     .page-layout-1column,
     .page-layout-3columns,
-    .page-products.page-layout-1column,
     .page-products.page-layout-3columns {
         .products-grid {
             .product-item {
@@ -601,6 +602,16 @@
                 width: calc(~'(100% - 4%) / 3');
 
                 &:nth-child(3n + 1) {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+    .page-products.page-layout-1column {
+        .products-grid {
+            .product-item {
+
+                &:nth-child(4n + 1) {
                     margin-left: 0;
                 }
             }
@@ -1067,21 +1078,6 @@
         }
     }
 
-    .page-layout-1column {
-        .products-grid {
-            .product-item {
-                width: 100%/4;
-            }
-        }
-    }
-
-    // display 3 products per row 2 columns left
-    .page-products.page-layout-2columns-left {
-        .products-grid .product-item {
-            width: 30%;
-        }
-    }
-
     .page-layout-3columns {
         .products-grid {
             .product-item {
@@ -1095,31 +1091,27 @@
             .product-items {
                 margin: 0;
             }
-
-            .product-item {
-                margin-left: 2%;
-                padding: 0;
-                width: calc(~'(100% - 6%) / 4');
-
+        }
+        // display 3 products per row 2 columns left
+        &.page-layout-2columns-left {
+            .products-grid .product-item {
+                width: calc(~'(100% - 6%)/3');
                 &:nth-child(3n + 1) {
-                    margin-left: 2%;
-                }
-
-                &:nth-child(4n + 1) {
                     margin-left: 0;
                 }
             }
         }
-    }
-
-    .page-products {
+        // display 4 products per row 1 column
         &.page-layout-1column {
             .products-grid {
                 .product-item {
-                    margin-left: 0;
-                    width: 100%/4;
+                    padding: 0;
+                    margin-left: 2%;
+                    width: calc(~'(100% - 6%) / 4');
                     margin-bottom: @indent__l;
-
+                    &:nth-child(4n + 1) {
+                        margin-left: 0;
+                    }
                     &:nth-last-child(1),
                     &:nth-last-child(2),
                     &:nth-last-child(4),
