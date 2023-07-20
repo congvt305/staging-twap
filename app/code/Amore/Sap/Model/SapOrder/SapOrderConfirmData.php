@@ -101,6 +101,11 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $amConfig;
 
     /**
+     * @var \CJ\Rewards\Model\Data
+     */
+    private $rewardData;
+
+    /**
      * SapOrderConfirmData constructor.
      *
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -140,7 +145,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         StoreManagerInterface $storeManager,
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
-        \Amasty\Rewards\Model\Config $amConfig
+        \Amasty\Rewards\Model\Config $amConfig,
+        \CJ\Rewards\Model\Data $rewardData
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -157,6 +163,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
+        $this->rewardData = $rewardData;
     }
 
     /**
@@ -325,7 +332,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if (!$spendingRate) {
                     $spendingRate = 1;
                 }
-                $mileageUsedAmount = $rewardPoints / $spendingRate;
+                if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                    $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                } else {
+                    $mileageUsedAmount = $rewardPoints / $spendingRate;
+                }
             }
 
             $orderDiscountAmount = $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal) - $mileageUsedAmount;
@@ -569,7 +581,13 @@ class SapOrderConfirmData extends AbstractSapOrder
             if ($order->getData('am_spent_reward_points')) {
                 $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
             }
-            $mileageUsedAmount = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                $spendingRate = $rewardPoints / $mileageUsedAmount;
+            } else {
+                $mileageUsedAmount = $rewardPoints / $spendingRate;
+            }
             $mileageUsedAmountExisted = $mileageUsedAmount;
         }
 

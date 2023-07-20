@@ -12,6 +12,9 @@ class Config
     const EXCLUDE_DAYS = 'exclude_days';
 
     const POINT_OR_MONEY = 'use_point_or_money';
+    const LIST_OPTION_REWARD_POINT = 'list_option_reward_point';
+
+    const ENABLED_SHOW_LIST_OPTION_REWARD_POINT = 'enabled_show_list_option_reward_point';
 
     const USE_POINT_TO_GET_DISCOUNT = 1;
 
@@ -81,5 +84,27 @@ class Config
     public function isUsePointOrMoney($store = null)
     {
         return $this->getScopeValue(AmastyConfig::GENERAL_GROUP, self::POINT_OR_MONEY, $store);
+    }
+
+    /**
+     * Get list reward point
+     *
+     * @param $store
+     * @return string
+     */
+    public function getListOptionRewardPoint($store = null)
+    {
+        return $this->getScopeValue(AmastyConfig::GENERAL_GROUP, self::LIST_OPTION_REWARD_POINT, $store);
+    }
+
+    /**
+     * Is enable show list option
+     *
+     * @param $store
+     * @return string
+     */
+    public function isEnableShowListOptionRewardPoint($store = null)
+    {
+        return $this->getScopeValue(AmastyConfig::GENERAL_GROUP, self::ENABLED_SHOW_LIST_OPTION_REWARD_POINT, $store);
     }
 }

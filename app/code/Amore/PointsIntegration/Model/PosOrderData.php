@@ -117,14 +117,19 @@ class PosOrderData
     private $orderStatusHistoryRepository;
 
     /**
+     * @var \Amasty\Rewards\Model\Config
+     */
+    private $amConfig;
+
+    /**
      * @var ReferralConfig
      */
     private $referralConfig;
 
     /**
-     * @var \Amasty\Rewards\Model\Config
+     * @var \CJ\Rewards\Model\Data
      */
-    private $amConfig;
+    private $rewardData;
 
     /**
      * @param RedInvoiceCollectionFactory $redInvoiceCollectionFactory
@@ -143,6 +148,9 @@ class PosOrderData
      * @param StoreManagerInterface $storeManager
      * @param Data $middlewareConfig
      * @param OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository
+     * @param \Amasty\Rewards\Model\Config $amConfig
+     * @param ReferralConfig $referralConfig
+     * @param \CJ\Rewards\Model\Data $rewardData
      */
     public function __construct(
         RedInvoiceCollectionFactory    $redInvoiceCollectionFactory,
@@ -161,8 +169,9 @@ class PosOrderData
         StoreManagerInterface          $storeManager,
         Data                           $middlewareConfig,
         OrderStatusHistoryRepositoryInterface $orderStatusHistoryRepository,
+        \Amasty\Rewards\Model\Config $amConfig,
         ReferralConfig $referralConfig,
-        \Amasty\Rewards\Model\Config $amConfig
+        \CJ\Rewards\Model\Data $rewardData
     ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
         $this->config = $config;
@@ -180,8 +189,9 @@ class PosOrderData
         $this->storeManager = $storeManager;
         $this->middlewareConfig = $middlewareConfig;
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
-        $this->referralConfig = $referralConfig;
         $this->amConfig = $amConfig;
+        $this->referralConfig = $referralConfig;
+        $this->rewardData = $rewardData;
     }
 
     /**
@@ -233,7 +243,13 @@ class PosOrderData
             if (!$spendingRate) {
                 $spendingRate = 1;
             }
-            $discountFromPoints = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $discountFromPoints = $listOptions[$rewardPoints] ?? 0;
+            } else {
+                $discountFromPoints = $rewardPoints / $spendingRate;
+            }
+
             if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
                 $redemptionFlag = 'Y';
             }
