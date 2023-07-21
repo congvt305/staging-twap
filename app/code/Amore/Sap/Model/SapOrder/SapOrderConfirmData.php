@@ -741,6 +741,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                                 (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
                                 $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                         );
+                        //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
+                        //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
+                        // -> so it will be error inconsistent amount
+
+                        if ($itemTotalDiscount > $itemSubtotal) {
+                            $itemTotalDiscount = $itemSubtotal;
+                        }
+
                         $itemTaxAmount = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount()), $isDecimalFormat));
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
