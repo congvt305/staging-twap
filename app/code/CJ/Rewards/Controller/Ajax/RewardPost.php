@@ -75,7 +75,7 @@ class RewardPost implements HttpPostActionInterface
     {
         $applyCode = $this->request ->getParam('remove') == 1 ? 0 : 1;
         $cartQuote = $this->_checkoutSession->getQuote();
-        $usedPoints = $this->request->getParam('amreward_amount', 0) * 1; // multiple with 1 to parse it to float or int
+        $usedPoints = (float)$this->request->getParam('amreward_amount', 0); //parse it to float
         $result = ['success' => true];
         $jsonResult = $this->resultJsonFactory->create();
         if (!$this->request->isAjax()) {

@@ -484,7 +484,16 @@ class SapOrderReturnData extends AbstractSapOrder
                         $catalogRuledPriceRatio * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                     );
                     $itemSubtotal = abs($this->roundingPrice($bundleChildItemPrice * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
-                    $itemTaxAmount = abs($this->roundingPrice($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle), $isDecimalFormat));
+                    //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
+                    //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
+                    // -> so it will be error inconsistent amount
+                    if ($itemDiscountAmount > $itemSubtotal) {
+                        $itemDiscountAmount = $itemSubtotal;
+                    }
+                    $itemTaxAmount = abs($this->roundingPrice(
+                        $this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle),
+                        $isDecimalFormat
+                    ));
 
                     $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
                     $itemNsamt = $itemSubtotal;
@@ -535,7 +544,10 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemsDiscountAmount += $itemDiscountAmount;
 
                     $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $itemsMileage += $this->roundingPrice($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle), $isDecimalFormat);
+                    $itemsMileage += $this->roundingPrice(
+                        $this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle),
+                        $isDecimalFormat
+                    );
                 }
             }
         }
