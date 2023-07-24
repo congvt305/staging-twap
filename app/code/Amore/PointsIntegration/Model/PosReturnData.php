@@ -123,6 +123,11 @@ class PosReturnData
     private $referralConfig;
 
     /**
+     * @var \CJ\Rewards\Model\Data
+     */
+    private $rewardData;
+
+    /**
      * @param Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
@@ -138,6 +143,10 @@ class PosReturnData
      * @param \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory
      * @param Logger $pointsIntegrationLogger
      * @param CommentInterfaceFactory $commentInterfaceFactory
+     * @param Data $middlewareHelper
+     * @param \Amasty\Rewards\Model\Config $amConfig
+     * @param ReferralConfig $referralConfig
+     * @param \CJ\Rewards\Model\Data $rewardData
      */
     public function __construct(
         Config                                                 $config,
@@ -157,7 +166,8 @@ class PosReturnData
         CommentInterfaceFactory                                $commentInterfaceFactory,
         Data                                                   $middlewareHelper,
         \Amasty\Rewards\Model\Config $amConfig,
-        ReferralConfig $referralConfig
+        ReferralConfig $referralConfig,
+        \CJ\Rewards\Model\Data $rewardData
     ) {
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -177,6 +187,7 @@ class PosReturnData
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
         $this->referralConfig = $referralConfig;
+        $this->rewardData = $rewardData;
     }
 
     /**
@@ -208,7 +219,12 @@ class PosReturnData
             if (!$spendingRate) {
                 $spendingRate = 1;
             }
-            $discountFromPoints = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $discountFromPoints = $listOptions[$rewardPoints] ?? 0;
+            } else {
+                $discountFromPoints = $rewardPoints / $spendingRate;
+            }
             if (($order->getGrandTotal() - $order->getShippingAmount()) == $discountFromPoints) {
                 $redemptionFlag = 'Y';
             }

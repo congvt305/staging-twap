@@ -1,0 +1,41 @@
+& when (@media-common = true) {
+    #popup-modal-apply {
+        display: none;
+        text-align: center;
+        margin-top: 25px;
+    }
+    .amrewards-discount-form {
+        .control {
+            padding: 20px 0 40px 0;
+            .reward-item-options {
+                float: left;
+                padding-right: 5px;
+            }
+        }
+        .amrewards-actions {
+            clear: both;
+            text-align: left;
+            .primary {
+                width: 30%;
+                .action {
+                    width: 100%;
+                    border: 1px solid #e0e0e0;
+                }
+            }
+        }
+    }
+
+}
+// Mobile
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .amrewards-discount-form {
+        .control {
+            padding: 20px 0px 20px 0px !important;
+            .reward-item-options {
+                float: none !important;
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+}

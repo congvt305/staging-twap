@@ -75,7 +75,7 @@ class RewardPost implements HttpPostActionInterface
     {
         $applyCode = $this->request ->getParam('remove') == 1 ? 0 : 1;
         $cartQuote = $this->_checkoutSession->getQuote();
-        $usedPoints = $this->request->getParam('amreward_amount', 0);
+        $usedPoints = (float)$this->request->getParam('amreward_amount', 0); //parse it to float
         $result = ['success' => true];
         $jsonResult = $this->resultJsonFactory->create();
         if (!$this->request->isAjax()) {
@@ -98,8 +98,7 @@ class RewardPost implements HttpPostActionInterface
             }
             $isUsePointOrMoney = $this->rewardsData->isUsePointOrMoney();
             if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_MONEY_TO_GET_DISCOUNT) {
-                // multiple with 1 to parse it to float or int
-                if (!is_int($usedPoints * 1)) {
+                if (!is_int($usedPoints)) {
                     $result['message'] = __('The amount must be greater than 0 and must be integer');
                     $result['success'] = false;
                 }

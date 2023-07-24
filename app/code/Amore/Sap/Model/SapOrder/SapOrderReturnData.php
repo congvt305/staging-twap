@@ -97,6 +97,11 @@ class SapOrderReturnData extends AbstractSapOrder
     private $amConfig;
 
     /**
+     * @var \CJ\Rewards\Model\Data
+     */
+    private $rewardData;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -132,7 +137,8 @@ class SapOrderReturnData extends AbstractSapOrder
         StoreManagerInterface $storeManager,
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
-        \Amasty\Rewards\Model\Config $amConfig
+        \Amasty\Rewards\Model\Config $amConfig,
+        \CJ\Rewards\Model\Data $rewardData
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -148,6 +154,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
+        $this->rewardData = $rewardData;
     }
 
     /**
@@ -204,7 +211,12 @@ class SapOrderReturnData extends AbstractSapOrder
             if (!$spendingRate) {
                 $spendingRate = 1;
             }
-            $pointUsed = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $pointUsed = $listOptions[$rewardPoints] ?? 0;
+            } else {
+                $pointUsed = $rewardPoints / $spendingRate;
+            }
             if ($pointUsed == $order->getBaseSubtotal()) {
                 $redemptionFlag = 'Y';
             }
@@ -331,7 +343,12 @@ class SapOrderReturnData extends AbstractSapOrder
             if (!$spendingRate) {
                 $spendingRate = 1;
             }
-            $mileageUsedAmount = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+            } else {
+                $mileageUsedAmount = $rewardPoints / $spendingRate;
+            }
             $mileageUsedAmountExisted = $mileageUsedAmount;
         }
 
@@ -471,7 +488,16 @@ class SapOrderReturnData extends AbstractSapOrder
                         (($product->getPrice() - $childPriceRatio) * $bundleChildrenItem->getQtyOrdered()) +
                         $catalogRuledPriceRatio * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                     );
+
+
                     $itemSubtotal = abs($this->roundingPrice($bundleChildItemPrice * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
+
+                    //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
+                    //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
+                    // -> so it will be error inconsistent amount
+                    if ($itemDiscountAmount > $itemSubtotal) {
+                        $itemDiscountAmount = $itemSubtotal;
+                    }
                     $itemTaxAmount = abs($this->roundingPrice(
                         $this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle),
                         $isDecimalFormat

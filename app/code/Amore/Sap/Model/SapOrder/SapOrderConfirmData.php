@@ -101,6 +101,11 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $amConfig;
 
     /**
+     * @var \CJ\Rewards\Model\Data
+     */
+    private $rewardData;
+
+    /**
      * SapOrderConfirmData constructor.
      *
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -140,7 +145,8 @@ class SapOrderConfirmData extends AbstractSapOrder
         StoreManagerInterface $storeManager,
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
-        \Amasty\Rewards\Model\Config $amConfig
+        \Amasty\Rewards\Model\Config $amConfig,
+        \CJ\Rewards\Model\Data $rewardData
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->invoiceRepository = $invoiceRepository;
@@ -157,6 +163,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
+        $this->rewardData = $rewardData;
     }
 
     /**
@@ -324,7 +331,12 @@ class SapOrderConfirmData extends AbstractSapOrder
                 if (!$spendingRate) {
                     $spendingRate = 1;
                 }
-                $mileageUsedAmount = $rewardPoints / $spendingRate;
+                if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                    $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                } else {
+                    $mileageUsedAmount = $rewardPoints / $spendingRate;
+                }
             }
             $orderDiscountAmount = $this->getOrderDiscountAmount($orderData, $orderSubTotal, $orderGrandTotal) - $mileageUsedAmount;
             $isMileageOrder = bcsub($orderSubTotal, $orderDiscountAmount) == $mileageUsedAmount && $mileageUsedAmount > 0;
@@ -581,7 +593,13 @@ class SapOrderConfirmData extends AbstractSapOrder
             if ($order->getData('am_spent_reward_points')) {
                 $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
             }
-            $mileageUsedAmount = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                $spendingRate = $rewardPoints / $mileageUsedAmount;
+            } else {
+                $mileageUsedAmount = $rewardPoints / $spendingRate;
+            }
             $mileageUsedAmountExisted = $mileageUsedAmount;
         }
 
@@ -723,6 +741,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                                 (($product->getPrice() - $childPriceRatio) * $bundleChild->getQtyOrdered()) +
                                 $catalogRuledPriceRatio * $bundleChild->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                         );
+                        //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
+                        //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
+                        // -> so it will be error inconsistent amount
+
+                        if ($itemTotalDiscount > $itemSubtotal) {
+                            $itemTotalDiscount = $itemSubtotal;
+                        }
+
                         $itemTaxAmount = abs($this->roundingPrice($this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getTaxAmount()), $isDecimalFormat));
 
                         $sku = str_replace($skuPrefix, '', $bundleChild->getSku());
@@ -768,7 +794,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             'itemNsamt' => $pointRedemption > 0 ? $pointRedemption : $itemSubtotal,
                             'itemDcamt' => $pointRedemption ? 0 : $itemTotalDiscount,
                             'itemSlamt' => $pointRedemption > 0 ? $pointRedemption : $itemSaleAmount,
-                            'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs($this->roundingPrice($mileagePerItem)),
+                            'itemMiamt' => $pointRedemption > 0 ? $pointRedemption : abs($this->roundingPrice($mileagePerItem, $isDecimalFormat)),
                             // 상품이 무상제공인 경우 Y 아니면 N
                             'itemFgflg' => $pointRedemption ? 'N' : ($itemSaleAmount == 0 ? 'Y' : 'N'),
                             'itemMilfg' => $pointRedemption ? 'Y' : (($isMileageOrderItem) ? 'Y' : 'N'),

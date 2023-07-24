@@ -4,12 +4,16 @@
     <type name="Magento\Checkout\Controller\Cart\Index">
         <plugin name="cj_checkout_point_set_plugin" type="CJ\Rewards\Plugin\Checkout\Controller\IndexPlugin" sortOrder="1" />
     </type>
+    <type name="Magento\Checkout\Controller\Index\Index">
+        <plugin name="cj_checkout_point_set_plugin_checkout" type="CJ\Rewards\Plugin\Checkout\Controller\Index\IndexPlugin" sortOrder="1" />
+    </type>
     <type name="Amasty\Rewards\Model\Quote\Collector\Points">
         <plugin name="cj_reward_before_collect" type="CJ\Rewards\Plugin\Model\Quote\Collector\CheckCondition" sortOrder="1" />
     </type>
     <preference for="Amasty\Rewards\Model\CheckoutRewardsManagement" type="CJ\Rewards\Model\CheckoutRewardsManagement" />
     <preference for="Amasty\Rewards\Controller\Index\RewardPost" type="CJ\Rewards\Controller\Index\RewardPost" />
     <preference for="Amasty\Rewards\Model\Calculation\Discount" type="CJ\Rewards\Model\Calculation\Discount" />
+    <preference for="Amasty\Rewards\Model\Points\Converter\ToMoney" type="CJ\Rewards\Model\Points\Converter\ToMoney" />
     <type name="CJ\Rewards\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>

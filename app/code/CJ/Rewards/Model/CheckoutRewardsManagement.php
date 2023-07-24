@@ -126,7 +126,11 @@ class CheckoutRewardsManagement extends \Amasty\Rewards\Model\CheckoutRewardsMan
         if ($isUsePointOrMoney == CJCustomConfig::USE_MONEY_TO_GET_DISCOUNT) {
             $usedNotice = __('%1 has been discounted', $pointsData['allowed_points'] / $this->config->getPointsRate());
         } else {
-            $usedNotice = __('You used %1 point(s).', $pointsData['allowed_points']);
+            if ($this->cjCustomConfig->isEnableShowListOptionRewardPoint()) {
+                $usedNotice = __('Point discount applied successfully');
+            } else {
+                $usedNotice = __('You used %1 point(s).', $pointsData['allowed_points']);
+            }
         }
 
         $pointsData['notice'] = $pointsData['notice'] . ' ' . $usedNotice;
