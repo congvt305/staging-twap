@@ -73,7 +73,7 @@ class ReCheckAndUpdatePoint
 
         if ($this->responseValidation($customerPointsInfo) && isset($customerPointsInfo['data']['availablePoint'])) {
             $data = $customerPointsInfo['data'];
-                $data['availablePoint'] = 500000;
+            //$data['availablePoint'] = 500000;
             $availablePoint = (int)$data['availablePoint']; //parse to int because if do not have availablePoint, availablePoint = ''
             $customerRewards = $this->rewardsRepository->getCustomerRewardBalance($customer->getId());
             if (!$this->pointUpdate->isNeedUpdatePointFromPos($customer->getId())) {
