@@ -18,6 +18,8 @@ if ($block->getCustomerId() && $block->canShowConvertPoint()) :
     if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_MONEY_TO_GET_DISCOUNT) {
         $amountUsed = $pointsUsed / $rateForCurrency;
     }
+    $pointsRate = $block->getPointsRate();
+    $currentCurrency = $block->getCurrentCurrencyCode();
     ?>
     <div class="amrewards-apply-container block reward _collapsible opc-payment-additional _active" id="block-reward">
         <div class="payment-option-title field choice" data-role="title">
@@ -39,11 +41,13 @@ if ($block->getCustomerId() && $block->canShowConvertPoint()) :
                 </div>
             <?php else: ?>
                 <div class="max-point" data-role="title">
+                        <span><?php /* @escapeNotVerified */
+                            echo __('%1 points available', $maximumPoint) ?></span>
                     <span><?php /* @escapeNotVerified */
                         echo __('Up to %1 discount', $maximumPoint / $rateForCurrency) ?></span>
                     <br/>
                     <span><?php /* @escapeNotVerified */
-                        echo __('(%1 points available)', $maximumPoint) ?></span>
+                        echo __('(%2 for every %1)', $pointsRate, $rateForCurrency) ?></span>
                 </div>
             <?php endif; ?>
             <div class="amrewards-points-rate" data-role="title">
