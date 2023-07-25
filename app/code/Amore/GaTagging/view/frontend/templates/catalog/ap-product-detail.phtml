@@ -11,18 +11,12 @@
 $currentProduct = $block->getCurrentProduct();
 $productHelper = $this->helper("Magento\Catalog\Helper\Product");
 $gaTaggingHelper = $this->helper("Amore\GaTagging\Helper\Data");
-$originalPrice = $currentProduct->getPrice();
 $productInfo = $block->getProductInfo($currentProduct);
-if ($currentProduct->getTypeId() == 'bundle') {
-    $price = $currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
-    $originalPrice = $currentProduct->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
-} else {
-    $price = round($currentProduct->getFinalPrice());
-}
+// Get original price
+$originalPrice = $block->getProductOriginalPrice($currentProduct);
+// Get Discounted price
+$price = $block->getProductDiscountedPrice($currentProduct);
 $productImageUrl = $productHelper->getThumbnailUrl($currentProduct);
-if ($currentProduct->getTypeId() == 'configurable') {
-    $originalPrice = $currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount();
-}
 $qty = ($currentProduct->isSaleable()) ? $block->getProductDefaultQty($currentProduct) * 1 : 0;
 ?>
 <script>

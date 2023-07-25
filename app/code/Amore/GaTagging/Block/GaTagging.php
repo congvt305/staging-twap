@@ -674,5 +674,23 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getCurrentDate() {
         return $this->dateTimeFactory->create()->gmtDate(self::FORMAT_DATE);
     }
+
+    /**
+     * @param $product
+     * @return mixed
+     */
+    public function getProductOriginalPrice($product)
+    {
+        return $this->ap->getProductOriginalPrice($product);
+    }
+
+    /**
+     * @param $product
+     * @return float|mixed
+     */
+    public function getProductDiscountedPrice($product)
+    {
+        return $this->ap->getProductDiscountedPrice($product);
+    }
 }
 
