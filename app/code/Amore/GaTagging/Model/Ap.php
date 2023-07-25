@@ -115,24 +115,21 @@ class Ap
     protected function getBundleProductInfo($product)
     {
         $productInfos = [];
-        /** @var \Magento\Bundle\Model\Product\Type $bundleType */
-        $bundleType = $product->getTypeInstance();
-        $optionIds = $bundleType->getOptionsIds($product);
-        $selections = $bundleType->getSelectionsCollection($optionIds, $product);
-        $selectionProducts = [];
-        $selectionsTotal = 0;
-        foreach ($selections as $selection) {
-            $selectionProduct = $this->productRepository->getById($selection->getProductId());
-            $selectionProducts[$selection->getProductId()]['product'] = $selectionProduct;
-            $selectionProducts[$selection->getProductId()]['qty'] = $selection->getSelectionQty();
-            $selectionsTotal += $selectionProduct->getPrice() * $selection->getSelectionQty();
-        }
-        foreach ($selectionProducts as $productId => $productInfo) {
-            $product = $productInfo['product'];
-            if ($selectionsTotal != 0) {
-                $productInfos[] = $this->getSimpleProductInfo($product, $productInfo['qty'], $product->getPrice() / $selectionsTotal * $productInfo['qty']);
-            }
-        }
+        $productInfo = [];
+        $productInfo['name'] = $product->getName();
+        $productInfo['code'] = $product->getSku();
+        $productInfo['v2code'] = $product->getId();
+        $productInfo['sapcode'] = $product->getSku();
+        $productInfo['brand'] = $this->helper->getSiteName() ?? '';
+        $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
+        $productInfo['variant'] = '';
+        $productInfo['promotion'] = '';
+        $productInfo['cate'] = $this->getProductCategory($product);
+        $productInfo['catecode'] = '';
+        $productInfo['price'] = $this->getProductDiscountedPrice($product);
+        $productInfo['url'] = $product->getProductUrl();
+        $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
+        $productInfos[] = $productInfo;
         return $productInfos;
     }
 
@@ -144,12 +141,21 @@ class Ap
     protected function getConfigurableProductInfo($product)
     {
         $productInfos = [];
-        $childrenIds = $product->getTypeInstance()->getChildrenIds($product->getId());
-        $childrenIds = reset($childrenIds);
-        foreach ($childrenIds as $key => $childProductId) {
-            $childProduct = $this->productRepository->getById($childProductId);
-            $productInfos[] = $this->getSimpleProductInfo($childProduct);
-        }
+        $productInfo = [];
+        $productInfo['name'] = $product->getName();
+        $productInfo['code'] = $product->getSku();
+        $productInfo['v2code'] = $product->getId();
+        $productInfo['sapcode'] = $product->getSku();
+        $productInfo['brand'] = $this->helper->getSiteName() ?? '';
+        $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
+        $productInfo['variant'] = '';
+        $productInfo['promotion'] = '';
+        $productInfo['cate'] = $this->getProductCategory($product);
+        $productInfo['catecode'] = '';
+        $productInfo['price'] = $this->getProductDiscountedPrice($product);
+        $productInfo['url'] = $product->getProductUrl();
+        $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
+        $productInfos[] = $productInfo;
         return $productInfos;
     }
 
@@ -188,4 +194,39 @@ class Ap
         }
     }
 
+    /**
+     * @param $currentProduct
+     * @return mixed
+     */
+    public function getProductOriginalPrice($currentProduct)
+    {
+        $productType = $currentProduct->getTypeId();
+        if ($productType == 'bundle') {
+            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue());
+        } else if ($productType == 'configurable') {
+            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount());
+        } else {
+            $originalPrice = intval($currentProduct->getPrice());
+        }
+
+        return $originalPrice;
+    }
+
+    /**
+     * @param $currentProduct
+     * @return float|mixed
+     */
+    public function getProductDiscountedPrice($currentProduct)
+    {
+        $productType = $currentProduct->getTypeId();
+        if ($productType == 'bundle') {
+            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
+        } elseif ($productType == 'configurable'){
+            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getValue());
+        } else {
+            $price = intval($currentProduct->getFinalPrice());
+        }
+
+        return $price;
+    }
 }
