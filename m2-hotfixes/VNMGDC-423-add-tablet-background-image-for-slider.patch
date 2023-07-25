@@ -1,0 +1,27 @@
+From 00d04e92dedd21192d82c88284ec2f1cd229f787 Mon Sep 17 00:00:00 2001
+From: Khuong Nguyen <khuong.nguyen@amorepacific.com>
+Date: Wed, 18 May 2022 09:05:43 +0700
+Subject: [PATCH] Add Tablet background image for Slider
+
+---
+ vendor/magento/module-page-builder/Model/Filter/Template.php | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/vendor/magento/module-page-builder/Model/Filter/Template.php b/vendor/magento/module-page-builder/Model/Filter/Template.php
+index 52c9f81..3bcd00b 100755
+--- a/vendor/magento/module-page-builder/Model/Filter/Template.php
++++ b/vendor/magento/module-page-builder/Model/Filter/Template.php
+@@ -308,6 +308,11 @@ class Template
+                 'background-image' => 'url(' . $images['desktop_image'] . ')',
+             ];
+         }
++        if (isset($images['tablet_image']) && $this->getMediaQuery('tablet')) {
++            $css[$this->getMediaQuery('tablet')]['.' . $elementClass] = [
++                'background-image' => 'url(' . $images['tablet_image'] . ')',
++            ];
++        }
+         if (isset($images['mobile_image']) && $this->getMediaQuery('mobile')) {
+             $css[$this->getMediaQuery('mobile')]['.' . $elementClass] = [
+                 'background-image' => 'url(' . $images['mobile_image'] . ')',
+--
+2.25.1
