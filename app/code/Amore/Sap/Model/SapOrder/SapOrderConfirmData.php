@@ -829,10 +829,10 @@ class SapOrderConfirmData extends AbstractSapOrder
             $itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
         $orderItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
-        $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
         $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
+        $orderItemData = $this->priceCorrector($orderGrandtotal, $itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
 
         if ($isDecimalFormat) {
             $listToFormat = ['itemNsamt', 'itemSlamt', 'itemDcamt', 'itemMiamt', 'itemNetwr'];
