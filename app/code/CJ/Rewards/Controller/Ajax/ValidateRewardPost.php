@@ -9,7 +9,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Psr\Log\LoggerInterface;
 
-class RewardPost implements HttpPostActionInterface
+class ValidateRewardPost implements HttpPostActionInterface
 {
     /**
      * @var LoggerInterface
@@ -41,10 +41,6 @@ class RewardPost implements HttpPostActionInterface
      */
     private $rewardsData;
 
-    /**
-     * @var \CJ\Middleware\Helper\Data
-     */
-    private $middlewareHelper;
 
     /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -53,7 +49,6 @@ class RewardPost implements HttpPostActionInterface
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\App\RequestInterface $request
      * @param Data $rewardsData
-     * @param \CJ\Middleware\Helper\Data $middlewareHelper
      */
     public function __construct(
         \Magento\Checkout\Model\Session $checkoutSession,
@@ -61,8 +56,7 @@ class RewardPost implements HttpPostActionInterface
         CheckoutRewardsManagementInterface $rewardsManagement,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\App\RequestInterface $request,
-        Data $rewardsData,
-        \CJ\Middleware\Helper\Data $middlewareHelper,
+        Data $rewardsData
     ) {
 
         $this->logger = $logger;
@@ -71,7 +65,6 @@ class RewardPost implements HttpPostActionInterface
         $this->resultJsonFactory = $resultJsonFactory;
         $this->request = $request;
         $this->rewardsData = $rewardsData;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -83,12 +76,6 @@ class RewardPost implements HttpPostActionInterface
     {
         $applyCode = $this->request ->getParam('remove') == 1 ? 0 : 1;
         $cartQuote = $this->_checkoutSession->getQuote();
-        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $cartQuote->getStoreId());
-        if ($isDecimalFormat) {
-            $usedPoints = (float)$this->request->getParam('amreward_amount', 0); //parse it to float
-        } else {
-            $usedPoints = (int)$this->request->getParam('amreward_amount', 0); //parse it to float
-        }
 
         $result = ['success' => true];
         $jsonResult = $this->resultJsonFactory->create();
@@ -109,23 +96,6 @@ class RewardPost implements HttpPostActionInterface
             if (!$this->rewardsData->canUseRewardPoint($cartQuote)) {
                 $result['message'] = __('You can\'t use point right now');
                 $result['success'] = false;
-            }
-            $isUsePointOrMoney = $this->rewardsData->isUsePointOrMoney();
-            if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_MONEY_TO_GET_DISCOUNT) {
-                $usedPoints = $usedPoints * (int)$this->rewardsData->getPointsRate();
-            }
-
-            try {
-                if ($result['success']) {
-                    $this->rewardsManagement->set($cartQuote->getId(), $usedPoints);
-                }
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $result['message'] = $e->getMessage();
-                $result['success'] = false;
-            } catch (\Exception $e) {
-                $result['message'] = __('We cannot Reward.');
-                $result['success'] = false;
-                $this->logger->critical($e);
             }
         }
 

@@ -29,6 +29,11 @@ class RewardPost extends \Amasty\Rewards\Controller\Index\RewardPost
     private $logger;
 
     /**
+     * @var \CJ\Middleware\Helper\Data
+     */
+    private $middlewareHelper;
+
+    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -39,6 +44,7 @@ class RewardPost extends \Amasty\Rewards\Controller\Index\RewardPost
      * @param CheckoutRewardsManagementInterface $rewardsManagement
      * @param Config $cjCustomConfig
      * @param \Amasty\Rewards\Model\Config $amastyConfig
+     * @param \CJ\Middleware\Helper\Data $middlewareHelper
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -50,7 +56,8 @@ class RewardPost extends \Amasty\Rewards\Controller\Index\RewardPost
         LoggerInterface $logger,
         CheckoutRewardsManagementInterface $rewardsManagement,
         Config $cjCustomConfig,
-        \Amasty\Rewards\Model\Config $amastyConfig
+        \Amasty\Rewards\Model\Config $amastyConfig,
+        \CJ\Middleware\Helper\Data $middlewareHelper
     ) {
         parent::__construct(
             $context,
@@ -66,6 +73,7 @@ class RewardPost extends \Amasty\Rewards\Controller\Index\RewardPost
         $this->cjCustomConfig = $cjCustomConfig;
         $this->amastyConfig = $amastyConfig;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -79,7 +87,12 @@ class RewardPost extends \Amasty\Rewards\Controller\Index\RewardPost
     {
         $applyCode = $this->getRequest()->getParam('remove') == 1 ? 0 : 1;
         $cartQuote = $this->_checkoutSession->getQuote();
-        $usedPoints = $this->getRequest()->getParam('amreward_amount', 0);
+        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $cartQuote->getStoreId());
+        if ($isDecimalFormat) {
+            $usedPoints = (float)$this->getRequest()->getParam('amreward_amount', 0); //parse it to float
+        } else {
+            $usedPoints = (int)$this->getRequest()->getParam('amreward_amount', 0); //parse it to int
+        }
         //custom code here
         $isUsePointOrMoney = $this->cjCustomConfig->isUsePointOrMoney();
         if ($isUsePointOrMoney == Config::USE_MONEY_TO_GET_DISCOUNT) {

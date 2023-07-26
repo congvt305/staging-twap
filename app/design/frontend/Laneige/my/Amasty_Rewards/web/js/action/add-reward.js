@@ -23,7 +23,7 @@ define([
             messageContainer.clear();
             fullScreenLoader.startLoader();
             $.ajax({
-                url: url.build('cj_amrewards/ajax/rewardpost'),
+                url: url.build('cj_amrewards/ajax/validaterewardpost'),
                 type: 'post',
                 dataType: 'json',
                 context: this,

@@ -21,7 +21,7 @@ define([
                 this.removeReward.attr('value', '0');
                 $(this.element).validation()
                 $.ajax({
-                    url: url.build('cj_amrewards/ajax/rewardpost'),
+                    url: url.build('cj_amrewards/ajax/validaterewardpost'),
                     type: 'post',
                     dataType: 'json',
                     context: this,
