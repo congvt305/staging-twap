@@ -3,5 +3,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="customer_entity">
         <column xsi:type="varchar" name="pos_cstm_no" nullable="true" length="20" comment="POS Customer ID"/>
+        <column xsi:type="varchar" name="register_type" nullable="true" length="20" comment="Register type"/>
     </table>
 </schema>

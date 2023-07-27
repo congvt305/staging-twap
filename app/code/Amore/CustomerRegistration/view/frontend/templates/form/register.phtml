@@ -321,7 +321,18 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
             <div class="field required" style="display: none;">
                 <input type="hidden" name="integration_number" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('integration_number')) ?>" id="integration_number">
             </div>
-
+            <input type="hidden"
+                   name="cstmGradeCD"
+                   id="cstmGradeCD"
+                   value="">
+            <input type="hidden"
+                   name="cstmGradeNM"
+                   id="cstmGradeNM"
+                   value="">
+            <input type="hidden"
+                    name="register_type"
+                    id="register_type"
+                    value="">
         </fieldset>
         <div class="store-info" style="display: none">
             <input type="hidden"
@@ -352,11 +363,18 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
 <script>
 require([
     'jquery',
+    'underscore',
     'mage/mage'
-], function($){
+], function($,_){
 
     var dataForm = $('#form-validate');
     var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var register_type = url.searchParams.get("utm_source");
+    if (register_type) {
+        $('#register_type').val(_.escape(register_type));
+    }
 
     dataForm.mage('validation', {
     <?php if ($_dob->isEnabled()) : ?>

@@ -365,8 +365,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['quantity'] = intval($parentItem->getQty());
                 $product['variant'] = '';
                 $product['promotion'] = '';
-                $product['cate'] = '';
+                $product['cate'] = $this->ap->getProductCategory($parentProduct);
                 $product['catecode'] = '';
+                $product['url'] = $parentProduct->getProductUrl();
+                $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentProduct);
                 if ($parentItem->getProductType() === 'bundle') {
                     $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue());
                     $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
@@ -398,7 +400,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                     $product['quantity'] = intval($item->getQty());
                     $product['variant'] =  '';
                     $product['promotion'] = ''; //todo simple promotion??
-                    $product['cate'] = '';
+                    $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+                    $product['url'] = $item->getProduct()->getProductUrl();
+                    $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
                     $product['catecode'] = '';
                     $products[] = $product;
                 }
@@ -433,7 +437,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['quantity'] = intval($item->getQty());
             $product['variant'] =  '';
             $product['promotion'] = ''; //todo simple promotion??
-            $product['cate'] = '';
+            $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+            $product['url'] = $item->getProduct()->getProductUrl();
+            $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
             $product['catecode'] = '';
 
             if ($item->getParentItemId()) {
@@ -590,8 +596,80 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $orderData['AP_PURCHASE_CURRENCY'] = $this->getCurrentCurrencyCode();
         $orderData['AP_PURCHASE_DATE'] = $this->dateTimeFactory->create()->gmtDate(self::FORMAT_DATE, $order->getCreatedAt());
         $orderData['AP_PURCHASE_COUPONNAME'] = $order->getCouponCode() ?? '';
-        $orderData['AP_PURCHASE_DCTOTAL'] = $order->getDiscountAmount();
         return $orderData;
+    }
+
+    /**
+     * Get Parent Product of Bundle or Configurable in order
+     *
+     * @param $allItems
+     * @return array
+     */
+    private function getOrderRealParentItemsData($allItems)
+    {
+        $products = [];
+        $allItemsArr = [];
+        $parentSku = '';
+        foreach ($allItems as $item) {
+            $allItemsArr[] = $item->getData();
+        }
+        foreach ($allItems as $item) {
+            $product = [];
+            if ($item->getParentItemId()) {
+                $parentItem = $allItems[array_search($item->getParentItemId(), array_column($allItemsArr, 'item_id'))];
+                if($parentSku == $parentItem->getSku()) {
+                    continue;
+                }
+                $parentProduct = $parentItem->getProduct();
+                $product['name'] = $parentProduct->getData('name');
+                $product['code'] = $parentProduct->getData('sku');
+                $product['sapcode'] = $parentProduct->getData('sku');
+                $product['brand'] = $this->helper->getSiteName() ?? '';
+                $product['quantity'] = intval($parentItem->getQtyOrdered());
+                $product['variant'] = '';
+                $product['promotion'] = '';
+                $product['cate'] = '';
+                $product['catecode'] = '';
+                if ($parentItem->getProductType() === 'bundle') {
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
+                    $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
+
+                }
+
+                if ($parentItem->getAppliedRuleIds()) {
+                    $product['promotion'] = $parentItem->getAppliedRuleIds();
+                }
+
+                if ($parentItem->getProductType() === 'configurable') {
+                    $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
+                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getValue()) ?? 0;
+                    // $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getValue()) ?? 0;
+                    $nameArr = explode(' ', $item->getName());
+                    $product['variant'] = $nameArr[(count($nameArr) - 1)];
+                }
+                $products[] = $product;
+                $parentSku = $parentItem->getSku();
+            }
+            else {
+                if ($item->getProductType() == 'simple') {
+                    $product['name'] = $item->getName();
+                    $product['code'] = $item->getSku();
+                    $product['sapcode'] = $item->getSku();
+                    $product['brand'] = $this->helper->getSiteName() ?? '';
+                    $product['prdprice'] = intval($item->getProduct()->getPrice());
+                    $product['price'] =  intval($item->getPrice()); // // cat rule applied, need an attention 얼마에 팔았냐? 일단 로우토탈을 qty로 나눈다.
+                    $product['quantity'] = intval($item->getQtyOrdered());
+                    $product['variant'] =  '';
+                    $product['promotion'] = ''; //todo simple promotion??
+                    $product['cate'] = '';
+                    $product['catecode'] = '';
+                    $products[] = $product;
+                }
+            }
+
+        }
+        return $products;
+
     }
 
     private function getCheckoutSession()
@@ -691,6 +769,51 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getProductDiscountedPrice($product)
     {
         return $this->ap->getProductDiscountedPrice($product);
+    }
+
+    /**
+     * @return \Magento\Customer\Model\Customer
+     */
+    public function getCurrentCustomer()
+    {
+        return $this->customerSession->getCustomer();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEventRegisterSuccess() {
+        return $this->customerSession->getEventRegisterSuccess();
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function setEventRegisterSuccess($value) {
+        return $this->customerSession->setEventRegisterSuccess($value);
+    }
+
+    /**
+     * @param $customer
+     * @return string
+     */
+    public function getCustomerIntegrationNumber($customer) {
+        try {
+            $integrationNumber = $customer->getIntegrationNumber();
+            return $integrationNumber ? hash('sha512', $customer->getIntegrationNumber()) : 'X';
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
+
+    /**
+     * @param $customer
+     * @return false|string
+     */
+    public function getCustomerRegisterDate($customer) {
+        $registerDate = $customer->getCreatedAt();
+        return $this->dateTimeFactory->create()->gmtDate(self::FORMAT_DATE, $registerDate);
     }
 }
 

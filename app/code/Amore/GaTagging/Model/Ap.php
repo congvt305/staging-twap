@@ -204,7 +204,7 @@ class Ap
         if ($productType == 'bundle') {
             $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue());
         } else if ($productType == 'configurable') {
-            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount());
+            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount()->getValue());
         } else {
             $originalPrice = intval($currentProduct->getPrice());
         }
