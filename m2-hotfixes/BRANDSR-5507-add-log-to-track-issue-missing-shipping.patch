@@ -1,5 +1,5 @@
 diff --git a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
-index 6206b23fb..992b39e39 100644
+index 6206b23fb..927b0ccfe 100644
 --- a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
 +++ b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
 @@ -373,6 +373,20 @@ abstract class AbstractDb extends AbstractResource
@@ -7,8 +7,8 @@ index 6206b23fb..992b39e39 100644
      public function save(\Magento\Framework\Model\AbstractModel $object)
      {
 +        if ($object instanceof \Magento\Customer\Model\Address\AbstractAddress) {
-+            $object->getQuote()->getPayment()->getMethod();
-+            if ($object->getAddressType() == 'shipping' && $object->getQuote()->getPayment()->getMethod() && (!$object->getFirstname() || !$object->getLastname())) {
++            if ($object->getAddressType() == 'shipping' && $object->getShippingMethod() && $object->getQuote()->getStore()->getCode() == 'my_laneige'
++                && (!$object->getFirstname() || !$object->getLastname())) {
 +                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +                $backTrace = '';
 +                foreach ($debugBackTrace as $debug) {
@@ -24,15 +24,15 @@ index 6206b23fb..992b39e39 100644
              return $this->delete($object);
          }
 diff --git a/vendor/magento/module-quote/Model/QuoteManagement.php b/vendor/magento/module-quote/Model/QuoteManagement.php
-index 1933b5614..d496ac84b 100644
+index 51b68411d..15aed4715 100644
 --- a/vendor/magento/module-quote/Model/QuoteManagement.php
 +++ b/vendor/magento/module-quote/Model/QuoteManagement.php
-@@ -437,8 +437,19 @@ class QuoteManagement implements CartManagementInterface
-         }
+@@ -438,6 +438,18 @@ class QuoteManagement implements CartManagementInterface
 
          $this->eventManager->dispatch('checkout_submit_before', ['quote' => $quote]);
+
 +        $shippingAddress = $quote->getShippingAddress();
-+        if (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname()) {
++        if ($quote->getStore()->getCode() == 'my_laneige' && (!$shippingAddress->getFirstname() || !$shippingAddress->getLastname())) {
 +            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +            $backTrace = '';
 +            foreach ($debugBackTrace as $debug) {
@@ -44,7 +44,5 @@ index 1933b5614..d496ac84b 100644
 +            $logger->info('Missing shipping before submit quote Track Trace: ' . $backTrace);
 +        }
          $order = $this->submit($quote);
--
+
          if (null == $order) {
-             throw new LocalizedException(
-                 __('A server error stopped your order from being placed. Please try to place your order again.')
