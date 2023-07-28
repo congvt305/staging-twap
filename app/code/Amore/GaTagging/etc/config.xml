@@ -11,6 +11,7 @@
             <tagmanager>
                 <active>0</active>
                 <additional_container_enabled>0</additional_container_enabled>
+                <event_landing_after_join_enabled>0</event_landing_after_join_enabled>
             </tagmanager>
         </amore_gatagging>
     </default>

@@ -1,7 +1,8 @@
 {
     "customer_entity": {
         "column": {
-            "pos_cstm_no": true
+            "pos_cstm_no": true,
+            "register_type": true
         }
     }
 }
