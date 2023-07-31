@@ -367,7 +367,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 // case to create shipment successfully
                             } else {
                                 try {
-                                    $this->setQtyShipToOrderItem($order);
                                     $order->setStatus('shipment_processing');
                                     $order->setData('sap_response', $orderStatusData['ugtxt']);
                                     $this->orderRepository->save($order);
@@ -415,7 +414,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                 //added for VN end
                             } else {
                                 try {
-                                    $this->setQtyShipToOrderItem($order);
                                     $order->setStatus('shipment_processing');
                                     $order->setData('sap_response', $orderStatusData['ugtxt']);
                                     $this->orderRepository->save($order);
@@ -451,7 +449,6 @@ class SapOrderManagement implements SapOrderManagementInterface
                                     $this->UpdateTrackNo($track, $orderStatusData['ztrackId'], "gwlogistics", $this->getCarrierTitle('gwlogistics', $order->getStoreId()) ?: "超取-全家超商/7-Eleven");
                                 }
 
-                                $this->setQtyShipToOrderItem($order);
 
                                 if ($order->getStatus() != 'shipment_processing' || $order->getState() != 'complete') {
                                     $order->setState('complete');
@@ -597,24 +594,6 @@ class SapOrderManagement implements SapOrderManagementInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     */
-    public function setQtyShipToOrderItem($order)
-    {
-        if ($order->hasInvoices()) {
-            $orderItems = $order->getAllItems();
-            foreach ($orderItems as $item) {
-                if (empty($item->getQtyToShip()) || $item->getIsVirtual()) {
-                    continue;
-                }
-                $item->setQtyShipped($item->getQtyInvoiced());
-                $this->orderItemRepository->save($item);
-            }
-            $this->orderRepository->save($order);
-        }
     }
 
     /**
