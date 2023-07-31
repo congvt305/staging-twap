@@ -700,7 +700,7 @@ class SapOrderManagement implements SapOrderManagementInterface
      * @param string $carrierCode
      * @return int|null
      */
-    public function createShipment($order, $trackingNo, $shippingMethod, $carrierCode = 'blackcat')
+    public function createShipment(&$order, $trackingNo, $shippingMethod, $carrierCode = 'blackcat')
     {
         $shipmentItems = $this->createShipmentItem($order);
 
@@ -711,7 +711,7 @@ class SapOrderManagement implements SapOrderManagementInterface
         $track = $this->createTrackNo($trackingNo ,$shippingMethod, $carrierCode);
         $orderEntityId = $order->getEntityId();
 
-        return $this->shipOrderInterface
+        $shipmentId = $this->shipOrderInterface
             ->execute(
                 $orderEntityId,
                 $shipmentItems,
@@ -720,6 +720,8 @@ class SapOrderManagement implements SapOrderManagementInterface
                 null,
                 $track
             );
+        $order = $this->orderRepository->get($orderEntityId);
+        return $shipmentId;
     }
 
     public function createTrackNo($trackingNo, $shippingMethod, $carrierCode)
