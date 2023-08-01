@@ -628,8 +628,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['quantity'] = intval($parentItem->getQtyOrdered());
                 $product['variant'] = '';
                 $product['promotion'] = '';
-                $product['cate'] = '';
+                $product['cate'] = $this->ap->getProductCategory($parentProduct);
                 $product['catecode'] = '';
+                $product['url'] = $parentItem->getProductUrl();
+                $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentItem->getProduct());
                 if ($parentItem->getProductType() === 'bundle') {
                     $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
                     $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
@@ -661,8 +663,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                     $product['quantity'] = intval($item->getQtyOrdered());
                     $product['variant'] =  '';
                     $product['promotion'] = ''; //todo simple promotion??
-                    $product['cate'] = '';
+                    $product['cate'] = $this->ap->getProductCategory($item->getProduct());
                     $product['catecode'] = '';
+                    $product['url'] = $item->getProduct()->getProductUrl();
+                    $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
                     $products[] = $product;
                 }
             }
@@ -670,6 +674,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         return $products;
 
+    }
+
+    protected function getProductImage($productId)
+    {
+        $product = $this->productRepository->getById($productId);
+        return $this->catalogProductHelper->getThumbnailUrl($product);
     }
 
     private function getCheckoutSession()
