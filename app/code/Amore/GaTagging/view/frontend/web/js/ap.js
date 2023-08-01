@@ -50,6 +50,7 @@ define([
             $.ajax({
                 'url': config.getProductInfoUrl,
                 'type': 'GET',
+                'async': false,
                 'dataType': 'json',
                 'data': {"itemId": itemId},
                 'success': function(response) {
@@ -60,7 +61,6 @@ define([
                             AP_RMCART_PRDS.push(JSON.parse( info));
                         });
                         if (window.dataLayer) {
-                            console.log(AP_RMCART_PRDS)
                             window.AP_RMCART_PRDS = AP_RMCART_PRDS;
                             window.dataLayer.push({'event': 'rmcart'});
                         }

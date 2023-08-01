@@ -18,7 +18,7 @@ if ($eventRegisterSuccess):
         var AP_DATA_CID = "<?= $cid ?>";
         var AP_REGI_TYPE = "<?= $registerType ?>";
         var AP_REGI_DATE = "<?= $registerDate ?>";
-
+        window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'landingAfterJoin'})
     </script>
 <?php endif; ?>
