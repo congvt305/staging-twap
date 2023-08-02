@@ -9,6 +9,8 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Model\Source\Config;
+use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -25,13 +27,28 @@ class SapOrderCancelData extends AbstractSapOrder
 
     const CREDITMEMO_RESENT_TO_SAP_SUCCESS = 3;
 
+    /**
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param OrderRepositoryInterface $orderRepository
+     * @param StoreRepositoryInterface $storeRepository
+     * @param Config $config
+     * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
+     * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
+     * @param \Amore\Sap\Logger\Logger $logger
+     */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
         StoreRepositoryInterface $storeRepository,
-        Config $config
+        Config $config,
+        QuoteCvsLocationRepository $quoteCvsLocationRepository,
+        AttributeRepositoryInterface $eavAttributeRepositoryInterface,
+        \Amore\Sap\Logger\Logger $logger
     ) {
-        parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
+        parent::__construct($searchCriteriaBuilder, $orderRepository,
+            $storeRepository, $config,
+            $quoteCvsLocationRepository, $eavAttributeRepositoryInterface, $logger
+        );
     }
 
     /**
@@ -83,6 +100,14 @@ class SapOrderCancelData extends AbstractSapOrder
         return $request;
     }
 
+    /**
+     * Get order address update
+     *
+     * @param $incrementId
+     * @param $addressData
+     * @return array
+     * @throws NoSuchEntityException
+     */
     public function getOrderAddressUpdate($incrementId, $addressData)
     {
         /** @var Order $orderData */
@@ -114,6 +139,13 @@ class SapOrderCancelData extends AbstractSapOrder
         return $bindData;
     }
 
+    /**
+     * Get order cancel data
+     *
+     * @param $incrementId
+     * @return array
+     * @throws NoSuchEntityException
+     */
     public function getOrderCancelData($incrementId)
     {
         /** @var Order $orderData */
@@ -147,6 +179,8 @@ class SapOrderCancelData extends AbstractSapOrder
     }
 
     /**
+     * Get order increment id
+     *
      * @param $order Order
      */
     public function getOrderIncrementId($order)
