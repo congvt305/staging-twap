@@ -401,7 +401,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $itemDcamt = $bundleChildrenItem->getDiscountAmount();
-                    $itemNsamt = $this->orderData->roundingPrice($bundleChildrenItem->getPrice() * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
+                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount');
                     $itemSlamt = $itemNsamt - $itemDcamt;
                     $itemMiamt = $bundleChildrenItem->getData('mileage_amount');
                     $itemTaxAmount = $bundleChildrenItem->getData('tax_amount');

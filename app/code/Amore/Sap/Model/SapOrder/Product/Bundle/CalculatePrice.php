@@ -72,7 +72,7 @@ class CalculatePrice
                     $totalMileageAmount -= $mileageAmountItem;
                     $totalTaxAmount -= $itemTaxAmount;
 
-                    $bundleItem->setPrice($bundlItemPrice);
+                    $bundleItem->setData('normal_sales_amount', $bundlItemPrice);
                     $bundleItem->setData('am_spent_reward_points', $rewardPointItem);
                     $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
                     $bundleItem->setData('mileage_amount', $mileageAmountItem);
@@ -108,10 +108,11 @@ class CalculatePrice
                 } else {
                     $mileageAmountItem = 0;
                 }
-
+                $itemSlamt = $this->orderData->roundingPrice($bundleItem->getPrice() * $bundleItem->getQtyOrdered(), $isDecimalFormat);
                 $bundleItemDiscountAmount = $bundleItem->getDiscountAmount() - $mileageAmountItem;
                 $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
                 $bundleItem->setData('mileage_amount', $mileageAmountItem);
+                $bundleItem->setData('normal_sales_amount', $itemSlamt);
             }
         }
         return $orderItem;
