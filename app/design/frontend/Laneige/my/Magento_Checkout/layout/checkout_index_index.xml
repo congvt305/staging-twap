@@ -30,6 +30,11 @@
                                                                         <item name="validate-number" xsi:type="boolean">true</item>
                                                                     </item>
                                                                 </item>
+                                                                <item name="telephone" xsi:type="array">
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="validate-cvs-address-mobile-number" xsi:type="boolean">false</item>
+                                                                    </item>
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>
