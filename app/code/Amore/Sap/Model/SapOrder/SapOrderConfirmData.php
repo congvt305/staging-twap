@@ -595,12 +595,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                     foreach ($orderItem->getChildrenItems() as $bundleChild) {
                         $itemDcamt = $bundleChild->getDiscountAmount();
-                        $itemNsamt = $this->orderData->roundingPrice($bundleChild->getPrice() * $bundleChild->getQtyOrdered(), $isDecimalFormat);
+                        $itemNsamt = $bundleChild->getData('normal_sales_amount');
                         $itemSlamt = $itemNsamt - $itemDcamt;
                         $itemMiamt = $bundleChild->getData('mileage_amount');
                         $itemTaxAmount = $bundleChild->getData('tax_amount');
                         $rewardPointsPerChild = 0;
-                        $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
                         $redemptionFlag = 'N';
 
                         if($isEnableRewardsPoint) {
@@ -619,6 +618,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                                 $redemptionFlag = 'Y';
                             }
                         }
+                        $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
 
                         $this->addOrderItemData(
                             $order, $orderItem, $itemNsamt, $itemDcamt,
@@ -765,8 +765,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $this->cnt++;
         $this->_itemsSubtotal += $itemNsamt;
-        $this->_itemsGrandTotalInclTax += $itemNetwr;
-        $this->_itemsGrandTotal += ($itemNsamt - $itemDcamt - $itemMiamt);
+        $this->_itemsGrandTotalInclTax += $itemSlamt - $itemMiamt;
+        $this->_itemsGrandTotal +=  $itemNetwr;
         $this->_itemsDiscountAmount += $itemDcamt;
         $this->_itemsMileage += $itemMiamt;
     }
