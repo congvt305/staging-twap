@@ -70,6 +70,7 @@
                                                                 <item name="telephone" xsi:type="array">
                                                                     <item name="validation" xsi:type="array">
                                                                         <item name="validate-vn-address-mobile-number" xsi:type="boolean">true</item>
+                                                                        <item name="validate-cvs-address-mobile-number" xsi:type="boolean">false</item>
                                                                         <item name="min_text_length" xsi:type="boolean">false</item>
                                                                         <item name="max_text_length" xsi:type="boolean">false</item>
                                                                     </item>
