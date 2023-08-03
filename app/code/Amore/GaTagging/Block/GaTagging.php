@@ -630,7 +630,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['promotion'] = '';
                 $product['cate'] = $this->ap->getProductCategory($parentProduct);
                 $product['catecode'] = '';
-                $product['url'] = $parentItem->getProductUrl();
+                $product['url'] = $parentItem->getProduct()->getProductUrl();
                 $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentItem->getProduct());
                 if ($parentItem->getProductType() === 'bundle') {
                     $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
