@@ -1,0 +1,775 @@
+diff --git a/vendor/magento/module-catalog-inventory/Model/Stock/StockItemRepository.php b/vendor/magento/module-catalog-inventory/Model/Stock/StockItemRepository.php
+index 936cafb60f33..09537cdd5c44 100644
+--- a/vendor/magento/module-catalog-inventory/Model/Stock/StockItemRepository.php
++++ b/vendor/magento/module-catalog-inventory/Model/Stock/StockItemRepository.php
+@@ -80,6 +80,7 @@ class StockItemRepository implements StockItemRepositoryInterface
+     /**
+      * @var Processor
+      * @deprecated 100.2.0
++     * @see No longer used
+      */
+     protected $indexProcessor;
+ 
+@@ -117,6 +118,7 @@ class StockItemRepository implements StockItemRepositoryInterface
+      * @param DateTime $dateTime
+      * @param CollectionFactory|null $productCollectionFactory
+      * @param PsrLogger|null $psrLogger
++     * @param StockRegistryStorage|null $stockRegistryStorage
+      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+      */
+     public function __construct(
+@@ -132,7 +134,8 @@ public function __construct(
+         Processor $indexProcessor,
+         DateTime $dateTime,
+         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory = null,
+-        PsrLogger $psrLogger = null
++        PsrLogger $psrLogger = null,
++        ?StockRegistryStorage $stockRegistryStorage = null
+     ) {
+         $this->stockConfiguration = $stockConfiguration;
+         $this->stockStateProvider = $stockStateProvider;
+@@ -149,12 +152,14 @@ public function __construct(
+             ->get(CollectionFactory::class);
+         $this->psrLogger = $psrLogger ?: ObjectManager::getInstance()
+             ->get(PsrLogger::class);
++        $this->stockRegistryStorage = $stockRegistryStorage
++            ?? ObjectManager::getInstance()->get(StockRegistryStorage::class);
+     }
+ 
+     /**
+      * @inheritdoc
+      */
+-    public function save(\Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem)
++    public function save(StockItemInterface $stockItem)
+     {
+         try {
+             /** @var \Magento\Catalog\Model\Product $product */
+@@ -170,16 +175,13 @@ public function save(\Magento\CatalogInventory\Api\Data\StockItemInterface $stoc
+             $typeId = $product->getTypeId() ?: $product->getTypeInstance()->getTypeId();
+             $isQty = $this->stockConfiguration->isQty($typeId);
+             if ($isQty) {
+-                $isInStock = $this->stockStateProvider->verifyStock($stockItem);
+-                if ($stockItem->getManageStock() && !$isInStock) {
+-                    $stockItem->setIsInStock(false)->setStockStatusChangedAutomaticallyFlag(true);
+-                }
++                $this->updateStockStatus($stockItem);
+                 // if qty is below notify qty, update the low stock date to today date otherwise set null
+                 $stockItem->setLowStockDate(null);
+                 if ($this->stockStateProvider->verifyNotification($stockItem)) {
+                     $stockItem->setLowStockDate($this->dateTime->gmtDate());
+                 }
+-                $stockItem->setStockStatusChangedAuto(0);
++
+                 if ($stockItem->hasStockStatusChangedAutomaticallyFlag()) {
+                     $stockItem->setStockStatusChangedAuto((int)$stockItem->getStockStatusChangedAutomaticallyFlag());
+                 }
+@@ -198,6 +200,53 @@ public function save(\Magento\CatalogInventory\Api\Data\StockItemInterface $stoc
+         return $stockItem;
+     }
+ 
++    /**
++     * Update stock status based on stock configuration
++     *
++     * @param StockItemInterface $stockItem
++     * @return void
++     */
++    private function updateStockStatus(StockItemInterface $stockItem): void
++    {
++        $isInStock = $this->stockStateProvider->verifyStock($stockItem);
++        if ($stockItem->getManageStock()) {
++            if (!$isInStock) {
++                if ($stockItem->getIsInStock() === true) {
++                    $stockItem->setIsInStock(false);
++                    $stockItem->setStockStatusChangedAuto(1);
++                }
++            } else {
++                if ($this->hasStockStatusChanged($stockItem)) {
++                    $stockItem->setStockStatusChangedAuto(0);
++                }
++                if ($stockItem->getIsInStock() === false && $stockItem->getStockStatusChangedAuto()) {
++                    $stockItem->setIsInStock(true);
++                }
++            }
++        } else {
++            $stockItem->setStockStatusChangedAuto(0);
++        }
++    }
++
++    /**
++     * Check if stock status has changed
++     *
++     * @param StockItemInterface $stockItem
++     * @return bool
++     */
++    private function hasStockStatusChanged(StockItemInterface $stockItem): bool
++    {
++        if ($stockItem->getItemId()) {
++            try {
++                $existingStockItem = $this->get($stockItem->getItemId());
++                return $existingStockItem->getIsInStock() !== $stockItem->getIsInStock();
++            } catch (NoSuchEntityException $e) {
++                return true;
++            }
++        }
++        return true;
++    }
++
+     /**
+      * @inheritdoc
+      */
+@@ -233,8 +282,8 @@ public function delete(StockItemInterface $stockItem)
+     {
+         try {
+             $this->resource->delete($stockItem);
+-            $this->getStockRegistryStorage()->removeStockItem($stockItem->getProductId());
+-            $this->getStockRegistryStorage()->removeStockStatus($stockItem->getProductId());
++            $this->stockRegistryStorage->removeStockItem($stockItem->getProductId());
++            $this->stockRegistryStorage->removeStockStatus($stockItem->getProductId());
+         } catch (\Exception $exception) {
+             throw new CouldNotDeleteException(
+                 __(
+@@ -263,16 +312,4 @@ public function deleteById($id)
+         }
+         return true;
+     }
+-
+-    /**
+-     * @return StockRegistryStorage
+-     */
+-    private function getStockRegistryStorage()
+-    {
+-        if (null === $this->stockRegistryStorage) {
+-            $this->stockRegistryStorage = \Magento\Framework\App\ObjectManager::getInstance()
+-                ->get(\Magento\CatalogInventory\Model\StockRegistryStorage::class);
+-        }
+-        return $this->stockRegistryStorage;
+-    }
+ }
+diff --git a/vendor/magento/module-inventory-catalog-admin-ui/Observer/ProcessSourceItemsObserver.php b/vendor/magento/module-inventory-catalog-admin-ui/Observer/ProcessSourceItemsObserver.php
+index 7a7b21a653c..f0ab32cafc6 100644
+--- a/vendor/magento/module-inventory-catalog-admin-ui/Observer/ProcessSourceItemsObserver.php
++++ b/vendor/magento/module-inventory-catalog-admin-ui/Observer/ProcessSourceItemsObserver.php
+@@ -10,6 +10,7 @@ namespace Magento\InventoryCatalogAdminUi\Observer;
+ use Magento\Catalog\Api\Data\ProductInterface;
+ use Magento\Catalog\Controller\Adminhtml\Product\Save;
+ use Magento\CatalogInventory\Api\Data\StockItemInterface;
++use Magento\CatalogInventory\Api\StockRegistryInterface;
+ use Magento\Framework\Api\SearchCriteriaBuilder;
+ use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+ use Magento\Framework\Event\Observer as EventObserver;
+@@ -30,36 +31,6 @@ use Magento\InventoryConfigurationApi\Model\IsSourceItemManagementAllowedForProd
+  */
+ class ProcessSourceItemsObserver implements ObserverInterface
+ {
+-    /**
+-     * @var IsSourceItemManagementAllowedForProductTypeInterface
+-     */
+-    private $isSourceItemManagementAllowedForProductType;
+-
+-    /**
+-     * @var SourceItemsProcessorInterface
+-     */
+-    private $sourceItemsProcessor;
+-
+-    /**
+-     * @var IsSingleSourceModeInterface
+-     */
+-    private $isSingleSourceMode;
+-
+-    /**
+-     * @var DefaultSourceProviderInterface
+-     */
+-    private $defaultSourceProvider;
+-
+-    /**
+-     * @var SearchCriteriaBuilderFactory
+-     */
+-    private $searchCriteriaBuilderFactory;
+-
+-    /**
+-     * @var SourceItemRepositoryInterface
+-     */
+-    private $sourceItemRepository;
+-
+     /**
+      * @param IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType
+      * @param SourceItemsProcessorInterface $sourceItemsProcessor
+@@ -67,21 +38,17 @@ class ProcessSourceItemsObserver implements ObserverInterface
+      * @param DefaultSourceProviderInterface $defaultSourceProvider
+      * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
+      * @param SourceItemRepositoryInterface $sourceItemRepository
++     * @param StockRegistryInterface $stockRegistry
+      */
+     public function __construct(
+-        IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType,
+-        SourceItemsProcessorInterface $sourceItemsProcessor,
+-        IsSingleSourceModeInterface $isSingleSourceMode,
+-        DefaultSourceProviderInterface $defaultSourceProvider,
+-        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
+-        SourceItemRepositoryInterface $sourceItemRepository
++        private IsSourceItemManagementAllowedForProductTypeInterface $isSourceItemManagementAllowedForProductType,
++        private SourceItemsProcessorInterface $sourceItemsProcessor,
++        private IsSingleSourceModeInterface $isSingleSourceMode,
++        private DefaultSourceProviderInterface $defaultSourceProvider,
++        private SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
++        private SourceItemRepositoryInterface $sourceItemRepository,
++        private StockRegistryInterface $stockRegistry
+     ) {
+-        $this->isSourceItemManagementAllowedForProductType = $isSourceItemManagementAllowedForProductType;
+-        $this->sourceItemsProcessor = $sourceItemsProcessor;
+-        $this->isSingleSourceMode = $isSingleSourceMode;
+-        $this->defaultSourceProvider = $defaultSourceProvider;
+-        $this->searchCriteriaBuilderFactory = $searchCriteriaBuilderFactory;
+-        $this->sourceItemRepository = $sourceItemRepository;
+     }
+ 
+     /**
+@@ -101,7 +68,6 @@ class ProcessSourceItemsObserver implements ObserverInterface
+         /** @var Save $controller */
+         $controller = $observer->getEvent()->getController();
+         $productData = $controller->getRequest()->getParam('product', []);
+-        $singleSourceData = $productData['quantity_and_stock_status'] ?? [];
+ 
+         if (!$this->isSingleSourceMode->execute()) {
+             $sources = $controller->getRequest()->getParam('sources', []);
+@@ -111,20 +77,19 @@ class ProcessSourceItemsObserver implements ObserverInterface
+                     ? $this->prepareAssignedSources($sources['assigned_sources'])
+                     : [];
+             $this->sourceItemsProcessor->execute((string)$productData['sku'], $assignedSources);
+-        } elseif (!empty($singleSourceData)) {
++        } else {
+             /** @var StockItemInterface $stockItem */
+-            $stockItem = $product->getExtensionAttributes()->getStockItem();
+-            $qty = $singleSourceData['qty'] ?? (empty($stockItem) ? 0 : $stockItem->getQty());
+-            $isInStock = $singleSourceData['is_in_stock'] ?? (empty($stockItem) ? 1 : (int)$stockItem->getIsInStock());
++            $stockItem = $product->getExtensionAttributes()?->getStockItem()
++                ?? $this->stockRegistry->getStockItem($product->getId());
+             $defaultSourceData = [
+-                SourceItemInterface::SKU => $productData['sku'],
++                SourceItemInterface::SKU => $product->getSku(),
+                 SourceItemInterface::SOURCE_CODE => $this->defaultSourceProvider->getCode(),
+-                SourceItemInterface::QUANTITY => $qty,
+-                SourceItemInterface::STATUS => $isInStock,
++                SourceItemInterface::QUANTITY => $stockItem->getQty(),
++                SourceItemInterface::STATUS => $stockItem->getIsInStock(),
+             ];
+-            $sourceItems = $this->getSourceItemsWithoutDefault($productData['sku']);
++            $sourceItems = $this->getSourceItemsWithoutDefault($product->getSku());
+             $sourceItems[] = $defaultSourceData;
+-            $this->sourceItemsProcessor->execute((string)$productData['sku'], $sourceItems);
++            $this->sourceItemsProcessor->execute((string)$product->getSku(), $sourceItems);
+         }
+     }
+ 
+diff --git a/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockItemForNewConfigurableProduct.php b/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockItemForNewConfigurableProduct.php
+new file mode 100644
+index 00000000000..0069c8e5de8
+--- /dev/null
++++ b/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockItemForNewConfigurableProduct.php
+@@ -0,0 +1,178 @@
++<?php
++/**
++ * Copyright © Magento, Inc. All rights reserved.
++ * See COPYING.txt for license details.
++ */
++declare(strict_types=1);
++
++namespace Magento\InventoryConfigurableProduct\Plugin\CatalogInventory;
++
++use Magento\Catalog\Model\ResourceModel\GetProductTypeById;
++use Magento\CatalogInventory\Model\ResourceModel\Stock\Item as ItemResourceModel;
++use Magento\CatalogInventory\Model\Stock\Item as StockItemModel;
++use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
++use Magento\Framework\App\RequestInterface;
++use Magento\Framework\Model\AbstractModel as StockItem;
++use Magento\Framework\Serialize\Serializer\Json;
++use Magento\InventoryCatalogApi\Model\GetSkusByProductIdsInterface;
++use Magento\InventorySalesApi\Api\AreProductsSalableInterface;
++use Magento\CatalogInventory\Model\Stock;
++use Magento\InventoryCatalog\Model\ResourceModel\UpdateLegacyStockItems;
++
++class UpdateLegacyStockItemForNewConfigurableProduct
++{
++    /**
++     * @var RequestInterface
++     */
++    private $request;
++
++    /**
++     * @var Json
++     */
++    private $serializer;
++
++    /**
++     * @var GetProductTypeById
++     */
++    private $getProductTypeById;
++
++    /**
++     * @var Configurable
++     */
++    private $configurableType;
++
++    /**
++     * @var GetSkusByProductIdsInterface
++     */
++    private $getSkusByProductIds;
++
++    /**
++     * @var AreProductsSalableInterface
++     */
++    private $areProductsSalable;
++
++    /**
++     * @var UpdateLegacyStockItems
++     */
++    private $updateLegacyStockItems;
++
++    /**
++     * @param RequestInterface $request
++     * @param Json $serializer
++     * @param GetProductTypeById $getProductTypeById
++     * @param Configurable $configurableType
++     * @param GetSkusByProductIdsInterface $getSkusByProductIds
++     * @param AreProductsSalableInterface $areProductsSalable
++     * @param UpdateLegacyStockItems $updateLegacyStockItems
++     */
++    public function __construct(
++        RequestInterface $request,
++        Json $serializer,
++        GetProductTypeById $getProductTypeById,
++        Configurable $configurableType,
++        GetSkusByProductIdsInterface $getSkusByProductIds,
++        AreProductsSalableInterface $areProductsSalable,
++        UpdateLegacyStockItems $updateLegacyStockItems
++    ) {
++        $this->request = $request;
++        $this->serializer = $serializer;
++        $this->getProductTypeById = $getProductTypeById;
++        $this->configurableType = $configurableType;
++        $this->getSkusByProductIds = $getSkusByProductIds;
++        $this->areProductsSalable = $areProductsSalable;
++        $this->updateLegacyStockItems = $updateLegacyStockItems;
++    }
++
++    /**
++     * Updates stock item for new configurable product based on variation's qty
++     *
++     * @param ItemResourceModel $subject
++     * @param ItemResourceModel $result
++     * @param StockItem $stockItem
++     * @return ItemResourceModel
++     *
++     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
++     */
++    public function afterSave(ItemResourceModel $subject, ItemResourceModel $result, StockItem $stockItem)
++    {
++        if ($stockItem->isObjectNew() &&
++            $stockItem->getIsInStock() &&
++            $this->getProductTypeById->execute($stockItem->getProductId()) === Configurable::TYPE_CODE
++        ) {
++            $configurableMatrix = $this->request->getParam('configurable-matrix-serialized');
++            if (!empty($configurableMatrix) && $configurableMatrix !== '[]') {
++                $this->updateStatus($stockItem, $this->hasStockStatusFromVariationMatrix($configurableMatrix));
++            } else {
++                $childrenIds = $this->configurableType->getChildrenIds($stockItem->getProductId());
++                $childrenIds = array_shift($childrenIds);
++                if (!empty($childrenIds)) {
++                    $this->updateStatus($stockItem, $this->hasStockStatusFromChildren($childrenIds));
++                }
++            }
++        }
++
++        return $result;
++    }
++
++    /**
++     * Updates Configurable stock status based on the variations
++     *
++     * @param StockItem $stockItem
++     * @param bool $isInStock
++     * @return void
++     */
++    private function updateStatus(StockItem $stockItem, bool $isInStock): void
++    {
++        if ($stockItem->getIsInStock() == $isInStock) {
++            return;
++        }
++        $stockItemData = [
++            StockItemModel::IS_IN_STOCK => $isInStock,
++            StockItemModel::STOCK_STATUS_CHANGED_AUTO => 1
++        ];
++        $this->updateLegacyStockItems->execute([$stockItem->getProductId()], $stockItemData);
++    }
++
++    /**
++     * Get stock status based on qty of the variation-matrix from request
++     *
++     * @param string $configurableMatrix
++     * @return bool
++     */
++    private function hasStockStatusFromVariationMatrix(string $configurableMatrix): bool
++    {
++        $configurableMatrix = $this->serializer->unserialize($configurableMatrix);
++        foreach ($configurableMatrix as $item) {
++            if (!empty($item['qty'])) {
++                return true;
++            } elseif (!empty($item['quantity_per_source'])) {
++                foreach ($item['quantity_per_source'] as $source) {
++                    if (!empty($source['quantity_per_source'])) {
++                        return true;
++                    }
++                }
++            }
++        }
++
++        return false;
++    }
++
++    /**
++     * Checks if configurable has salable options
++     *
++     * @param array $childrenIds
++     * @return bool
++     */
++    private function hasStockStatusFromChildren(array $childrenIds): bool
++    {
++        $skus = $this->getSkusByProductIds->execute($childrenIds);
++        $areSalableResults = $this->areProductsSalable->execute($skus, Stock::DEFAULT_STOCK_ID);
++        foreach ($areSalableResults as $productSalable) {
++            if ($productSalable->isSalable() === true) {
++                return true;
++            }
++        }
++
++        return false;
++    }
++}
+diff --git a/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockStatusForConfigurableProduct.php b/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockStatusForConfigurableProduct.php
+new file mode 100644
+index 00000000000..160e2319960
+--- /dev/null
++++ b/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateLegacyStockStatusForConfigurableProduct.php
+@@ -0,0 +1,146 @@
++<?php
++/**
++ * Copyright © Magento, Inc. All rights reserved.
++ * See COPYING.txt for license details.
++ */
++declare(strict_types=1);
++
++namespace Magento\InventoryConfigurableProduct\Plugin\CatalogInventory;
++
++use Magento\Catalog\Model\ResourceModel\GetProductTypeById;
++use Magento\CatalogInventory\Model\ResourceModel\Stock\Item as ItemResourceModel;
++use Magento\Framework\Model\AbstractModel as StockItem;
++use Magento\InventoryCatalog\Model\ResourceModel\SetDataToLegacyStockStatus;
++use Magento\InventoryCatalogApi\Model\GetSkusByProductIdsInterface;
++use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
++use Magento\CatalogInventory\Model\Stock;
++use Magento\InventorySalesApi\Api\AreProductsSalableInterface;
++use Magento\InventoryConfiguration\Model\GetLegacyStockItem;
++
++/**
++ * Class provides after Plugin on Magento\CatalogInventory\Model\ResourceModel\Stock\Item::save
++ * to update legacy stock status for configurable product
++ */
++class UpdateLegacyStockStatusForConfigurableProduct
++{
++    /**
++     * @var GetProductTypeById
++     */
++    private $getProductTypeById;
++
++    /**
++     * @var SetDataToLegacyStockStatus
++     */
++    private $setDataToLegacyStockStatus;
++
++    /**
++     * @var GetSkusByProductIdsInterface
++     */
++    private $getSkusByProductIds;
++
++    /**
++     * @var Configurable
++     */
++    private $configurableType;
++
++    /**
++     * @var AreProductsSalableInterface
++     */
++    private $areProductsSalable;
++
++    /**
++     * @var GetLegacyStockItem
++     */
++    private $getLegacyStockItem;
++
++    /**
++     * @param GetProductTypeById $getProductTypeById
++     * @param SetDataToLegacyStockStatus $setDataToLegacyStockStatus
++     * @param GetSkusByProductIdsInterface $getSkusByProductIds
++     * @param Configurable $configurableType
++     * @param AreProductsSalableInterface $areProductsSalable
++     * @param GetLegacyStockItem $getLegacyStockItem
++     */
++    public function __construct(
++        GetProductTypeById $getProductTypeById,
++        SetDataToLegacyStockStatus $setDataToLegacyStockStatus,
++        GetSkusByProductIdsInterface $getSkusByProductIds,
++        Configurable $configurableType,
++        AreProductsSalableInterface $areProductsSalable,
++        GetLegacyStockItem $getLegacyStockItem
++    ) {
++        $this->getProductTypeById = $getProductTypeById;
++        $this->setDataToLegacyStockStatus = $setDataToLegacyStockStatus;
++        $this->getSkusByProductIds = $getSkusByProductIds;
++        $this->configurableType = $configurableType;
++        $this->areProductsSalable = $areProductsSalable;
++        $this->getLegacyStockItem = $getLegacyStockItem;
++    }
++
++    /**
++     * Update source item for legacy stock of a configurable product
++     *
++     * @param ItemResourceModel $subject
++     * @param ItemResourceModel $result
++     * @param StockItem $stockItem
++     * @return ItemResourceModel
++     * @throws Exception
++     *
++     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
++     */
++    public function afterSave(ItemResourceModel $subject, ItemResourceModel $result, StockItem $stockItem)
++    {
++        if ($stockItem->getIsInStock() &&
++            $this->getProductTypeById->execute($stockItem->getProductId()) === Configurable::TYPE_CODE
++        ) {
++            $productSku = $this->getSkusByProductIds
++                ->execute([$stockItem->getProductId()])[$stockItem->getProductId()];
++
++            if ($stockItem->getStockStatusChangedAuto() ||
++                ($this->stockStatusChange($productSku) && $this->hasChildrenInStock($stockItem->getProductId()))
++            ) {
++                $this->setDataToLegacyStockStatus->execute(
++                    $productSku,
++                    (float) $stockItem->getQty(),
++                    Stock::STOCK_IN_STOCK
++                );
++            }
++        }
++
++        return $result;
++    }
++
++    /**
++     * Checks if configurable product stock item status was changed
++     *
++     * @param string $sku
++     * @return bool
++     */
++    private function stockStatusChange(string $sku): bool
++    {
++        return $this->getLegacyStockItem->execute($sku)->getIsInStock() == Stock::STOCK_OUT_OF_STOCK;
++    }
++
++    /**
++     * Checks if configurable has salable options
++     *
++     * @param int $productId
++     * @return bool
++     */
++    private function hasChildrenInStock(int $productId): bool
++    {
++        $childrenIds = $this->configurableType->getChildrenIds($productId);
++        if (empty($childrenIds)) {
++            return false;
++        }
++        $skus = $this->getSkusByProductIds->execute(array_shift($childrenIds));
++        $areSalableResults = $this->areProductsSalable->execute($skus, Stock::DEFAULT_STOCK_ID);
++        foreach ($areSalableResults as $productSalable) {
++            if ($productSalable->isSalable() === true) {
++                return true;
++            }
++        }
++
++        return false;
++    }
++}
+diff --git a/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateSourceItemAtLegacyStockItemSavePlugin.php b/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateSourceItemAtLegacyStockItemSavePlugin.php
+deleted file mode 100644
+index 6674af98b6c..00000000000
+--- a/vendor/magento/module-inventory-configurable-product/Plugin/CatalogInventory/UpdateSourceItemAtLegacyStockItemSavePlugin.php
++++ /dev/null
+@@ -1,144 +0,0 @@
+-<?php
+-/**
+- * Copyright © Magento, Inc. All rights reserved.
+- * See COPYING.txt for license details.
+- */
+-declare(strict_types=1);
+-
+-namespace Magento\InventoryConfigurableProduct\Plugin\CatalogInventory;
+-
+-use Magento\Catalog\Model\ResourceModel\GetProductTypeById;
+-use Magento\CatalogInventory\Model\ResourceModel\Stock\Item as ItemResourceModel;
+-use Magento\Framework\Model\AbstractModel as StockItem;
+-use Magento\InventoryCatalog\Model\ResourceModel\SetDataToLegacyStockStatus;
+-use Magento\InventoryCatalogApi\Model\GetSkusByProductIdsInterface;
+-use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+-use Magento\CatalogInventory\Model\Stock;
+-use Magento\InventorySalesApi\Api\AreProductsSalableInterface;
+-use Magento\InventoryConfiguration\Model\GetLegacyStockItem;
+-
+-/**
+- * Class provides after Plugin on Magento\CatalogInventory\Model\ResourceModel\Stock\Item::save
+- * to update legacy stock status for configurable product
+- */
+-class UpdateSourceItemAtLegacyStockItemSavePlugin
+-{
+-    /**
+-     * @var GetProductTypeById
+-     */
+-    private $getProductTypeById;
+-
+-    /**
+-     * @var SetDataToLegacyStockStatus
+-     */
+-    private $setDataToLegacyStockStatus;
+-
+-    /**
+-     * @var GetSkusByProductIdsInterface
+-     */
+-    private $getSkusByProductIds;
+-
+-    /**
+-     * @var Configurable
+-     */
+-    private $configurableType;
+-
+-    /**
+-     * @var AreProductsSalableInterface
+-     */
+-    private $areProductsSalable;
+-
+-    /**
+-     * @var GetLegacyStockItem
+-     */
+-    private $getLegacyStockItem;
+-
+-    /**
+-     * @param GetProductTypeById $getProductTypeById
+-     * @param SetDataToLegacyStockStatus $setDataToLegacyStockStatus
+-     * @param GetSkusByProductIdsInterface $getSkusByProductIds
+-     * @param Configurable $configurableType
+-     * @param AreProductsSalableInterface $areProductsSalable
+-     * @param GetLegacyStockItem $getLegacyStockItem
+-     */
+-    public function __construct(
+-        GetProductTypeById $getProductTypeById,
+-        SetDataToLegacyStockStatus $setDataToLegacyStockStatus,
+-        GetSkusByProductIdsInterface $getSkusByProductIds,
+-        Configurable $configurableType,
+-        AreProductsSalableInterface $areProductsSalable,
+-        GetLegacyStockItem $getLegacyStockItem
+-    ) {
+-        $this->getProductTypeById = $getProductTypeById;
+-        $this->setDataToLegacyStockStatus = $setDataToLegacyStockStatus;
+-        $this->getSkusByProductIds = $getSkusByProductIds;
+-        $this->configurableType = $configurableType;
+-        $this->areProductsSalable = $areProductsSalable;
+-        $this->getLegacyStockItem = $getLegacyStockItem;
+-    }
+-
+-    /**
+-     * Update source item for legacy stock of a configurable product
+-     *
+-     * @param ItemResourceModel $subject
+-     * @param ItemResourceModel $result
+-     * @param StockItem $stockItem
+-     * @return void
+-     * @throws Exception
+-     *
+-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+-     */
+-    public function afterSave(ItemResourceModel $subject, ItemResourceModel $result, StockItem $stockItem): void
+-    {
+-        if ($stockItem->getIsInStock() &&
+-            $this->getProductTypeById->execute($stockItem->getProductId()) === Configurable::TYPE_CODE
+-        ) {
+-            $productSku = $this->getSkusByProductIds
+-                ->execute([$stockItem->getProductId()])[$stockItem->getProductId()];
+-
+-            if ($stockItem->getStockStatusChangedAuto() ||
+-                ($this->stockStatusChange($productSku) && $this->hasChildrenInStock($stockItem->getProductId()))
+-            ) {
+-                $this->setDataToLegacyStockStatus->execute(
+-                    $productSku,
+-                    (float) $stockItem->getQty(),
+-                    Stock::STOCK_IN_STOCK
+-                );
+-            }
+-        }
+-    }
+-
+-    /**
+-     * Checks if configurable product stock item status was changed
+-     *
+-     * @param string $sku
+-     * @return bool
+-     */
+-    private function stockStatusChange(string $sku): bool
+-    {
+-        return $this->getLegacyStockItem->execute($sku)->getIsInStock() == Stock::STOCK_OUT_OF_STOCK;
+-    }
+-
+-    /**
+-     * Checks if configurable has salable options
+-     *
+-     * @param int $productId
+-     * @return bool
+-     */
+-    private function hasChildrenInStock(int $productId): bool
+-    {
+-        $childrenIds = $this->configurableType->getChildrenIds($productId);
+-        if (empty($childrenIds)) {
+-            return false;
+-        }
+-        $skus = $this->getSkusByProductIds->execute(array_shift($childrenIds));
+-        $areSalableResults = $this->areProductsSalable->execute($skus, Stock::DEFAULT_STOCK_ID);
+-        foreach ($areSalableResults as $productSalable) {
+-            if ($productSalable->isSalable() === true) {
+-                return true;
+-            }
+-        }
+-
+-        return false;
+-    }
+-}
+diff --git a/vendor/magento/module-inventory-configurable-product/etc/di.xml b/vendor/magento/module-inventory-configurable-product/etc/di.xml
+index a0fddf9b717..75e15479347 100644
+--- a/vendor/magento/module-inventory-configurable-product/etc/di.xml
++++ b/vendor/magento/module-inventory-configurable-product/etc/di.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0"?>
+ <!--
+-/**
++     /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+@@ -45,7 +45,12 @@
+                 type="Magento\InventoryConfigurableProduct\Plugin\InventoryApi\UpdateConfigurableProductParentStockStatus"/>
+     </type>
+     <type name="Magento\CatalogInventory\Model\ResourceModel\Stock\Item">
++        <plugin name="after_update_stock_item_for_new_configurable_product"
++                type="Magento\InventoryConfigurableProduct\Plugin\CatalogInventory\UpdateLegacyStockItemForNewConfigurableProduct"
++                sortOrder="100"/>
+         <plugin name="update_source_stock_for_configurable_product"
+-                type="Magento\InventoryConfigurableProduct\Plugin\CatalogInventory\UpdateSourceItemAtLegacyStockItemSavePlugin" />
++                type="Magento\InventoryConfigurableProduct\Plugin\CatalogInventory\UpdateLegacyStockStatusForConfigurableProduct"
++                sortOrder="200"/>
++
+     </type>
+ </config>
