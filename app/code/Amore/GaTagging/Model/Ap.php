@@ -96,7 +96,7 @@ class Ap
         $productInfo['price'] = intval($product->getPriceInfo()->getPrice('final_price')->getValue());
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
-        $productInfo['cate'] = $this->getProductCategory($product);
+        $productInfo['cate'] = $this->helper->getProductCategory($product);
         $productInfo['catecode'] = '';
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
@@ -160,41 +160,6 @@ class Ap
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @return string|null
-     */
-    public function getProductCategory(\Magento\Catalog\Api\Data\ProductInterface $product)
-    {
-        $categoryIds = $product->getCategoryIds();
-        if ($categoryIds) {
-            $categoryId = reset($categoryIds);
-            return $this->_getRootCategoryName($categoryId, $product->getStoreId());
-        }
-
-        return '스킨케어';
-    }
-
-    /**
-     * @param $id
-     * @param $storeId
-     * @return string|null
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    protected function _getRootCategoryName($id, $storeId)
-    {
-        $categoryInstance = $this->categoryRepository->get($id, $storeId);
-        $level = $categoryInstance->getLevel();
-        if ($level > 2) {
-            $parentId = $categoryInstance->getParentId();
-            return $this->_getRootCategoryName($parentId, $storeId);
-        } elseif ($level == 2) {
-            return $categoryInstance->getName();
-        } else {
-            return '스킨케어';
-        }
-    }
-
-    /**
      * @param $currentProduct
      * @return mixed
      */
@@ -229,4 +194,5 @@ class Ap
 
         return $price;
     }
+
 }

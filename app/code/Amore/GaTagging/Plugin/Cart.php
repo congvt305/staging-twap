@@ -41,16 +41,6 @@ class Cart
     protected $productRepository;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $storeManager;
-
-    /**
-     * @var \Magento\Catalog\Model\CategoryFactory
-     */
-    protected $categoryFactory;
-
-    /**
      * @var \Amore\GaTagging\Model\Ap
      */
     protected $ap;
@@ -62,9 +52,7 @@ class Cart
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Amore\GaTagging\Model\Ap $ap,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Model\CategoryFactory $categoryFactory
+        \Amore\GaTagging\Model\Ap $ap
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->data = $data;
@@ -72,8 +60,6 @@ class Cart
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->ap = $ap;
-        $this->storeManager = $storeManager;
-        $this->categoryFactory = $categoryFactory;
     }
 
     /**
@@ -86,14 +72,14 @@ class Cart
             return $result;
         }
         $storeId =
-        $items =$this->getQuote()->getAllVisibleItems();
+        $items = $this->getQuote()->getAllVisibleItems();
 
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                     $result['items'][$key]['product_original_price'] = $item->getProduct()->getPrice();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
-                    $result['items'][$key]['product_category'] = $this->getProductCategory($item->getProduct());
+                    $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
                 }
             }
@@ -133,41 +119,4 @@ class Cart
         return $this->catalogProductHelper->getThumbnailUrl($product);
     }
 
-    /**
-     * @param $product
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getProductCategory($product)
-    {
-        $categoryName = "";
-        $categoryIds = $product->getCategoryIds();
-        foreach ($categoryIds as $categoryId) {
-            $nearRootCategoryId = $this->nearRootCategoryId($categoryId);
-            if ($nearRootCategoryId) {
-                $category = $this->categoryRepository->get($nearRootCategoryId);
-                $categoryName = $category->getName();
-                break;
-            }
-        }
-        return $categoryName;
-    }
-
-    /**
-     * @param $categoryId
-     * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    function nearRootCategoryId($categoryId)
-    {
-        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
-        $category = $this->categoryFactory->create()->load($categoryId);
-        $parentCategories = $category->getParentCategories();
-        foreach ($parentCategories as $parentCategory) {
-            if ($parentCategory->getParentId() == $rootCategoryId) {
-                return $parentCategory->getId();
-            }
-        }
-        return 0;
-    }
 }

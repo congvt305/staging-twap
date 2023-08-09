@@ -98,7 +98,7 @@ $apProductPosition = "";
                             ap-prd-brand="<?= $apProductBrand ?>"
                             ap-prd-position="<?= $apProductPosition ?>"
                             ap-prd-list="<?= $categoryName ?>"
-                        <? endif; ?>
+                        <?php endif; ?>
                     >
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
@@ -133,7 +133,7 @@ $apProductPosition = "";
                                     ap-prd-brand="<?= $apProductBrand ?>"
                                     ap-prd-position="<?= $apProductPosition ?>"
                                     ap-prd-list="<?= $categoryName ?>"
-                                <?endif; ?>
+                                <?php endif; ?>
                             >
                                 <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
