@@ -158,7 +158,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @param \Magento\Catalog\Model\Product $product
      */
     public function getProductCategory($product) {
-        return $this->ap->getProductCategory($product);
+        return $this->helper->getProductCategory($product);
     }
 
     /**
