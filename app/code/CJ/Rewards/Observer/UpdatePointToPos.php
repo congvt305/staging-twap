@@ -37,9 +37,13 @@ class UpdatePointToPos implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+
         /** @var Creditmemo $creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
-        if ($refundPoint = $creditmemo->getData(CreditmemoBlock::REFUND_KEY)) {
+        $order = $creditmemo->getOrder();
+        $refundPoint = $creditmemo->getData(CreditmemoBlock::REFUND_KEY);
+        if ($refundPoint || $order->getData('am_spent_reward_points')) {
+            $refundPoint = $refundPoint ?? $order->getData('am_spent_reward_points');
             $order = $creditmemo->getOrder();
             if ($order->getCustomerId()) {
                 try {
