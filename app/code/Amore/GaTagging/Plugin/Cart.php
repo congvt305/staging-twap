@@ -79,7 +79,7 @@ class Cart
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                     $result['items'][$key]['product_original_price'] = $item->getProduct()->getPrice();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
-                    $result['items'][$key]['product_category'] = $this->ap->getProductCategory($item->getProduct());
+                    $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
                 }
             }

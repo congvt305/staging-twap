@@ -9,6 +9,7 @@
 namespace Amore\GaTagging\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
@@ -18,6 +19,39 @@ class Data extends AbstractHelper
     const XML_PATH_CONTAINER_ID = 'amore_gatagging/tagmanager/container_id';
     const XML_PATH_ADDITIONAL_CONTAINER_ID = 'amore_gatagging/tagmanager/additional_container_id';
     const XML_PATH_ADDITIONAL_CONTAINER_ENABLED = 'amore_gatagging/tagmanager/additional_container_enabled';
+
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
+    protected $categoryFactory;
+
+    /**
+     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     */
+    protected $categoryRepository;
+
+    /**
+     * @param Context $context
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
+     * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+     */
+    public function __construct(
+        Context $context,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Catalog\Model\CategoryFactory $categoryFactory,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+    ) {
+        $this->storeManager = $storeManager;
+        $this->categoryFactory = $categoryFactory;
+        $this->categoryRepository = $categoryRepository;
+        parent::__construct($context);
+    }
 
     public function getSiteName()
     {
@@ -56,5 +90,44 @@ class Data extends AbstractHelper
             self::XML_PATH_ADDITIONAL_CONTAINER_ID,
             ScopeInterface::SCOPE_STORE
         );
+    }
+
+
+    /**
+     * @param $product
+     * @return string|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getProductCategory($product)
+    {
+        $categoryName = "";
+        $categoryIds = $product->getCategoryIds();
+        foreach ($categoryIds as $categoryId) {
+            $nearRootCategoryId = $this->nearRootCategoryId($categoryId);
+            if ($nearRootCategoryId) {
+                $category = $this->categoryRepository->get($nearRootCategoryId);
+                $categoryName = $category->getName();
+                break;
+            }
+        }
+        return $categoryName;
+    }
+
+    /**
+     * @param $categoryId
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    function nearRootCategoryId($categoryId)
+    {
+        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+        $category = $this->categoryFactory->create()->load($categoryId);
+        $parentCategories = $category->getParentCategories();
+        foreach ($parentCategories as $parentCategory) {
+            if ($parentCategory->getParentId() == $rootCategoryId) {
+                return $parentCategory->getId();
+            }
+        }
+        return 0;
     }
 }
