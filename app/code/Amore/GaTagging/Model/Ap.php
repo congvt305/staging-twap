@@ -124,7 +124,7 @@ class Ap
         $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
-        $productInfo['cate'] = $this->getProductCategory($product);
+        $productInfo['cate'] = $this->helper->getProductCategory($product);
         $productInfo['catecode'] = '';
         $productInfo['price'] = $this->getProductDiscountedPrice($product);
         $productInfo['url'] = $product->getProductUrl();
@@ -150,7 +150,7 @@ class Ap
         $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
-        $productInfo['cate'] = $this->getProductCategory($product);
+        $productInfo['cate'] = $this->helper->getProductCategory($product);
         $productInfo['catecode'] = '';
         $productInfo['price'] = $this->getProductDiscountedPrice($product);
         $productInfo['url'] = $product->getProductUrl();
