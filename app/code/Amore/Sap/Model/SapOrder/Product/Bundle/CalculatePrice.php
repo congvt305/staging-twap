@@ -84,7 +84,7 @@ class CalculatePrice
             foreach ($bundleItems as $bundleItem) {
                 if ($orderItem->getPrice() != $totalPrice) {
                     $gapAmount = $orderItem->getPrice() - $totalPrice;
-                    $bundleItem->setPrice($bundleItem->getPrice() + $gapAmount);
+                    $bundleItem->setData('normal_sales_amount', $bundleItem->getData('normal_sales_amount') + $gapAmount);
                 }
                 if ($rewardPoint != $totalRewardPoint) {
                     $gapRewardPointAmount = $rewardPoint - $totalRewardPoint;
