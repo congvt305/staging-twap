@@ -37,24 +37,40 @@ class Ap
     protected $categoryRepository;
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
+    protected $categoryFactory;
+
+    /**
      * @param \Magento\Framework\Serialize\Serializer\Json $jsonSerializer
      * @param \Amore\GaTagging\Helper\Data $helper
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Catalog\Helper\Product $catalogProductHelper
      * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
      */
     public function __construct(
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Amore\GaTagging\Helper\Data $helper,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Catalog\Helper\Product $catalogProductHelper,
-        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Catalog\Model\CategoryFactory $categoryFactory
     ) {
         $this->jsonSerializer = $jsonSerializer;
         $this->helper = $helper;
         $this->productRepository = $productRepository;
         $this->catalogProductHelper = $catalogProductHelper;
         $this->categoryRepository = $categoryRepository;
+        $this->storeManager = $storeManager;
+        $this->categoryFactory = $categoryFactory;
     }
 
     /**
@@ -160,38 +176,41 @@ class Ap
     }
 
     /**
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @return string|null
-     */
-    public function getProductCategory(\Magento\Catalog\Api\Data\ProductInterface $product)
-    {
-        $categoryIds = $product->getCategoryIds();
-        if ($categoryIds) {
-            $categoryId = reset($categoryIds);
-            return $this->_getRootCategoryName($categoryId, $product->getStoreId());
-        }
-
-        return '스킨케어';
-    }
-
-    /**
-     * @param $id
-     * @param $storeId
+     * @param $product
      * @return string|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function _getRootCategoryName($id, $storeId)
+    public function getProductCategory($product)
     {
-        $categoryInstance = $this->categoryRepository->get($id, $storeId);
-        $level = $categoryInstance->getLevel();
-        if ($level > 2) {
-            $parentId = $categoryInstance->getParentId();
-            return $this->_getRootCategoryName($parentId, $storeId);
-        } elseif ($level == 2) {
-            return $categoryInstance->getName();
-        } else {
-            return '스킨케어';
+        $categoryName = "스킨케어";
+        $categoryIds = $product->getCategoryIds();
+        foreach ($categoryIds as $categoryId) {
+            $nearRootCategoryId = $this->nearRootCategoryId($categoryId);
+            if ($nearRootCategoryId) {
+                $category = $this->categoryRepository->get($nearRootCategoryId);
+                $categoryName = $category->getName();
+                break;
+            }
         }
+        return $categoryName;
+    }
+
+    /**
+     * @param $categoryId
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    function nearRootCategoryId($categoryId)
+    {
+        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+        $category = $this->categoryFactory->create()->load($categoryId);
+        $parentCategories = $category->getParentCategories();
+        foreach ($parentCategories as $parentCategory) {
+            if ($parentCategory->getParentId() == $rootCategoryId) {
+                return $parentCategory->getId();
+            }
+        }
+        return 0;
     }
 
     /**
