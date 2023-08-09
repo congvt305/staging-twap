@@ -1,9 +1,10 @@
 define([
     'jquery',
     'Magento_Customer/js/customer-data',
+    'Magento_Theme/js/model/breadcrumb-list',
     'underscore',
     'jquery-ui-modules/widget'
-], function ($, customerData, _) {
+], function ($, customerData, breadcrumbs, _) {
     'use strict';
 
     $.widget('mage.apCart', {
@@ -75,7 +76,12 @@ define([
             return productInfosArr;
         },
         getSimpleProductData: function (product) {
-            var productInfosArr = [];
+            var productInfosArr = [],
+                cate = product.product_category;
+            var categoryCrumbs = breadcrumbs.filter((breadcrumb) => breadcrumb.name == "category");
+            if (categoryCrumbs.length){
+                cate = categoryCrumbs[0].label;
+            }
             var productInfo = {
                 'name': product.product_name,
                 'code': product.product_sku,
@@ -86,7 +92,7 @@ define([
                 'prdprice': parseInt(product.product_original_price),
                 'variant': '',
                 'promotion': '',
-                'cate': product.product_category,
+                'cate': cate,
                 'catecode': '',
                 'quantity': product.qty,
                 'url': product.product_url,
@@ -216,10 +222,10 @@ define([
                 opt = this.options;
 
             $(document)
-                .on(
-                    opt.events.AJAX_ADD_TO_CART,
-                    handlerWrapper.bind(this, this._setToTemporaryEventStorage, opt.events.AJAX_ADD_TO_CART)
-                );
+            .on(
+                opt.events.AJAX_ADD_TO_CART,
+                handlerWrapper.bind(this, this._setToTemporaryEventStorage, opt.events.AJAX_ADD_TO_CART)
+            );
         },
 
 

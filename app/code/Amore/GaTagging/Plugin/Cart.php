@@ -140,18 +140,17 @@ class Cart
      */
     public function getProductCategory($product)
     {
-        $categoryNames = [];
+        $categoryName = "";
         $categoryIds = $product->getCategoryIds();
         foreach ($categoryIds as $categoryId) {
             $nearRootCategoryId = $this->nearRootCategoryId($categoryId);
             if ($nearRootCategoryId) {
                 $category = $this->categoryRepository->get($nearRootCategoryId);
-                if (!in_array($category->getName(), $categoryNames)) {
-                    $categoryNames[] = $category->getName();
-                }
+                $categoryName = $category->getName();
+                break;
             }
         }
-        return implode(",", $categoryNames);
+        return $categoryName;
     }
 
     /**
