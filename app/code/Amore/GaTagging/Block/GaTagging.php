@@ -281,7 +281,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['quantity'] =intval($item->getQtyOrdered());
             $product['variant'] =  '';
             $product['promotion'] = ''; //todo simple promotion??
-            $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+            $product['cate'] = $this->helper->getProductCategory($item->getProduct());
             $product['catecode'] = '';
             $product['url'] = $item->getProduct()->getProductUrl();
             $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
@@ -365,7 +365,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['quantity'] = intval($parentItem->getQty());
                 $product['variant'] = '';
                 $product['promotion'] = '';
-                $product['cate'] = $this->ap->getProductCategory($parentProduct);
+                $product['cate'] = $this->helper->getProductCategory($parentProduct);
                 $product['catecode'] = '';
                 $product['url'] = $parentProduct->getProductUrl();
                 $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentProduct);
@@ -400,7 +400,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                     $product['quantity'] = intval($item->getQty());
                     $product['variant'] =  '';
                     $product['promotion'] = ''; //todo simple promotion??
-                    $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+                    $product['cate'] = $this->helper->getProductCategory($item->getProduct());
                     $product['url'] = $item->getProduct()->getProductUrl();
                     $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
                     $product['catecode'] = '';
@@ -437,7 +437,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['quantity'] = intval($item->getQty());
             $product['variant'] =  '';
             $product['promotion'] = ''; //todo simple promotion??
-            $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+            $product['cate'] = $this->helper->getProductCategory($item->getProduct());
             $product['url'] = $item->getProduct()->getProductUrl();
             $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
             $product['catecode'] = '';
@@ -628,7 +628,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['quantity'] = intval($parentItem->getQtyOrdered());
                 $product['variant'] = '';
                 $product['promotion'] = '';
-                $product['cate'] = $this->ap->getProductCategory($parentProduct);
+                $product['cate'] = $this->helper->getProductCategory($parentProduct);
                 $product['catecode'] = '';
                 $product['url'] = $parentItem->getProduct()->getProductUrl();
                 $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentItem->getProduct());
@@ -663,7 +663,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                     $product['quantity'] = intval($item->getQtyOrdered());
                     $product['variant'] =  '';
                     $product['promotion'] = ''; //todo simple promotion??
-                    $product['cate'] = $this->ap->getProductCategory($item->getProduct());
+                    $product['cate'] = $this->helper->getProductCategory($item->getProduct());
                     $product['catecode'] = '';
                     $product['url'] = $item->getProduct()->getProductUrl();
                     $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
