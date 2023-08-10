@@ -9,4 +9,40 @@
         <plugin sortOrder="100" name="CJ_Middleware::CustomRequestReturnForNewMiddleware"
                 type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderReturnDataPlugin"/>
     </type>
+
+    <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/pos_request.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PosHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\PosHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CJ\Middleware\Model\Pos\Connection\Request">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="CJ\Middleware\Logger\SapHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/sap_request.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SapHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\SapHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CJ\Middleware\Model\Sap\Connection\Request">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
 </config>

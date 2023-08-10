@@ -16,6 +16,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Api\StoreRepositoryInterface;
+use CJ\Middleware\Helper\Data as Helper;
 
 class SapOrderCancelData extends AbstractSapOrder
 {
@@ -28,24 +29,33 @@ class SapOrderCancelData extends AbstractSapOrder
     const CREDITMEMO_RESENT_TO_SAP_SUCCESS = 3;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
      * @param Config $config
+     * @param Helper $helper
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param \Amore\Sap\Logger\Logger $logger
+     * @param \CJ\Middleware\Model\Data $orderData
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
         StoreRepositoryInterface $storeRepository,
         Config $config,
+        Helper $helper,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         \Amore\Sap\Logger\Logger $logger,
         \CJ\Middleware\Model\Data $orderData
     ) {
+        $this->helper = $helper;
         parent::__construct($searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config,
             $quoteCvsLocationRepository, $eavAttributeRepositoryInterface, $logger, $orderData
@@ -122,7 +132,7 @@ class SapOrderCancelData extends AbstractSapOrder
         }
 
         $bindData = [
-            "vkorg" => $this->config->getSalesOrg('store', $storeId),
+            "vkorg" => $this->helper->getSalesOrganizationCode('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2
@@ -161,7 +171,7 @@ class SapOrderCancelData extends AbstractSapOrder
         }
 
         $bindData = [
-            "vkorg" => $this->config->getSalesOrg('store', $storeId),
+            "vkorg" => $this->helper->getSalesOrganizationCode('store', $storeId),
             "kunnr" => $this->config->getClient('store', $storeId),
             "odrno" => $orderData->getIncrementId(),
             // 주문 취소 : 1, 주소변경 : 2

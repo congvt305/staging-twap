@@ -3,7 +3,7 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
-use Amore\PointsIntegration\Model\Connection\Request;
+use CJ\Middleware\Model\Pos\Connection\Request;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -79,7 +79,8 @@ class POSCancelledOrderSender
         try {
             $orderData = $this->posOrderData->getCancelledOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-            $status = $this->request->responseCheck($response, $websiteId);
+            $responseHandled = $this->request->handleResponse($response, $websiteId);
+            $status = $responseHandled ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
                 // update Pos customer grade

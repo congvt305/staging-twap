@@ -5,7 +5,7 @@ namespace Amore\PointsIntegration\Model;
 
 use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\RewardsProvider;
-use Amore\PointsIntegration\Model\Connection\Request as PointRequest;
+use CJ\Middleware\Model\Pos\Connection\Request as PointRequest;
 use Amore\PointsIntegration\Logger\Logger as PointsLogger;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\DB\Select;

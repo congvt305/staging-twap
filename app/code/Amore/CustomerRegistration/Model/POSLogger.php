@@ -35,6 +35,11 @@ class POSLogger
      */
     private $logger;
 
+    /**
+     * @param Data $confg
+     * @param Logger $logger
+     * @param Json $json
+     */
     public function __construct(
         Data $confg,
         Logger $logger,
@@ -45,6 +50,12 @@ class POSLogger
         $this->logger = $logger;
     }
 
+    /**
+     * @param $message
+     * @param $url
+     * @param $parameters
+     * @return void
+     */
     public function addAPICallLog($message, $url, $parameters)
     {
         if ($this->confg->getDebug()) {
@@ -55,10 +66,26 @@ class POSLogger
         }
     }
 
+    /**
+     * @param $message
+     * @return void
+     */
     public function addExceptionMessage($message)
     {
         if ($this->confg->getDebug()) {
             $this->logger->info($message);
+        }
+    }
+
+    /**
+     * @param $message
+     * @param $parameters
+     * @return void
+     */
+    public function addAPILog($message, $parameters){
+        if ($this->confg->getDebug()) {
+            $this->logger->info($message);
+            $this->logger->info($this->json->serialize($parameters));
         }
     }
 }
