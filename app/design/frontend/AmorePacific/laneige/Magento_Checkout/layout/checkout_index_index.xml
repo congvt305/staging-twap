@@ -67,6 +67,11 @@
                                                                         <item name="placeholder" xsi:type="string" translate="true">Be sure to fill out the name on your ID card in case you can't collect the goods</item>
                                                                     </item>
                                                                 </item>
+                                                                <item name="telephone" xsi:type="array">
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="validate-cvs-address-mobile-number" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>
