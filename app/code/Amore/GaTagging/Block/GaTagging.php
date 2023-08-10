@@ -587,7 +587,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $orderData['AP_PURCHASE_PRICE'] = intval($order->getGrandTotal());
         $orderData['AP_PURCHASE_PRDPRICE'] = intval($orderProdPrice);
         $orderData['AP_PURCHASE_SHIPPING'] = intval($order->getShippingAmount()) ?? 0;
-        $orderData['AP_PURCHASE_DCTOTAL'] = intval($orderData['AP_PURCHASE_PRDPRICE'] - $orderData['AP_PURCHASE_PRICE'] - $orderData['AP_PURCHASE_SHIPPING']);
+        $orderData['AP_PURCHASE_DCTOTAL'] = intval($order->getDiscountAmount());
         if ($orderData['AP_PURCHASE_DCTOTAL'] > 0) {
             $orderData['AP_PURCHASE_DCBASIC'] = $order->getAppliedRuleIds() ?? $order->getIncrementId(); //?? 이상함 문의할것.
         }

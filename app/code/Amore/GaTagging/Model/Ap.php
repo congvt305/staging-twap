@@ -59,23 +59,25 @@ class Ap
 
     /**
      * @param $product
+     * @param $qty
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getProductInfo($product)
+    public function getProductInfo($product, $qty = null)
     {
         $productDataArr = [];
         if ($product->getTypeId() === 'bundle') {
-            $productData = $this->getBundleProductInfo($product);
+            $productData = $this->getBundleProductInfo($product, $qty);
             foreach ($productData as $productDatum) {
                 $productDataArr[] = $this->jsonSerializer->serialize($productDatum);
             }
         } elseif ($product->getTypeId() === 'configurable') {
-            $productData = $this->getConfigurableProductInfo($product);
+            $productData = $this->getConfigurableProductInfo($product, $qty);
             foreach ($productData as $productDatum) {
                 $productDataArr[] = $this->jsonSerializer->serialize($productDatum);
             }
         } else {
-            $productData = $this->getSimpleProductInfo($product);
+            $productData = $this->getSimpleProductInfo($product, $qty);
             $productDataArr[] = $this->jsonSerializer->serialize($productData);
         }
         return $productDataArr;
@@ -112,7 +114,7 @@ class Ap
      * @return array
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function getBundleProductInfo($product)
+    protected function getBundleProductInfo($product, $qty = null)
     {
         $productInfos = [];
         $productInfo = [];
@@ -129,6 +131,7 @@ class Ap
         $productInfo['price'] = $this->getProductDiscountedPrice($product);
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
+        $productInfo['quantity'] = $qty ? intval($qty) : 0;
         $productInfos[] = $productInfo;
         return $productInfos;
     }
@@ -138,7 +141,7 @@ class Ap
      * @return array
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function getConfigurableProductInfo($product)
+    protected function getConfigurableProductInfo($product, $qty = null)
     {
         $productInfos = [];
         $productInfo = [];
@@ -155,6 +158,7 @@ class Ap
         $productInfo['price'] = $this->getProductDiscountedPrice($product);
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
+        $productInfo['quantity'] = $qty ? intval($qty) : 0;
         $productInfos[] = $productInfo;
         return $productInfos;
     }

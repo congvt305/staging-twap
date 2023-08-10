@@ -59,7 +59,8 @@ class GetData extends \Magento\Framework\App\Action\Action
         $item = $this->getItemById($cartItemId);
         if ($item) {
             $currentProduct = $item->getProduct();
-            $productInfo = $this->getProductInfo($currentProduct);
+            $qty = $item->getQty();
+            $productInfo = $this->getProductInfo($currentProduct, $qty);
             $result['productInfo'] = $productInfo;
         } else {
             $result['productInfo'] = [];
@@ -70,11 +71,13 @@ class GetData extends \Magento\Framework\App\Action\Action
 
     /**
      * @param $product
+     * @param $qty
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getProductInfo($product)
+    public function getProductInfo($product, $qty = null)
     {
-        return $this->ap->getProductInfo($product);
+        return $this->ap->getProductInfo($product, $qty);
     }
 
     /**
