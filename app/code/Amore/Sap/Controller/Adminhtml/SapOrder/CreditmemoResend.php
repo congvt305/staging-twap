@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\App\Action;
@@ -94,7 +94,7 @@ class CreditmemoResend extends BaseAction
                     $this->logger->info($this->json->serialize($orderUpdateData));
                 }
 
-                $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                $sapResult = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("Single Order Cancel Resend Result Data");

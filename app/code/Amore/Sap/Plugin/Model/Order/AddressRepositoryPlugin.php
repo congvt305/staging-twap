@@ -10,7 +10,7 @@ namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Exception\AddressException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
@@ -107,7 +107,7 @@ class AddressRepositoryPlugin
                         $this->logger->info($this->json->serialize($orderUpdateData));
                     }
 
-                    $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                    $result = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order Address Update Result Data");

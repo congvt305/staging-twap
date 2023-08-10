@@ -8,7 +8,7 @@
 
 namespace Amore\PointsIntegration\Controller\Adminhtml\Points;
 
-use Amore\PointsIntegration\Model\Connection\Request;
+use CJ\Middleware\Model\Pos\Connection\Request;
 use Amore\PointsIntegration\Model\PosOrderData;
 use Magento\Backend\App\Action;
 use Magento\Framework\Event\ManagerInterface;
@@ -81,7 +81,8 @@ class OrderToPos extends Action
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
-            $status = $this->request->responseCheck($response, $websiteId);
+            $responseHandled = $this->request->handleResponse($response, $websiteId);
+            $status = $responseHandled ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
                 $this->messageManager->addSuccessMessage(__('Order Sent to Pos Successfully.'));

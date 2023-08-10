@@ -21,7 +21,7 @@ class PosOrderSender
      */
     private $posOrderData;
     /**
-     * @var Connection\Request
+     * @var \CJ\Middleware\Model\Pos\Connection\Request
      */
     private $request;
     /**
@@ -42,18 +42,19 @@ class PosOrderSender
      * @var PosCustomerGradeUpdater
      */
     private $posCustomerGradeUpdater;
+
     /**
-     * PosOrderSender constructor.
      * @param PosOrderData $posOrderData
-     * @param Connection\Request $request
+     * @param \CJ\Middleware\Model\Pos\Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param Json $json
      * @param Source\Config $PointsIntegrationConfig
      * @param Logger $pointsIntegrationLogger
+     * @param PosCustomerGradeUpdater $posCustomerGradeUpdater
      */
     public function __construct(
         \Amore\PointsIntegration\Model\PosOrderData       $posOrderData,
-        \Amore\PointsIntegration\Model\Connection\Request $request,
+        \CJ\Middleware\Model\Pos\Connection\Request       $request,
         \Magento\Framework\Event\ManagerInterface         $eventManager,
         Json                                              $json,
         \Amore\PointsIntegration\Model\Source\Config      $PointsIntegrationConfig,
@@ -82,7 +83,8 @@ class PosOrderSender
         try {
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
-            $status = $this->request->responseCheck($response, $websiteId);
+            $responseHandled = $this->request->handleResponse($response, $websiteId);
+            $status = $responseHandled ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
                 // update Pos customer grade

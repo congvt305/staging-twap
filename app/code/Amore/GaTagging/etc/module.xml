@@ -11,7 +11,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Amore_GaTagging">
         <sequence>
-            <module name="Amore_Base"/>
+            <module name="CJ_Middleware"/>
             <module name="Magento_GoogleTagManager"/>
         </sequence>
     </module>
