@@ -28,6 +28,18 @@ abstract class AbstractSapOrder
     // 잡출 반품
     const SAMPLE_RETURN = 'ZFR1';
 
+    protected $cnt = 1;
+
+    protected $itemsSubtotal = 0;
+
+    protected $itemsGrandTotalInclTax = 0;
+
+    protected $itemsGrandTotal = 0;
+
+    protected $itemsDiscountAmount = 0;
+
+    protected $itemsMileage = 0;
+
     /**
      * @var SearchCriteriaBuilder
      */
@@ -61,6 +73,11 @@ abstract class AbstractSapOrder
     protected $logger;
 
     /**
+     * @var \CJ\Middleware\Model\Data
+     */
+    protected $orderData;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -75,7 +92,8 @@ abstract class AbstractSapOrder
         Config $config,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        \Amore\Sap\Logger\Logger $logger
+        \Amore\Sap\Logger\Logger $logger,
+        \CJ\Middleware\Model\Data $orderData
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
@@ -84,17 +102,7 @@ abstract class AbstractSapOrder
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->logger = $logger;
-    }
-
-    /**
-     * Get single order data
-     *
-     * @param $incrementId
-     * @return null
-     */
-    public function singleOrderData($incrementId)
-    {
-        return null;
+        $this->orderData = $orderData;
     }
 
     /**
@@ -280,5 +288,55 @@ abstract class AbstractSapOrder
             $this->logger->info($exception->getMessage());
         }
         return $itemsData;
+    }
+
+    /**
+     * reset data before send order
+     *
+     *
+     * @return void
+     */
+    protected function resetData() {
+        $this->itemsSubtotal = 0;
+        $this->itemsDiscountAmount = 0;
+        $this->itemsGrandTotal = 0;
+        $this->itemsGrandTotalInclTax = 0;
+        $this->itemsMileage = 0;
+        $this->cnt = 1;
+    }
+
+
+    /**
+     * Correct price order for order item data
+     *
+     * @param $orderItemData
+     * @param $orderSubtotal
+     * @param $orderDiscountAmount
+     * @param $mileageUsedAmount
+     * @param $orderGrandTotal
+     * @param $isDecimalFormat
+     * @return array
+     */
+    protected function correctPriceOrderItemData($orderItemData, $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat)
+    {
+        $orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
+
+        if ($isDecimalFormat) {
+            $listToFormat = ['itemNsamt', 'itemSlamt', 'itemDcamt', 'itemMiamt', 'itemNetwr'];
+
+            foreach ($listToFormat as $field) {
+                foreach ($orderItemData as $key => $value) {
+                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                        $orderItemData[$key][$field] = $this->orderData->formatPrice($value[$field], $isDecimalFormat);
+                    }
+                }
+            }
+        }
+
+        return $orderItemData;
     }
 }
