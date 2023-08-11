@@ -10,7 +10,7 @@ namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\SapOrder\Product\Bundle\CalculatePrice;
+use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
@@ -20,7 +20,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\InvoiceRepositoryInterface;
-use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Item;
 use Magento\Store\Api\StoreRepositoryInterface;
@@ -39,28 +38,13 @@ class SapOrderConfirmData extends AbstractSapOrder
 
     const ORDER_RESENT_TO_SAP_SUCCESS = 3;
 
-    private $cnt = 1;
-
-    private $_orderItemData = [];
-
-    private $_itemsSubtotal = 0;
-
-    private $_itemsGrandTotalInclTax = 0;
-
-    private $_itemsGrandTotal = 0;
-
-    private $_itemsDiscountAmount = 0;
-
-    private $_itemsMileage = 0;
+    private $orderItemData = [];
 
     /**
      * @var InvoiceRepositoryInterface
      */
     private $invoiceRepository;
-    /**
-     * @var RmaRepositoryInterface
-     */
-    private $rmaRepository;
+
     /**
      * @var CustomerRepositoryInterface
      */
@@ -74,15 +58,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @var \Magento\Catalog\Api\ProductRepositoryInterface
      */
     private $productRepository;
-
-    /**
-     * @var \Magento\Bundle\Api\ProductLinkManagementInterface
-     */
-    private $productLinkManagement;
-    /**
-     * @var \Magento\Sales\Api\OrderItemRepositoryInterface
-     */
-    private $orderItemRepository;
 
     /**
      * @var StoreManagerInterface
@@ -115,36 +90,30 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $bundleCalculatePrice;
 
     /**
-     * @var Product\CalculatePrice
+     * @var \CJ\Middleware\Model\Product\CalculatePrice
      */
     private $productCalculatePrice;
 
     /**
-     * @var \CJ\Middleware\Model\Data
-     */
-    private $orderData;
-
-    /**
-     * SapOrderConfirmData constructor.
-     *
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
      * @param Config $config
      * @param InvoiceRepositoryInterface $invoiceRepository
-     * @param RmaRepositoryInterface $rmaRepository
      * @param CustomerRepositoryInterface $customerRepository
      * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
-     * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
-     * @param \Magento\Sales\Api\OrderItemRepositoryInterface $orderItemRepository
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
      * @param \Amasty\Rewards\Model\Config $amConfig
+     * @param \CJ\Rewards\Model\Data $rewardData
+     * @param CalculatePrice $bundleCalculatePrice
+     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
+     * @param \CJ\Middleware\Model\Data $orderData
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -164,7 +133,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         \Amasty\Rewards\Model\Config $amConfig,
         \CJ\Rewards\Model\Data $rewardData,
         CalculatePrice $bundleCalculatePrice,
-        \Amore\Sap\Model\SapOrder\Product\CalculatePrice $productCalculatePrice,
+        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData
     ) {
         $this->invoiceRepository = $invoiceRepository;
@@ -178,11 +147,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->rewardData = $rewardData;
         $this->bundleCalculatePrice = $bundleCalculatePrice;
         $this->productCalculatePrice = $productCalculatePrice;
-        $this->orderData = $orderData;
         parent::__construct(
             $searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config, $quoteCvsLocationRepository,
-            $eavAttributeRepositoryInterface, $logger
+            $eavAttributeRepositoryInterface, $logger, $orderData
         );
     }
 
@@ -195,6 +163,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     public function singleOrderData($incrementId)
     {
+        $this->resetData();
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
@@ -631,32 +600,17 @@ class SapOrderConfirmData extends AbstractSapOrder
             }
         }
 
-        $orderGrandtotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
+        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
         $orderDiscountAmount = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $mileageUsedAmount;
 
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
-            $this->_itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
+            $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
+        $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
+            $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+        );
 
-        $this->_orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->_itemsSubtotal, $this->_orderItemData, 'itemNsamt', $isDecimalFormat);
-        $this->_orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->_itemsDiscountAmount, $this->_orderItemData, 'itemDcamt', $isDecimalFormat);
-        $this->_orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->_itemsMileage, $this->_orderItemData, 'itemMiamt', $isDecimalFormat);
-        $this->_orderItemData = $this->orderData->priceCorrector($orderGrandtotal, $this->_itemsGrandTotal, $this->_orderItemData, 'itemNetwr', $isDecimalFormat);
-        $this->_orderItemData = $this->orderData->priceCorrector($orderGrandtotal, $this->_itemsGrandTotalInclTax, $this->_orderItemData, 'itemSlamt', $isDecimalFormat);
-
-        if ($isDecimalFormat) {
-            $listToFormat = ['itemNsamt', 'itemSlamt', 'itemDcamt', 'itemMiamt', 'itemNetwr'];
-
-            foreach ($listToFormat as $field) {
-                foreach ($this->_orderItemData as $key => $value) {
-                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
-                        $this->_orderItemData[$key][$field] = $this->orderData->formatPrice($value[$field], $isDecimalFormat);
-                    }
-                }
-            }
-        }
-
-        return $this->_orderItemData;
+        return $this->orderItemData;
     }
 
     /**
@@ -735,7 +689,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
-        $this->_orderItemData[] = [
+        $this->orderItemData[] = [
             'itemVkorg' => $salesOrg,
             'itemKunnr' => $client,
             'itemOdrno' => $order->getIncrementId(),
@@ -765,10 +719,21 @@ class SapOrderConfirmData extends AbstractSapOrder
         ];
 
         $this->cnt++;
-        $this->_itemsSubtotal += $itemNsamt;
-        $this->_itemsGrandTotalInclTax += $itemSlamt - $itemMiamt;
-        $this->_itemsGrandTotal +=  $itemNetwr;
-        $this->_itemsDiscountAmount += $itemDcamt;
-        $this->_itemsMileage += $itemMiamt;
+        $this->itemsSubtotal += $itemNsamt;
+        $this->itemsGrandTotalInclTax += $itemSlamt - $itemMiamt;
+        $this->itemsGrandTotal +=  $itemNetwr;
+        $this->itemsDiscountAmount += $itemDcamt;
+        $this->itemsMileage += $itemMiamt;
+    }
+
+    /**
+     * Reset data
+     *
+     * @return void
+     */
+    protected function resetData()
+    {
+        parent::resetData();
+        $this->orderItemData = [];
     }
 }

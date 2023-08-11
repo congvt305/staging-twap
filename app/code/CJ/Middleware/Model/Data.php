@@ -77,14 +77,15 @@ class Data
             $correctAmount = $orderAmount - $itemsAmount;
 
             foreach ($orderItemData as $key => $value) {
-                if ($value['itemFgflg'] == 'Y') {
+                //Because POS do not have itemFgflg so ignore it
+                if (isset($value['itemFgflg']) && $value['itemFgflg'] == 'Y') {
                     continue;
                 }
                 $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $correctAmount, $isDecimalFormat);
                 //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
                 //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
                 // -> when correct data price, may be 'itemFgflg' will be changed
-                if ($field == 'itemSlamt') {
+                if ($field == 'itemSlamt' && isset($value['itemFgflg'])) {
                     $orderItemData[$key]['itemFgflg'] = ($orderItemData[$key][$field] == 0 ? 'Y' : 'N');
                 }
                 break;
