@@ -1,31 +1,22 @@
 <?php
+declare(strict_types=1);
 
-namespace Amore\Sap\Model\SapOrder\Product\Bundle;
-
-use Amore\Sap\Model\SapOrder\Data;
+namespace CJ\Middleware\Model\Product\Bundle;
 
 class CalculatePrice
 {
     /**
-     * @var Data
+     * @var \CJ\Middleware\Model\Data
      */
     private $orderData;
 
     /**
-     * @var \Amasty\Rewards\Model\Config
-     */
-    private $amConfig;
-
-    /**
      * @param \CJ\Middleware\Model\Data $orderData
-     * @param \Amasty\Rewards\Model\Config $amConfig
      */
     public function __construct(
-        \CJ\Middleware\Model\Data $orderData,
-        \Amasty\Rewards\Model\Config $amConfig
+        \CJ\Middleware\Model\Data $orderData
     ) {
         $this->orderData = $orderData;
-        $this->amConfig = $amConfig;
     }
 
     /**

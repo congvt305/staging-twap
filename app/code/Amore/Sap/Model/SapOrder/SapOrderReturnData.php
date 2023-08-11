@@ -9,7 +9,7 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\RmaTrackNoException;
-use Amore\Sap\Model\SapOrder\Product\Bundle\CalculatePrice;
+use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -35,19 +35,8 @@ class SapOrderReturnData extends AbstractSapOrder
 
     const ABRVW_MILEAGE_ALL_RETURN_CODE = 'FZ1';
 
-    private $_cnt = 1;
+    private $rmaItemData = [];
 
-    private $_rmaItemData = [];
-
-    private $_itemsSubtotal = 0;
-
-    private $_itemsGrandTotalInclTax = 0;
-
-    private $_itemsGrandTotal = 0;
-
-    private $_itemsDiscountAmount = 0;
-
-    private $_itemsMileage = 0;
 
     /**
      * @var CustomerRepositoryInterface
@@ -90,14 +79,9 @@ class SapOrderReturnData extends AbstractSapOrder
     private $bundleCalculatePrice;
 
     /**
-     * @var Product\CalculatePrice
+     * @var \CJ\Middleware\Model\Product\CalculatePrice
      */
     private $productCalculatePrice;
-
-    /**
-     * @var \CJ\Middleware\Model\Data
-     */
-    private $orderData;
 
     /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -114,8 +98,7 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param \Amasty\Rewards\Model\Config $amConfig
      * @param \CJ\Rewards\Model\Data $rewardData
      * @param CalculatePrice $bundleCalculatePrice
-     * @param Product\CalculatePrice $productCalculatePrice
-     * @param \CJ\Middleware\Model\Data $orderData
+     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -132,7 +115,7 @@ class SapOrderReturnData extends AbstractSapOrder
         \Amasty\Rewards\Model\Config $amConfig,
         \CJ\Rewards\Model\Data $rewardData,
         CalculatePrice $bundleCalculatePrice,
-        \Amore\Sap\Model\SapOrder\Product\CalculatePrice $productCalculatePrice,
+        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData,
         \Amore\Sap\Logger\Logger $logger
     ) {
@@ -145,11 +128,10 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->rewardData = $rewardData;
         $this->bundleCalculatePrice = $bundleCalculatePrice;
         $this->productCalculatePrice = $productCalculatePrice;
-        $this->orderData = $orderData;
         parent::__construct(
             $searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config, $quoteCvsLocationRepository,
-            $eavAttributeRepositoryInterface, $logger
+            $eavAttributeRepositoryInterface, $logger, $orderData
         );
     }
 
@@ -161,6 +143,7 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function singleOrderData($rma)
     {
+        $this->resetData();
         $source = $this->config->getSourceByStore('store', $rma->getStoreId());
         $rmaData = $this->getRmaData($rma);
         $rmaItemData = $this->getRmaItemData($rma);
@@ -438,29 +421,14 @@ class SapOrderReturnData extends AbstractSapOrder
         $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
         $orderDiscountAmount = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $mileageUsedAmount;
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
-            $this->_itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
-        }
-        if ($websiteCode != 'vn_laneige_website') {
-            $this->_rmaItemData = $this->orderData->priceCorrector($orderSubtotal, $this->_itemsSubtotal, $this->_rmaItemData, 'itemNsamt', $isDecimalFormat);
-            $this->_rmaItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->_itemsGrandTotal, $this->_rmaItemData, 'itemNetwr', $isDecimalFormat);
-            $this->_rmaItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->_itemsDiscountAmount, $this->_rmaItemData, 'itemDcamt', $isDecimalFormat);
-            $this->_rmaItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->_itemsGrandTotalInclTax, $this->_rmaItemData, 'itemSlamt', $isDecimalFormat);
-        }
-        $this->_rmaItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->_itemsMileage, $this->_rmaItemData, 'itemMiamt', $isDecimalFormat);
-
-        if ($isDecimalFormat) {
-            $listToFormat = ['itemNsamt', 'itemSlamt', 'itemNetwr', 'itemDcamt', 'itemMiamt'];
-
-            foreach ($listToFormat as $field) {
-                foreach ($this->_rmaItemData as $key => $value) {
-                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
-                        $this->_rmaItemData[$key][$field] = $this->orderData->formatPrice($value[$field], $isDecimalFormat);
-                    }
-                }
-            }
+            $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
 
-        return $this->_rmaItemData;
+        $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
+            $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+        );
+
+        return $this->rmaItemData;
     }
 
     /**
@@ -607,11 +575,11 @@ class SapOrderReturnData extends AbstractSapOrder
         $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
-        $this->_rmaItemData[] = [
+        $this->rmaItemData[] = [
             'itemVkorg' => $salesOrg,
             'itemKunnr' => $client,
             'itemOdrno' => "R" . $rma->getIncrementId(),
-            'itemPosnr' => $this->_cnt,
+            'itemPosnr' => $this->cnt,
             'itemMatnr' => $sku,
             'itemMenge' => intval($rmaItem->getQtyRequested()),
             // 아이템 단위, Default : EA
@@ -634,11 +602,22 @@ class SapOrderReturnData extends AbstractSapOrder
             'itemPosnrOri' => $originPosnr[$itemId]
         ];
 
-        $this->_cnt++;
-        $this->_itemsSubtotal += $itemNsamt;
-        $this->_itemsGrandTotal += ($itemNsamt - $itemDcamt - $itemMiamt);
-        $this->_itemsGrandTotalInclTax += ($itemNsamt - $itemDcamt - $itemMiamt - $itemTaxAmount);
-        $this->_itemsDiscountAmount += $itemDcamt;
-        $this->_itemsMileage += $itemMiamt;
+        $this->cnt++;
+        $this->itemsSubtotal += $itemNsamt;
+        $this->itemsGrandTotal += ($itemNsamt - $itemDcamt - $itemMiamt);
+        $this->itemsGrandTotalInclTax += ($itemNsamt - $itemDcamt - $itemMiamt - $itemTaxAmount);
+        $this->itemsDiscountAmount += $itemDcamt;
+        $this->itemsMileage += $itemMiamt;
+    }
+
+    /**
+     * Reset rma data
+     *
+     * @return void
+     */
+    protected function resetData()
+    {
+        parent::resetData();
+        $this->rmaItemData = [];
     }
 }
