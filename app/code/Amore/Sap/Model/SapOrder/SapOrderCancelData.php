@@ -43,11 +43,12 @@ class SapOrderCancelData extends AbstractSapOrder
         Config $config,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        \Amore\Sap\Logger\Logger $logger
+        \Amore\Sap\Logger\Logger $logger,
+        \CJ\Middleware\Model\Data $orderData
     ) {
         parent::__construct($searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config,
-            $quoteCvsLocationRepository, $eavAttributeRepositoryInterface, $logger
+            $quoteCvsLocationRepository, $eavAttributeRepositoryInterface, $logger, $orderData
         );
     }
 
