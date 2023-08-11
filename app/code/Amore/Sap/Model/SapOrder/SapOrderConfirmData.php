@@ -163,7 +163,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     public function singleOrderData($incrementId)
     {
-        $this->resetData();
         /** @var Order $order */
         $order = $this->getOrderInfo($incrementId);
 
@@ -262,6 +261,7 @@ class SapOrderConfirmData extends AbstractSapOrder
      */
     public function getOrderData($incrementId)
     {
+        $this->resetData();
         /** @var Order $orderData */
         $orderData = $this->getOrderInfo($incrementId);
 

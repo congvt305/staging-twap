@@ -463,14 +463,16 @@ class PosOrderData extends AbstractPosOrder
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $skuPrefix = $skuPrefix ?: '';
         $sku = $newOrderItem->getSku();
+        $qty = $newOrderItem->getQtyOrdered();
         if ($bundleChild) {
             $sku = $bundleChild->getSku();
+            $qty = $bundleChild->getQtyOrdered();
         }
 
         $stripSku = str_replace($skuPrefix, '', $sku);
         $this->orderItemData[] = [
             'prdCD' => $stripSku,
-            'qty' => (int)$bundleChild->getQtyOrdered(),
+            'qty' => $qty,
             'price' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat),
             'salAmt' => $this->orderData->roundingPrice($itemSlamt, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
