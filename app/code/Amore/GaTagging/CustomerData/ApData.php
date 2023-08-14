@@ -11,6 +11,8 @@ namespace Amore\GaTagging\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Model\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class ApData implements SectionSourceInterface
 {
@@ -31,16 +33,23 @@ class ApData implements SectionSourceInterface
      */
     private $httpHeader;
 
+    /**
+     * @var \Magento\Customer\Api\GroupRepositoryInterface
+     */
+    protected $groupRepository;
+
     public function __construct(
         \Magento\Framework\HTTP\Header $httpHeader,
         \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
+        \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
     ) {
         $this->dateTimeFactory = $dateTimeFactory;
         $this->customerSession = $customerSession;
         $this->httpContext = $httpContext;
         $this->httpHeader = $httpHeader;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -66,7 +75,7 @@ class ApData implements SectionSourceInterface
             'AP_DATA_CA' => $customer->getDob() ? $this->getCustomerAge($customer->getDob()) : '',
             'AP_DATA_CD' => $customer->getDob() ? $this->getCustomerBirthYear($customer->getDob()) : '',
             'AP_DATA_CG' => $customer->getGender() ? $customer->getGender() : '',
-            'AP_DATA_CT' => '', //todo get customer group name 멤버쉽 운영시 구현
+            'AP_DATA_CT' => $this->getCustomerGroupCode($customer->getGroupId())
         ];
     }
 
@@ -99,6 +108,19 @@ class ApData implements SectionSourceInterface
     private function isMobile()
     {
         return preg_match("/(android|ipod|ipad|blackberry|windows\ ce|lg|mot|samsung|sonyericsson)/i", $this->httpHeader->getHttpUserAgent());
+    }
+
+    protected function getCustomerGroupCode($groupId)
+    {
+        $customerGroupCode = '';
+        try {
+            $customerGroup = $this->groupRepository->getById($groupId);
+            $customerGroupCode = $customerGroup->getCode();
+        } catch (NoSuchEntityException $e) {
+        } catch (LocalizedException $e) {
+        }
+        return $customerGroupCode;
+
     }
 
 }

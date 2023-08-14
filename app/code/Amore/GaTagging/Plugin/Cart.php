@@ -25,12 +25,41 @@ class Cart
      */
     private $data;
 
+    /**
+     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
+     */
+    protected $categoryRepository;
+
+    /**
+     * @var \Magento\Catalog\Helper\Product
+     */
+    protected $catalogProductHelper;
+
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    protected $productRepository;
+
+    /**
+     * @var \Amore\GaTagging\Model\Ap
+     */
+    protected $ap;
+
+
     public function __construct(
         \Amore\GaTagging\Helper\Data $data,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Magento\Catalog\Helper\Product $catalogProductHelper,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \Amore\GaTagging\Model\Ap $ap
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->data = $data;
+        $this->catalogProductHelper = $catalogProductHelper;
+        $this->categoryRepository = $categoryRepository;
+        $this->productRepository = $productRepository;
+        $this->ap = $ap;
     }
 
     /**
@@ -43,13 +72,15 @@ class Cart
             return $result;
         }
         $storeId =
-        $items =$this->getQuote()->getAllVisibleItems();
+        $items = $this->getQuote()->getAllVisibleItems();
 
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                     $result['items'][$key]['product_original_price'] = $item->getProduct()->getPrice();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
+                    $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
+                    $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
                 }
             }
         }
@@ -81,4 +112,11 @@ class Cart
         }
         return false;
     }
+
+    protected function getProductImage($productId)
+    {
+        $product = $this->productRepository->getById($productId);
+        return $this->catalogProductHelper->getThumbnailUrl($product);
+    }
+
 }

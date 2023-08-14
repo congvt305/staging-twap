@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var \Amore\GaTagging\Block\GaTagging $block
+ */
+
+$eventRegisterSuccess = $block->getEventRegisterSuccess();
+
+if ($eventRegisterSuccess):
+    $block->setEventRegisterSuccess(null);
+    $customer = $block->getCurrentCustomer();
+    $gcid = hash('sha512', $customer->getId());
+    $cid = $block->getCustomerIntegrationNumber($customer);
+    $registerType = $customer->getRegisterType();
+    $registerDate = $block->getCustomerRegisterDate($customer);
+    ?>
+    <script>
+        var AP_DATA_GCID = "<?= $gcid ?>";
+        var AP_DATA_CID = "<?= $cid ?>";
+        var AP_REGI_TYPE = "<?= $registerType ?>";
+        var AP_REGI_DATE = "<?= $registerDate ?>";
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'event': 'landingAfterJoin'})
+    </script>
+<?php endif; ?>

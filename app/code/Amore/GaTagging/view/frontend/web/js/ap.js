@@ -1,6 +1,7 @@
 define([
+    'jquery',
     'Magento_Customer/js/customer-data',
-], function (customerData) {
+], function ($, customerData) {
     'user strict';
 
     var cacheKey = 'customer-ap-data';
@@ -41,5 +42,32 @@ define([
         }
         window.AP_DATA_CHANNEL = isMobile() ? 'MOBILE' : 'PC';
         notify(config.eventName);
+
+        $("form.form-cart a.action-delete").click(function(e){
+            e.preventDefault();
+            var itemId = $(this).data().post.data.id;
+            var AP_RMCART_PRDS = [];
+            $.ajax({
+                'url': config.getProductInfoUrl,
+                'type': 'GET',
+                'async': false,
+                'dataType': 'json',
+                'data': {"itemId": itemId},
+                'success': function(response) {
+                    var productInfo = response.productInfo;
+
+                    if (productInfo) {
+                        productInfo.forEach(function(info) {
+                            AP_RMCART_PRDS.push(JSON.parse( info));
+                        });
+                        if (window.dataLayer) {
+                            window.AP_RMCART_PRDS = AP_RMCART_PRDS;
+                            window.dataLayer.push({'event': 'rmcart'});
+                        }
+                    }
+                }
+            });
+            return true;
+        });
     };
 });
