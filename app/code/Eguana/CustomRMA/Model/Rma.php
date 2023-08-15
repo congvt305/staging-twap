@@ -426,4 +426,32 @@ class Rma extends \Magento\Rma\Model\Rma
         return $result;
     }
 
+    /**
+     * @param $withoutAttributes
+     * @return \Magento\Rma\Model\ResourceModel\Item\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getItemsForDisplay($withoutAttributes = false)
+    {
+        /** @var $collection \Magento\Rma\Model\ResourceModel\Item\Collection */
+        $collection = $this->_itemsFactory->create();
+        $collection->joinField('product_type', 'sales_order_item', 'product_type', 'item_id=order_item_id', null, 'left');
+        $collection->addFieldToFilter(
+            'rma_entity_id',
+            $this->getEntityId()
+        )->addFieldToFilter(
+            'product_type',
+            ['neq' => 'bundle']
+        )->setOrder(
+            'order_item_id'
+        )->setOrder(
+            'entity_id'
+        );
+
+        if (!$withoutAttributes) {
+            $collection->addAttributeToSelect('*');
+        }
+        return $collection;
+    }
+
 }
