@@ -331,7 +331,10 @@ class SapOrderReturnData extends AbstractSapOrder
             }
             if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
                 $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
-                $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                if ($rewardPoints) {
+                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                    $spendingRate = $rewardPoints / $mileageUsedAmount;
+                }
             } else {
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
             }
