@@ -138,7 +138,9 @@ class SapOrderReturnData extends AbstractSapOrder
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
         \Amasty\Rewards\Model\Config $amConfig,
-        \CJ\Rewards\Model\Data $rewardData
+        \CJ\Rewards\Model\Data $rewardData,
+        \Amore\Sap\Logger\Logger $logger,
+        \CJ\Middleware\Model\Data $orderData
     ) {
         $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
@@ -146,7 +148,6 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->itemCollectionFactory = $itemCollectionFactory;
-        parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->productRepository = $productRepository;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->productLinkManagement = $productLinkManagement;
@@ -155,6 +156,8 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
         $this->rewardData = $rewardData;
+        parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config,
+            $quoteCvsLocationRepository, $eavAttributeRepositoryInterface, $logger, $orderData);
     }
 
     /**
@@ -242,7 +245,7 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $isMileageOrder = bcsub($nsamt, $dcamt) == $miamt && $miamt > 0;
         $bindData[] = [
-            'vkorg' => $this->config->getSalesOrg('store', $storeId),
+            'vkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
             'kunnr' => $this->config->getClient('store', $storeId),
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -284,7 +287,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
-            'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
+            'vkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
             'kunnrOri' => $this->config->getClient('store', $storeId),
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -412,7 +415,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
                 $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $mileagePerItem;
                 $rmaItemData[] = [
-                    'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
+                    'itemVkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
                     'itemKunnr' => $this->config->getClient('store', $storeId),
                     'itemOdrno' => "R" . $rma->getIncrementId(),
                     'itemPosnr' => $cnt,
@@ -432,7 +435,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
                     'itemNetwr' => $itemNetwr,
                     'itemMwsbp' => $itemTaxAmount,
-                    'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
+                    'itemVkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
                     'itemKunnrOri' => $this->config->getClient('store', $storeId),
                     'itemOdrnoOri' => $order->getIncrementId(),
                     'itemPosnrOri' => $originPosnr[$rmaItem->getOrderItemId()]
@@ -475,6 +478,7 @@ class SapOrderReturnData extends AbstractSapOrder
                             $mileageUsedAmountExisted = 0;
                         }
                     }
+
                     $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
                     $meins = $product->getData('meins');
                     $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
@@ -486,6 +490,8 @@ class SapOrderReturnData extends AbstractSapOrder
                         (($product->getPrice() - $childPriceRatio) * $bundleChildrenItem->getQtyOrdered()) +
                         $catalogRuledPriceRatio * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
                     );
+
+
                     $itemSubtotal = abs($this->roundingPrice($bundleChildItemPrice * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
                     //when child in bundle item(dynamic price) has discount > subtotal and other order item has special price( catalog price, tier price)
                     //so when calculate child ratio for each item the $orderItem->getOriginalPrice(), it will get the price include special price (not normal price)
@@ -514,7 +520,7 @@ class SapOrderReturnData extends AbstractSapOrder
                     $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $mileagePerItem;
 
                     $rmaItemData[] = [
-                        'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
+                        'itemVkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
                         'itemKunnr' => $this->config->getClient('store', $storeId),
                         'itemOdrno' => "R" . $rma->getIncrementId(),
                         'itemPosnr' => $cnt,
@@ -534,7 +540,7 @@ class SapOrderReturnData extends AbstractSapOrder
                         'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
                         'itemNetwr' => $itemNetwr,
                         'itemMwsbp' => $itemTaxAmount,
-                        'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
+                        'itemVkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
                         'itemKunnrOri' => $this->config->getClient('store', $storeId),
                         'itemOdrnoOri' => $order->getIncrementId(),
                         'itemPosnrOri' => $originPosnr[$bundleChildrenItem->getItemId()]
