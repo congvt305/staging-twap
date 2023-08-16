@@ -115,6 +115,7 @@ define([
                         messages.messageContainer.addSuccessMessage({
                             'message': this.successMessage
                         });
+                        window.location.reload();
                     }
                 }.bind(this));
         },
@@ -204,19 +205,19 @@ define([
 
         applyCouponPopup: function(data, event) {
             var _couponCode = event.target.id;
+            var couponAppliedPopup = $('#discount-code').val()
             if (coupon.isApplied() && _couponCode == couponAppliedPopup) {
                 cancelCouponAction(coupon.getIsApplied(false));
                 couponAppliedPopup = '';
                 $('#discount-code').val('');
                 popup.closeModal();
-            }
-            else
-            {
+            } else {
                 setCouponCodeAction(_couponCode, coupon.getIsApplied(true))
                     .done(function (response) {
                         $('#discount-code').val(_couponCode);
                         couponAppliedPopup = _couponCode;
                         popup.closeModal();
+                        window.location.reload();
                     })
                     .fail(function (response) {
                         couponCode('');
