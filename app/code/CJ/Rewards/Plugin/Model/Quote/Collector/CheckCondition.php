@@ -88,7 +88,7 @@ class CheckCondition
                 $listOptions = $this->rewardsData->getListOptionRewardPoint();
                 if ($spentPoints) {
                     $amountDiscount = $listOptions[$spentPoints] ?? 0;
-                    if ($quote->getGrandTotal() < $amountDiscount) {
+                    if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
                         $quote->setData(EntityInterface::POINTS_SPENT, 0);
                         $this->calculator->clearPointsDiscount($items);
                         $this->quoteRepository->save($quote);
