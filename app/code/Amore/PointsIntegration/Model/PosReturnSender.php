@@ -3,7 +3,7 @@
 namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Logger\Logger;
-use Amore\PointsIntegration\Model\Connection\Request;
+use CJ\Middleware\Model\Pos\Connection\Request;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Api\Data\RmaInterface;
@@ -85,7 +85,8 @@ class PosReturnSender
         try {
             $rmaData = $this->posReturnData->getRmaData($rma);
             $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
-            $success = $this->request->responseCheck($response, $websiteId);
+            $responseHandled = $this->request->handleResponse($response, $websiteId);
+            $success = $responseHandled ? $responseHandled['status'] : false;
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
                 // update Pos customer grade

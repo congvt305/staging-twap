@@ -20,7 +20,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
@@ -181,7 +181,7 @@ class MassSend extends AbstractAction
                     $this->logger->info($this->json->serialize($sendData));
                 }
 
-                $result = $this->request->postRequest($this->json->serialize($sendData), $storeId);
+                $result = $this->request->sendRequest($this->json->serialize($sendData), $storeId, Request::SAP_REQUEST_TYPE);
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND RESULT");

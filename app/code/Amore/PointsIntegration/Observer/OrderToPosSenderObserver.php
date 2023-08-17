@@ -22,7 +22,7 @@ class OrderToPosSenderObserver implements ObserverInterface
      */
     private $posOrderData;
     /**
-     * @var \Amore\PointsIntegration\Model\Connection\Request
+     * @var \CJ\Middleware\Model\Pos\Connection\Request
      */
     private $request;
     /**
@@ -45,7 +45,7 @@ class OrderToPosSenderObserver implements ObserverInterface
     /**
      * OrderToPosSenderObserver constructor.
      * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
-     * @param \Amore\PointsIntegration\Model\Connection\Request $request
+     * @param \CJ\Middleware\Model\Pos\Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param Json $json
      * @param Config $config
@@ -53,7 +53,7 @@ class OrderToPosSenderObserver implements ObserverInterface
      */
     public function __construct(
         \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
-        \Amore\PointsIntegration\Model\Connection\Request $request,
+        \CJ\Middleware\Model\Pos\Connection\Request $request,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Json $json,
         Config $config,

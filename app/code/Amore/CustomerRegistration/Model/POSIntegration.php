@@ -21,6 +21,7 @@ use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Implement the API module interface
@@ -93,6 +94,11 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      */
     private $addressData;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
     public function __construct(
         RegionFactory $regionFactory,
         \Eguana\Directory\Helper\Data $cityHelper,
@@ -108,7 +114,8 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         AddressRepositoryInterface $addressRepository,
-        AddressInterface $addressData
+        AddressInterface $addressData,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -125,6 +132,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressData = $addressData;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -476,7 +484,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
          */
         arsort($websiteIds);
         foreach ($websiteIds as $websiteId) {
-            $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
+            $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $websiteId);
             if ($officeSaleCode == $salOffCd) {
                 $customerWebsiteId = $websiteId;
                 break;

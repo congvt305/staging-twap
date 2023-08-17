@@ -11,7 +11,7 @@ namespace Amore\Sap\Plugin\Model;
 use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
@@ -194,7 +194,7 @@ class RmaPlugin
                         $this->logger->info($this->json->serialize($orderRmaData));
                     }
 
-                    $result = $this->request->postRequest($this->json->serialize($orderRmaData), $order->getStoreId());
+                    $result = $this->request->sendRequest($this->json->serialize($orderRmaData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Result Data");

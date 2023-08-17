@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
@@ -107,7 +107,7 @@ class OrderSend extends AbstractAction
                 $this->logger->info($this->json->serialize($orderSendData));
             }
 
-            $result = $this->request->postRequest($this->json->serialize($orderSendData), $order->getStoreId());
+            $result = $this->request->sendRequest($this->json->serialize($orderSendData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Result Data");
