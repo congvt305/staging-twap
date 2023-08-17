@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml;
 
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\App\Action;

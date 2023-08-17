@@ -14,7 +14,6 @@ use Magento\Framework\Session\SessionManagerInterface as Session;
 use Amore\CustomerRegistration\Helper\Data;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\UrlInterface;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * It will use for the register step during registration
@@ -51,33 +50,25 @@ class Register implements ArgumentInterface
     private $urlBuilder;
 
     /**
-     * @var MiddlewareHelper
-     */
-    protected $middlewareHelper;
-
-    /**
      * Register constructor.
      * @param Data $configHelper
      * @param Http $request
      * @param Session $customerSession
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlBuilder
-     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Data $configHelper,
         Http $request,
         Session $customerSession,
         StoreManagerInterface $storeManager,
-        UrlInterface $urlBuilder,
-        MiddlewareHelper $middlewareHelper
+        UrlInterface $urlBuilder
     ) {
         $this->request = $request;
         $this->customerSession = $customerSession;
         $this->configHelper = $configHelper;
         $this->storeManager = $storeManager;
         $this->urlBuilder = $urlBuilder;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -111,7 +102,7 @@ class Register implements ArgumentInterface
      */
     public function getFavoriteStore()
     {
-        $onlineUserFavoriteStore = $this->middlewareHelper->getPartnerId();
+        $onlineUserFavoriteStore = $this->configHelper->getPartnerId();
         return $this->request->getParam('favorite_store', $onlineUserFavoriteStore);
     }
 

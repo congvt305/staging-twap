@@ -12,8 +12,6 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_AUTH_KEY = 'middleware/general/auth_key';
     const XML_PATH_MIDDLEWARE_SALES_ORG_CODE = 'middleware/general/sales_organization_code';
     const XML_PATH_MIDDLEWARE_SALES_OFF_CODE = 'middleware/general/sales_office_code';
-    const XML_PATH_MIDDLEWARE_MALL_ID = 'middleware/general/mall_id';
-    const XML_PATH_MIDDLEWARE_PARTNER_ID = 'middleware/general/partner_id';
     const XML_PATH_MIDDLEWARE_SAP_ORDER_CONFIRM = 'middleware/sap_interface_ids/order_confirm_path';
     const XML_PATH_MIDDLEWARE_SAP_ORDER_CANCEL = 'middleware/sap_interface_ids/order_cancel_path';
     const XML_PATH_MIDDLEWARE_SAP_STOCK_INFO = 'middleware/sap_interface_ids/inventory_stock_path';
@@ -111,39 +109,6 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_OFF_CODE, $type, $storeId);
     }
-
-    /**
-     * @param $type
-     * @param $storeId
-     * @return mixed
-     */
-    public function getMallId($type, $storeId)
-    {
-        return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_MALL_ID, $type, $storeId);
-    }
-
-    /**
-     * @param $type
-     * @param $storeId
-     * @return mixed
-     */
-    public function getPartnerId($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::XML_PATH_MIDDLEWARE_PARTNER_ID,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_MIDDLEWARE_PARTNER_ID,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-
 
     public function getIsDecimalFormat($type, $storeId)
     {

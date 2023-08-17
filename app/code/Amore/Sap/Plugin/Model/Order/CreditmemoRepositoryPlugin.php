@@ -10,7 +10,7 @@ namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Exception\CrditmemoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -122,7 +122,7 @@ class CreditmemoRepositoryPlugin
                         $this->logger->info($this->json->serialize($orderUpdateData));
                     }
 
-                    $sapResult = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                    $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Single Order Cancel Result Data");

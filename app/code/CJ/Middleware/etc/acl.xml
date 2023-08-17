@@ -3,7 +3,7 @@
 /**
  * @author Eguana Commerce
  * @copyright Copyright (c) 2017 Eguana Kevin
- * @package CJ_Middleware
+ * @package Amore_Base
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">

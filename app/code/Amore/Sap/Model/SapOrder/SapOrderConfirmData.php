@@ -334,7 +334,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $isMileageOrder = ($slamt == $mileageUsedAmount && $slamt > 0);
             $cvsShippingCheck = $this->cvsShippingCheck($orderData);
             $telephone = $this->getTelephone($shippingAddress->getTelephone());
-            $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+            $salesOrg = $this->config->getSalesOrg('store', $storeId);
             $client = $this->config->getClient('store', $storeId);
 
             $bindData[] = [
@@ -685,7 +685,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $meins = $product->getData('meins');
         $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = ($itemSlamt == $itemMiamt && $itemSlamt > 0);
-        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+        $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->orderItemData[] = [

@@ -34,7 +34,6 @@ use Magento\Framework\Api\SortOrderBuilder;
 use Magento\InventoryApi\Api\GetStockSourceLinksInterface;
 use Magento\InventoryApi\Api\SourceRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class SapProductManagement implements SapProductManagementInterface
 {
@@ -126,12 +125,6 @@ class SapProductManagement implements SapProductManagementInterface
     private $eventManager;
 
     /**
-     * @var MiddlewareHelper
-     */
-    private $middlewareHelper;
-
-
-    /**
      * SapProductManagement constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ProductRepositoryInterface $productRepository
@@ -153,7 +146,6 @@ class SapProductManagement implements SapProductManagementInterface
      * @param Config $config
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param ManagerInterface $eventManager
-     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -175,8 +167,7 @@ class SapProductManagement implements SapProductManagementInterface
         Logger $logger,
         Config $config,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        ManagerInterface $eventManager,
-        MiddlewareHelper $middlewareHelper
+        ManagerInterface $eventManager
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
@@ -198,7 +189,6 @@ class SapProductManagement implements SapProductManagementInterface
         $this->config = $config;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->eventManager = $eventManager;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
@@ -210,12 +200,6 @@ class SapProductManagement implements SapProductManagementInterface
             'matnr' => $stockData['matnr'],
             'labst' => $stockData['labst']
         ];
-
-        //temporary skipping
-//        if (true) {
-//            $result[$stockData['matnr']] = ['code' => "0002", 'message' => 'Skipped'];
-//            return $result;
-//        }
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('STOCK DATA');
@@ -679,7 +663,7 @@ class SapProductManagement implements SapProductManagementInterface
         $exactStore = 0;
         $stores = $this->storeManagerInterface->getStores();
         foreach ($stores as $store) {
-            $configMallId = $this->middlewareHelper->getMallId('store', $store->getId());
+            $configMallId = $this->config->getMallId('store', $store->getId());
             if ($mallId == $configMallId) {
                 $exactStore = $store;
                 break;
@@ -695,7 +679,7 @@ class SapProductManagement implements SapProductManagementInterface
 
         $storeIdList = [];
         foreach ($stores as $store) {
-            $vkorgByStore = $this->middlewareHelper->getSalesOrganizationCode('store', $store->getId());
+            $vkorgByStore = $this->config->getSalesOrg('store', $store->getId());
             if ($vkorg == $vkorgByStore) {
                 $storeIdList[] = $store->getId();
             }

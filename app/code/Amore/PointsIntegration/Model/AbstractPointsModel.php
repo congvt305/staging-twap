@@ -8,13 +8,12 @@
 
 namespace Amore\PointsIntegration\Model;
 
-use CJ\Middleware\Model\Pos\Connection\Request;
+use Amore\PointsIntegration\Model\Connection\Request;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreRepository;
-use CJ\Middleware\Helper\Data;
 
 abstract class AbstractPointsModel
 {
@@ -46,22 +45,19 @@ abstract class AbstractPointsModel
      * @param StoreRepository $storeRepository
      * @param Request $request
      * @param Config $config
-     * @param Data $middlewareHelper
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         CustomerRepositoryInterface $customerRepositoryInterface,
         StoreRepository $storeRepository,
         Request $request,
-        Config $config,
-        Data $middlewareHelper
+        Config $config
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->storeRepository = $storeRepository;
         $this->request = $request;
         $this->config = $config;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function getCustomer($customerId)
@@ -79,8 +75,8 @@ abstract class AbstractPointsModel
         }
 
         $websiteId = $customer->getWebsiteId();
-        $salOrgCd = $this->middlewareHelper->getSalesOrganizationCode('store', $websiteId);
-        $salOffCd = $this->middlewareHelper->getSalesOfficeCode('store', $websiteId);
+        $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
+        $salOffCd = $this->config->getOfficeSalesCode($websiteId);
 
         if (!empty($page)) {
             return [
@@ -106,7 +102,6 @@ abstract class AbstractPointsModel
      */
     public function responseValidation($response, $websiteId)
     {
-        $responseHandled = $this->request->handleResponse($response, $websiteId);
-        return $responseHandled && $responseHandled['status'];
+        return $this->request->responseCheck($response, $websiteId);
     }
 }

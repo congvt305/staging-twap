@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use Amore\Sap\Model\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Controller\Adminhtml\AbstractAction;
@@ -68,7 +68,7 @@ class OrderCancelSend extends AbstractAction
 
             try {
                 $orderUpdateData = $this->sapOrderCancelData->singleOrderData($order->getIncrementId());
-                $result = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
+                $result = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId());
 
                 $resultSize = count($result);
 
@@ -88,7 +88,7 @@ class OrderCancelSend extends AbstractAction
             $jsonTestData = $this->json->serialize($testData);
 
             try {
-                $result = $this->request->sendRequest($jsonTestData, 0, Request::SAP_REQUEST_TYPE);
+                $result = $this->request->postRequest($jsonTestData, 0);
                 $resultSize = count($result);
 
                 if ($resultSize > 0) {
