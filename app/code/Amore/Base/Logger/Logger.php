@@ -1,6 +1,6 @@
 <?php
 
-namespace CJ\Middleware\Logger;
+namespace Amore\Base\Logger;
 
 class Logger extends \Monolog\Logger
 {

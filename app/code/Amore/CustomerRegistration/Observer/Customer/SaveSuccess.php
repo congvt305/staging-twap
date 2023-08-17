@@ -33,7 +33,6 @@ use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Webapi\Rest\Request;
 use Amore\CustomerRegistration\Plugin\CreateCustomer;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Call POS API on customer information change
@@ -153,11 +152,6 @@ class SaveSuccess implements ObserverInterface
      */
     private $subscriptionManager;
 
-    /**
-     * @var MiddlewareHelper
-     */
-    private $middlewareHelper;
-
     public function __construct(
         Request $requestApi,
         RequestInterface $request,
@@ -179,8 +173,7 @@ class SaveSuccess implements ObserverInterface
         SearchCriteriaBuilder $searchCriteria,
         ManagerInterface $eventManager,
         \Magento\Framework\App\State $state,
-        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager,
-        MiddlewareHelper $middlewareHelper
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
     ) {
         $this->requestApi = $requestApi;
         $this->sequence = $sequence;
@@ -195,15 +188,14 @@ class SaveSuccess implements ObserverInterface
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
+        $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
         $this->json = $json;
         $this->groupRepository = $groupRepository;
         $this->searchCriteria = $searchCriteria;
         $this->eventManager = $eventManager;
         $this->state = $state;
-        $this->storeManager = $storeManager;
         $this->subscriptionManager = $subscriptionManager;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -370,11 +362,11 @@ class SaveSuccess implements ObserverInterface
             }
             $customer->setCustomAttribute(
                 'sales_organization_code',
-                $this->middlewareHelper->getSalesOrganizationCode('store', $customer->getWebsiteId())
+                $this->config->getOrganizationSalesCode($customer->getWebsiteId())
             );
             $customer->setCustomAttribute(
                 'sales_office_code',
-                $this->middlewareHelper->getSalesOfficeCode('store', $customer->getWebsiteId())
+                $this->config->getOfficeSalesCode($customer->getWebsiteId())
             );
             //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
@@ -673,7 +665,7 @@ class SaveSuccess implements ObserverInterface
         foreach ($this->storeManager->getStores() as $store) {
             $storeId = $store->getId();
             if ($storeId) {
-                $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
+                $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
                 if ($officeSaleCode == $salOffCd) {
                     $customerStoreId = $storeId;
                     break;

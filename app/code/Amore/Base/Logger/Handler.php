@@ -1,5 +1,5 @@
 <?php
-namespace CJ\Middleware\Logger;
+namespace Amore\Base\Logger;
 
 use Monolog\Logger;
 
@@ -15,5 +15,5 @@ class Handler extends \Magento\Framework\Logger\Handler\Base
      * File name
      * @var string
      */
-    protected $fileName = '/var/log/cj_middleware/request.log';
+    protected $fileName = '/var/log/amore/request.log';
 }

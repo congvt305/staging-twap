@@ -66,7 +66,7 @@ class GetCompletedOrders
      */
     private $posOrderData;
     /**
-     * @var \CJ\Middleware\Model\Pos\Connection\Requestt
+     * @var \Amore\PointsIntegration\Model\Connection\Request
      */
     private $request;
     /**
@@ -115,7 +115,7 @@ class GetCompletedOrders
      * @param LoggerInterface $logger
      * @param TimezoneInterface $timezone
      * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
-     * @param \CJ\Middleware\Model\Pos\Connection\Request $request
+     * @param \Amore\PointsIntegration\Model\Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param Json $json
      * @param \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig
@@ -134,7 +134,7 @@ class GetCompletedOrders
         LoggerInterface $logger,
         TimezoneInterface $timezone,
         \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
-        \CJ\Middleware\Model\Pos\Connection\Request $request,
+        \Amore\PointsIntegration\Model\Connection\Request $request,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Json $json,
         \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,

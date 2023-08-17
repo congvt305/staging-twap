@@ -3,7 +3,7 @@
 namespace CJ\CouponCustomer\Cron;
 
 use Magento\Customer\Model\GroupFactory;
-use CJ\Middleware\Model\Pos\Connection\Request;
+use Amore\PointsIntegration\Model\Connection\Request;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;

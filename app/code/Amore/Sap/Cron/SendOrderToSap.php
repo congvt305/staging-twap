@@ -4,7 +4,7 @@ namespace Amore\Sap\Cron;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request as SapRequest;
+use Amore\Sap\Model\Connection\Request as SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Eguana\BizConnect\Model\OperationLogRepository;
@@ -207,7 +207,7 @@ class SendOrderToSap
                     $this->logger->info('', $sendData);
                 }
 
-                $result = $this->sapRequest->sendRequest($sendData, array_shift($storeIdUnique), SapRequest::SAP_REQUEST_TYPE);
+                $result = $this->sapRequest->postRequest($sendData, array_shift($storeIdUnique));
 
 
                 if ($this->config->getLoggingCheck()) {

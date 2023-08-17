@@ -540,8 +540,8 @@ class PosOrderData extends AbstractPosOrder
         }
 
         $orderData = [
-            'salOrgCd' => $this->middlewareConfig->getSalesOrganizationCode('store', $websiteId),
-            'salOffCd' => $this->middlewareConfig->getSalesOfficeCode('store', $websiteId),
+            'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
+            'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
             'saledate' => $saleDate,
             'orderID' => $orderId,
             'rcptNO' => 'I' . $invoice->getIncrementId(),

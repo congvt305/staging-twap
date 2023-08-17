@@ -17,6 +17,8 @@ class Config
 
     const SAP_SOURCE_ID_XML_PATH = 'sap/mall_info/source';
 
+    const SAP_MALL_ID_XML_PATH = 'sap/mall_info/mall_id';
+
     const SAP_CLIENT_XML_PATH = 'sap/mall_info/client';
 
     const SAP_CVS_FAMILY_MART_XML_PATH = 'sap/mall_info/familymart';
@@ -24,6 +26,8 @@ class Config
     const SAP_CVS_SEVEN_ELEVEN_XML_PATH = 'sap/mall_info/seveneleven';
 
     const SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH = 'sap/mall_info/home_delivery_contractor';
+
+    const SAP_SALES_ORG_XML_PATH = 'sap/mall_info/sales_org';
 
     const SAP_LOGGING_XML_PATH = 'sap/general/logging';
 
@@ -46,6 +50,8 @@ class Config
     const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
 
     const SAP_API_BASE_URL_XML_PATH = 'sap/general/url';
+
+    const SAP_INVENTORY_STOCK_URL_XML_PATH = 'sap/url_path/inventory_stock_path';
 
     const SAP_SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
 
@@ -83,6 +89,11 @@ class Config
         return $this->getValue(self::SAP_SOURCE_ID_XML_PATH, $type, $storeId);
     }
 
+    public function getMallId($type, $storeId)
+    {
+        return $this->getValue(self::SAP_MALL_ID_XML_PATH, $type, $storeId);
+    }
+
     public function getClient($type, $storeId)
     {
         return $this->getValue(self::SAP_CLIENT_XML_PATH, $type, $storeId);
@@ -101,6 +112,11 @@ class Config
     public function getSevenElevenCode($type, $storeId)
     {
         return $this->getValue(self::SAP_CVS_SEVEN_ELEVEN_XML_PATH, $type, $storeId);
+    }
+
+    public function getSalesOrg($type, $storeId)
+    {
+        return $this->getValue(self::SAP_SALES_ORG_XML_PATH, $type, $storeId);
     }
 
     public function getDefaultValue($path)
@@ -169,6 +185,21 @@ class Config
     }
 
     /**
+     * Get Sap Inventory Stcok API URL
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSapInventoryStcokUrl($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_INVENTORY_STOCK_URL_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
      * Get enable log sync stock
      *
      * @param null $storeId
@@ -181,6 +212,22 @@ class Config
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+    /**
+     * Get complete sap stock info api url
+     *
+     * @param null $storeId
+     * @return string
+     */
+    public function getSapInventoryStcokInfoUrl($storeId = null)
+    {
+        $url = '';
+        $baseUrl = $this->getSapApiBaseUrl($storeId);
+        if ($baseUrl) {
+            $stockInfoUrl = $this->getSapInventoryStcokUrl($storeId);
+            $url = $stockInfoUrl ? $baseUrl . $stockInfoUrl : '';
+        }
+        return $url;
     }
 
     /**

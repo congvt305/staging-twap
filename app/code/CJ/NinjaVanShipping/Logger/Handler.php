@@ -2,7 +2,7 @@
 
 namespace CJ\NinjaVanShipping\Logger;
 
-use CJ\Middleware\Logger\Handler as BaseHandler;
+use Amore\Base\Logger\Handler as BaseHandler;
 
 class Handler extends BaseHandler
 {

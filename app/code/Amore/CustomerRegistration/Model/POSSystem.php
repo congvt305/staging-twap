@@ -14,24 +14,32 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Amore\CustomerRegistration\Helper\Data;
+use Magento\Customer\Model\Data\Customer;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientFactory;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\Webapi\Rest\Request;
+use Amore\CustomerRegistration\Model\POSLogger;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\Pos\Connection\Request as MiddlewareRequest;
+use Amore\Base\Model\BaseRequest;
 /**
  * In this class we will call the POS API
  * Class POSSystem
  * @package Amore\CustomerRegistration\Model
  */
-class POSSystem
+class POSSystem extends BaseRequest
 {
     /**#@+
      * BA Code PREFIX
      */
     const DATE_FORMAT = 'd/m/Y';
+    const BA_CODE_PREFIX = 'TW';
+    const BA_CODE_PREFIX_LOWERCASE = 'tw';
     /**#@-*/
 
     /**
@@ -73,45 +81,21 @@ class POSSystem
      */
     private $regionResourceModel;
     /**
-     * @var \Eguana\Directory\Helper\Data
+     * @var \Eguana\Directory\Helper
      */
     private $cityHelper;
-
-    /**
-     * @var Curl
-     */
-    private $curl;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
-     * @var MiddlewareHelper
-     */
-    private $middlewareHelper;
-
-    /**
-     * @var MiddlewareRequest
-     */
-    private $middleRequest;
 
     /**
      * @param RegionFactory $regionFactory
      * @param RegionResourceModel $regionResourceModel
      * @param \Eguana\Directory\Helper\Data $cityHelper
-     * @param Curl $curl
      * @param Data $config
      * @param TimezoneInterface $timezone
      * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
      * @param \Zend\Http\Client $zendClient
      * @param \Amore\CustomerRegistration\Model\POSLogger $logger
-     * @param Json $json
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param MiddlewareHelper $middlewareHelper
-     * @param MiddlewareRequest $middleRequest
      */
     public function __construct(
         RegionFactory $regionFactory,
@@ -126,12 +110,9 @@ class POSSystem
         Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        MiddlewareHelper $middlewareHelper,
-        MiddlewareRequest $middleRequest
+        MiddlewareHelper $middlewareHelper
     ) {
-        $this->curl = $curl;
-        $this->json = $json;
-        $this->middlewareHelper = $middlewareHelper;
+        parent::__construct($curl, $json, $middlewareHelper);
         $this->timezone = $timezone;
         $this->config = $config;
         $this->httpClientFactory = $httpClientFactory;
@@ -142,7 +123,6 @@ class POSSystem
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
-        $this->middleRequest = $middleRequest;
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber, $storeId = null)
@@ -172,6 +152,7 @@ class POSSystem
     {
         $result = [];
         $response = [];
+        $url = $this->config->getMemberInfoURL();
         if (!$storeId) {
             $storeId = $this->getStoreId();
         }
@@ -181,8 +162,8 @@ class POSSystem
             'firstName' => $firstName,
             'lastName' => $lastName,
             'mobileNumber' => $mobileNumber,
-            'salOrgCd' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
-            'salOffCd' => $this->middlewareHelper->getSalesOfficeCode('store', $storeId)
+            'salOrgCd' => $this->config->getOrganizationSalesCode(),
+            'salOffCd' => $this->config->getOfficeSalesCode()
         ];
         try {
             $this->curl->setOptions([
@@ -200,16 +181,18 @@ class POSSystem
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS get info API Call',
+                $url,
                 $parameters
             );
 
-            $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberInfo');
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'memberInfo');
             $response = $this->json->unserialize($apiResponse);
             $result = $this->handleResponse($response, $isNewMiddlewareEnable);
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS get info API Response',
+                $url,
                 $response
             );
         } catch (\Exception $e) {
@@ -398,6 +381,7 @@ class POSSystem
         }
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         try {
+            $url = $this->config->getMemberJoinURL();
             $this->curl->setOptions([
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
@@ -413,13 +397,12 @@ class POSSystem
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS set info API Call',
+                $url,
                 $parameters
             );
-            $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberJoin');
-
-
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'memberJoin');
             $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
                 if (isset($response['success']) && $response['success']) {
@@ -438,8 +421,9 @@ class POSSystem
                     $result['status'] = 0;
                 }
             }
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS set info API Response',
+                $url,
                 $response
             );
 
@@ -468,6 +452,19 @@ class POSSystem
         );
 
         return $result;
+    }
+
+    /**
+     * To save the POS API response with the customer
+     *
+     * @param Array $parameters
+     * @param $syncResult
+     */
+    private function savePOSSyncReport($parameters, $syncResult)
+    {
+        //$customer->setCustomAttribute('pos_synced_report', $syncResult['message']);
+        //$customer->setCustomAttribute('pos_synced_successfully', $syncResult['status']);
+        //$this->customerRepository->save($customer);
     }
 
     /**
@@ -513,13 +510,14 @@ class POSSystem
     {
         $result['verify'] = false;
         $response = [];
+        $url = $this->config->getBaCodeInfoURL();
         $storeId = $this->getStoreId();
         $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId);
         if (!$salOrgCd) {
-            $salOrgCd = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+            $salOrgCd = $this->config->getOrganizationSalesCode($websiteId);
         }
         if (!$salOffCd) {
-            $salOffCd = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
+            $salOffCd = $this->config->getOfficeSalesCode($websiteId);
         }
         $callSuccess = 1;
         $baCode = $this->checkBACodePrefix($baCode);
@@ -545,11 +543,12 @@ class POSSystem
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
 
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS get BA Code info API Call',
+                $url,
                 $parameters
             );
-            $apiResponse = $this->middleRequest->sendRequest( $parameters, $storeId, 'baInfo');
+            $apiResponse = $this->send($url, $parameters, 'store', $storeId, 'baInfo');
             $response = $this->json->unserialize($apiResponse);
             if ($isNewMiddlewareEnable) {
                 if ((isset($response['success']) && $response['success']) &&
@@ -577,8 +576,9 @@ class POSSystem
                 }
             }
 
-            $this->logger->addAPILog(
+            $this->logger->addAPICallLog(
                 'POS get BA Code info API Response',
+                $url,
                 $response
             );
 

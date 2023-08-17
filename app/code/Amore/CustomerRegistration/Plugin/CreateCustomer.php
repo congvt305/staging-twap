@@ -8,7 +8,6 @@ use Magento\Customer\Model\AccountManagement;
 use Magento\Store\Model\StoreRepository;
 use Amore\CustomerRegistration\Logger\Logger;
 use Magento\Framework\Webapi\Rest\Request;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class CreateCustomer
 {
@@ -41,31 +40,23 @@ class CreateCustomer
     private $cityCollectionFactory;
 
     /**
-     * @var MiddlewareHelper
-     */
-    protected $middlewareHelper;
-
-    /**
      * @param Logger $logger
      * @param Data $configHelper
      * @param StoreRepository $storeRepository
      * @param Request $request
-     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Logger $logger,
         Data $configHelper,
         StoreRepository $storeRepository,
         Request $request,
-        \Eguana\Directory\Model\ResourceModel\City\CollectionFactory $cityCollectionFactory,
-        MiddlewareHelper $middlewareHelper
+        \Eguana\Directory\Model\ResourceModel\City\CollectionFactory $cityCollectionFactory
     ) {
         $this->logger = $logger;
         $this->configHelper = $configHelper;
         $this->storeRepository = $storeRepository;
         $this->request = $request;
         $this->cityCollectionFactory = $cityCollectionFactory;
-        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -101,13 +92,13 @@ class CreateCustomer
                 }
                 $customer->setCustomAttribute(
                     'sales_organization_code',
-                    $this->middlewareHelper->getSalesOrganizationCode('store', $customerWebsiteId)
+                    $this->configHelper->getOrganizationSalesCode($customerWebsiteId)
                 );
                 $customer->setCustomAttribute(
                     'sales_office_code',
-                    $this->middlewareHelper->getSalesOfficeCode('store', $customerWebsiteId)
+                    $this->configHelper->getOfficeSalesCode($customerWebsiteId)
                 );
-                $customer->setCustomAttribute('partner_id', $this->middlewareHelper->getPartnerId($customerWebsiteId));
+                $customer->setCustomAttribute('partner_id', $this->configHelper->getPartnerId($customerWebsiteId));
             }
 
         } catch (\Throwable $throwable) {
@@ -127,7 +118,7 @@ class CreateCustomer
         asort($websiteIds);
         foreach ($websiteIds as $websiteId) {
             if ($websiteId) {
-                $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $websiteId);
+                $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
                 if ($officeSaleCode == $salOffCd) {
                     $customerWebsiteId = $websiteId;
                     break;

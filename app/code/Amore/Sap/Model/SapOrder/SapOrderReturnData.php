@@ -227,10 +227,11 @@ class SapOrderReturnData extends AbstractSapOrder
         $isMileageOrder = ($slamt == $miamt && $slamt > 0);
         $cvsShippingCheck = $this->cvsShippingCheck($order);
         $telephone = $this->getTelephone($shippingAddress->getTelephone());
+        $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $bindData[] = [
-            'vkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
+            'vkorg' => $salesOrg,
             'kunnr' => $client,
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->orderData->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -272,7 +273,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->orderData->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
-            'vkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
+            'vkorgOri' => $salesOrg,
             'kunnrOri' => $client,
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -571,7 +572,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $skuPrefix = $skuPrefix ?: '';
         $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
-        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
+        $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->rmaItemData[] = [
