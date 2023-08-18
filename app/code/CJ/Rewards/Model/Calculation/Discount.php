@@ -10,6 +10,7 @@ use Amasty\Rewards\Model\Config;
 use Amasty\Rewards\Model\Points\Converter\ToMoney;
 use Amasty\Rewards\Model\Quote\SpendingChecker;
 use CJ\Rewards\Model\Data;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Item;
 use Magento\Quote\Model\Quote\Item\AbstractItem;
@@ -68,6 +69,11 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
     private $rewardData;
 
     /**
+     * @var MessageManagerInterface
+     */
+    private $messageManager;
+
+    /**
      * @param Config $rewardsConfig
      * @param Applier $discountApplier
      * @param Distributor $discountDistributor
@@ -87,7 +93,8 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         ToMoney $toMoney,
         TaxConfig $taxConfig,
         \Amasty\Promo\Helper\Item $promoItemHelper,
-        Data $rewardData
+        Data $rewardData,
+        MessageManagerInterface $messageManager
     ) {
         $this->rewardsConfig = $rewardsConfig;
         $this->discountApplier = $discountApplier;
@@ -98,6 +105,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $this->taxConfig = $taxConfig;
         $this->promoItemHelper = $promoItemHelper;
         $this->rewardData = $rewardData;
+        $this->messageManager = $messageManager;
         parent::__construct(
             $rewardsConfig,
             $discountApplier,
@@ -124,6 +132,15 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $rate = $this->rewardsConfig->getPointsRate($storeId);
         $items = $this->filterItems($quoteItems, $storeId);
         $allCartPrice = $this->getAllItemsPrice($items);
+        $isEnableShowListOptionRewardPoint = $this->rewardData->isEnableShowListOptionRewardPoint();
+        if ($isEnableShowListOptionRewardPoint) {
+            $listOptions = $this->rewardData->getListOptionRewardPoint();
+            $amountDiscount = $listOptions[$points] ?? 0;
+            if ($allCartPrice < $amountDiscount) {
+                $this->messageManager->addErrorMessage(__('Can not use rewards point because reward discount amount is  greater than grand total'));
+                return 0;
+            }
+        }
 
         if (!$points || !$rate || !$items || !$allCartPrice) {
             return 0;
@@ -135,7 +152,6 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $basePoints = $this->toMoney->convert($points, $storeId, $allCartPrice);
         $percent = ($basePoints * 100) / $allCartPrice;
         $itemsDiscount = $this->discountDistributor->distribute($items, $basePoints, $percent);
-        $isEnableShowListOptionRewardPoint = $this->rewardData->isEnableShowListOptionRewardPoint();
         if ($isEnableShowListOptionRewardPoint) {
             $itemsPoint = $this->setDiscountPointForItem($items, $points, $percent);
         }
