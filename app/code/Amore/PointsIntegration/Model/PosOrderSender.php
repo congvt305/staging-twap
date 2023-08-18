@@ -117,7 +117,7 @@ class PosOrderSender
     public function logging($sendData, $responseData, $status)
     {
         $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'amore.pos.points-integration.order.auto',
                 'direction' => 'outgoing',

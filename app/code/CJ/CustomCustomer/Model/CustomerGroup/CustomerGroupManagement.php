@@ -179,7 +179,7 @@ class CustomerGroupManagement implements \CJ\CustomCustomer\Api\CustomerGroupMan
     public function operationLogWriter(array $parameters, array $result, \CJ\CustomCustomer\Api\Data\CustomerDataInterface $customerData, $topicName)
     {
         $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => $topicName,
                 'direction' => 'incoming',

@@ -4,7 +4,6 @@ namespace CJ\Middleware\Model;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Psr\Log\LoggerInterface as Logger;
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Serialize\Serializer\Json;
 use Amore\PointsIntegration\Model\Source\Config;
 
 abstract class BaseRequest
@@ -13,10 +12,6 @@ abstract class BaseRequest
      * @var Curl
      */
     protected $curl;
-    /**
-     * @var Json
-     */
-    protected $json;
 
     /**
      * @var MiddlewareHelper
@@ -36,20 +31,17 @@ abstract class BaseRequest
     /**
      * Request constructor.
      * @param Curl $curl
-     * @param Json $json
      * @param MiddlewareHelper $middlewareHelper
      * @param Logger $logger
      * @param Config $config
      */
     public function __construct(
         Curl $curl,
-        Json $json,
         MiddlewareHelper $middlewareHelper,
         Logger $logger,
         Config $config
     ) {
         $this->curl = $curl;
-        $this->json = $json;
         $this->middlewareHelper = $middlewareHelper;
         $this->logger = $logger;
         $this->config = $config;
@@ -86,7 +78,7 @@ abstract class BaseRequest
             }
 
             $response = $this->sendToMiddleware($requestData, 'website', $websiteId, $type);
-            return $this->json->unserialize($response);
+            return $this->middlewareHelper->unserializeData($response);
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
             return [];
@@ -123,7 +115,6 @@ abstract class BaseRequest
      */
     public function getInterfaceID($scope, $websiteId, $type)
     {
-        $path = '';
         switch ($type) {
             case 'memberSearch':
                 $path = $this->middlewareHelper->getMemberSearchInterfaceId($scope, $websiteId);
@@ -162,6 +153,17 @@ abstract class BaseRequest
     }
 
     /**
+     * @param $response
+     * @param $websiteId
+     * @return bool
+     */
+    public function responseValidation($response, $websiteId)
+    {
+        $responseHandled = $this->handleResponse($response, $websiteId);
+        return $responseHandled && $responseHandled['status'];
+    }
+
+    /**
      * @param $requestData
      * @param $scope
      * @param $websiteId
@@ -171,7 +173,7 @@ abstract class BaseRequest
     public function prepareRequestData($requestData, $scope = 'store', $websiteId = null, $type = 'confirm', $logEnabled = true)
     {
         if (!is_array($requestData)) {
-            $requestData = $this->json->unserialize($requestData);
+            $requestData = $this->middlewareHelper->serializeData($requestData);
         }
 
         $requestData['API_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
@@ -180,7 +182,7 @@ abstract class BaseRequest
         $requestData['salOrgCd'] = $this->middlewareHelper->getSalesOrganizationCode($scope, $websiteId);
         $requestData['salOffCd'] = $this->middlewareHelper->getSalesOfficeCode($scope, $websiteId);
 
-        $modifiedRequestData = $this->json->serialize($requestData);
+        $modifiedRequestData = $this->middlewareHelper->serializeData($requestData);
         if ($logEnabled){
             $this->logger->info("=====Submit request=====");
             $this->logger->info($modifiedRequestData);

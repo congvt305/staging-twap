@@ -33,17 +33,10 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\InventoryApi\Api\GetStockSourceLinksInterface;
 use Magento\InventoryApi\Api\SourceRepositoryInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class SapProductManagement implements SapProductManagementInterface
 {
-    // Laneige Mall ID
-    const MALL_ID_LANEIGE = 'LANEIGE_TW';
-
-    // Sulwhasoo Mall ID
-    const MALL_ID_SULWHASOO = 'SULWHASOO_TW';
-
     /**
      * @var ScopeConfigInterface
      */
@@ -101,10 +94,6 @@ class SapProductManagement implements SapProductManagementInterface
      */
     private $request;
     /**
-     * @var Json
-     */
-    private $json;
-    /**
      * @var PublisherInterface
      */
     private $publisher;
@@ -147,7 +136,6 @@ class SapProductManagement implements SapProductManagementInterface
      * @param SourceRepositoryInterface $sourceRepository
      * @param StoreManagerInterface $storeManagerInterface
      * @param Request $request
-     * @param Json $json
      * @param PublisherInterface $publisher
      * @param Logger $logger
      * @param Config $config
@@ -170,7 +158,6 @@ class SapProductManagement implements SapProductManagementInterface
         SourceRepositoryInterface $sourceRepository,
         StoreManagerInterface $storeManagerInterface,
         Request $request,
-        Json $json,
         PublisherInterface $publisher,
         Logger $logger,
         Config $config,
@@ -192,7 +179,6 @@ class SapProductManagement implements SapProductManagementInterface
         $this->sourceRepository = $sourceRepository;
         $this->storeManagerInterface = $storeManagerInterface;
         $this->request = $request;
-        $this->json = $json;
         $this->publisher = $publisher;
         $this->logger = $logger;
         $this->config = $config;
@@ -219,7 +205,7 @@ class SapProductManagement implements SapProductManagementInterface
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('STOCK DATA');
-            $this->logger->info($this->json->serialize($parameters));
+            $this->logger->info($this->middlewareHelper->serializeData($parameters));
         }
 
         $store = $this->getStore($stockData['mallId']);
@@ -288,14 +274,14 @@ class SapProductManagement implements SapProductManagementInterface
             }
             if ($this->config->getIsEnableStoreLogSyncStock($this->getStore($stockData['mallId'])->getId())) {
                 $this->eventManager->dispatch(
-                    "eguana_bizconnect_operation_processed",
+                    \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                     [
                         'topic_name' => 'amore.sap.product.inventory.stock',
                         'direction' => 'incoming',
                         'to' => "Magento",
-                        'serialized_data' => $this->json->serialize($parameters),
+                        'serialized_data' => $this->middlewareHelper->serializeData($parameters),
                         'status' => $this->setOperationLogStatus($result[$stockData['matnr']]['code']),
-                        'result_message' => $this->json->serialize($result)
+                        'result_message' => $this->middlewareHelper->serializeData($result)
                     ]
                 );
             }
@@ -371,7 +357,7 @@ class SapProductManagement implements SapProductManagementInterface
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('PRODUCT INFO DATA');
-            $this->logger->info($this->json->serialize($parameters));
+            $this->logger->info($this->middlewareHelper->serializeData($parameters));
         }
 
         /**
@@ -485,14 +471,14 @@ class SapProductManagement implements SapProductManagementInterface
         }
 
         $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'amore.sap.product.detail.info',
                 'direction' => 'incoming',
                 'to' => "Magento",
-                'serialized_data' => $this->json->serialize($parameters),
+                'serialized_data' => $this->middlewareHelper->serializeData($parameters),
                 'status' => $result[$productsDetail['matnr']]['code'] == "0000" ? 1 : 0,
-                'result_message' => $this->json->serialize($result)
+                'result_message' => $this->middlewareHelper->serializeData($result)
             ]
         );
 
@@ -581,7 +567,7 @@ class SapProductManagement implements SapProductManagementInterface
 
         if ($this->config->getLoggingCheck()) {
             $this->logger->info('PRICE DATA');
-            $this->logger->info($this->json->serialize($parameters));
+            $this->logger->info($this->middlewareHelper->serializeData($parameters));
         }
 
 //        /**
@@ -605,14 +591,14 @@ class SapProductManagement implements SapProductManagementInterface
         $result[$priceData['matnr']] = ['code' => "0001", 'message' => "Price API is off."];
 
         $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'amore.sap.product.price.update',
                 'direction' => 'incoming',
                 'to' => "Magento",
-                'serialized_data' => $this->json->serialize($parameters),
+                'serialized_data' => $this->middlewareHelper->serializeData($parameters),
                 'status' => $result[$priceData['matnr']]['code'] == "0000" ? 1 : 0,
-                'result_message' => $this->json->serialize($result)
+                'result_message' => $this->middlewareHelper->serializeData($result)
             ]
         );
 

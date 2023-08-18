@@ -28,7 +28,6 @@ use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Webapi\Rest\Request;
@@ -77,11 +76,6 @@ class SaveSuccess implements ObserverInterface
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
-
-    /**
-     * @var Json
-     */
-    private $json;
 
     /**
      * @var GroupRepositoryInterface
@@ -174,7 +168,6 @@ class SaveSuccess implements ObserverInterface
         AddressInterfaceFactory $addressDataFactory,
         StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
-        Json $json,
         GroupRepositoryInterface $groupRepository,
         SearchCriteriaBuilder $searchCriteria,
         ManagerInterface $eventManager,
@@ -196,7 +189,6 @@ class SaveSuccess implements ObserverInterface
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
         $this->scopeConfig = $scopeConfig;
-        $this->json = $json;
         $this->groupRepository = $groupRepository;
         $this->searchCriteria = $searchCriteria;
         $this->eventManager = $eventManager;
@@ -476,7 +468,8 @@ class SaveSuccess implements ObserverInterface
             return $parameters;
         } catch (\Exception $exception) {
             $this->logger->addAPILog($exception->getMessage());
-            $this->logger->addAPILog('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
+            $this->logger->addAPILog('Fail to get API Parameter: ' , $parameters );
+            $this->logger->addAPILog('Customer Data: ',  $customerData);
         }
     }
 
@@ -640,7 +633,7 @@ class SaveSuccess implements ObserverInterface
                 ScopeInterface::SCOPE_STORE,
                 $customer->getStoreId()
             );
-            $configGroups = $this->json->unserialize($result);
+            $configGroups = $this->middlewareHelper->unserializeData($result);
 
             if ($apiGroupCode) {
                 $groupCode = '';
@@ -667,6 +660,10 @@ class SaveSuccess implements ObserverInterface
         }
     }
 
+    /**
+     * @param $salOffCd
+     * @return int
+     */
     private function getCustomerStoreId($salOffCd)
     {
         $customerStoreId = 0;

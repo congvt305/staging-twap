@@ -16,10 +16,8 @@ use Magento\Backend\App\Action;
 use Amore\Sap\Controller\Adminhtml\AbstractAction as BaseAction;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
@@ -40,7 +38,6 @@ class CreditmemoResend extends BaseAction
 
     /**
      * @param Action\Context $context
-     * @param Json $json
      * @param Request $request
      * @param Logger $logger
      * @param Config $config
@@ -51,7 +48,6 @@ class CreditmemoResend extends BaseAction
      */
     public function __construct(
         Action\Context $context,
-        Json $json,
         Request $request,
         Logger $logger,
         Config $config,
@@ -60,8 +56,7 @@ class CreditmemoResend extends BaseAction
         ResourceConnection $resourceConnection,
         MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
-        $this->json = $json;
+        parent::__construct($context, $request, $logger, $config, $middlewareHelper);
         $this->request = $request;
         $this->logger = $logger;
         $this->config = $config;
@@ -91,14 +86,14 @@ class CreditmemoResend extends BaseAction
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("Single Order Cancel Resend Data");
-                    $this->logger->info($this->json->serialize($orderUpdateData));
+                    $this->logger->info($this->middlewareHelper->serializeData($orderUpdateData));
                 }
 
-                $sapResult = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                $sapResult = $this->request->sendRequest($this->middlewareHelper->serializeData($orderUpdateData), $order->getStoreId(), 'cancel');
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("Single Order Cancel Resend Result Data");
-                    $this->logger->info($this->json->serialize($sapResult));
+                    $this->logger->info($this->middlewareHelper->serializeData($sapResult));
                 }
                 $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
                 if ($responseHandled === null) {

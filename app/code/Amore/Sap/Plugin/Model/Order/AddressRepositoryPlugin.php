@@ -115,7 +115,7 @@ class AddressRepositoryPlugin
                     }
 
                     $this->eventManager->dispatch(
-                        "eguana_bizconnect_operation_processed",
+                        \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                         [
                             'topic_name' => 'amore.sap.address.update.request',
                             'direction' => 'outgoing',

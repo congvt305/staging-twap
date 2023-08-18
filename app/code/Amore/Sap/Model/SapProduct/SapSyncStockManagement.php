@@ -297,7 +297,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     {
         if ($parameters && $status && $result) {
             $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
+                \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                 [
                     'to'                => 'Magento',
                     'status'            => $this->sapProductManagement->setOperationLogStatus($status),

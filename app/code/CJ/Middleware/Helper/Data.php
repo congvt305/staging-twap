@@ -2,7 +2,10 @@
 namespace CJ\Middleware\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class Data extends AbstractHelper
 {
@@ -26,6 +29,26 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_JOIN = 'middleware/customer_interface_ids/member_join';
     const XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO = 'middleware/customer_interface_ids/bacode_info';
     const XML_PATH_IS_DECIMAL_FORMAT = 'middleware/general/is_decimal_format';
+
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    protected $customerRepository;
+
+    /**
+     * @var Json
+     */
+    protected $json;
+
+    public function __construct(
+        Context $context,
+        CustomerRepositoryInterface $customerRepository,
+        Json $json
+    ) {
+        $this->customerRepository = $customerRepository;
+        $this->json = $json;
+        parent::__construct($context);
+    }
 
     /**
      * @param $type
@@ -237,5 +260,53 @@ class Data extends AbstractHelper
     public function getIsDecimalFormat($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_IS_DECIMAL_FORMAT, $type, $storeId);
+    }
+
+    /**
+     * @param $customerId
+     * @param $page
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getRequestDataByCustomerId($customerId, $page = null)
+    {
+        $customer = $this->customerRepository->getById($customerId);
+        if ($customer->getCustomAttribute('integration_number')) {
+            $customerIntegrationNumber = $customer->getCustomAttribute('integration_number')->getValue();
+        } else {
+            $customerIntegrationNumber = '';
+        }
+
+        $websiteId = $customer->getWebsiteId();
+        $salOrgCd = $this->getSalesOrganizationCode('store', $websiteId);
+        $salOffCd = $this->getSalesOfficeCode('store', $websiteId);
+
+        $result = [
+            'salOrgCd' => $salOrgCd,
+            'salOffCd' => $salOffCd,
+            'cstmIntgSeq' => $customerIntegrationNumber
+        ];
+
+        if (!empty($page)) {
+            $result['page'] = $page;
+        }
+        return $result;
+    }
+
+    /**
+     * @param $data
+     * @return bool|string
+     */
+    public function serializeData($data){
+        return $this->json->serialize($data);
+    }
+
+    /**
+     * @param $data
+     * @return array|bool|float|int|mixed|string|null
+     */
+    public function unserializeData($data){
+        return $this->json->unserialize($data);
     }
 }

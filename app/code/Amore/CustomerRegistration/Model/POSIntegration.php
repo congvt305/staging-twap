@@ -16,7 +16,6 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Amore\CustomerRegistration\Api\Data\ResponseInterface;
 use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\Data\AddressInterface;
@@ -66,10 +65,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      */
     private $dataResponse;
     /**
-     * @var Json
-     */
-    private $json;
-    /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
     private $eventManager;
@@ -111,7 +106,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         POSLogger $logger,
         ResponseInterface $response,
         DataResponseInterface $dataResponse,
-        Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         AddressRepositoryInterface $addressRepository,
         AddressInterface $addressData,
@@ -125,7 +119,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->logger = $logger;
         $this->response = $response;
         $this->dataResponse = $dataResponse;
-        $this->json = $json;
         $this->eventManager = $eventManager;
         $this->regionFactory = $regionFactory;
         $this->cityHelper = $cityHelper;
@@ -387,12 +380,12 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $log['response'] = $arrayResponse;
 
         $this->eventManager->dispatch(
-            'eguana_bizconnect_operation_processed',
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'eguana.pos.update.customer',
                 'direction' => 'incoming',
                 'to' => 'api', //from or to
-                'serialized_data' => $this->json->serialize($log),
+                'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
                 'result_message' => $response->getMessage()
             ]

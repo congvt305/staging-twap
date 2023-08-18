@@ -12,13 +12,11 @@ use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
 use CJ\Middleware\Model\Sap\Connection\Request;
-use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Status\HistoryFactory;
@@ -41,10 +39,6 @@ class RmaPlugin
      * @var Config
      */
     private $config;
-    /**
-     * @var Json
-     */
-    private $json;
     /**
      * @var Request
      */
@@ -94,7 +88,6 @@ class RmaPlugin
 
 
     /**
-     * @param Json $json
      * @param Request $request
      * @param Config $config
      * @param Logger $logger
@@ -108,7 +101,6 @@ class RmaPlugin
      * @param RmaItemCollectionFactory $rmaItemCollectionFactory
      */
     public function __construct(
-        Json $json,
         Request $request,
         Config $config,
         Logger $logger,
@@ -121,7 +113,6 @@ class RmaPlugin
         Status $rmaSourceStatus,
         RmaItemCollectionFactory $rmaItemCollectionFactory
     ) {
-        $this->json = $json;
         $this->request = $request;
         $this->config = $config;
         $this->logger = $logger;
@@ -191,25 +182,25 @@ class RmaPlugin
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Send Data");
-                        $this->logger->info($this->json->serialize($orderRmaData));
+                        $this->logger->info($this->middlewareHelper->serializeData($orderRmaData));
                     }
 
-                    $result = $this->request->sendRequest($this->json->serialize($orderRmaData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
+                    $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderRmaData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Result Data");
-                        $this->logger->info($this->json->serialize($result));
+                        $this->logger->info($this->middlewareHelper->serializeData($result));
                     }
 
                     $this->eventManager->dispatch(
-                        "eguana_bizconnect_operation_processed",
+                        \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                         [
                             'topic_name' => 'amore.sap.return.request',
                             'direction' => 'outgoing',
                             'to' => "SAP",
-                            'serialized_data' => $this->json->serialize($orderRmaData),
+                            'serialized_data' => $this->middlewareHelper->serializeData($orderRmaData),
                             'status' => 1,
-                            'result_message' => $this->json->serialize($result)
+                            'result_message' => $this->middlewareHelper->serializeData($result)
                         ]
                     );
                     $responseHandled = $this->request->handleResponse($result, $order->getStoreId());

@@ -10,20 +10,14 @@ namespace Amore\Sap\Controller\Adminhtml;
 
 use Amore\Sap\Logger\Logger;
 use CJ\Middleware\Model\Sap\Connection\Request;
-use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Serialize\Serializer\Json;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 abstract class AbstractAction extends Action
 {
-    /**
-     * @var Json
-     */
-    protected $json;
     /**
      * @var Request
      */
@@ -45,21 +39,18 @@ abstract class AbstractAction extends Action
     /**
      * AbstractAction constructor.
      * @param Action\Context $context
-     * @param Json $json
      * @param Request $request
      * @param Logger $logger
      * @param Config $config
      */
     public function __construct(
         Action\Context $context,
-        Json $json,
         Request $request,
         Logger $logger,
         Config $config,
         MiddlewareHelper $middlewareHelper
     ) {
         parent::__construct($context);
-        $this->json = $json;
         $this->request = $request;
         $this->logger = $logger;
         $this->config = $config;

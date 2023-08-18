@@ -15,7 +15,6 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Amore\CustomerRegistration\Helper\Data;
 use GuzzleHttp\ClientFactory;
 use GuzzleHttp\Psr7\ResponseFactory;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
@@ -33,6 +32,7 @@ class POSSystem
     const DATE_FORMAT = 'd/m/Y';
     /**#@-*/
 
+    const EGUANA_BIZCONNECT_OPERATION_PROCESSED = 'eguana_bizconnect_operation_processed';
     /**
      * @var TimezoneInterface
      */
@@ -77,11 +77,6 @@ class POSSystem
     private $cityHelper;
 
     /**
-     * @var Json
-     */
-    private $json;
-
-    /**
      * @var MiddlewareHelper
      */
     private $middlewareHelper;
@@ -100,7 +95,6 @@ class POSSystem
      * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
      * @param \Zend\Http\Client $zendClient
      * @param \Amore\CustomerRegistration\Model\POSLogger $logger
-     * @param Json $json
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param MiddlewareHelper $middlewareHelper
@@ -115,13 +109,11 @@ class POSSystem
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
         \Zend\Http\Client $zendClient,
         POSLogger $logger,
-        Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         MiddlewareHelper $middlewareHelper,
         MiddlewareRequest $middleRequest
     ) {
-        $this->json = $json;
         $this->middlewareHelper = $middlewareHelper;
         $this->timezone = $timezone;
         $this->config = $config;
@@ -182,7 +174,7 @@ class POSSystem
             );
 
             $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberInfo');
-            $response = $this->json->unserialize($apiResponse);
+            $response = $this->middlewareHelper->unserializeData($apiResponse);
             $result = $this->handleResponse($response, $isMiddlewareEnable);
             $this->logger->addAPILog(
                 'POS get info API Response',
@@ -223,12 +215,12 @@ class POSSystem
         }
 
         $this->eventManager->dispatch(
-            'eguana_bizconnect_operation_processed',
+            self::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'eguana.pos.get.info',
                 'direction' => 'outgoing',
                 'to' => $websiteName, //from or to
-                'serialized_data' => $this->json->serialize($log),
+                'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
                 'result_message' => $resultMessage
             ]
@@ -382,7 +374,7 @@ class POSSystem
             $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberJoin');
 
 
-            $response = $this->json->unserialize($apiResponse);
+            $response = $this->middlewareHelper->unserializeData($apiResponse);
             if ($isMiddlewareEnable) {
                 if (isset($response['success']) && $response['success']) {
                     $result['message'] = $response['data']['statusMessage'];
@@ -418,12 +410,12 @@ class POSSystem
         $websiteName = $this->storeManager->getWebsite()->getName();
 
         $this->eventManager->dispatch(
-            'eguana_bizconnect_operation_processed',
+            self::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'eguana.pos.sync.info',
                 'direction' => 'outgoing',
                 'to' => $websiteName, //from or to
-                'serialized_data' => $this->json->serialize($log),
+                'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
                 'result_message' => isset($result['message'])?$result['message']:'Fail'
             ]
@@ -497,7 +489,7 @@ class POSSystem
                 $parameters
             );
             $apiResponse = $this->middleRequest->sendRequest( $parameters, $storeId, 'baInfo');
-            $response = $this->json->unserialize($apiResponse);
+            $response = $this->middlewareHelper->unserializeData($apiResponse);
             if ($isMiddlewareEnable) {
                 if ((isset($response['success']) && $response['success']) &&
                     (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y')
@@ -566,12 +558,12 @@ class POSSystem
         }
 
         $this->eventManager->dispatch(
-            'eguana_bizconnect_operation_processed',
+            self::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'eguana.pos.get.bacode.info',
                 'direction' => 'outgoing',
                 'to' => $websiteName,
-                'serialized_data' => $this->json->serialize($log),
+                'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
                 'result_message' => $resultMessage
             ]

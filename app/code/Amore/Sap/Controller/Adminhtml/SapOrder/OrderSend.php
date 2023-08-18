@@ -20,7 +20,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
@@ -43,7 +42,6 @@ class OrderSend extends AbstractAction
     /**
      * OrderSend constructor.
      * @param Action\Context $context
-     * @param Json $json
      * @param Request $request
      * @param Logger $logger
      * @param Config $config
@@ -53,7 +51,6 @@ class OrderSend extends AbstractAction
      */
     public function __construct(
         Action\Context $context,
-        Json $json,
         Request $request,
         Logger $logger,
         Config $config,
@@ -62,7 +59,7 @@ class OrderSend extends AbstractAction
         ManagerInterface $eventManager,
         MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
+        parent::__construct($context, $request, $logger, $config, $middlewareHelper);
         $this->orderRepository = $orderRepository;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->eventManager = $eventManager;
@@ -104,25 +101,25 @@ class OrderSend extends AbstractAction
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Send Data");
-                $this->logger->info($this->json->serialize($orderSendData));
+                $this->logger->info($this->middlewareHelper->serializeData($orderSendData));
             }
 
-            $result = $this->request->sendRequest($this->json->serialize($orderSendData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
+            $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderSendData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Result Data");
-                $this->logger->info($this->json->serialize($result));
+                $this->logger->info($this->middlewareHelper->serializeData($result));
             }
 
             $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
+                \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                 [
                     'topic_name' => 'amore.sap.order.send.request',
                     'direction' => 'outgoing',
                     'to' => "SAP",
-                    'serialized_data' => $this->json->serialize($orderSendData),
+                    'serialized_data' => $this->middlewareHelper->serializeData($orderSendData),
                     'status' => $this->successCheck($orderSendData),
-                    'result_message' => $this->json->serialize($result)
+                    'result_message' => $this->middlewareHelper->serializeData($result)
                 ]
             );
 
