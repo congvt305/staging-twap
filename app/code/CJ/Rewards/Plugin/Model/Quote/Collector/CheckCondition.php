@@ -89,15 +89,12 @@ class CheckCondition
                 if ($spentPoints) {
                     $amountDiscount = $listOptions[$spentPoints] ?? 0;
                     if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
-                        $quote->setData(EntityInterface::POINTS_SPENT, 0);
-                        $this->calculator->clearPointsDiscount($items);
-                        $this->quoteRepository->save($quote);
                         //do not throw exception in case apply point first and then apply coupon to get discount > grand total or it will be error
                         if (preg_match('/points/', $this->request->getRequestUri())) {
+                            $quote->setData(EntityInterface::POINTS_SPENT, 0);
+                            $this->calculator->clearPointsDiscount($items);
+                            $this->quoteRepository->save($quote);
                             throw new LocalizedException(__('Can not use rewards point because reward discount amount is  greater than grand total'));
-                        } else {
-                            $this->messageManager->addErrorMessage(__('Can not use rewards point because reward discount amount is  greater than grand total'));
-                            return $subject;
                         }
                     }
                 }
