@@ -27,86 +27,171 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO = 'middleware/customer_interface_ids/bacode_info';
     const XML_PATH_IS_DECIMAL_FORMAT = 'middleware/general/is_decimal_format';
 
-    public function isNewMiddlewareEnabled($type, $storeId)
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
+    public function isMiddlewareEnabled($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_ENABLE, $type, $storeId);
     }
 
-    public function getNewMiddlewareURL($type, $storeId)
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
+    public function getMiddlewareURL($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_URL, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getMiddlewareUsername($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_USERNAME, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getMiddlewareAuthKey($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_AUTH_KEY, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getOrderConfirmInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SAP_ORDER_CONFIRM, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getOrderCancelInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SAP_ORDER_CANCEL, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getStockInfoInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SAP_STOCK_INFO, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getMemberSearchInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_MEMBER_SEARCH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getRedeemSearchInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_REDEEM_SEARCH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getCustomerSearchInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_CUSTOMER_ORDER, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getPointSearchInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_POINT_SEARCH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getPointUpdateInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_POS_POINT_UPDATE, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getMemberInfoInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_INFO, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getMemberJoinInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_JOIN, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getBacodeInfoInterfaceId($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getSalesOrganizationCode($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_ORG_CODE, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getSalesOfficeCode($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_MIDDLEWARE_SALES_OFF_CODE, $type, $storeId);
@@ -144,7 +229,11 @@ class Data extends AbstractHelper
     }
 
 
-
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getIsDecimalFormat($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_IS_DECIMAL_FORMAT, $type, $storeId);

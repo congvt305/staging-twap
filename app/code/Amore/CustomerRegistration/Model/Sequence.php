@@ -136,7 +136,7 @@ class Sequence implements SequenceInterface
             $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
             return $this->getCurrentValue();
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 

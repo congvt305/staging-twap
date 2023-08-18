@@ -52,40 +52,20 @@ class POSLogger
 
     /**
      * @param $message
+     * @param $parameters
      * @param $url
-     * @param $parameters
      * @return void
      */
-    public function addAPICallLog($message, $url, $parameters)
+    public function addAPILog($message, $parameters = null, $url = null)
     {
         if ($this->confg->getDebug()) {
             $this->logger->info($message);
-            $this->logger->info($url);
-            $temp = json_encode($parameters);
-            $this->logger->info($this->json->serialize($parameters));
-        }
-    }
-
-    /**
-     * @param $message
-     * @return void
-     */
-    public function addExceptionMessage($message)
-    {
-        if ($this->confg->getDebug()) {
-            $this->logger->info($message);
-        }
-    }
-
-    /**
-     * @param $message
-     * @param $parameters
-     * @return void
-     */
-    public function addAPILog($message, $parameters){
-        if ($this->confg->getDebug()) {
-            $this->logger->info($message);
-            $this->logger->info($this->json->serialize($parameters));
+            if ($parameters) {
+                $this->logger->info($this->json->serialize($parameters));
+            }
+            if ($url) {
+                $this->logger->info($url);
+            }
         }
     }
 }

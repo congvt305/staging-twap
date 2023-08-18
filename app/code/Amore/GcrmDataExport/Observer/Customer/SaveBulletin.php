@@ -117,7 +117,7 @@ class SaveBulletin implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 }

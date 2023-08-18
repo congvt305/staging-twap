@@ -208,10 +208,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             ];
             $callSuccess = 1;
             $response = '';
-            $this->logger->addAPICallLog(
+            $this->logger->addAPILog(
                 'Customer update api call',
-                '{Base URL}/rest/all/V1/pos-customers/',
-                $parameters
+                $parameters,
+                '{Base URL}/rest/all/V1/pos-customers/'
             );
 
             $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
@@ -458,10 +458,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
           ]
         ];
 
-        $this->logger->addAPICallLog(
+        $this->logger->addAPILog(
             'Customer update api response',
-            '{Base URL}/rest/all/V1/pos-customers/',
-            $logResponse
+            $logResponse,
+            '{Base URL}/rest/all/V1/pos-customers/'
         );
 
         $this->response->setCode($code);

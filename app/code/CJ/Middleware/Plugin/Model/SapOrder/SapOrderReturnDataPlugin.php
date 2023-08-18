@@ -39,7 +39,7 @@ class SapOrderReturnDataPlugin
     public function afterGetRmaData(SapOrderReturnData $subject, $result, \Magento\Rma\Model\Rma $rma)
     {
         $order = $rma->getOrder();
-        if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId())) {
+        if ($this->middlewareHelper->isMiddlewareEnabled('store', $order->getStoreId())) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;
@@ -55,7 +55,7 @@ class SapOrderReturnDataPlugin
     public function afterGetRmaItemData(SapOrderReturnData $subject, $result, \Magento\Rma\Model\Rma $rma)
     {
         $order = $rma->getOrder();
-        if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId())) {
+        if ($this->middlewareHelper->isMiddlewareEnabled('store', $order->getStoreId())) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;

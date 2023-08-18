@@ -33,7 +33,7 @@ class SapOrderConfirmDataPlugin
      * @param $incrementId
      * @return false|mixed
      */
-    public function isNewMiddleware($incrementId)
+    public function checkIsMiddlewareBydOrderStoreId($incrementId)
     {
         $order = $this->orderFatory->create()->loadByIncrementId($incrementId);
         if (!$order->getEntityId() ||
@@ -41,7 +41,7 @@ class SapOrderConfirmDataPlugin
         ) {
             return false;
         }
-        return $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
+        return $this->middlewareHelper->isMiddlewareEnabled('store', $order->getStoreId());
     }
 
     /**
@@ -53,7 +53,7 @@ class SapOrderConfirmDataPlugin
      */
     public function afterGetOrderData(SapOrderConfirmData $subject, $result, $incrementId)
     {
-        if ($this->isNewMiddleware($incrementId)) {
+        if ($this->checkIsMiddlewareBydOrderStoreId($incrementId)) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;
@@ -68,7 +68,7 @@ class SapOrderConfirmDataPlugin
      */
     public function afterGetOrderItem(SapOrderConfirmData $subject, $result, $incrementId)
     {
-        if ($this->isNewMiddleware($incrementId)) {
+        if ($this->checkIsMiddlewareBydOrderStoreId($incrementId)) {
             array_walk_recursive($result, [$this, 'convertNumberToString']);
         }
         return $result;

@@ -252,8 +252,8 @@ class RmaPlugin
                     if ($resultSize > 0) {
                         $isSuccess = false;
                         $outdata = isset($result['data']['response']['output']['outdata']) ? $result['data']['response']['output']['outdata'] : [];
-                        $isNewMiddleware = $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
-                        if ($isNewMiddleware || (!$isNewMiddleware && $result['code'] == '0000')) {
+                        $isMiddlewareEnabled = $this->middlewareHelper->isMiddlewareEnabled('store', $order->getStoreId());
+                        if ($isMiddlewareEnabled || (!$isMiddlewareEnabled && $result['code'] == '0000')) {
                             foreach ($outdata as $data) {
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {

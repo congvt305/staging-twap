@@ -310,7 +310,7 @@ class SaveSuccess implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
@@ -379,7 +379,7 @@ class SaveSuccess implements ObserverInterface
             //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
             return $customer;
         }
     }
@@ -475,8 +475,8 @@ class SaveSuccess implements ObserverInterface
 
             return $parameters;
         } catch (\Exception $exception) {
-            $this->logger->addExceptionMessage($exception->getMessage());
-            $this->logger->addExceptionMessage('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
+            $this->logger->addAPILog($exception->getMessage());
+            $this->logger->addAPILog('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
         }
     }
 
@@ -487,7 +487,7 @@ class SaveSuccess implements ObserverInterface
         try {
             $this->regionResourceModel->load($region, $regionName, 'default_name');
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
         return $region;
     }
@@ -609,7 +609,7 @@ class SaveSuccess implements ObserverInterface
                 $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
@@ -662,7 +662,7 @@ class SaveSuccess implements ObserverInterface
             }
             return $groupId;
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
             return $groupId;
         }
     }

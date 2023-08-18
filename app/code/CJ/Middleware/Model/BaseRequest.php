@@ -63,21 +63,29 @@ abstract class BaseRequest
      */
     public function sendRequest($requestData, $websiteId, $type)
     {
-        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled('website', $websiteId);
-        $url = $this->middlewareHelper->getNewMiddlewareURL('website', $websiteId);
-        if (!$url && !$isNewMiddlewareEnable) {
+        $isMiddlewareEnable = $this->middlewareHelper->isMiddlewareEnabled('website', $websiteId);
+        $url = $this->middlewareHelper->getMiddlewareURL('website', $websiteId);
+        if (!$url && !$isMiddlewareEnable) {
             $this->logger->info("Url or Enable New Middleware is empty. Please check configuration and try again.");
             return [];
         }
 
         try {
-            $this->curl->addHeader('Content-Type', 'application/json');
+            $this->curl->setOptions([
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_HTTPHEADER => [
+                    'Content-type: application/json'
+                ],
+            ]);
             if ($this->config->getSSLVerification($websiteId)) {
                 $this->curl->setOption(CURLOPT_SSL_VERIFYHOST, false);
                 $this->curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             }
-            $response = $this->sendToMiddleware($requestData, 'website', $websiteId, $type);
 
+            $response = $this->sendToMiddleware($requestData, 'website', $websiteId, $type);
             return $this->json->unserialize($response);
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());
@@ -94,10 +102,10 @@ abstract class BaseRequest
      */
     public function sendToMiddleware($requestData, $scope = 'store', $websiteId = null, $type = 'confirm')
     {
-        $isNewMiddlewareEnable = $this->middlewareHelper->isNewMiddlewareEnabled($scope, $websiteId);
+        $isMiddlewareEnable = $this->middlewareHelper->isMiddlewareEnabled($scope, $websiteId);
         $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
-        if ($isNewMiddlewareEnable) {
-            $url = $this->middlewareHelper->getNewMiddlewareURL($scope, $websiteId);
+        if ($isMiddlewareEnable) {
+            $url = $this->middlewareHelper->getMiddlewareURL($scope, $websiteId);
             $modifiedRequestData = $this->prepareRequestData($requestData, $scope, $websiteId, $type, $logEnabled);
             $response = $this->callMiddlewareApi($url, $modifiedRequestData, $logEnabled);
             return $response;
@@ -209,7 +217,7 @@ abstract class BaseRequest
             $success = true;
             $status = false;
             $message = '';
-            if ($this->middlewareHelper->isNewMiddlewareEnabled('store', $storeId)) {
+            if ($this->middlewareHelper->isMiddlewareEnabled('store', $storeId)) {
                 if ($response['success'] != true) {
                     $success = $response['success'];
                     $message = $response['data']['message'];
