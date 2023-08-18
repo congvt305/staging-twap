@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Amore\Sap\Model\SapOrder\SapOrderConfirmData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestForMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderConfirmDataPlugin"/>
-    </type>
-    <type name="Amore\Sap\Model\SapOrder\SapOrderReturnData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestReturnForMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderReturnDataPlugin"/>
-    </type>
-
     <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
             <argument name="fileName" xsi:type="string">/var/log/middleware/pos_request.log</argument>

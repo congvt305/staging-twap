@@ -298,7 +298,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
             }
         }
-
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
         return $bindData;
     }
 
@@ -426,6 +426,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
             $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
+        array_walk_recursive($this->rmaItemData, [$this, 'convertNumberToString']);
 
         return $this->rmaItemData;
     }
@@ -618,5 +619,17 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         parent::resetData();
         $this->rmaItemData = [];
+    }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    public function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
     }
 }

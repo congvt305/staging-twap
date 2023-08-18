@@ -235,6 +235,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $request;
     }
 
+    /**
+     * @param $incrementId
+     * @return false|mixed|null
+     */
     public function getOrderInfo($incrementId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
@@ -405,7 +409,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 }
             }
         }
-
+        if ($this->checkIsAvailableOrderStatus($incrementId)) {
+            array_walk_recursive($bindData, [$this, 'convertNumberToString']);
+        }
         return $bindData;
     }
 
@@ -608,7 +614,9 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
             $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
-
+        if ($this->checkIsAvailableOrderStatus($incrementId)) {
+            array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
+        }
         return $this->orderItemData;
     }
 
@@ -734,5 +742,33 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         parent::resetData();
         $this->orderItemData = [];
+    }
+
+    /**
+     * @param $incrementId
+     * @return bool
+     */
+    public function checkIsAvailableOrderStatus($incrementId)
+    {
+        $order = $this->getOrderInfo($incrementId);
+        if (!$order->getEntityId() ||
+            !in_array($order->getStatus(), ['processing', 'sap_fail', 'processing_with_shipment'])
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    public function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
     }
 }
