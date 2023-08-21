@@ -153,7 +153,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $percent = ($basePoints * 100) / $allCartPrice;
         $itemsDiscount = $this->discountDistributor->distribute($items, $basePoints, $percent);
         if ($isEnableShowListOptionRewardPoint) {
-            $itemsPoint = $this->setDiscountPointForItem($items, $points, $percent);
+            $rate = $points / $basePoints;
         }
 
         $discountValue = 0;
@@ -167,18 +167,10 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
                 }
             }
             $this->discountApplier->apply($item, $total, (int)$itemDiscount, $rate);
-            if ($isEnableShowListOptionRewardPoint) {
-                $itemPoint = $itemsPoint[$item->getId()] ?? 0;
-                $item->setData(EntityInterface::POINTS_SPENT, $itemPoint);
-            }
             $discountValue += $itemsDiscount[$item->getId()];
         }
         $this->addOddTotal($items, $total, $oddTotal, $rate);
-        if ($isEnableShowListOptionRewardPoint) {
-            $appliedPoints = $points;
-        } else {
-            $appliedPoints = $discountValue * $rate;
-        }
+        $appliedPoints = $discountValue * $rate;
 
 
         if ($roundRule === 'up') {
@@ -283,9 +275,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
                 // to determine the child item discount, we calculate the parent
                 if ($item->getDiscountAmount() > 0) {
                     $isAddOddTotal = true;
-                    if (!$this->rewardData->isEnableShowListOptionRewardPoint()) {
-                        $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
-                    }
+                    $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
                     $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
                     $item->setBaseDiscountAmount($item->getBaseDiscountAmount() + $oddTotal);
                     $total->addTotalAmount('discount', -$oddTotal);
@@ -308,30 +298,5 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
                 }
             }
         }
-    }
-
-    /**
-     * Calculate the reward point for each item
-     *
-     * @param $items
-     * @param $pointToDistribute
-     * @param $percent
-     * @return array
-     */
-    private function setDiscountPointForItem($items, $pointToDistribute, $percent) {
-        $itemsPoint = [];
-
-        foreach ($items as $item) {
-            $point = (int)(($pointToDistribute * $percent) / 100);
-            $pointToDistribute -= $point;
-            $itemsPoint[$item->getId()] = $point;
-            $lastItemId = $item->getId();
-        }
-
-        if (isset($lastItemId)) {
-            $itemsPoint[$lastItemId] += $pointToDistribute;
-        }
-
-        return $itemsPoint;
     }
 }
