@@ -43,10 +43,11 @@ class CalculatePrice
                 $totalMileageAmount = $rewardPoint / $spendingRate;
             }
             $totalDiscountAmount = $orderItem->getDiscountAmount() - $totalMileageAmount; //discount amount does not include discount from point
+            $parentProductPrice = $orderItem->getPrice() * $orderItem->getQtyOrdered();
             foreach ($bundleItems as $bundleItem) {
                 if (!$bundleItem->getPrice()) {
                     $priceRatio = $bundleItem->getQtyOrdered() / $totalItemsQtyOrdered;
-                    $bundlItemPrice = $this->orderData->roundingPrice($orderItem->getPrice() * $priceRatio, $isDecimalFormat);
+                    $bundlItemPrice = $this->orderData->roundingPrice($parentProductPrice * $priceRatio, $isDecimalFormat);
                     $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getTaxAmount() * $priceRatio, $isDecimalFormat);
                     if ($isEnableRewardsPoint) {
                         $rewardPointItem = $rewardPoint * $priceRatio;
@@ -73,8 +74,8 @@ class CalculatePrice
 
             //Correct price
             foreach ($bundleItems as $bundleItem) {
-                if ($orderItem->getPrice() != $totalPrice) {
-                    $gapAmount = $orderItem->getPrice() - $totalPrice;
+                if ($parentProductPrice != $totalPrice) {
+                    $gapAmount = $parentProductPrice - $totalPrice;
                     $bundleItem->setData('normal_sales_amount', $bundleItem->getData('normal_sales_amount') + $gapAmount);
                 }
                 if ($rewardPoint != $totalRewardPoint) {
