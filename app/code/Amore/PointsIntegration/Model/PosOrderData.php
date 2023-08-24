@@ -364,12 +364,12 @@ class PosOrderData
                 foreach ($bundleChildren as $bundleChild) {
                     $stripSku = str_replace($skuPrefix, '', $bundleChild->getSku());
                     if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                        $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+                        $bundleChildPrice = $this->productRepository->getById($bundleChild->getProductId(), false, $order->getStoreId())->getPrice();
                     } else {
                         $bundleChildPrice = $bundleChild->getOriginalPrice();
                     }
 
-                    $product = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId());
+                    $product = $this->productRepository->getById($bundleChild->getProductId(), false, $order->getStoreId());
                     $bundleChildSubtotal = $this->bundleChildSubtotal($bundleChildPrice, $bundleChild, $isDecimalFormat);
                     $bundleChildDiscountAmount = $this->getBundleChildDiscountAmount($bundlePriceType, $orderItem, $bundleChild, $isDecimalFormat);
                     $priceGap = $orderItem->getOriginalPrice() - $orderItem->getPrice();
@@ -495,7 +495,7 @@ class PosOrderData
                     foreach ($orderItem->getChildrenItems() as $bundleChild) {
                         $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
                         $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyPerBundle;
-                        $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
+                        $originItemPrice = $this->productRepository->getById($bundleChild->getProductId(), false, $order->getStoreId())->getPrice();
 
                         $priceDifferences += (($originItemPrice - $childPriceRatio) * $bundleChild->getQtyOrdered());
                     }
@@ -612,7 +612,7 @@ class PosOrderData
     {
         $bundleChildrenTotalAmount = $this->getSumOfChildrenOriginPrice($orderItem);
 
-        $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $orderItem->getStoreId())->getPrice();
+        $bundleChildPrice = $this->productRepository->getById($bundleChild->getProductId(), false, $orderItem->getStoreId())->getPrice();
         $rate = ($bundleChildPrice / $bundleChildrenTotalAmount) * ($bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered());
 
         return $valueToCalculate * $rate;
@@ -631,7 +631,7 @@ class PosOrderData
         $originalPriceTotal = 0;
 
         foreach ($orderItem->getChildrenItems() as $childItem) {
-            $originalProductPrice = $this->productRepository->get($childItem->getSku(), false, $orderItem->getStoreId())->getPrice();
+            $originalProductPrice = $this->productRepository->getById($childItem->getProductId(), false, $orderItem->getStoreId())->getPrice();
             //get total price for product per bundle
             $originalPriceTotal += ($originalProductPrice * ($childItem->getQtyOrdered() / $orderItem->getQtyOrdered()));
         }
