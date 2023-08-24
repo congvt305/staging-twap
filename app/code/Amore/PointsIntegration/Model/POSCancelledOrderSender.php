@@ -17,7 +17,7 @@ class POSCancelledOrderSender
      */
     private $posOrderData;
     /**
-     * @var Connection\Request
+     * @var Request
      */
     private $request;
     /**
@@ -78,7 +78,7 @@ class POSCancelledOrderSender
             $orderData = $this->posOrderData->getCancelledOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $responseHandled = $this->request->handleResponse($response, $websiteId);
-            $status = $responseHandled ? $responseHandled['status'] : false;
+            $status = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosCancelledOrderSendFlag($order);
                 // update Pos customer grade

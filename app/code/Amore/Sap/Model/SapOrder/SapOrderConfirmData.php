@@ -409,9 +409,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                 }
             }
         }
-        if ($this->checkIsAvailableOrderStatus($incrementId)) {
-            array_walk_recursive($bindData, [$this, 'convertNumberToString']);
-        }
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
+
         return $bindData;
     }
 
@@ -614,9 +613,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
             $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
-        if ($this->checkIsAvailableOrderStatus($incrementId)) {
-            array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
-        }
+        array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
         return $this->orderItemData;
     }
 
@@ -678,8 +675,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         $bundleChild = null
     ) {
         $storeId = $order->getStoreId();
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
         $sku = $newOrderItem->getSku();
         $itemMenge = $newOrderItem->getQtyOrdered();
         $itemId = $newOrderItem->getItemId();
@@ -691,7 +686,6 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $product = $this->productRepository->get($sku, false, $order->getStoreId());
         $meins = $product->getData('meins');
-        $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = ($itemSlamt == $itemMiamt && $itemSlamt > 0);
         $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
@@ -743,22 +737,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         parent::resetData();
         $this->orderItemData = [];
     }
-
-    /**
-     * @param $incrementId
-     * @return bool
-     */
-    public function checkIsAvailableOrderStatus($incrementId)
-    {
-        $order = $this->getOrderInfo($incrementId);
-        if (!$order->getEntityId() ||
-            !in_array($order->getStatus(), ['processing', 'sap_fail', 'processing_with_shipment'])
-        ) {
-            return false;
-        }
-        return true;
-    }
-
 
     /**
      * @param $value

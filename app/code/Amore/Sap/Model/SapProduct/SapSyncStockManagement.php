@@ -16,8 +16,7 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\InventoryApi\Api\Data\StockSourceLinkInterface;
-use Magento\Framework\Serialize\Serializer\Json;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Class SapSyncStockManagement
@@ -35,11 +34,6 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
      * @var StoreManagerInterface
      */
     private $storeManagerInterface;
-
-    /**
-     * @var Json
-     */
-    private $json;
 
     /**
      * @var Logger
@@ -62,11 +56,6 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     private $syncStockResponse;
 
     /**
-     * @var SapProductManagement
-     */
-    private $sapProductManagement;
-
-    /**
      * @var CollectionFactory
      */
     private $productCollection;
@@ -74,34 +63,31 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     /**
      * @param SourceItemsSaveInterface $sourceItemsSaveInterface
      * @param StoreManagerInterface $storeManagerInterface
-     * @param Json $json
      * @param Logger $logger
      * @param Config $config
      * @param ManagerInterface $eventManager
      * @param \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse
-     * @param SapProductManagement $sapProductManagement
      * @param CollectionFactory $productCollection
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         SourceItemsSaveInterface $sourceItemsSaveInterface,
         StoreManagerInterface $storeManagerInterface,
-        Json $json,
         Logger $logger,
         Config $config,
         ManagerInterface $eventManager,
         \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse,
-        SapProductManagement $sapProductManagement,
-        CollectionFactory $productCollection
+        CollectionFactory $productCollection,
+        MiddlewareHelper $middlewareHelper
     ) {
-        $this->json = $json;
         $this->logger = $logger;
         $this->config = $config;
         $this->eventManager = $eventManager;
         $this->productCollection = $productCollection;
         $this->syncStockResponse = $syncStockResponse;
-        $this->sapProductManagement = $sapProductManagement;
         $this->storeManagerInterface = $storeManagerInterface;
         $this->sourceItemsSaveInterface = $sourceItemsSaveInterface;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -115,10 +101,8 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     public function getSapIntegrationEnabledProducts($stockData, $sourceCode, $storeId = null)
     {
         $filteredProducts = [];
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
-        $skus = array_map(function ($e) use ($skuPrefix) {
-            return is_object($e) ? $skuPrefix. $e->getMatnr() : $skuPrefix . $e['matnr'];
+        $skus = array_map(function ($e) {
+            return is_object($e) ? $e->getMatnr() : $e['matnr'];
         }, $stockData);
         $collection = $this->productCollection->create();
         $collection->getSelect()->joinInner(
@@ -136,7 +120,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
         }
         $products = $collection->getItems();
         foreach ($products as $product) {
-            if (!$this->sapProductManagement->sapIntegrationCheck($product)) {
+            if (!$this->middlewareHelper->sapIntegrationCheck($product)) {
                 $key = array_search($product->getSku(), $skus);
                 $data = [
                     'matnr' => $product->getSku(),
@@ -175,7 +159,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
 
         if ($loggingCheck) {
             $this->logger->info('***** SYNC STOCK API PARAMETERS *****');
-            $this->logger->info($this->json->serialize($parameters));
+            $this->logger->info($this->middlewareHelper->serializeData($parameters));
         }
 
         if (!$source || !$mallId || !$stockData || !is_array($stockData)) {
@@ -191,7 +175,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
             return $response;
         }
 
-        $store = $this->sapProductManagement->getStore($mallId);
+        $store = $this->middlewareHelper->getStore($mallId);
         if (empty($store)) {
             $result['code']     = '0002';
             $result['message']  = 'Mall Id ' . $mallId . ' is not specified or incorrect';
@@ -222,9 +206,9 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
             return $response;
         }
 
-        $websiteId = $this->sapProductManagement->getStore($mallId)->getWebsiteId();
+        $websiteId = $this->middlewareHelper->getStore($mallId)->getWebsiteId();
         $websiteCode = $this->storeManagerInterface->getWebsite($websiteId)->getCode();
-        $sourceCode = $this->sapProductManagement->getSourceCodeByWebsiteCode($websiteCode);
+        $sourceCode = $this->middlewareHelper->getSourceCodeByWebsiteCode($websiteCode);
         $filteredProducts = $this->getSapIntegrationEnabledProducts($stockData, $sourceCode, $storeId);
 
         $sourceItems = [];
@@ -235,7 +219,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
                 'matnr'     => $product['matnr'],
                 'labst'     => $product['labst']
             ];
-            $sourceItems[] = $this->sapProductManagement->saveProductQtyIntoSource($product['sourceCode'], $data);
+            $sourceItems[] = $this->middlewareHelper->saveProductQtyIntoSource($product['sourceCode'], $data);
         }
 
         try {
@@ -275,7 +259,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
 
         if ($loggingCheck) {
             $this->logger->info('***** SYNC STOCK API RESPONSE *****');
-            $this->logger->info($this->json->serialize($response));
+            $this->logger->info($this->middlewareHelper->serializeData($response));
         }
 
         $this->syncStockResponse->setCode($code);
@@ -300,11 +284,11 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
                 \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                 [
                     'to'                => 'Magento',
-                    'status'            => $this->sapProductManagement->setOperationLogStatus($status),
+                    'status'            => $this->middlewareHelper->setOperationLogStatus($status),
                     'direction'         => 'incoming',
                     'topic_name'        => 'amore.sap.product.inventory.sync.stock',
-                    'result_message'    => $this->json->serialize($result),
-                    'serialized_data'   => $this->json->serialize($parameters)
+                    'result_message'    => $this->middlewareHelper->serializeData($result),
+                    'serialized_data'   => $this->middlewareHelper->serializeData($parameters)
                 ]
             );
         }

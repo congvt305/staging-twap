@@ -45,10 +45,6 @@ class Config
 
     const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
 
-    const SAP_API_BASE_URL_XML_PATH = 'sap/general/url';
-
-    const SAP_SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
-
     const SAP_CRON_ENABLE = 'sap/send_order_to_sap_cron/enable';
 
     const SAP_CRON_LIMITATION = 'sap/send_order_to_sap_cron/number_of_order';
@@ -68,104 +64,172 @@ class Config
         $this->scopeConfig = $scopeConfig;
     }
 
+    /**
+     * @param $path
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getValue($path, $type, $storeId)
     {
         return $this->scopeConfig->getValue($path, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::URL_ACTIVE_XML_PATH, $type, $storeId);
     }
 
-    public function getSourceByStore($type ,$storeId)
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
+    public function getSourceByStore($type, $storeId)
     {
         return $this->getValue(self::SAP_SOURCE_ID_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getClient($type, $storeId)
     {
         return $this->getValue(self::SAP_CLIENT_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getHomeDeliveryContractor($type, $storeId)
     {
         return $this->getValue(self::SAP_HOME_DELIVERY_CONTRACTOR_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getFamilyMartCode($type, $storeId)
     {
         return $this->getValue(self::SAP_CVS_FAMILY_MART_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getSevenElevenCode($type, $storeId)
     {
         return $this->getValue(self::SAP_CVS_SEVEN_ELEVEN_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $path
+     * @return mixed
+     */
     public function getDefaultValue($path)
     {
         return $this->scopeConfig->getValue($path, "default");
     }
 
+    /**
+     * @return mixed
+     */
     public function getLoggingCheck()
     {
         return $this->scopeConfig->getValue(self::SAP_LOGGING_XML_PATH, 'default');
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getSslVerification($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_SSL_VERIFICATION_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getEInvoiceActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_EINVOICE_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getCreditmemoActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_CREDITMEMO_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getAddressActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_ADDRESS_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getRmaActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_RMA_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getProductStockActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_PRODUCT_STOCK_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getProductInfoActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_PRODUCT_INFO_ENABLE_XML_PATH, $type, $storeId);
     }
 
+    /**
+     * @param $type
+     * @param $storeId
+     * @return mixed
+     */
     public function getProductPriceActiveCheck($type, $storeId)
     {
         return $this->scopeConfig->getValue(self::SAP_PRODUCT_PRICE_ENABLE_XML_PATH, $type, $storeId);
-    }
-
-    /**
-     * Get Sap Api's Base URL
-     *
-     * @param null $storeId
-     * @return mixed
-     */
-    public function getSapApiBaseUrl($storeId = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::SAP_API_BASE_URL_XML_PATH,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
     }
 
     /**
@@ -178,21 +242,6 @@ class Config
     {
         return $this->scopeConfig->getValue(
             self::SAP_STORE_LOG_SYNC_STOCK_XML_PATH,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * Get SAP SKU Prefix
-     *
-     * @param null $storeId
-     * @return mixed
-     */
-    public function getSapSkuPrefix($storeId = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::SAP_SKU_PREFIX_XML_PATH,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

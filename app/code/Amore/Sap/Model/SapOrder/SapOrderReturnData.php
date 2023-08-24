@@ -568,9 +568,6 @@ class SapOrderReturnData extends AbstractSapOrder
         $order = $rma->getOrder();
         $product = $this->productRepository->get($sku, false, $rma->getStoreId());
         $meins = $product->getData('meins');
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
-        $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
         $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);

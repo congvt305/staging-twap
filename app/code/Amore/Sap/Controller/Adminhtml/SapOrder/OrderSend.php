@@ -13,7 +13,6 @@ use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
@@ -23,7 +22,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
-class OrderSend extends AbstractAction
+class OrderSend extends Action
 {
     /**
      * @var SapOrderConfirmData
@@ -40,7 +39,26 @@ class OrderSend extends AbstractAction
     private $eventManager;
 
     /**
-     * OrderSend constructor.
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * @param Action\Context $context
      * @param Request $request
      * @param Logger $logger
@@ -48,6 +66,7 @@ class OrderSend extends AbstractAction
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderConfirmData $sapOrderConfirmData
      * @param ManagerInterface $eventManager
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Action\Context $context,
@@ -59,10 +78,14 @@ class OrderSend extends AbstractAction
         ManagerInterface $eventManager,
         MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $request, $logger, $config, $middlewareHelper);
+        parent::__construct($context);
         $this->orderRepository = $orderRepository;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->eventManager = $eventManager;
+        $this->request = $request;
+        $this->logger = $logger;
+        $this->config = $config;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function execute()

@@ -82,7 +82,7 @@ class OrderToPos extends Action
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
 
             $responseHandled = $this->request->handleResponse($response, $websiteId);
-            $status = $responseHandled ? $responseHandled['status'] : false;
+            $status = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosSendCheck($order->getEntityId());
                 $this->messageManager->addSuccessMessage(__('Order Sent to Pos Successfully.'));

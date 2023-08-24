@@ -86,7 +86,7 @@ class PosReturnSender
             $rmaData = $this->posReturnData->getRmaData($rma);
             $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
             $responseHandled = $this->request->handleResponse($response, $websiteId);
-            $success = $responseHandled ? $responseHandled['status'] : false;
+            $success = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
                 // update Pos customer grade

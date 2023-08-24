@@ -3,9 +3,17 @@ namespace CJ\Middleware\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\InventoryApi\Api\Data\SourceItemInterface;
+use Magento\InventoryApi\Api\Data\StockSourceLinkInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\InventoryApi\Api\GetStockSourceLinksInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 
 class Data extends AbstractHelper
 {
@@ -29,6 +37,7 @@ class Data extends AbstractHelper
     const XML_PATH_MIDDLEWARE_CUSTOMER_MEMBER_JOIN = 'middleware/customer_interface_ids/member_join';
     const XML_PATH_MIDDLEWARE_CUSTOMER_BACODE_INFO = 'middleware/customer_interface_ids/bacode_info';
     const XML_PATH_IS_DECIMAL_FORMAT = 'middleware/general/is_decimal_format';
+    const DISABLE_SAP_INTEGRATION = 'disable_sap_integration';
 
     /**
      * @var CustomerRepositoryInterface
@@ -40,13 +49,55 @@ class Data extends AbstractHelper
      */
     protected $json;
 
+    /**
+     * @var ResourceConnection
+     */
+    protected $resourceConnection;
+
+    /**
+     * @var SortOrderBuilder
+     */
+    protected $sortOrderBuilder;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    protected $searchCriteriaBuilder;
+
+    /**
+     * @var GetStockSourceLinksInterface
+     */
+    protected $getStockSourceLinks;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var SourceItemInterfaceFactory
+     */
+    protected $sourceItemInterfaceFactory;
+
     public function __construct(
         Context $context,
         CustomerRepositoryInterface $customerRepository,
-        Json $json
+        Json $json,
+        ResourceConnection $resourceConnection,
+        SortOrderBuilder $sortOrderBuilder,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        GetStockSourceLinksInterface $getStockSourceLinks,
+        StoreManagerInterface $storeManager,
+        SourceItemInterfaceFactory $sourceItemInterfaceFactory
     ) {
         $this->customerRepository = $customerRepository;
         $this->json = $json;
+        $this->resourceConnection = $resourceConnection;
+        $this->sortOrderBuilder = $sortOrderBuilder;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->getStockSourceLinks = $getStockSourceLinks;
+        $this->storeManager = $storeManager;
+        $this->sourceItemInterfaceFactory = $sourceItemInterfaceFactory;
         parent::__construct($context);
     }
 
@@ -308,5 +359,118 @@ class Data extends AbstractHelper
      */
     public function unserializeData($data){
         return $this->json->unserialize($data);
+    }
+
+    /**
+     * @param $code
+     * @return int
+     */
+    public function setOperationLogStatus($code)
+    {
+        switch ($code) {
+            case "0001":
+                $result = 0;
+                break;
+            case "0000":
+                $result = 1;
+                break;
+            case "0002":
+                $result = 2;
+                break;
+            default:
+                $result = 0;
+        }
+        return $result;
+    }
+
+    /**
+     * @param $websiteCode
+     * @return array|mixed|string|null
+     */
+    public function getSourceCodeByWebsiteCode($websiteCode)
+    {
+        $tableName = $this->resourceConnection->getTableName('inventory_stock_sales_channel');
+        $connection = $this->resourceConnection->getConnection();
+        $query = $connection
+            ->select()
+            ->distinct()
+            ->from($tableName, 'stock_id')
+            ->where('code = ?', $websiteCode);
+
+        $stockId = $connection->fetchCol($query);
+
+        $sortOrder = $this->sortOrderBuilder
+            ->setField(StockSourceLinkInterface::PRIORITY)
+            ->setAscendingDirection()
+            ->create();
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter(StockSourceLinkInterface::STOCK_ID, $stockId)
+            ->addSortOrder($sortOrder)
+            ->create();
+
+        $searchResult = $this->getStockSourceLinks->execute($searchCriteria);
+
+        if ($searchResult->getTotalCount() === 0) {
+            return [];
+        }
+
+        $assignedSources = [];
+        foreach ($searchResult->getItems() as $link) {
+            $assignedSources[] = $link->getSourceCode();
+        }
+
+        return $assignedSources[0];
+    }
+
+    /**
+     * @param $mallId
+     * @return int|\Magento\Store\Api\Data\StoreInterface
+     */
+    public function getStore($mallId)
+    {
+        $exactStore = 0;
+        $stores = $this->storeManager->getStores();
+        foreach ($stores as $store) {
+            $configMallId = $this->getMallId('store', $store->getId());
+            if ($mallId == $configMallId) {
+                $exactStore = $store;
+                break;
+            }
+        }
+        return $exactStore;
+    }
+
+    /**
+     * @param $source
+     * @param $stockData
+     * @return SourceItemInterface
+     */
+    public function saveProductQtyIntoSource($source, $stockData)
+    {
+        /** @var SourceItemInterface $sourceItem */
+        $sourceItem = $this->sourceItemInterfaceFactory->create();
+        $sourceItem->setSourceCode($source);
+        $sourceItem->setSku($stockData['matnr']);
+        $sourceItem->setQuantity($stockData['labst']);
+        if ($stockData['labst'] > 0) {
+            $sourceItem->setStatus(1);
+        } else {
+            $sourceItem->setStatus(0);
+        }
+
+        return $sourceItem;
+    }
+
+    /**
+     * @param $product
+     * @return false
+     */
+    public function sapIntegrationCheck($product)
+    {
+        if (is_null($product->getCustomAttribute(self::DISABLE_SAP_INTEGRATION))) {
+            return false;
+        } else {
+            return $product->getCustomAttribute(self::DISABLE_SAP_INTEGRATION)->getValue();
+        }
     }
 }

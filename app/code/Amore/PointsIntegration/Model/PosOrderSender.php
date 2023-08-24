@@ -84,7 +84,7 @@ class PosOrderSender
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->request->sendRequest($orderData, $websiteId, 'customerOrder');
             $responseHandled = $this->request->handleResponse($response, $websiteId);
-            $status = $responseHandled ? $responseHandled['status'] : false;
+            $status = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);
                 // update Pos customer grade

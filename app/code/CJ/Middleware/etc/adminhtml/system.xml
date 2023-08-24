@@ -6,12 +6,12 @@
         </tab>
         <section id="middleware" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Middleware Common Settings</label>
-            <tab>amore_extensions_tab</tab>
+            <tab>cj_extensions_tab</tab>
             <resource>Amore_Sap::sap</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enabled New Middleware System</label>
+                    <label>Enabled Middleware System</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">

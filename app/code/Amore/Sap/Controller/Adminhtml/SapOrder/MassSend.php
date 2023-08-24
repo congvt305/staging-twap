@@ -23,10 +23,9 @@ use CJ\Middleware\Model\Sap\Connection\Request;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
-use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
-class MassSend extends AbstractAction
+class MassSend extends Action
 {
     /**
      * @var Filter
@@ -54,6 +53,26 @@ class MassSend extends AbstractAction
     private $eventManager;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * @param Action\Context $context
      * @param Request $request
      * @param Logger $logger
@@ -79,13 +98,17 @@ class MassSend extends AbstractAction
         ManagerInterface $eventManager,
         MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $request, $logger, $config, $middlewareHelper);
+        parent::__construct($context);
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->orderRepository = $orderRepository;
         $this->timezoneInterface = $timezoneInterface;
         $this->eventManager = $eventManager;
+        $this->request = $request;
+        $this->logger = $logger;
+        $this->config = $config;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
