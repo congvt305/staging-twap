@@ -354,9 +354,9 @@ class SapOrderReturnData extends AbstractSapOrder
                 if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
                     continue;
                 }
-
+                $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
                 $itemDcamt = $orderItem->getDiscountAmount();
-                $itemNsamt = $orderItem->getData('normal_sales_amount') + ($shippingAmountPerItem * $orderItem->getQtyOrdered());
+                $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
                 $itemSlamt = $itemNsamt - $itemDcamt;
                 $itemMiamt = $orderItem->getData('mileage_amount');
                 $itemTaxAmount = $orderItem->getData('tax_amount');
@@ -386,8 +386,9 @@ class SapOrderReturnData extends AbstractSapOrder
                 $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
+                    $shippingAmountPerChild =  $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
                     $itemDcamt = $bundleChildrenItem->getDiscountAmount();
-                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + ($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered());
+                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + $shippingAmountPerChild;
                     $itemSlamt = $itemNsamt - $itemDcamt;
                     $itemMiamt = $bundleChildrenItem->getData('mileage_amount');
                     $itemTaxAmount = $bundleChildrenItem->getData('tax_amount');
