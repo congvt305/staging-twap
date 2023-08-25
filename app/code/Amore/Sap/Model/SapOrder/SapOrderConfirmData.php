@@ -529,12 +529,12 @@ class SapOrderConfirmData extends AbstractSapOrder
             foreach ($orderItems as $orderItem) {
                 if ($orderItem->getProductType() != 'bundle') {
                     $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
-
+                    $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
                     $itemMiamt = $orderItem->getData('mileage_amount');
-                    $itemNsamt = $orderItem->getData('normal_sales_amount') + ($shippingAmountPerItem * $orderItem->getQtyOrdered());
+                    $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
                     $itemDcamt = $orderItem->getData('discount_amount');
-                    $itemSlamt = $orderItem->getData('sales_amount');
-                    $itemNetwr = $orderItem->getData('net_amount');
+                    $itemSlamt = $orderItem->getData('sales_amount') + $shippingAmount;
+                    $itemNetwr = $orderItem->getData('net_amount')  + $shippingAmount;
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
                     if($isEnableRewardsPoint) {
@@ -563,8 +563,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                 } else {
                     $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                     foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        $shippingAmountPerChild = $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChild->getQtyOrdered(), $isDecimalFormat);
                         $itemDcamt = $bundleChild->getDiscountAmount();
-                        $itemNsamt = $bundleChild->getData('normal_sales_amount') + ($shippingAmountPerItem * $bundleChild->getQtyOrdered());
+                        $itemNsamt = $bundleChild->getData('normal_sales_amount') + $shippingAmountPerChild;
                         $itemSlamt = $itemNsamt - $itemDcamt;
                         $itemMiamt = $bundleChild->getData('mileage_amount');
                         $itemTaxAmount = $bundleChild->getData('tax_amount');
