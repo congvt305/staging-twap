@@ -176,7 +176,6 @@ class SapOrderReturnData extends AbstractSapOrder
         $order = $rma->getOrder();
         $customer = $this->getCustomer($rma->getCustomerId());
         $shippingAddress = $order->getShippingAddress();
-        $pointUsed = 0;
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
         if ($order->getGrandTotal() == 0) {
             $orderGrandTotal = $order->getGrandTotal();
@@ -219,7 +218,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = $this->orderData->roundingPrice($order->getSubtotalInclTax(), $isDecimalFormat);;
+            $nsamt  = $this->orderData->roundingPrice($order->getSubtotalInclTax() + $order->getShippingAmount(), $isDecimalFormat);;
             $dcamt  = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $miamt;
             $slamt = $nsamt - $dcamt;
         }
@@ -342,6 +341,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
 
         $orderAllItems = $order->getAllItems();
+        $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
 
@@ -356,7 +356,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
 
                 $itemDcamt = $orderItem->getDiscountAmount();
-                $itemNsamt = $this->orderData->roundingPrice($orderItem->getPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat);
+                $itemNsamt = $orderItem->getData('normal_sales_amount') + ($shippingAmountPerItem * $orderItem->getQtyOrdered());
                 $itemSlamt = $itemNsamt - $itemDcamt;
                 $itemMiamt = $orderItem->getData('mileage_amount');
                 $itemTaxAmount = $orderItem->getData('tax_amount');
@@ -387,7 +387,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
                     $itemDcamt = $bundleChildrenItem->getDiscountAmount();
-                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount');
+                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + ($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered());
                     $itemSlamt = $itemNsamt - $itemDcamt;
                     $itemMiamt = $bundleChildrenItem->getData('mileage_amount');
                     $itemTaxAmount = $bundleChildrenItem->getData('tax_amount');
@@ -418,14 +418,14 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
             }
         }
-        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
+        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal(), $isDecimalFormat);
         $orderDiscountAmount = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $mileageUsedAmount;
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
             $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
 
         $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
-            $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+            $orderSubtotal + $order->getShippingAmount(), $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
 
         return $this->rmaItemData;
