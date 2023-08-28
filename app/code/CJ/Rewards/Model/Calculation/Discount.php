@@ -230,7 +230,11 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         } else {
             $itemPrice = $item->getBasePriceInclTax();
         }
-        $realPrice = ($itemPrice * $item->getQty()) - $item->getBaseDiscountAmount();
+        $qty = $item->getQty();
+        if ($item->getParentItem()) {
+            $qty = $item->getQty() * $item->getParentItem()->getQty();
+        }
+        $realPrice = ($itemPrice * $qty) - $item->getBaseDiscountAmount();
 
         return (float)max(0, $realPrice);
     }
