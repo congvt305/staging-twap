@@ -10,21 +10,25 @@
 
 namespace Amore\CustomerRegistration\Model;
 
+use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Amore\CustomerRegistration\Helper\Data;
-use GuzzleHttp\ClientFactory;
-use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\Pos\Connection\Request as MiddlewareRequest;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use Psr\Log\LoggerInterface as Logger;
+
 /**
  * In this class we will call the POS API
  * Class POSSystem
  * @package Amore\CustomerRegistration\Model
  */
-class POSSystem
+class POSSystem extends MiddlewareRequest
 {
     /**#@+
      * BA Code PREFIX
@@ -33,6 +37,7 @@ class POSSystem
     /**#@-*/
 
     const EGUANA_BIZCONNECT_OPERATION_PROCESSED = 'eguana_bizconnect_operation_processed';
+
     /**
      * @var TimezoneInterface
      */
@@ -41,36 +46,33 @@ class POSSystem
     /**
      * @var Data
      */
-    private $config;
+    protected $config;
 
-    /**
-     * @var \Magento\Framework\HTTP\ZendClientFactory
-     */
-    private $httpClientFactory;
-    /**
-     * @var \Zend\Http\Client
-     */
-    private $zendClient;
     /**
      * @var POSLogger
      */
-    private $logger;
+    protected $logger;
+
     /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     private $storeManager;
+
     /**
      * @var RegionFactory
      */
     private $regionFactory;
+
     /**
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+
     /**
      * @var \Eguana\Directory\Helper\Data
      */
@@ -79,53 +81,39 @@ class POSSystem
     /**
      * @var MiddlewareHelper
      */
-    private $middlewareHelper;
+    protected $middlewareHelper;
 
     /**
-     * @var MiddlewareRequest
-     */
-    private $middleRequest;
-
-    /**
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param Logger $logger
+     * @param Config $config
      * @param RegionFactory $regionFactory
      * @param RegionResourceModel $regionResourceModel
      * @param \Eguana\Directory\Helper\Data $cityHelper
-     * @param Data $config
      * @param TimezoneInterface $timezone
-     * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
-     * @param \Zend\Http\Client $zendClient
-     * @param \Amore\CustomerRegistration\Model\POSLogger $logger
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param MiddlewareHelper $middlewareHelper
-     * @param MiddlewareRequest $middleRequest
+     * @param ManagerInterface $eventManager
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
+        Curl $curl,
+        MiddlewareHelper $middlewareHelper,
+        Logger $logger,
+        Config $config,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
         \Eguana\Directory\Helper\Data $cityHelper,
-        Data $config,
         TimezoneInterface $timezone,
-        \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
-        \Zend\Http\Client $zendClient,
-        POSLogger $logger,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        MiddlewareHelper $middlewareHelper,
-        MiddlewareRequest $middleRequest
+        ManagerInterface $eventManager,
+        StoreManagerInterface $storeManager
     ) {
-        $this->middlewareHelper = $middlewareHelper;
         $this->timezone = $timezone;
-        $this->config = $config;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->zendClient = $zendClient;
-        $this->logger = $logger;
         $this->eventManager = $eventManager;
         $this->storeManager = $storeManager;
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
-        $this->middleRequest = $middleRequest;
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
     public function getMemberInfo($firstName, $lastName, $mobileNumber, $storeId = null)
@@ -173,7 +161,7 @@ class POSSystem
                 $parameters
             );
 
-            $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberInfo');
+            $apiResponse = $this->sendRequest($parameters, $storeId, 'memberInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
             $result = $this->handleResponse($response, $isMiddlewareEnable);
             $this->logger->addAPILog(
@@ -371,7 +359,7 @@ class POSSystem
                 'POS set info API Call',
                 $parameters
             );
-            $apiResponse = $this->middleRequest->sendRequest($parameters, $storeId, 'memberJoin');
+            $apiResponse = $this->sendRequest($parameters, $storeId, 'memberJoin');
 
 
             $response = $this->middlewareHelper->unserializeData($apiResponse);
@@ -488,7 +476,7 @@ class POSSystem
                 'POS get BA Code info API Call',
                 $parameters
             );
-            $apiResponse = $this->middleRequest->sendRequest( $parameters, $storeId, 'baInfo');
+            $apiResponse = $this->sendRequest( $parameters, $storeId, 'baInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
             if ($isMiddlewareEnable) {
                 if ((isset($response['success']) && $response['success']) &&
@@ -607,7 +595,7 @@ class POSSystem
         try {
             return $this->timezone->date($date)->format(self::DATE_FORMAT);
         } catch (\Exception $exception) {
-            $this->logger->debug($exception->getMessage());
+            $this->logger->addAPILog($exception->getMessage());
         }
     }
 }

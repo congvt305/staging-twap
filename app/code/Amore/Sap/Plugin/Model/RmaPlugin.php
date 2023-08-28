@@ -11,7 +11,7 @@ namespace Amore\Sap\Plugin\Model;
 use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
@@ -40,7 +40,7 @@ class RmaPlugin
      */
     private $config;
     /**
-     * @var Request
+     * @var MiddlewareRequest
      */
     private $request;
     /**
@@ -88,7 +88,7 @@ class RmaPlugin
 
 
     /**
-     * @param Request $request
+     * @param MiddlewareRequest $request
      * @param Config $config
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
@@ -101,7 +101,7 @@ class RmaPlugin
      * @param RmaItemCollectionFactory $rmaItemCollectionFactory
      */
     public function __construct(
-        Request $request,
+        MiddlewareRequest $request,
         Config $config,
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
@@ -185,7 +185,7 @@ class RmaPlugin
                         $this->logger->info($this->middlewareHelper->serializeData($orderRmaData));
                     }
 
-                    $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderRmaData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
+                    $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderRmaData), $order->getStoreId(), 'confirm');
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Result Data");

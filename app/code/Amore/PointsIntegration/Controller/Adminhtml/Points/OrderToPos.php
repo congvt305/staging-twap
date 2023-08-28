@@ -8,7 +8,7 @@
 
 namespace Amore\PointsIntegration\Controller\Adminhtml\Points;
 
-use CJ\Middleware\Model\Pos\Connection\Request;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
 use Amore\PointsIntegration\Model\PosOrderData;
 use Magento\Backend\App\Action;
 use Magento\Framework\Event\ManagerInterface;
@@ -23,7 +23,7 @@ class OrderToPos extends Action
      */
     private $posOrderData;
     /**
-     * @var Request
+     * @var MiddlewareRequest
      */
     private $request;
     /**
@@ -43,7 +43,7 @@ class OrderToPos extends Action
      * OrderToPos constructor.
      * @param Action\Context $context
      * @param PosOrderData $posOrderData
-     * @param Request $request
+     * @param MiddlewareRequest $request
      * @param ManagerInterface $eventManager
      * @param Json $json
      * @param OrderRepositoryInterface $orderRepository
@@ -51,7 +51,7 @@ class OrderToPos extends Action
     public function __construct(
         Action\Context $context,
         PosOrderData $posOrderData,
-        Request $request,
+        MiddlewareRequest $request,
         ManagerInterface $eventManager,
         Json $json,
         OrderRepositoryInterface $orderRepository

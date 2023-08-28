@@ -10,11 +10,10 @@ namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Exception\CrditmemoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -28,7 +27,7 @@ class CreditmemoRepositoryPlugin
      */
     private $json;
     /**
-     * @var Request
+     * @var MiddlewareRequest
      */
     private $request;
     /**
@@ -67,7 +66,7 @@ class CreditmemoRepositoryPlugin
     /**
      * CreditmemoRepositoryPlugin constructor.
      * @param Json $json
-     * @param Request $request
+     * @param MiddlewareRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param ManagerInterface $messageManager
@@ -79,7 +78,7 @@ class CreditmemoRepositoryPlugin
      */
     public function __construct(
         Json $json,
-        Request $request,
+        MiddlewareRequest $request,
         Logger $logger,
         Config $config,
         ManagerInterface $messageManager,

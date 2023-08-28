@@ -19,7 +19,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
@@ -53,7 +53,7 @@ class MassSend extends Action
     private $eventManager;
 
     /**
-     * @var Request
+     * @var MiddlewareRequest
      */
     protected $request;
 
@@ -74,7 +74,7 @@ class MassSend extends Action
 
     /**
      * @param Action\Context $context
-     * @param Request $request
+     * @param MiddlewareRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param Filter $filter
@@ -87,7 +87,7 @@ class MassSend extends Action
      */
     public function __construct(
         Action\Context $context,
-        Request $request,
+        MiddlewareRequest $request,
         Logger $logger,
         Config $config,
         Filter $filter,
@@ -205,7 +205,7 @@ class MassSend extends Action
                     $this->logger->info($this->middlewareHelper->serializeData($sendData));
                 }
 
-                $result = $this->request->sendRequest($this->middlewareHelper->serializeData($sendData), $storeId, Request::SAP_REQUEST_TYPE);
+                $result = $this->request->sendRequest($this->middlewareHelper->serializeData($sendData), $storeId, 'confirm');
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND RESULT");

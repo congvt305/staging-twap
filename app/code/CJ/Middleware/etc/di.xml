@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--POS Logger-->
     <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
             <argument name="fileName" xsi:type="string">/var/log/middleware/pos_request.log</argument>
@@ -13,12 +14,44 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="CJ\Middleware\Model\Pos\Connection\Request">
+    <type name="Amore\CustomerRegistration\Model\POSSystem">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\POSCancelledOrderSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PosOrderSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="CJ\CouponCustomer\Cron\CreateCustomerGroup">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PosReturnSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PointUpdate">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\ChangeStatus\Model\GetCompletedOrders">
         <arguments>
             <argument name="logger" xsi:type="object">PosHandler</argument>
         </arguments>
     </type>
 
+
+    <!--SAP Logger-->
     <virtualType name="CJ\Middleware\Logger\SapHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
             <argument name="fileName" xsi:type="string">/var/log/middleware/sap_request.log</argument>
@@ -31,7 +64,22 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="CJ\Middleware\Model\Sap\Connection\Request">
+    <type name="Amore\Sap\Cron\SendOrderToSap">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Controller\Adminhtml\SapOrder\MassSend">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Plugin\Model\RmaPlugin">
         <arguments>
             <argument name="logger" xsi:type="object">SapHandler</argument>
         </arguments>

@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface as Logger;
 use Magento\Framework\HTTP\Client\Curl;
 use Amore\PointsIntegration\Model\Source\Config;
 
-abstract class BaseRequest
+class BaseRequest
 {
     /**
      * @var Curl

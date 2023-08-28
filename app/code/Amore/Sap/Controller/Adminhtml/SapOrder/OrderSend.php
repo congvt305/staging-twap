@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
-use CJ\Middleware\Model\Sap\Connection\Request;
+use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
@@ -39,7 +39,7 @@ class OrderSend extends Action
     private $eventManager;
 
     /**
-     * @var Request
+     * @var MiddlewareRequest
      */
     protected $request;
 
@@ -60,7 +60,7 @@ class OrderSend extends Action
 
     /**
      * @param Action\Context $context
-     * @param Request $request
+     * @param MiddlewareRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param OrderRepositoryInterface $orderRepository
@@ -70,7 +70,7 @@ class OrderSend extends Action
      */
     public function __construct(
         Action\Context $context,
-        Request $request,
+        MiddlewareRequest $request,
         Logger $logger,
         Config $config,
         OrderRepositoryInterface $orderRepository,
@@ -127,7 +127,7 @@ class OrderSend extends Action
                 $this->logger->info($this->middlewareHelper->serializeData($orderSendData));
             }
 
-            $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderSendData), $order->getStoreId(), Request::SAP_REQUEST_TYPE);
+            $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderSendData), $order->getStoreId(), 'confirm');
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Result Data");
