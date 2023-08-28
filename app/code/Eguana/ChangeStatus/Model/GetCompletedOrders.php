@@ -153,7 +153,7 @@ class GetCompletedOrders extends MiddlewareRequest
 
     public function getCompletedOrder($storeId)
     {
-        $toBeCompletedDays = is_null($this->changeStatusConfig->getAvailableReturnDays($storeId)) ? 7 : $this->config->getAvailableReturnDays($storeId);
+        $toBeCompletedDays = is_null($this->changeStatusConfig->getAvailableReturnDays($storeId)) ? 7 : $this->changeStatusConfig->getAvailableReturnDays($storeId);
         $gmtDate = $this->dateTime->gmtDate();
         $timezone = $this->timezone->getConfigTimezone('store', $storeId);
         $storeTime = $this->timezone->formatDateTime($gmtDate, 3, 3, null, $timezone);
