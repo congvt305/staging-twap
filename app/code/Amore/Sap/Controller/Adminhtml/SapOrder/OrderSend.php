@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;

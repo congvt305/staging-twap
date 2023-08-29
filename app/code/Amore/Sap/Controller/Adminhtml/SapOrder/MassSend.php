@@ -19,7 +19,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;

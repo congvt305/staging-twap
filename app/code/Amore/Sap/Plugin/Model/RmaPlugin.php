@@ -11,7 +11,7 @@ namespace Amore\Sap\Plugin\Model;
 use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;

@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface as Logger;
 use Magento\Framework\HTTP\Client\Curl;
 use Amore\PointsIntegration\Model\Source\Config;
 
-class BaseRequest
+abstract class BaseRequest
 {
     /**
      * @var Curl
@@ -219,16 +219,9 @@ class BaseRequest
             $success = true;
             $status = false;
             $message = '';
-            if ($this->middlewareHelper->isMiddlewareEnabled('store', $storeId)) {
-                if ($response['success'] != true) {
-                    $success = $response['success'];
-                    $message = $response['data']['message'];
-                }
-            } else {
-                if ($response['code'] != '0000') {
-                    $success = false;
-                    $message = $response['message'];
-                }
+            if ($response['success'] != true) {
+                $success = $response['success'];
+                $message = $response['data']['message'];
             }
 
             if ((isset($response['success']) && $response['success']) &&

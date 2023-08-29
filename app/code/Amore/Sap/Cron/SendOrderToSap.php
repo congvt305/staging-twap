@@ -5,7 +5,7 @@ namespace Amore\Sap\Cron;
 use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Logger\Logger;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config as SapConfig;
 use Eguana\BizConnect\Model\OperationLogRepository;

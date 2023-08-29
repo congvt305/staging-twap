@@ -18,7 +18,7 @@ interface SapSyncStockManagementInterface
 {
     /**
      * To update inventory stocks synchronously (multiple stocks)
-     *zg
+     *
      * @param string $source
      * @param string $mallId
      * @param \Amore\Sap\Api\Data\SyncStockResponseStockDataInterface[] $stockData

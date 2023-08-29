@@ -7,7 +7,7 @@ use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\RewardsProvider;
 use Amore\PointsIntegration\Model\Source\Config;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\DB\Select;
 use Magento\Framework\HTTP\Client\Curl;

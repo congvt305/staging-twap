@@ -4,7 +4,7 @@
     <!--POS Logger-->
     <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
-            <argument name="fileName" xsi:type="string">/var/log/middleware/pos_request.log</argument>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/pos.log</argument>
         </arguments>
     </virtualType>
     <virtualType name="PosHandler" type="Magento\Framework\Logger\Monolog">
@@ -54,7 +54,7 @@
     <!--SAP Logger-->
     <virtualType name="CJ\Middleware\Logger\SapHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
-            <argument name="fileName" xsi:type="string">/var/log/middleware/sap_request.log</argument>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/sap.log</argument>
         </arguments>
     </virtualType>
     <virtualType name="SapHandler" type="Magento\Framework\Logger\Monolog">
