@@ -154,13 +154,14 @@ abstract class BaseRequest
 
     /**
      * @param $response
-     * @param $websiteId
      * @return bool
      */
-    public function responseValidation($response, $websiteId)
+    public function responseValidation($response)
     {
-        $responseHandled = $this->handleResponse($response);
-        return $responseHandled && $responseHandled['status'];
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
+            return true;
+        }
+        return false;
     }
 
     /**

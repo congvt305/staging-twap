@@ -5,7 +5,7 @@ namespace CJ\Middleware\Model;
 /**
  * Class PosRequest
  *
- * @package \Amore\PointsIntegration\Model
+ * @package \CJ\Middleware\Model
  */
 class PosRequest extends BaseRequest
 {
@@ -27,23 +27,14 @@ class PosRequest extends BaseRequest
             case 'pointUpdate':
                 $result = $this->prepareResponseForPointUpdate($response);
                 break;
+            case 'memberInfo':
+                $result = $this->prepareResponseForMemberInfo($response);
+                break;
             default:
                 $result = [];
         }
 
         return $result;
-    }
-
-    /**
-     * @param $response
-     * @param $websiteId
-     * @param $type
-     * @return bool
-     */
-    public function responseValidation($response, $websiteId, $type = null)
-    {
-        $responseHandled = $this->handleResponse($response, $type);
-        return !empty($responseHandled);
     }
 
     /**
@@ -69,7 +60,7 @@ class PosRequest extends BaseRequest
             $message = $response['data']['statusMessage'];
         }
 
-        if (isset($response['data']['statusCode'])) {
+        if (isset($response['data']['statusCode']) && $response['data']['statusCode'] == '200') {
             $status = true;
         }
 
@@ -97,5 +88,33 @@ class PosRequest extends BaseRequest
             return $data;
         }
         return false;
+    }
+
+    /**
+     * @param $response
+     * @return array
+     */
+    public function prepareResponseForMemberInfo($response)
+    {
+        if ((isset($response['success']) && $response['success']) &&
+            (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'Y')
+        ) {
+            $result = $this->processResponseData($response);
+        } elseif ((isset($response['success']) && $response['success']) &&
+            (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'N')
+        ) {
+            $result = [];
+        } else {
+            if (isset($response['data']) &&
+                isset($response['data']['statusMessage']) &&
+                $response['data']['statusMessage']
+            ) {
+                $result['message'] = $response['data']['statusMessage'];
+            } else {
+                $result = [];
+            }
+        }
+
+        return $result;
     }
 }

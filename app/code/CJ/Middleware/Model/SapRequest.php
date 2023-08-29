@@ -3,19 +3,44 @@
 namespace CJ\Middleware\Model;
 
 /**
- * Class PosRequest
+ * Class SapRequest
  *
- * @package \Amore\PointsIntegration\Model
+ * @package \CJ\Middleware\Model
  */
 class SapRequest extends BaseRequest
 {
-    public function handleResponse($response)
+    /**
+     * @param $response
+     * @param $type
+     * @return array|null
+     */
+    public function handleResponse($response, $type = 'confirm')
     {
-        return parent::handleResponse($response);
-    }
+        $resultSize = count($response);
+        if ($resultSize > 0) {
+            $success = false;
+            $message = '';
+            $data = [];
 
-    public function responseValidation($response, $websiteId)
-    {
-        return parent::responseValidation($response, $websiteId);
+            if (isset($response['success'])) {
+                $success = $response['success'];
+            }
+
+            if (isset($response['data'])) {
+                $data = $response['data'];
+            }
+
+            if (isset($response['data']['response']['header']['rtn_MSG'])) {
+                $message = $response['data']['response']['header']['rtn_MSG'];
+            }
+
+            return [
+                'success' => $success,
+                'data' => $data,
+                'message' => $message,
+            ];
+        }
+
+        return null;
     }
 }

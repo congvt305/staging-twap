@@ -20,7 +20,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\BaseRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
 use Psr\Log\LoggerInterface as Logger;
 
 /**
@@ -163,7 +163,7 @@ class POSSystem extends MiddlewareRequest
 
             $apiResponse = $this->sendRequest($parameters, $storeId, 'memberInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
-            $result = $this->handleResponse($response);
+            $result = $this->handleResponse($response, 'memberInfo');
             $this->logger->addAPILog(
                 'POS get info API Response',
                 $response
@@ -213,35 +213,6 @@ class POSSystem extends MiddlewareRequest
                 'result_message' => $resultMessage
             ]
         );
-
-        return $result;
-    }
-
-    /**
-     * @param $response
-     * @return array|mixed
-     * @throws NoSuchEntityException
-     */
-    public function handleResponse($response)
-    {
-        if ((isset($response['success']) && $response['success']) &&
-            (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'Y')
-        ) {
-            $result = $this->processResponseData($response);
-        } elseif ((isset($response['success']) && $response['success']) &&
-            (isset($response['data']) && isset($response['data']['checkYN']) && $response['data']['checkYN'] == 'N')
-        ) {
-            $result = [];
-        } else {
-            if (isset($response['data']) &&
-                isset($response['data']['statusMessage']) &&
-                $response['data']['statusMessage']
-            ) {
-                $result['message'] = $response['data']['statusMessage'];
-            } else {
-                $result = [];
-            }
-        }
 
         return $result;
     }
