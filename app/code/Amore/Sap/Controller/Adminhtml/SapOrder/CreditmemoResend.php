@@ -100,7 +100,7 @@ class CreditmemoResend extends Action
                     $this->logger->info("Single Order Cancel Resend Result Data");
                     $this->logger->info($this->json->serialize($sapResult));
                 }
-                $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                $responseHandled = $this->request->handleResponse($sapResult);
                 if ($responseHandled === null) {
                     $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));

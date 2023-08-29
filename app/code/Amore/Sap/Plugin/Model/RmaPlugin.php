@@ -203,7 +203,7 @@ class RmaPlugin
                             'result_message' => $this->middlewareHelper->serializeData($result)
                         ]
                     );
-                    $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+                    $responseHandled = $this->request->handleResponse($result);
                     if ($responseHandled === null) {
                         throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
                     } else {

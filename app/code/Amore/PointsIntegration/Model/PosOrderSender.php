@@ -71,7 +71,7 @@ class PosOrderSender extends MiddlewareRequest
         try {
             $orderData = $this->posOrderData->getOrderData($order);
             $response = $this->sendRequest($orderData, $websiteId, 'customerOrder');
-            $responseHandled = $this->handleResponse($response, $websiteId);
+            $responseHandled = $this->handleResponse($response, 'customerOrder');
             $status = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($status) {
                 $this->posOrderData->updatePosPaidOrderSendFlag($order);

@@ -78,7 +78,7 @@ class PointsHistorySearch extends AbstractPointsBlock
         $customer = $this->getCustomer();
         $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
 
-        if ($this->customerPointsSearch->responseValidation($customerPointsResult, $customer->getWebsiteId())) {
+        if ($this->customerPointsSearch->responseValidation($customerPointsResult, $customer->getWebsiteId(), 'memberSearch')) {
             return $customerPointsResult['data'];
         } else {
             return [];

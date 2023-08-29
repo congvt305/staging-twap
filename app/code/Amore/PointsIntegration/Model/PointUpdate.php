@@ -126,7 +126,7 @@ class PointUpdate extends MiddlewareRequest
                 'pointUpdate'
             );
 
-            $data = $this->validationRespone($dataResponse);
+            $data = $this->handleResponse($dataResponse, 'pointUpdate');
 //            $data['availablePoint'] = 1000000;
             $this->logger->info('POINT UPDATE RESPONSE', $dataResponse);
             $message = 'Something when wrong while updating point.';
@@ -167,24 +167,6 @@ class PointUpdate extends MiddlewareRequest
         }
         $this->logger->info($dash);
 
-    }
-
-    /**
-     * @param array $response
-     * @return false|array
-     */
-    private function validationRespone(array $response)
-    {
-        $data = $response['data'] ?? null;
-
-        if (!$data) {
-            return false;
-        }
-        $message = $data['statusCode'] ?? null;
-        if (($message == 'S') || ($message == 'E' && $data['statusMessage'] == 'The points have already been reflected.')) {
-            return $data;
-        }
-        return false;
     }
 
     /**

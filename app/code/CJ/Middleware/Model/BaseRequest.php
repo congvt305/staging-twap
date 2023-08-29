@@ -159,7 +159,7 @@ abstract class BaseRequest
      */
     public function responseValidation($response, $websiteId)
     {
-        $responseHandled = $this->handleResponse($response, $websiteId);
+        $responseHandled = $this->handleResponse($response);
         return $responseHandled && $responseHandled['status'];
     }
 
@@ -212,7 +212,7 @@ abstract class BaseRequest
      * @param $storeId
      * @return array|null
      */
-    public function handleResponse($response, $storeId)
+    public function handleResponse($response)
     {
         $resultSize = count($response);
         if ($resultSize > 0) {

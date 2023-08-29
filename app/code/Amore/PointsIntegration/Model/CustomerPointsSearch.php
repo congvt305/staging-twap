@@ -8,9 +8,9 @@
 
 namespace Amore\PointsIntegration\Model;
 
-use CJ\Middleware\Model\BaseRequest;
+use CJ\Middleware\Model\PosRequest;
 
-class CustomerPointsSearch extends BaseRequest
+class CustomerPointsSearch extends PosRequest
 {
     /**
      * @param $customerId

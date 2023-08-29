@@ -9,9 +9,9 @@ namespace CJ\Middleware\Model;
  */
 class SapRequest extends BaseRequest
 {
-    public function handleResponse($response, $storeId)
+    public function handleResponse($response)
     {
-        return parent::handleResponse($response, $storeId);
+        return parent::handleResponse($response);
     }
 
     public function responseValidation($response, $websiteId)

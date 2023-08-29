@@ -224,7 +224,7 @@ class MassSend extends Action
                     ]
                 );
 
-                $responseHandled = $this->request->handleResponse($result, $storeId);
+                $responseHandled = $this->request->handleResponse($result);
                 if ($responseHandled === null) {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 } else {

@@ -139,7 +139,7 @@ class CreditmemoRepositoryPlugin
                             'result_message' => $this->json->serialize($sapResult)
                         ]
                     );
-                    $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                    $responseHandled = $this->request->handleResponse($sapResult);
                     if ($responseHandled === null) {
                         throw new CrditmemoException(__('Something went wrong while sending order data to SAP. No response.'));
                     } else {

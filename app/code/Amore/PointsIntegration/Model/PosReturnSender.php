@@ -76,7 +76,7 @@ class PosReturnSender extends MiddlewareRequest
         try {
             $rmaData = $this->posReturnData->getRmaData($rma);
             $response = $this->sendRequest($rmaData, $websiteId, 'customerOrder');
-            $responseHandled = $this->handleResponse($response, $websiteId);
+            $responseHandled = $this->handleResponse($response, 'customerOrder');
             $success = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);

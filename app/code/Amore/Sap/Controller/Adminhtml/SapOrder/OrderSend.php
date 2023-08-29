@@ -151,7 +151,7 @@ class OrderSend extends Action
                 return $resultRedirect;
             }
 
-            $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+            $responseHandled = $this->request->handleResponse($result);
             if ($responseHandled === null) {
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $order->setStatus('sap_fail');
