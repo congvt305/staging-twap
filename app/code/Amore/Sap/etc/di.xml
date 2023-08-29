@@ -9,6 +9,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amore\Sap\Api\SapOrderManagementInterface" type="Amore\Sap\Model\SapOrder\SapOrderManagement"/>
     <preference for="Amore\Sap\Api\Data\SapOrderStatusInterface" type="Amore\Sap\Model\SapOrder\SapOrderStatus"/>
+    <preference for="Amore\Sap\Api\SapProductManagementInterface" type="Amore\Sap\Model\SapProduct\SapProductManagement"/>
     <preference for="Amore\Sap\Api\Data\SapOrderConfirmInterface" type="Amore\Sap\Model\SapOrder\SapOrderConfirm"/>
     <preference for="Amore\Sap\Api\Data\SapInventoryStockInterface" type="Amore\Sap\Model\SapProduct\SapInventoryStock"/>
     <preference for="Amore\Sap\Api\Data\SapProductsDetailInterface" type="Amore\Sap\Model\SapProduct\SapProductsDetail"/>

@@ -14,6 +14,26 @@
         </resources>
     </route>
 
+    <!-- Product -->
+    <route url="/V1/sap/inventory/stocks" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="inventoryStockUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+    <route url="/V1/sap/products" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="productDetailUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+    <route url="/V1/sap/product/prices" method="POST">
+        <service class="Amore\Sap\Api\SapProductManagementInterface" method="productPriceUpdate"/>
+        <resources>
+            <resource ref="Amore_Sap::token"/>
+        </resources>
+    </route>
+
     <!-- Product stock-->
     <route url="/V1/sap/inventory/sync/stocks" method="POST">
         <service class="Amore\Sap\Api\SapSyncStockManagementInterface" method="inventorySyncStockUpdate"/>
