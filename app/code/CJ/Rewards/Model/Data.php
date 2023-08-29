@@ -130,7 +130,7 @@ class Data
      */
     public function isEnableShowListOptionRewardPoint($storeId = null)
     {
-        return $this->amastyConfig->isEnabled() && $this->config->isEnableShowListOptionRewardPoint($storeId);
+        return $this->amastyConfig->isEnabled($storeId) && $this->config->isEnableShowListOptionRewardPoint($storeId);
     }
 
     /**
