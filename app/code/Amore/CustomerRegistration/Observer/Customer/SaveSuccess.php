@@ -28,11 +28,11 @@ use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Webapi\Rest\Request;
 use Amore\CustomerRegistration\Plugin\CreateCustomer;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Call POS API on customer information change
@@ -76,11 +76,6 @@ class SaveSuccess implements ObserverInterface
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
-
-    /**
-     * @var Json
-     */
-    private $json;
 
     /**
      * @var GroupRepositoryInterface
@@ -152,6 +147,11 @@ class SaveSuccess implements ObserverInterface
      */
     private $subscriptionManager;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    private $middlewareHelper;
+
     public function __construct(
         Request $requestApi,
         RequestInterface $request,
@@ -168,12 +168,12 @@ class SaveSuccess implements ObserverInterface
         AddressInterfaceFactory $addressDataFactory,
         StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
-        Json $json,
         GroupRepositoryInterface $groupRepository,
         SearchCriteriaBuilder $searchCriteria,
         ManagerInterface $eventManager,
         \Magento\Framework\App\State $state,
-        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->requestApi = $requestApi;
         $this->sequence = $sequence;
@@ -188,14 +188,14 @@ class SaveSuccess implements ObserverInterface
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
-        $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
-        $this->json = $json;
         $this->groupRepository = $groupRepository;
         $this->searchCriteria = $searchCriteria;
         $this->eventManager = $eventManager;
         $this->state = $state;
+        $this->storeManager = $storeManager;
         $this->subscriptionManager = $subscriptionManager;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -302,7 +302,7 @@ class SaveSuccess implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
@@ -362,16 +362,16 @@ class SaveSuccess implements ObserverInterface
             }
             $customer->setCustomAttribute(
                 'sales_organization_code',
-                $this->config->getOrganizationSalesCode($customer->getWebsiteId())
+                $this->middlewareHelper->getSalesOrganizationCode('store', $customer->getWebsiteId())
             );
             $customer->setCustomAttribute(
                 'sales_office_code',
-                $this->config->getOfficeSalesCode($customer->getWebsiteId())
+                $this->middlewareHelper->getSalesOfficeCode('store', $customer->getWebsiteId())
             );
             //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
             return $customer;
         }
     }
@@ -467,8 +467,9 @@ class SaveSuccess implements ObserverInterface
 
             return $parameters;
         } catch (\Exception $exception) {
-            $this->logger->addExceptionMessage($exception->getMessage());
-            $this->logger->addExceptionMessage('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
+            $this->logger->addAPILog($exception->getMessage());
+            $this->logger->addAPILog('Fail to get API Parameter: ' , $parameters );
+            $this->logger->addAPILog('Customer Data: ',  $customerData);
         }
     }
 
@@ -479,7 +480,7 @@ class SaveSuccess implements ObserverInterface
         try {
             $this->regionResourceModel->load($region, $regionName, 'default_name');
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
         return $region;
     }
@@ -601,7 +602,7 @@ class SaveSuccess implements ObserverInterface
                 $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
@@ -632,7 +633,7 @@ class SaveSuccess implements ObserverInterface
                 ScopeInterface::SCOPE_STORE,
                 $customer->getStoreId()
             );
-            $configGroups = $this->json->unserialize($result);
+            $configGroups = $this->middlewareHelper->unserializeData($result);
 
             if ($apiGroupCode) {
                 $groupCode = '';
@@ -654,18 +655,22 @@ class SaveSuccess implements ObserverInterface
             }
             return $groupId;
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
             return $groupId;
         }
     }
 
+    /**
+     * @param $salOffCd
+     * @return int
+     */
     private function getCustomerStoreId($salOffCd)
     {
         $customerStoreId = 0;
         foreach ($this->storeManager->getStores() as $store) {
             $storeId = $store->getId();
             if ($storeId) {
-                $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+                $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
                 if ($officeSaleCode == $salOffCd) {
                     $customerStoreId = $storeId;
                     break;

@@ -226,11 +226,10 @@ class SapOrderReturnData extends AbstractSapOrder
         $isMileageOrder = ($slamt == $miamt && $slamt > 0);
         $cvsShippingCheck = $this->cvsShippingCheck($order);
         $telephone = $this->getTelephone($shippingAddress->getTelephone());
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $bindData[] = [
-            'vkorg' => $salesOrg,
+            'vkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
             'kunnr' => $client,
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->orderData->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -272,7 +271,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->orderData->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
-            'vkorgOri' => $salesOrg,
+            'vkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
             'kunnrOri' => $client,
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -298,7 +297,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
             }
         }
-
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
         return $bindData;
     }
 
@@ -428,6 +427,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
             $orderSubtotal + $order->getShippingAmount(), $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
+        array_walk_recursive($this->rmaItemData, [$this, 'convertNumberToString']);
 
         return $this->rmaItemData;
     }
@@ -569,11 +569,8 @@ class SapOrderReturnData extends AbstractSapOrder
         $order = $rma->getOrder();
         $product = $this->productRepository->get($sku, false, $rma->getStoreId());
         $meins = $product->getData('meins');
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
-        $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->rmaItemData[] = [
@@ -620,5 +617,17 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         parent::resetData();
         $this->rmaItemData = [];
+    }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    public function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
     }
 }

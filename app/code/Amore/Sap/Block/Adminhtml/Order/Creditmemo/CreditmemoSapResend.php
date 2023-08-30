@@ -154,10 +154,11 @@ class CreditmemoSapResend extends \Magento\Sales\Block\Adminhtml\Order\Creditmem
     {
         return $this->getUrl(
             'sap/saporder/creditmemoresend',
-          [
-              'creditmemo_id' => $this->getCreditmemo()->getId(),
-              'order_id' => $this->getCreditmemo()->getOrder()->getId()
-          ]
+            [
+                'creditmemo_id' => $this->getCreditmemo()->getId(),
+                'order_id' => $this->getCreditmemo()->getOrder()->getId()
+            ]
         );
     }
+
 }

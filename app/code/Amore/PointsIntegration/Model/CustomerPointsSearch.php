@@ -8,16 +8,20 @@
 
 namespace Amore\PointsIntegration\Model;
 
-class CustomerPointsSearch extends AbstractPointsModel
+use CJ\Middleware\Model\PosRequest;
+
+class CustomerPointsSearch extends PosRequest
 {
     /**
      * @param $customerId
      * @param $websiteId
      * @return array|bool|float|int|mixed|string|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getMemberSearchResult($customerId, $websiteId)
     {
-        $requestData = $this->requestData($customerId);
-        return $this->request->sendRequest($requestData, $websiteId, 'memberSearch');
+        $requestData = $this->middlewareHelper->getRequestDataByCustomerId($customerId);
+        return $this->sendRequest($requestData, $websiteId, 'memberSearch');
     }
 }

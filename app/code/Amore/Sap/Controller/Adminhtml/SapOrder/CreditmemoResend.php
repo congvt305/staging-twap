@@ -9,21 +9,18 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Backend\App\Action;
-use Amore\Sap\Controller\Adminhtml\AbstractAction as BaseAction;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
-class CreditmemoResend extends BaseAction
+class CreditmemoResend extends Action
 {
     /**
      * @var SapOrderCancelData
@@ -39,28 +36,31 @@ class CreditmemoResend extends BaseAction
     private $resourceConnection;
 
     /**
+     * @var SapRequest
+     */
+    private $request;
+
+    /**
      * @param Action\Context $context
      * @param Json $json
-     * @param Request $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param SapOrderCancelData $sapOrderCancelData
      * @param OrderRepositoryInterface $orderRepository
      * @param ResourceConnection $resourceConnection
-     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Action\Context $context,
         Json $json,
-        Request $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         SapOrderCancelData $sapOrderCancelData,
         OrderRepositoryInterface $orderRepository,
-        ResourceConnection $resourceConnection,
-        MiddlewareHelper $middlewareHelper
+        ResourceConnection $resourceConnection
     ) {
-        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
+        parent::__construct($context);
         $this->json = $json;
         $this->request = $request;
         $this->logger = $logger;
@@ -94,13 +94,13 @@ class CreditmemoResend extends BaseAction
                     $this->logger->info($this->json->serialize($orderUpdateData));
                 }
 
-                $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                $sapResult = $this->request->sendRequest($orderUpdateData, $order->getStoreId(), 'cancel');
 
                 if ($this->config->getLoggingCheck()) {
                     $this->logger->info("Single Order Cancel Resend Result Data");
                     $this->logger->info($this->json->serialize($sapResult));
                 }
-                $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                $responseHandled = $this->request->handleResponse($sapResult);
                 if ($responseHandled === null) {
                     $this->updateCreditmemoSapSendCheck($creditMemoId, SapOrderCancelData::CREDITMEMO_SENT_TO_SAP_FAIL);
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response.'));

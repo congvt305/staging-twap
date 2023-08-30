@@ -1,12 +1,87 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Amore\Sap\Model\SapOrder\SapOrderConfirmData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestForNewMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderConfirmDataPlugin"/>
+    <!--POS Logger-->
+    <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/pos.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PosHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\PosHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amore\CustomerRegistration\Model\POSSystem">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
     </type>
-    <type name="Amore\Sap\Model\SapOrder\SapOrderReturnData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestReturnForNewMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderReturnDataPlugin"/>
+    <type name="Amore\PointsIntegration\Model\POSCancelledOrderSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PosOrderSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="CJ\CouponCustomer\Cron\CreateCustomerGroup">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PosReturnSender">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\PointsIntegration\Model\PointUpdate">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+    <type name="Eguana\ChangeStatus\Model\GetCompletedOrders">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
+    </type>
+
+
+    <!--SAP Logger-->
+    <virtualType name="CJ\Middleware\Logger\SapHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/sap.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SapHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\SapHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amore\Sap\Cron\SendOrderToSap">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Controller\Adminhtml\SapOrder\MassSend">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
+    </type>
+    <type name="Amore\Sap\Plugin\Model\RmaPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
     </type>
 </config>

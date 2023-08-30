@@ -8,11 +8,21 @@
 
 namespace Amore\PointsIntegration\Model;
 
-class PointsHistorySearch extends AbstractPointsModel
+use CJ\Middleware\Model\PosRequest;
+
+class PointsHistorySearch extends PosRequest
 {
+    /**
+     * @param $customerId
+     * @param $websiteId
+     * @param $page
+     * @return array|bool|float|int|mixed|string|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getPointsHistoryResult($customerId, $websiteId, $page = 1)
     {
-        $requestData = $this->requestData($customerId, $page);
-        return $this->request->sendRequest($requestData, $websiteId, 'pointSearch');
+        $requestData = $this->middlewareHelper->getRequestDataByCustomerId($customerId, $page);
+        return $this->sendRequest($requestData, $websiteId, 'pointSearch');
     }
 }

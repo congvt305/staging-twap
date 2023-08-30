@@ -235,6 +235,10 @@ class SapOrderConfirmData extends AbstractSapOrder
         return $request;
     }
 
+    /**
+     * @param $incrementId
+     * @return false|mixed|null
+     */
     public function getOrderInfo($incrementId)
     {
         $searchCriteria = $this->searchCriteriaBuilder
@@ -334,7 +338,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $isMileageOrder = ($slamt == $mileageUsedAmount && $slamt > 0);
             $cvsShippingCheck = $this->cvsShippingCheck($orderData);
             $telephone = $this->getTelephone($shippingAddress->getTelephone());
-            $salesOrg = $this->config->getSalesOrg('store', $storeId);
+            $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
             $client = $this->config->getClient('store', $storeId);
 
             $bindData[] = [
@@ -405,6 +409,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 }
             }
         }
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
 
         return $bindData;
     }
@@ -609,7 +614,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
             $orderSubtotal + $order->getShippingAmount(), $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
-
+        array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
         return $this->orderItemData;
     }
 
@@ -671,8 +676,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         $bundleChild = null
     ) {
         $storeId = $order->getStoreId();
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
         $sku = $newOrderItem->getSku();
         $itemMenge = $newOrderItem->getQtyOrdered();
         $itemId = $newOrderItem->getItemId();
@@ -684,9 +687,8 @@ class SapOrderConfirmData extends AbstractSapOrder
 
         $product = $this->productRepository->get($sku, false, $order->getStoreId());
         $meins = $product->getData('meins');
-        $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = ($itemSlamt == $itemMiamt && $itemSlamt > 0);
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->orderItemData[] = [
@@ -735,5 +737,17 @@ class SapOrderConfirmData extends AbstractSapOrder
     {
         parent::resetData();
         $this->orderItemData = [];
+    }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    public function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
     }
 }

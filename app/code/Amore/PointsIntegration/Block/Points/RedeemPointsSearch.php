@@ -59,7 +59,7 @@ class RedeemPointsSearch extends AbstractPointsBlock
             $this->logger->info($this->json->serialize($redeemPointsResult));
         }
 
-        if ($this->redeemPointsSearch->responseValidation($redeemPointsResult, $customer->getWebsiteId())) {
+        if ($this->redeemPointsSearch->responseValidation($redeemPointsResult)) {
             return $this->pagination->ajaxPagination($redeemPointsResult['data']['redemption_data']);
         } else {
             return [];

@@ -33,6 +33,8 @@
             <resource ref="Amore_Sap::token"/>
         </resources>
     </route>
+
+    <!-- Product stock-->
     <route url="/V1/sap/inventory/sync/stocks" method="POST">
         <service class="Amore\Sap\Api\SapSyncStockManagementInterface" method="inventorySyncStockUpdate"/>
         <resources>

@@ -16,6 +16,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManagerInterface;
 use Amore\CustomerRegistration\Helper\Data;
 use Amore\CustomerRegistration\Model\POSLogger;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * To create a customer sequence number like an incrmement id
@@ -76,6 +77,11 @@ class Sequence implements SequenceInterface
     private $logger;
 
     /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * @param AppResource $resource
      * @param string $pattern
      */
@@ -84,6 +90,7 @@ class Sequence implements SequenceInterface
         AppResource $resource,
         StoreManagerInterface $storeManager,
         POSLogger $logger,
+        MiddlewareHelper $middlewareHelper,
         $pattern = self::DEFAULT_PATTERN,
         $customerType = self::DEFAULT_CUSTOMER_TYPE
     ) {
@@ -93,6 +100,7 @@ class Sequence implements SequenceInterface
         $this->storeManager = $storeManager;
         $this->configHelper = $configHelper;
         $this->logger = $logger;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -110,7 +118,7 @@ class Sequence implements SequenceInterface
         $websiteId = $this->customerWebsiteId?$this->customerWebsiteId:$this->storeManager->getStore()->getWebsiteId();
         return sprintf(
             $this->pattern,
-            $this->configHelper->getOfficeSalesCode($websiteId).$channel,
+            $this->middlewareHelper->getSalesOfficeCode('store', $websiteId).$channel,
             $this->calculateCurrentValue(),
             ''
         );
@@ -128,7 +136,7 @@ class Sequence implements SequenceInterface
             $this->lastIncrementId = $this->connection->lastInsertId($this->getCurrentWebsiteTable());
             return $this->getCurrentValue();
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 

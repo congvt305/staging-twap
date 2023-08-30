@@ -2,7 +2,7 @@
 
 namespace CJ\Rewards\Logger;
 
-use Amore\Base\Logger\Handler as BaseHandler;
+use CJ\Middleware\Logger\Handler as BaseHandler;
 
 class Handler extends BaseHandler
 {

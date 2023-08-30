@@ -8,11 +8,20 @@
 
 namespace Amore\PointsIntegration\Model;
 
-class RedeemPointsSearch extends AbstractPointsModel
+use CJ\Middleware\Model\PosRequest;
+class RedeemPointsSearch extends PosRequest
 {
+    /**
+     * @param $customerId
+     * @param $websiteId
+     * @param $page
+     * @return array|bool|float|int|mixed|string|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getRedeemSearchResult($customerId, $websiteId, $page = 1)
     {
-        $requestData = $this->requestData($customerId, $page);
-        return $this->request->sendRequest($requestData, $websiteId, 'redeemSearch');
+        $requestData = $this->middlewareHelper->getRequestDataByCustomerId($customerId, $page);
+        return $this->sendRequest($requestData, $websiteId, 'redeemSearch');
     }
 }

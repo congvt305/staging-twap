@@ -2,32 +2,22 @@
 
 namespace Amore\PointsIntegration\Model;
 
-use Amore\PointsIntegration\Logger\Logger;
-use Amore\PointsIntegration\Model\Connection\Request;
+use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use CJ\Middleware\Model\PosRequest;
 use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Model\RmaRepository;
 use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
+use Psr\Log\LoggerInterface;
 
-class PosReturnSender
+class PosReturnSender extends PosRequest
 {
-    /**
-     * @var Connection\Request
-     */
-    private $request;
     /**
      * @var ManagerInterface
      */
     private $eventManager;
-    /**
-     * @var Json
-     */
-    private $json;
-    /**
-     * @var Logger
-     */
-    private $pointsIntegrationLogger;
 
     /**
      * @var PosReturnData
@@ -45,30 +35,31 @@ class PosReturnSender
     private $posCustomerGradeUpdater;
 
     /**
-     * @param Request $request
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param LoggerInterface $logger
+     * @param Config $config
      * @param ManagerInterface $eventManager
-     * @param Json $json
-     * @param Logger $pointsIntegrationLogger
      * @param PosReturnData $posReturnData
      * @param RmaRepository $rmaRepository
      * @param PosCustomerGradeUpdater $posCustomerGradeUpdater
      */
+
     public function __construct(
-        Request $request,
+        Curl $curl,
+        MiddlewareHelper $middlewareHelper,
+        LoggerInterface $logger,
+        Config $config,
         ManagerInterface $eventManager,
-        Json $json,
-        Logger $pointsIntegrationLogger,
         PosReturnData $posReturnData,
         RmaRepository $rmaRepository,
         PosCustomerGradeUpdater $posCustomerGradeUpdater
     ) {
-        $this->request = $request;
         $this->eventManager = $eventManager;
-        $this->json = $json;
-        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->posReturnData = $posReturnData;
         $this->rmaRepository = $rmaRepository;
         $this->posCustomerGradeUpdater = $posCustomerGradeUpdater;
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
     /**
@@ -84,8 +75,9 @@ class PosReturnSender
 
         try {
             $rmaData = $this->posReturnData->getRmaData($rma);
-            $response = $this->request->sendRequest($rmaData, $websiteId, 'customerOrder');
-            $success = $this->request->responseCheck($response, $websiteId);
+            $response = $this->sendRequest($rmaData, $websiteId, 'customerOrder');
+            $responseHandled = $this->handleResponse($response, 'customerOrder');
+            $success = isset($responseHandled, $responseHandled['status']) ? $responseHandled['status'] : false;
             if ($success) {
                 $this->posReturnData->updatePosReturnOrderSendFlag($rma);
                 // update Pos customer grade
@@ -95,37 +87,28 @@ class PosReturnSender
             }
         } catch (\Exception $exception) {
             $message = 'POS Integration Fail: ' . $rma->getOrderIncrementId();
-            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $this->logger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         } catch (\Throwable $exception) {
             $message = 'POS Integration Fail: ' . $rma->getOrderIncrementId();
-            $this->pointsIntegrationLogger->info($message . $exception->getMessage());
+            $this->logger->info($message . $exception->getMessage());
             $response = $exception->getMessage();
         }
 
         $this->logging($rmaData, $response, $success);
     }
 
-    /**
-     * @param $response
-     * @return bool
-     */
-    public function isSuccessResponse($response): bool
-    {
-        return isset($response['message']) && strtolower($response['message']) == 'success';
-    }
-
     public function logging($sendData, $responseData, $status)
     {
         $this->eventManager->dispatch(
-            "eguana_bizconnect_operation_processed",
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'amore.pos.points-integration.rma.auto',
                 'direction' => 'outgoing',
                 'to' => "POS",
-                'serialized_data' => $this->json->serialize($sendData),
+                'serialized_data' => $this->middlewareHelper->serializeData($sendData),
                 'status' => $status,
-                'result_message' => $this->json->serialize($responseData)
+                'result_message' => $this->middlewareHelper->serializeData($responseData)
             ]
         );
     }
