@@ -226,10 +226,11 @@ class SapOrderReturnData extends AbstractSapOrder
         $isMileageOrder = ($slamt == $miamt && $slamt > 0);
         $cvsShippingCheck = $this->cvsShippingCheck($order);
         $telephone = $this->getTelephone($shippingAddress->getTelephone());
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $bindData[] = [
-            'vkorg' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
+            'vkorg' => $salesOrg,
             'kunnr' => $client,
             'odrno' => "R" . $rma->getIncrementId(),
             'odrdt' => $this->orderData->dateFormatting($rma->getDateRequested(), 'Ymd'),
@@ -271,7 +272,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpwr' => '',
             'mwsbp' => $this->orderData->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
-            'vkorgOri' => $this->middlewareHelper->getSalesOrganizationCode('store', $storeId),
+            'vkorgOri' => $salesOrg,
             'kunnrOri' => $client,
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
@@ -568,6 +569,9 @@ class SapOrderReturnData extends AbstractSapOrder
         $storeId = $rma->getStoreId();
         $order = $rma->getOrder();
         $product = $this->productRepository->get($sku, false, $rma->getStoreId());
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+        $sku = str_replace($skuPrefix, '', $sku);
         $meins = $product->getData('meins');
         $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
         $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
@@ -617,17 +621,5 @@ class SapOrderReturnData extends AbstractSapOrder
     {
         parent::resetData();
         $this->rmaItemData = [];
-    }
-
-    /**
-     * @param $value
-     * @param $key
-     * @return void
-     */
-    public function convertNumberToString(&$value, $key)
-    {
-        if (is_float($value) || is_int($value)) {
-            $value = "$value";
-        }
     }
 }
