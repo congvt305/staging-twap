@@ -303,13 +303,7 @@ class POSSystem extends PosRequest
 
 
             $response = $this->middlewareHelper->unserializeData($apiResponse);
-            if (isset($response['success']) && $response['success']) {
-                $result['message'] = $response['data']['statusMessage'];
-                $result['status'] = 1;
-            } else {
-                $result['message'] = $response['data']['statusMessage'];
-                $result['status'] = 0;
-            }
+            $result = $this->handleResponse($response, 'memberJoin');
 
             $this->logger->addAPILog(
                 'POS set info API Response',

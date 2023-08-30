@@ -22,6 +22,7 @@ class PosRequest extends BaseRequest
             case 'redeemSearch':
             case 'pointSearch':
             case 'customerOrder':
+            case 'memberJoin':
                 $result = $this->prepareResponseForPosRequest($response);
                 break;
             case 'pointUpdate':
