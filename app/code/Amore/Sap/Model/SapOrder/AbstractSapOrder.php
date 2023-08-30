@@ -361,4 +361,16 @@ abstract class AbstractSapOrder
         }
         return $order->getShippingAmount() / $countItem;
     }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    protected function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
+    }
 }
