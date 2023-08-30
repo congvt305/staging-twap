@@ -4,14 +4,14 @@ namespace Amore\PointsIntegration\Model;
 
 use Amore\PointsIntegration\Model\Source\Config;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Sales\Model\Order;
 use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
 use Psr\Log\LoggerInterface;
 
-class POSCancelledOrderSender extends MiddlewareRequest
+class POSCancelledOrderSender extends PosRequest
 {
     /**
      * @var PosOrderData

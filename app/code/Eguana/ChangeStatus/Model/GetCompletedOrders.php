@@ -22,10 +22,10 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Eguana\ChangeStatus\Model\Source\Config as ChangeStatusConfig;
 
-class GetCompletedOrders extends MiddlewareRequest
+class GetCompletedOrders extends PosRequest
 {
     const BLACK_CAT_ORDER_ARRIVED_STATUS = '00003';
 

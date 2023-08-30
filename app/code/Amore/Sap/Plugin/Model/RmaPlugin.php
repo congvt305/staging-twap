@@ -11,7 +11,7 @@ namespace Amore\Sap\Plugin\Model;
 use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
@@ -40,7 +40,7 @@ class RmaPlugin
      */
     private $config;
     /**
-     * @var MiddlewareRequest
+     * @var SapRequest
      */
     private $request;
     /**
@@ -88,7 +88,7 @@ class RmaPlugin
 
 
     /**
-     * @param MiddlewareRequest $request
+     * @param SapRequest $request
      * @param Config $config
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
@@ -101,7 +101,7 @@ class RmaPlugin
      * @param RmaItemCollectionFactory $rmaItemCollectionFactory
      */
     public function __construct(
-        MiddlewareRequest $request,
+        SapRequest $request,
         Config $config,
         Logger $logger,
         OrderRepositoryInterface $orderRepository,

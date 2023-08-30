@@ -13,11 +13,11 @@ use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Sales\Model\Order;
 use CJ\CouponCustomer\Model\PosCustomerGradeUpdater;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\ManagerInterface;
 
-class PosOrderSender extends MiddlewareRequest
+class PosOrderSender extends PosRequest
 {
     /**
      * @var PosOrderData

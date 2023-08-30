@@ -10,7 +10,7 @@ namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Exception\CrditmemoException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -27,7 +27,7 @@ class CreditmemoRepositoryPlugin
      */
     private $json;
     /**
-     * @var MiddlewareRequest
+     * @var SapRequest
      */
     private $request;
     /**
@@ -66,7 +66,7 @@ class CreditmemoRepositoryPlugin
     /**
      * CreditmemoRepositoryPlugin constructor.
      * @param Json $json
-     * @param MiddlewareRequest $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param ManagerInterface $messageManager
@@ -78,7 +78,7 @@ class CreditmemoRepositoryPlugin
      */
     public function __construct(
         Json $json,
-        MiddlewareRequest $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         ManagerInterface $messageManager,

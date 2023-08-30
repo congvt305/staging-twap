@@ -19,7 +19,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Logger\Logger;
 use Amore\Sap\Model\Source\Config;
@@ -53,7 +53,7 @@ class MassSend extends Action
     private $eventManager;
 
     /**
-     * @var MiddlewareRequest
+     * @var SapRequest
      */
     protected $request;
 
@@ -74,7 +74,7 @@ class MassSend extends Action
 
     /**
      * @param Action\Context $context
-     * @param MiddlewareRequest $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param Filter $filter
@@ -87,7 +87,7 @@ class MassSend extends Action
      */
     public function __construct(
         Action\Context $context,
-        MiddlewareRequest $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         Filter $filter,

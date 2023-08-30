@@ -20,7 +20,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Psr\Log\LoggerInterface as Logger;
 
 /**
@@ -28,7 +28,7 @@ use Psr\Log\LoggerInterface as Logger;
  * Class POSSystem
  * @package Amore\CustomerRegistration\Model
  */
-class POSSystem extends MiddlewareRequest
+class POSSystem extends PosRequest
 {
     /**#@+
      * BA Code PREFIX

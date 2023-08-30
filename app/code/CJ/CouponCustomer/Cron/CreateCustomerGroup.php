@@ -5,13 +5,13 @@ namespace CJ\CouponCustomer\Cron;
 use Amore\PointsIntegration\Model\Source\Config;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Magento\Customer\Model\GroupFactory;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;
 use Psr\Log\LoggerInterface;
 
-class CreateCustomerGroup extends MiddlewareRequest
+class CreateCustomerGroup extends PosRequest
 {
     /**
      * Pos all customer grade type

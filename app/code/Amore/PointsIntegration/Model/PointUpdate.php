@@ -7,7 +7,7 @@ use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\RewardsProvider;
 use Amore\PointsIntegration\Model\Source\Config;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
-use CJ\Middleware\Model\PosRequest as MiddlewareRequest;
+use CJ\Middleware\Model\PosRequest;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\DB\Select;
 use Magento\Framework\HTTP\Client\Curl;
@@ -19,7 +19,7 @@ use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Psr\Log\LoggerInterface as Logger;
 
-class PointUpdate extends MiddlewareRequest
+class PointUpdate extends PosRequest
 {
     const POINT_EARN = 'EARN';
     const POINT_REDEEM = 'REDEEM';

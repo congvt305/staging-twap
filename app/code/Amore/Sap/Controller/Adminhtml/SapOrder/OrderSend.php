@@ -9,7 +9,7 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
-use CJ\Middleware\Model\SapRequest as MiddlewareRequest;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
@@ -39,7 +39,7 @@ class OrderSend extends Action
     private $eventManager;
 
     /**
-     * @var MiddlewareRequest
+     * @var SapRequest
      */
     protected $request;
 
@@ -60,7 +60,7 @@ class OrderSend extends Action
 
     /**
      * @param Action\Context $context
-     * @param MiddlewareRequest $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param OrderRepositoryInterface $orderRepository
@@ -70,7 +70,7 @@ class OrderSend extends Action
      */
     public function __construct(
         Action\Context $context,
-        MiddlewareRequest $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         OrderRepositoryInterface $orderRepository,
