@@ -441,27 +441,6 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $source
-     * @param $stockData
-     * @return SourceItemInterface
-     */
-    public function saveProductQtyIntoSource($source, $stockData)
-    {
-        /** @var SourceItemInterface $sourceItem */
-        $sourceItem = $this->sourceItemInterfaceFactory->create();
-        $sourceItem->setSourceCode($source);
-        $sourceItem->setSku($stockData['matnr']);
-        $sourceItem->setQuantity($stockData['labst']);
-        if ($stockData['labst'] > 0) {
-            $sourceItem->setStatus(1);
-        } else {
-            $sourceItem->setStatus(0);
-        }
-
-        return $sourceItem;
-    }
-
-    /**
      * @param $product
      * @return false
      */

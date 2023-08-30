@@ -181,17 +181,7 @@ class POSSystem extends PosRequest
         $log['response'] = $response;
 
         $websiteName = $this->storeManager->getWebsite()->getName();
-        $resultMessage = isset($result['message']) ? $result['message'] : 'Fail';
-        if ((isset($result['success']) && $result['success']) &&
-            (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'N')
-        ) {
-            $resultMessage = __('No information exist in POS');
-        } elseif ((isset($result['success']) && $result['success']) &&
-            (isset($result['data']) && isset($result['data']['checkYN']) && $result['data']['checkYN'] == 'Y') &&
-            $resultMessage == 'Fail'
-        ) {
-            $resultMessage = __('Information loaded successfully');
-        }
+        $resultMessage = $this->validateResponseBACodeInfoApi($response)['message'];
 
         $this->eventManager->dispatch(
             self::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
@@ -394,7 +384,10 @@ class POSSystem extends PosRequest
      */
     public function callBACodeInfoApi($baCode, $websiteId = null, $salOrgCd = null, $salOffCd = null)
     {
-        $result['verify'] = false;
+        $result = [
+            'verify' => false,
+            'message' => ''
+        ];
         $response = [];
         $storeId = $this->getStoreId();
         if (!$salOrgCd) {
@@ -418,18 +411,6 @@ class POSSystem extends PosRequest
             );
             $apiResponse = $this->sendRequest( $parameters, $storeId, 'baInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
-            if ((isset($response['success']) && $response['success']) &&
-                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y')
-            ) {
-                $result['verify'] = true;
-                $result['message'] = __('The code is confirmed as valid information');
-            } elseif ((isset($response['success']) && $response['success']) &&
-                (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
-            ) {
-                $result['message'] = __('No such information, please re-enter');
-            } else {
-                $result['message'] = __('Unable to fetch information at this time');
-            }
 
             $this->logger->addAPILog(
                 'POS get BA Code info API Response',
@@ -451,17 +432,7 @@ class POSSystem extends PosRequest
 
         $websiteName = $this->storeManager->getWebsite()->getName();
 
-        $resultMessage = isset($result['message'])?$result['message']:'Fail';
-        if ((isset($response['success']) && $response['success']) &&
-            (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'Y') &&
-            $resultMessage == 'Fail'
-        ) {
-            $resultMessage = __('Information loaded successfully');
-        } elseif ((isset($response['success']) && $response['success']) &&
-            (isset($response['data']) && isset($response['data']['exitYN']) && $response['data']['exitYN'] == 'N')
-        ) {
-            $resultMessage = __('No information exist in POS');
-        }
+        $result = $this->validateResponseBACodeInfoApi($response);
 
         $this->eventManager->dispatch(
             self::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
@@ -471,7 +442,7 @@ class POSSystem extends PosRequest
                 'to' => $websiteName,
                 'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
-                'result_message' => $resultMessage
+                'result_message' => $result['message']
             ]
         );
 
@@ -515,5 +486,24 @@ class POSSystem extends PosRequest
         } catch (\Exception $exception) {
             $this->logger->addAPILog($exception->getMessage());
         }
+    }
+
+    /**
+     * @param $response
+     * @return array
+     */
+    public function validateResponseBACodeInfoApi($response)
+    {
+        $result['message'] = __('Unable to fetch information at this time');
+        $result['verify'] = false;
+        if (isset($response['success']) && $response['success']) {
+            if (isset($response['data'], $response['data']['exitYN']) && $response['data']['exitYN'] == 'N') {
+                $result['message'] = __('No information exist in POS');
+            } elseif (isset($response['data'], $response['data']['exitYN']) && $response['data']['exitYN'] == 'Y') {
+                $result['verify'] = true;
+                $result['message'] = __('Information loaded successfully');
+            }
+        }
+        return $result;
     }
 }

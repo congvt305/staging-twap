@@ -45,6 +45,8 @@ class Config
 
     const SAP_PRODUCT_PRICE_ENABLE_XML_PATH = 'sap/general/product_price';
 
+    const SAP_SKU_PREFIX_XML_PATH = 'sap/mall_info/sku_prefix';
+
     const SAP_CRON_ENABLE = 'sap/send_order_to_sap_cron/enable';
 
     const SAP_CRON_LIMITATION = 'sap/send_order_to_sap_cron/number_of_order';
@@ -246,4 +248,20 @@ class Config
             $storeId
         );
     }
+
+    /**
+     * Get SAP SKU Prefix
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSapSkuPrefix($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::SAP_SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
 }

@@ -17,6 +17,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use Amore\Sap\Model\SapProduct\SapProductManagement;
 
 /**
  * Class SapSyncStockManagement
@@ -61,6 +62,11 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     private $productCollection;
 
     /**
+     * @var SapProductManagement
+     */
+    private $sapProductManagement;
+
+    /**
      * @param SourceItemsSaveInterface $sourceItemsSaveInterface
      * @param StoreManagerInterface $storeManagerInterface
      * @param Logger $logger
@@ -69,6 +75,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
      * @param \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse
      * @param CollectionFactory $productCollection
      * @param MiddlewareHelper $middlewareHelper
+     * @param SapProductManagement $sapProductManagement
      */
     public function __construct(
         SourceItemsSaveInterface $sourceItemsSaveInterface,
@@ -78,7 +85,8 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
         ManagerInterface $eventManager,
         \Amore\Sap\Api\Data\SyncStockResponseInterface $syncStockResponse,
         CollectionFactory $productCollection,
-        MiddlewareHelper $middlewareHelper
+        MiddlewareHelper $middlewareHelper,
+        SapProductManagement $sapProductManagement
     ) {
         $this->logger = $logger;
         $this->config = $config;
@@ -88,6 +96,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
         $this->storeManagerInterface = $storeManagerInterface;
         $this->sourceItemsSaveInterface = $sourceItemsSaveInterface;
         $this->middlewareHelper = $middlewareHelper;
+        $this->sapProductManagement = $sapProductManagement;
     }
 
     /**
@@ -101,8 +110,10 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
     public function getSapIntegrationEnabledProducts($stockData, $sourceCode, $storeId = null)
     {
         $filteredProducts = [];
-        $skus = array_map(function ($e) {
-            return is_object($e) ? $e->getMatnr() : $e['matnr'];
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+        $skus = array_map(function ($e) use ($skuPrefix) {
+            return is_object($e) ? $skuPrefix. $e->getMatnr() : $skuPrefix . $e['matnr'];
         }, $stockData);
         $collection = $this->productCollection->create();
         $collection->getSelect()->joinInner(
@@ -219,7 +230,7 @@ class SapSyncStockManagement implements SapSyncStockManagementInterface
                 'matnr'     => $product['matnr'],
                 'labst'     => $product['labst']
             ];
-            $sourceItems[] = $this->middlewareHelper->saveProductQtyIntoSource($product['sourceCode'], $data);
+            $sourceItems[] = $this->sapProductManagement->saveProductQtyIntoSource($product['sourceCode'], $data);
         }
 
         try {
