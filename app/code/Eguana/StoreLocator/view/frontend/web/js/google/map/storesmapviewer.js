@@ -59,6 +59,10 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, m
                     strictBounds: false,
                 }
             });
+
+            if (window.AP_DATA_COUNTRY === 'tw'){
+                map.setOptions({ minZoom: 4 });
+            }
         }
         var marker = new google.maps.Marker({
             position: myLatLng,
