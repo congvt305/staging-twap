@@ -228,7 +228,10 @@ class MassSend extends Action
                 if ($responseHandled === null) {
                     $this->messageManager->addErrorMessage(__('Something went wrong while sending order data to SAP. No response'));
                 } else {
-                    $outData = $responseHandled['data']['output']['outdata'];
+                    $outData = [];
+                    if (isset($responseHandled['data']['output']['outdata'])){
+                        $outData = $responseHandled['data']['output']['outdata'];
+                    }
                     if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                         $ordersSucceeded = [];
                         $orderFailed = [];

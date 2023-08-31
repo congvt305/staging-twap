@@ -26,8 +26,8 @@ class SapRequest extends BaseRequest
                 $success = $response['success'];
             }
 
-            if (isset($response['data'])) {
-                $data = $response['data'];
+            if (isset($response['data'], $response['data']['response'])) {
+                $data = $response['data']['response'];
             }
 
             if (isset($response['data']['response']['header']['rtn_MSG'])) {

@@ -159,7 +159,10 @@ class OrderSend extends Action
                     __('Something went wrong while sending order data to SAP. No response')
                 );
             } else {
-                $outData = $responseHandled['data']['output']['outdata'];
+                $outData = [];
+                if (isset($responseHandled['data']['output']['outdata'])){
+                    $outData = $responseHandled['data']['output']['outdata'];
+                }
                 if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                     foreach ($outData as $data) {
                         if ($data['retcod'] == 'S') {
