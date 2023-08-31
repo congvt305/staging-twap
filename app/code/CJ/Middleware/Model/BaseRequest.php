@@ -92,7 +92,7 @@ abstract class BaseRequest
      * @param $type
      * @return string
      */
-    public function sendToMiddleware($requestData, $scope = 'store', $websiteId = null, $type = 'confirm')
+    protected function sendToMiddleware($requestData, $scope = 'store', $websiteId = null, $type = 'confirm')
     {
         $isMiddlewareEnable = $this->middlewareHelper->isMiddlewareEnabled($scope, $websiteId);
         $logEnabled = $this->config->getLoggerActiveCheck($websiteId);
@@ -113,7 +113,7 @@ abstract class BaseRequest
      * @param $type
      * @return mixed
      */
-    public function getInterfaceID($scope, $websiteId, $type)
+    protected function getInterfaceID($scope, $websiteId, $type)
     {
         switch ($type) {
             case 'memberSearch':
@@ -171,10 +171,10 @@ abstract class BaseRequest
      * @param $type
      * @return bool|string
      */
-    public function prepareRequestData($requestData, $scope = 'store', $websiteId = null, $type = 'confirm', $logEnabled = true)
+    protected function prepareRequestData($requestData, $scope = 'store', $websiteId = null, $type = 'confirm', $logEnabled = true)
     {
         if (!is_array($requestData)) {
-            $requestData = $this->middlewareHelper->serializeData($requestData);
+            $requestData = $this->middlewareHelper->unserializeData($requestData);
         }
 
         $requestData['API_ID'] = $this->getInterfaceID($scope, $websiteId, $type);
@@ -197,7 +197,7 @@ abstract class BaseRequest
      * @param $modifiedRequestData
      * @return string
      */
-    public function callMiddlewareApi($url, $modifiedRequestData, $logEnabled = true){
+    protected function callMiddlewareApi($url, $modifiedRequestData, $logEnabled = true){
         $this->curl->setTimeout(60);
         $this->curl->post($url, $modifiedRequestData);
         $response = $this->curl->getBody();
