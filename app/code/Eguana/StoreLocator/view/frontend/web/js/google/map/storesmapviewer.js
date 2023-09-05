@@ -51,17 +51,26 @@ function multi_map_initialize(multi_location, map_zoom, isStore, markerImages, m
             markerIcon = markerImagesObj.FS_1.image;
         }
         if (count === 0) {
-            map = new google.maps.Map(document.getElementById('store_map_viewer'), {
-                zoom: Number(map_zoom),
-                center: myLatLng,
-                restriction: {
-                    latLngBounds: COUNTRY_BOUNDS,
-                    strictBounds: false,
-                }
-            });
-
             if (window.AP_DATA_COUNTRY === 'tw'){
-                map.setOptions({ minZoom: 4 });
+                map = new google.maps.Map(document.getElementById('store_map_viewer'), {
+                    zoom: Number(map_zoom),
+                    minZoom:13,
+                    center: myLatLng,
+                    restriction: {
+                        latLngBounds: COUNTRY_BOUNDS,
+                        strictBounds: false,
+                    }
+                });
+            } else {
+                map = new google.maps.Map(document.getElementById('store_map_viewer'), {
+                    zoom: Number(map_zoom),
+                    center: myLatLng,
+                    restriction: {
+                        latLngBounds: COUNTRY_BOUNDS,
+                        strictBounds: false,
+                    }
+                });
+
             }
         }
         var marker = new google.maps.Marker({
