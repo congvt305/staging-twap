@@ -69,7 +69,7 @@ class CreateShipmentRequestBuilder implements \Eguana\GWLogistics\Model\Gateway\
             $logisticsType = EcpayLogisticsType::CVS;
             $logisticsSubType = $cvsLocation->getLogisticsSubType();
 
-            $goodsAmount = intval($order->getGrandTotal());
+            $goodsAmount = intval($order->getSubtotal());
             $goodsName = $this->helper->getGoodsNamePrefix($order->getStoreId()) . ' Item X ' . (string)$this->getItemCount($order);
 
             //Characters are limited to 10 characters (upto 5 Chinese characters, 10 English characters)
