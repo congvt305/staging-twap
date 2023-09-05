@@ -67,12 +67,8 @@ class CreateShipment implements ObserverInterface
      * @return bool
      */
     protected function orderHasShipments($order):bool {
-        $hasShipments = $order->hasShipments();
-        // If payment method is linepay, we will reload order to avoid load missing data
-        if ($order->getPayment()->getMethod() == 'linepay_payment') {
-            $hasShipments = $this->orderFactory->create()->load($order->getId())->hasShipments();
-        }
-        return $hasShipments;
+        //we will reload order to avoid load missing data
+        return $this->orderFactory->create()->load($order->getId())->hasShipments();
     }
 
 }
