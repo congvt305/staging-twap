@@ -14,37 +14,7 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="Amore\CustomerRegistration\Model\POSSystem">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\PointsIntegration\Model\POSCancelledOrderSender">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\PointsIntegration\Model\PosOrderSender">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="CJ\CouponCustomer\Cron\CreateCustomerGroup">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\PointsIntegration\Model\PosReturnSender">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\PointsIntegration\Model\PointUpdate">
-        <arguments>
-            <argument name="logger" xsi:type="object">PosHandler</argument>
-        </arguments>
-    </type>
-    <type name="Eguana\ChangeStatus\Model\GetCompletedOrders">
+    <type name="CJ\Middleware\Model\PosRequest">
         <arguments>
             <argument name="logger" xsi:type="object">PosHandler</argument>
         </arguments>
@@ -64,22 +34,7 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="Amore\Sap\Cron\SendOrderToSap">
-        <arguments>
-            <argument name="logger" xsi:type="object">SapHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\Sap\Controller\Adminhtml\SapOrder\MassSend">
-        <arguments>
-            <argument name="logger" xsi:type="object">SapHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\Sap\Plugin\Model\Order\CreditmemoRepositoryPlugin">
-        <arguments>
-            <argument name="logger" xsi:type="object">SapHandler</argument>
-        </arguments>
-    </type>
-    <type name="Amore\Sap\Plugin\Model\RmaPlugin">
+    <type name="CJ\Middleware\Model\SapRequest">
         <arguments>
             <argument name="logger" xsi:type="object">SapHandler</argument>
         </arguments>
