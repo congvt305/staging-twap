@@ -2,6 +2,11 @@
 
 namespace CJ\Middleware\Model;
 
+use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use Magento\Framework\HTTP\Client\Curl;
+use Psr\Log\LoggerInterface as Logger;
+
 /**
  * Class PosRequest
  *
@@ -9,6 +14,16 @@ namespace CJ\Middleware\Model;
  */
 class PosRequest extends BaseRequest
 {
+    /**
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param Logger $logger
+     * @param Config $config
+     */
+    public function __construct(Curl $curl, MiddlewareHelper $middlewareHelper, Logger $logger, Config $config)
+    {
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
+    }
 
     /**
      * @param $response
