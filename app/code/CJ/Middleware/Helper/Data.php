@@ -358,7 +358,10 @@ class Data extends AbstractHelper
      * @return array|bool|float|int|mixed|string|null
      */
     public function unserializeData($data){
-        return $this->json->unserialize($data);
+        if ($data){
+            return $this->json->unserialize($data);
+        }
+        return [];
     }
 
     /**

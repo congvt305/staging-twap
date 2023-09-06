@@ -49,7 +49,7 @@ class POSSystem extends PosRequest
     protected $config;
 
     /**
-     * @var POSLogger
+     * @var Logger
      */
     protected $logger;
 
@@ -84,6 +84,11 @@ class POSSystem extends PosRequest
     protected $middlewareHelper;
 
     /**
+     * @var POSLogger
+     */
+    protected $posLogger;
+
+    /**
      * @param Curl $curl
      * @param MiddlewareHelper $middlewareHelper
      * @param Logger $logger
@@ -94,6 +99,7 @@ class POSSystem extends PosRequest
      * @param TimezoneInterface $timezone
      * @param ManagerInterface $eventManager
      * @param StoreManagerInterface $storeManager
+     * @param POSLogger $posLogger
      */
     public function __construct(
         Curl $curl,
@@ -105,7 +111,8 @@ class POSSystem extends PosRequest
         \Eguana\Directory\Helper\Data $cityHelper,
         TimezoneInterface $timezone,
         ManagerInterface $eventManager,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        POSLogger $posLogger
     ) {
         $this->timezone = $timezone;
         $this->eventManager = $eventManager;
@@ -113,6 +120,7 @@ class POSSystem extends PosRequest
         $this->regionFactory = $regionFactory;
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
+        $this->posLogger = $posLogger;
         parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
@@ -155,7 +163,7 @@ class POSSystem extends PosRequest
             'salOffCd' => $this->middlewareHelper->getSalesOfficeCode('store', $storeId)
         ];
         try {
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS get info API Call',
                 $parameters
             );
@@ -163,7 +171,7 @@ class POSSystem extends PosRequest
             $apiResponse = $this->sendRequest($parameters, $storeId, 'memberInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
             $result = $this->handleResponse($response, 'memberInfo');
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS get info API Response',
                 $response
             );
@@ -173,7 +181,7 @@ class POSSystem extends PosRequest
             } else {
                 $result['message'] = $e->getMessage();
             }
-            $this->logger->addAPILog($e->getMessage());
+            $this->posLogger->addAPILog($e->getMessage());
             $callSuccess = 0;
         }
 
@@ -279,7 +287,7 @@ class POSSystem extends PosRequest
             $response = $this->callJoinAPI($parameters, $storeId);
             //$this->savePOSSyncReport($parameters, $response);
         } catch (\Exception $e) {
-            $this->logger->addAPILog($e->getMessage());
+            $this->posLogger->addAPILog($e->getMessage());
             return $e->getMessage();
         }
     }
@@ -295,7 +303,7 @@ class POSSystem extends PosRequest
         try {
 
 
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS set info API Call',
                 $parameters
             );
@@ -305,7 +313,7 @@ class POSSystem extends PosRequest
             $response = $this->middlewareHelper->unserializeData($apiResponse);
             $result = $this->handleResponse($response, 'memberJoin');
 
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS set info API Response',
                 $response
             );
@@ -313,7 +321,7 @@ class POSSystem extends PosRequest
         } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
             $result['status'] = 0;
-            $this->logger->addAPILog($e->getMessage());
+            $this->posLogger->addAPILog($e->getMessage());
             $callSuccess = 0;
         }
 
@@ -399,14 +407,14 @@ class POSSystem extends PosRequest
                 'salOffCd' => $salOffCd
             ];
 
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS get BA Code info API Call',
                 $parameters
             );
             $apiResponse = $this->sendRequest( $parameters, $storeId, 'baInfo');
             $response = $this->middlewareHelper->unserializeData($apiResponse);
 
-            $this->logger->addAPILog(
+            $this->posLogger->addAPILog(
                 'POS get BA Code info API Response',
                 $response
             );
@@ -417,7 +425,7 @@ class POSSystem extends PosRequest
             } else {
                 $result['message'] = $e->getMessage();
             }
-            $this->logger->addAPILog($e->getMessage());
+            $this->posLogger->addAPILog($e->getMessage());
             $callSuccess = 0;
         }
 
@@ -478,7 +486,7 @@ class POSSystem extends PosRequest
         try {
             return $this->timezone->date($date)->format(self::DATE_FORMAT);
         } catch (\Exception $exception) {
-            $this->logger->addAPILog($exception->getMessage());
+            $this->posLogger->addAPILog($exception->getMessage());
         }
     }
 
