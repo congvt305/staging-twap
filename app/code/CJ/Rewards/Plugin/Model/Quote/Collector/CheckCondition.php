@@ -6,6 +6,8 @@ namespace CJ\Rewards\Plugin\Model\Quote\Collector;
 use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\Calculation\Discount;
 use CJ\Rewards\Model\Data;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
@@ -44,12 +46,14 @@ class CheckCondition
         Data $rewardsData,
         MessageManagerInterface $messageManager,
         Discount $calculator,
-        QuoteRepository $quoteRepository
+        QuoteRepository $quoteRepository,
+        RequestInterface $request
     ) {
        $this->rewardsData = $rewardsData;
        $this->messageManager = $messageManager;
        $this->calculator = $calculator;
        $this->quoteRepository = $quoteRepository;
+       $this->request = $request;
     }
 
     /**
@@ -72,14 +76,29 @@ class CheckCondition
         Total $total
     ) {
         $spentPoints = (float)$quote->getData(EntityInterface::POINTS_SPENT);
+        $items = $shippingAssignment->getItems();
         if ($spentPoints && (!$this->rewardsData->canUseRewardPoint($quote) || $this->rewardsData->isExcludeDay())) {
             $quote->setData(EntityInterface::POINTS_SPENT, 0);
-            $items = $shippingAssignment->getItems();
             $this->calculator->clearPointsDiscount($items);
             $this->messageManager->addErrorMessage(__('You can\'t use point right now'));
             $this->quoteRepository->save($quote);
             return $subject;
         } else {
+            if ($this->rewardsData->isEnableShowListOptionRewardPoint()) {
+                $listOptions = $this->rewardsData->getListOptionRewardPoint();
+                if ($spentPoints) {
+                    $amountDiscount = $listOptions[$spentPoints] ?? 0;
+                    if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
+                        //do not throw exception in case apply point first and then apply coupon to get discount > grand total or it will be error
+                        if (preg_match('/points/', $this->request->getRequestUri())) {
+                            $quote->setData(EntityInterface::POINTS_SPENT, 0);
+                            $this->calculator->clearPointsDiscount($items);
+                            $this->quoteRepository->save($quote);
+                            throw new LocalizedException(__('Can not use rewards point because reward discount amount is  greater than grand total'));
+                        }
+                    }
+                }
+            }
             return $proceed($quote, $shippingAssignment, $total);
         }
     }

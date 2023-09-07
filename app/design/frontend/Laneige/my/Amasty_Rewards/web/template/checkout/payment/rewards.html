@@ -1,0 +1,69 @@
+<!-- ko if: isDisplayed() -->
+<div class="payment-option _collapsible opc-payment-additional rewards-add">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-reward-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Point Discount'--><!-- /ko -->
+        </span>
+    </div>
+
+    <div class="payment-option-content" data-role="content">
+        <div class="pointsLeft" data-role="title">
+            <!-- ko i18n: 'Current point:'--><!-- /ko -->
+            <strong data-bind="text: getRewardsCount()"></strong>
+            <!-- ko i18n: ' point'--><!-- /ko -->
+        </div>
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!-- ko if: noticeMessage().length > 0 -->
+        <div class="message error" data-amrewards-js="notice-message">
+            <span><!-- ko text: noticeMessage()--><!-- /ko --></span>
+        </div>
+        <!-- /ko -->
+        <div class="amrewards-points-rate" data-role="title">
+            <!-- ko if: isRewardsTooltipEnabled -->
+            <div class="field-tooltip">
+                <span class="field-tooltip-action"
+                      data-amrewards-js="tooltip"
+                      data-bind="attr: {title: rewardsTooltipContent}"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div id="popup-modal-apply">
+            <p>Are you sure you want to apply point ?</p>
+        </div>
+        <form class="form form-reward amrewards-discount-form" id="discount-reward-form">
+            <div class="payment-option-inner">
+                <input type="hidden" name="remove" id="remove-amreward" value="0" />
+                <div class="field">
+                    <div class="control">
+                        <!-- ko foreach: getListOptionReward() -->
+                           <li class="reward-item-options field choice">
+                               <label>
+                                   <input type="radio" class="amreward_amount" name="amreward_amount" data-bind="disable: $parent.disableRadioButton, 'value': point, checked: $parent.pointsUsed, click: function(){$parent.removeRadioButton(); return true;}"/>
+                                   <!-- ko text: point--><!-- /ko -->
+                                   <!-- ko i18n: 'point('--><!-- /ko --><span class="price" data-bind="text: $parent.getFormattedPrice(amount)"></span><!-- ko i18n: ')'--><!-- /ko -->
+                               </label>
+                           </li>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="actions-toolbar amrewards-actions">
+                    <div class="primary">
+                        <!-- ko ifnot: isApplied() -->
+                        <button class="action action-apply" type="submit" data-bind="'value': $t('Apply Reward'), click: apply, disable: disableElem">
+                            <span><!-- ko i18n: 'Apply'--><!-- /ko --></span>
+                        </button>
+                        <!-- /ko -->
+                        <!-- ko if: isApplied() -->
+                        <button class="action action-cancel" type="submit" data-bind="'value': $t('Cancel Reward'), click: cancel">
+                            <span><!-- ko i18n: 'Cancel'--><!-- /ko --></span>
+                        </button>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /ko -->

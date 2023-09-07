@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CJ\Rewards\Model;
 
 use Amasty\Rewards\Model\Config\Source\RedemptionLimitTypes;
+use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Laminas\Json\Json;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Quote\Model\Quote;
@@ -119,6 +120,39 @@ class Data
             }
         }
         return false;
+    }
+
+    /**
+     * Get config can use list reward point or not
+     *
+     * @param $storeId
+     * @return string
+     */
+    public function isEnableShowListOptionRewardPoint($storeId = null)
+    {
+        return $this->amastyConfig->isEnabled($storeId) && $this->config->isEnableShowListOptionRewardPoint($storeId);
+    }
+
+    /**
+     * Get config list reward point
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getListOptionRewardPoint($storeId = null)
+    {
+        if ($this->config->getListOptionRewardPoint($storeId)) {
+            $listRewardPoints = $this->json->decode($this->config->getListOptionRewardPoint($storeId));
+            $listPoint = [];
+            foreach ($listRewardPoints as $rewardPoint) {
+                $listPoint[$rewardPoint->point] = $rewardPoint->money;
+            }
+            ksort($listPoint);
+
+
+            return $listPoint;
+        }
+        return [];
     }
 
     /**

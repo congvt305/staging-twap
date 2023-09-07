@@ -9,7 +9,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Psr\Log\LoggerInterface;
 
-class RewardPost implements HttpPostActionInterface
+class ValidateRewardPost implements HttpPostActionInterface
 {
     /**
      * @var LoggerInterface
@@ -40,6 +40,7 @@ class RewardPost implements HttpPostActionInterface
      * @var Data
      */
     private $rewardsData;
+
 
     /**
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -75,7 +76,7 @@ class RewardPost implements HttpPostActionInterface
     {
         $applyCode = $this->request ->getParam('remove') == 1 ? 0 : 1;
         $cartQuote = $this->_checkoutSession->getQuote();
-        $usedPoints = $this->request->getParam('amreward_amount', 0);
+
         $result = ['success' => true];
         $jsonResult = $this->resultJsonFactory->create();
         if (!$this->request->isAjax()) {
@@ -95,28 +96,6 @@ class RewardPost implements HttpPostActionInterface
             if (!$this->rewardsData->canUseRewardPoint($cartQuote)) {
                 $result['message'] = __('You can\'t use point right now');
                 $result['success'] = false;
-            }
-            $isUsePointOrMoney = $this->rewardsData->isUsePointOrMoney();
-            if ($isUsePointOrMoney == \CJ\Rewards\Model\Config::USE_MONEY_TO_GET_DISCOUNT) {
-                // multiple with 1 to parse it to float or int
-                if (!is_int($usedPoints * 1)) {
-                    $result['message'] = __('The amount must be greater than 0 and must be integer');
-                    $result['success'] = false;
-                }
-                $usedPoints = $usedPoints * (int)$this->rewardsData->getPointsRate();
-            }
-
-            try {
-                if ($result['success']) {
-                    $this->rewardsManagement->set($cartQuote->getId(), $usedPoints);
-                }
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                $result['message'] = $e->getMessage();
-                $result['success'] = false;
-            } catch (\Exception $e) {
-                $result['message'] = __('We cannot Reward.');
-                $result['success'] = false;
-                $this->logger->critical($e);
             }
         }
 

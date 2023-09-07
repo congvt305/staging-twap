@@ -9,6 +9,7 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\RmaTrackNoException;
+use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -18,13 +19,8 @@ use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Rma\Api\RmaRepositoryInterface;
-use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Item;
-use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
-use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Eguana\Directory\Helper\Data;
@@ -39,42 +35,18 @@ class SapOrderReturnData extends AbstractSapOrder
 
     const ABRVW_MILEAGE_ALL_RETURN_CODE = 'FZ1';
 
-    /**
-     * @var RmaRepositoryInterface
-     */
-    private $rmaRepository;
+    private $rmaItemData = [];
+
+
     /**
      * @var CustomerRepositoryInterface
      */
     private $customerRepository;
-    /**
-     * @var TimezoneInterface
-     */
-    private $timezoneInterface;
-    /**
-     * @var QuoteCvsLocationRepository
-     */
-    private $quoteCvsLocationRepository;
-    /**
-     * @var OrderItemRepositoryInterface
-     */
-    private $orderItemRepository;
-    /**
-     * @var CollectionFactory
-     */
-    private $itemCollectionFactory;
+
     /**
      * @var ProductRepositoryInterface
      */
     private $productRepository;
-    /**
-     * @var AttributeRepositoryInterface
-     */
-    private $eavAttributeRepositoryInterface;
-    /**
-     * @var \Magento\Bundle\Api\ProductLinkManagementInterface
-     */
-    private $productLinkManagement;
 
     /**
      * @var StoreManagerInterface
@@ -97,57 +69,70 @@ class SapOrderReturnData extends AbstractSapOrder
     private $amConfig;
 
     /**
+     * @var \CJ\Rewards\Model\Data
+     */
+    private $rewardData;
+
+    /**
+     * @var CalculatePrice
+     */
+    private $bundleCalculatePrice;
+
+    /**
+     * @var \CJ\Middleware\Model\Product\CalculatePrice
+     */
+    private $productCalculatePrice;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
      * @param Config $config
-     * @param RmaRepositoryInterface $rmaRepository
      * @param CustomerRepositoryInterface $customerRepository
-     * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
-     * @param OrderItemRepositoryInterface $orderItemRepository
-     * @param CollectionFactory $itemCollectionFactory
      * @param ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
-     * @param \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
      * @param \Amasty\Rewards\Model\Config $amConfig
+     * @param \CJ\Rewards\Model\Data $rewardData
+     * @param CalculatePrice $bundleCalculatePrice
+     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
         StoreRepositoryInterface $storeRepository,
         Config $config,
-        RmaRepositoryInterface $rmaRepository,
         CustomerRepositoryInterface $customerRepository,
-        TimezoneInterface $timezoneInterface,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
-        OrderItemRepositoryInterface $orderItemRepository,
-        CollectionFactory $itemCollectionFactory,
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        \Magento\Bundle\Api\ProductLinkManagementInterface $productLinkManagement,
         StoreManagerInterface $storeManager,
         Data $helper,
         \CJ\Middleware\Helper\Data $middlewareHelper,
-        \Amasty\Rewards\Model\Config $amConfig
+        \Amasty\Rewards\Model\Config $amConfig,
+        \CJ\Rewards\Model\Data $rewardData,
+        CalculatePrice $bundleCalculatePrice,
+        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
+        \CJ\Middleware\Model\Data $orderData,
+        \Amore\Sap\Logger\Logger $logger
     ) {
-        $this->rmaRepository = $rmaRepository;
         $this->customerRepository = $customerRepository;
-        $this->timezoneInterface = $timezoneInterface;
-        $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->itemCollectionFactory = $itemCollectionFactory;
-        parent::__construct($searchCriteriaBuilder, $orderRepository, $storeRepository, $config);
         $this->productRepository = $productRepository;
-        $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
-        $this->productLinkManagement = $productLinkManagement;
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
+        $this->rewardData = $rewardData;
+        $this->bundleCalculatePrice = $bundleCalculatePrice;
+        $this->productCalculatePrice = $productCalculatePrice;
+        parent::__construct(
+            $searchCriteriaBuilder, $orderRepository,
+            $storeRepository, $config, $quoteCvsLocationRepository,
+            $eavAttributeRepositoryInterface, $logger, $orderData
+        );
     }
 
     /**
@@ -158,6 +143,7 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function singleOrderData($rma)
     {
+        $this->resetData();
         $source = $this->config->getSourceByStore('store', $rma->getStoreId());
         $rmaData = $this->getRmaData($rma);
         $rmaItemData = $this->getRmaItemData($rma);
@@ -177,6 +163,8 @@ class SapOrderReturnData extends AbstractSapOrder
     }
 
     /**
+     * Get rma data
+     *
      * @param \Magento\Rma\Model\Rma $rma
      * @throws RmaTrackNoException
      * @throws NoSuchEntityException
@@ -188,9 +176,12 @@ class SapOrderReturnData extends AbstractSapOrder
         $order = $rma->getOrder();
         $customer = $this->getCustomer($rma->getCustomerId());
         $shippingAddress = $order->getShippingAddress();
-        $pointUsed = $order->getRewardPointsBalance();
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
-        $orderTotal = $this->roundingPrice($order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingAmount(), $isDecimalFormat);
+        if ($order->getGrandTotal() == 0) {
+            $orderGrandTotal = $order->getGrandTotal();
+        } else {
+            $orderGrandTotal = abs($this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat));
+        }
         $trackData = $this->getTracks($rma);
         $ztrackId = $trackData['track_number'] ?? '';
         $shippingMethod = $order->getShippingMethod();
@@ -198,19 +189,24 @@ class SapOrderReturnData extends AbstractSapOrder
         $redemptionFlag = 'N';
         if($this->amConfig->isEnabled($storeId)) {
             if ($order->getData('am_spent_reward_points')) {
-                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+                $rewardPoints = $this->orderData->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
             }
             $spendingRate = $this->amConfig->getPointsRate($storeId);
             if (!$spendingRate) {
                 $spendingRate = 1;
             }
-            $pointUsed = $rewardPoints / $spendingRate;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                $pointUsed = $listOptions[$rewardPoints] ?? 0;
+            } else {
+                $pointUsed = $rewardPoints / $spendingRate;
+            }
             if ($pointUsed == $order->getBaseSubtotal()) {
                 $redemptionFlag = 'Y';
             }
-            $miamt = abs($this->roundingPrice($pointUsed, $isDecimalFormat));
+            $miamt = abs($this->orderData->roundingPrice($pointUsed, $isDecimalFormat));
         } else {
-            $miamt = abs($this->roundingPrice($this->getRmaPointsUsed($rma, $pointUsed, $orderTotal), $isDecimalFormat));
+            $miamt = 0;
         }
 
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
@@ -222,19 +218,23 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = abs($this->roundingPrice($this->getRmaSubtotalInclTax($rma) + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma), $isDecimalFormat));
-            $dcamt  = abs($this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat)  - $pointUsed);
-            $slamt = $order->getGrandTotal() == 0 ? $order->getGrandTotal() :
-                abs($this->roundingPrice($this->getRmaGrandTotal($rma), $isDecimalFormat)) + $pointUsed;
+            $nsamt  = $this->orderData->roundingPrice($order->getSubtotalInclTax() + $order->getShippingAmount(), $isDecimalFormat);;
+            $dcamt  = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $miamt;
+            $slamt = $nsamt - $dcamt;
         }
 
-        $isMileageOrder = bcsub($nsamt, $dcamt) == $miamt && $miamt > 0;
+        $isMileageOrder = ($slamt == $miamt && $slamt > 0);
+        $cvsShippingCheck = $this->cvsShippingCheck($order);
+        $telephone = $this->getTelephone($shippingAddress->getTelephone());
+        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $client = $this->config->getClient('store', $storeId);
+
         $bindData[] = [
-            'vkorg' => $this->config->getSalesOrg('store', $storeId),
-            'kunnr' => $this->config->getClient('store', $storeId),
+            'vkorg' => $salesOrg,
+            'kunnr' => $client,
             'odrno' => "R" . $rma->getIncrementId(),
-            'odrdt' => $this->dateFormatting($rma->getDateRequested(), 'Ymd'),
-            'odrtm' => $this->dateFormatting($rma->getDateRequested(), 'His'),
+            'odrdt' => $this->orderData->dateFormatting($rma->getDateRequested(), 'Ymd'),
+            'odrtm' => $this->orderData->dateFormatting($rma->getDateRequested(), 'His'),
             'paymtd' => $paymtd,
             'paydt' => '',
             'paytm' => '',
@@ -243,7 +243,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'shpSvccd' => $shippingMethod === 'eguanadhl_tablerate' ? 'PDE' : '',
             'ordWgt' => $shippingMethod === 'eguanadhl_tablerate' ? '1000' : '',
             'insurance' => $shippingMethod === 'eguanadhl_tablerate' ? 'Y' : '',
-            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderTotal : null,
+            'insurnaceValue' => $shippingMethod === 'eguanadhl_tablerate' ? $orderGrandTotal : null,
             'auart' => $isMileageOrder ? self::SAMPLE_RETURN : self::RETURN_ORDER,
             'augru' => $isMileageOrder ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
             'augruText' => '',
@@ -254,29 +254,29 @@ class SapOrderReturnData extends AbstractSapOrder
             //배송지 id - 직영몰 자체코드, 없으면 공백
             'recvid' => '',
             'recvnm' => $shippingAddress->getLastname() . ' ' . $shippingAddress->getFirstname(),
-            'postCode' => $this->cvsShippingCheck($order) ? '00000' : $shippingAddress->getPostcode(),
-            'addr1' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getRegion(),
-            'addr2' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getCity(),
-            'addr3' => $this->cvsShippingCheck($order) ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
-            'distrid' => $this->cvsShippingCheck($order) ? '.' : $this->dataHelper->getDistrictCode($shippingAddress->getCityId()),
-            'wardid' => $this->cvsShippingCheck($order) ? '.' : $this->dataHelper->getWardCode($shippingAddress->getWardId()),
-            'wardname' => $this->cvsShippingCheck($order) ? '.' : $shippingAddress->getWard(),
+            'postCode' => $cvsShippingCheck ? '00000' : $shippingAddress->getPostcode(),
+            'addr1' => $cvsShippingCheck ? '.' : $shippingAddress->getRegion(),
+            'addr2' => $cvsShippingCheck ? '.' : $shippingAddress->getCity(),
+            'addr3' => $cvsShippingCheck ? '.' : preg_replace('/\r\n|\r|\n/', ' ', implode(PHP_EOL, $shippingAddress->getStreet())),
+            'distrid' => $cvsShippingCheck ? '.' : $this->dataHelper->getDistrictCode($shippingAddress->getCityId()),
+            'wardid' => $cvsShippingCheck ? '.' : $this->dataHelper->getWardCode($shippingAddress->getWardId()),
+            'wardname' => $cvsShippingCheck ? '.' : $shippingAddress->getWard(),
             'land1' => $shippingAddress->getCountryId(),
-            'telno' => $this->getTelephone($shippingAddress->getTelephone()),
-            'hpno' => $this->getTelephone($shippingAddress->getTelephone()),
+            'telno' => $telephone,
+            'hpno' => $telephone,
             'waerk' => $order->getOrderCurrencyCode(),
             'nsamt' => $nsamt,
             'dcamt' => $dcamt,
             'slamt' => $slamt,
             'miamt' => $miamt,
             'shpwr' => '',
-            'mwsbp' => $this->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
+            'mwsbp' => $this->orderData->roundingPrice($order->getTaxAmount(), $isDecimalFormat),
             'spitn1' => '',
-            'vkorgOri' => $this->config->getSalesOrg('store', $storeId),
-            'kunnrOri' => $this->config->getClient('store', $storeId),
+            'vkorgOri' => $salesOrg,
+            'kunnrOri' => $client,
             'odrnoOri' => $order->getIncrementId(),
             // 이건 물건 종류 갯수(물건 전체 수량은 아님)
-            'itemCnt' => $this->calculateItems($rma),
+            'itemCnt' => $order->getTotalItemCount(),
             // 영업 플랜트 : 알수 없을 경우 공백
             'werks' => '',
             // 영업저장위치 : 알수 없을 경우 공백
@@ -294,7 +294,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $listToFormat = ['nsamt', 'dcamt', 'dcamt', 'miamt', 'shpwr', 'mwsbp'];
             foreach ($bindData[0] as $k => $value) {
                 if (in_array($k, $listToFormat) && (is_float($value) || is_int($value))) {
-                    $bindData[0][$k] = $this->formatPrice($value, $isDecimalFormat);
+                    $bindData[0][$k] = $this->orderData->formatPrice($value, $isDecimalFormat);
                 }
             }
         }
@@ -311,78 +311,65 @@ class SapOrderReturnData extends AbstractSapOrder
      */
     public function getRmaItemData($rma)
     {
-        $rmaItemData = [];
         $storeId = $rma->getStoreId();
         $rmaItems = $rma->getItems();
         $order = $rma->getOrder();
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
-        $bundleExtraAmount = $this->getBundleExtraAmount($rma);
-        $catalogRuleDiscountAmount = $this->getCatalogRuleDiscountAmount($rma);
-        $orderSubtotal = abs($this->roundingPrice($order->getSubtotalInclTax() + $bundleExtraAmount + $catalogRuleDiscountAmount, $isDecimalFormat));
-        $mileageUsedAmount = $order->getRewardPointsBalance();
+        $orderSubtotal = abs($this->orderData->roundingPrice($order->getSubtotalInclTax(), $isDecimalFormat));
+        $mileageUsedAmount = 0;
         $originPosnr = $this->getOrderItemPosnr($rma);
         $mileageUsedAmountExisted = 0;
+        $spendingRate = $this->amConfig->getPointsRate($storeId);
+        if (!$spendingRate) {
+            $spendingRate = 1;
+        }
         if($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
-                $rewardPoints = $this->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
+                $rewardPoints = $this->orderData->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
             }
-            $spendingRate = $this->amConfig->getPointsRate($storeId);
-            if (!$spendingRate) {
-                $spendingRate = 1;
+            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
+                if ($rewardPoints) {
+                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
+                    $spendingRate = $rewardPoints / $mileageUsedAmount;
+                }
+            } else {
+                $mileageUsedAmount = $rewardPoints / $spendingRate;
             }
-            $mileageUsedAmount = $rewardPoints / $spendingRate;
             $mileageUsedAmountExisted = $mileageUsedAmount;
         }
 
-        $itemsSubtotal = 0;
-        $itemsDiscountAmount = 0;
-        $itemsGrandTotal = 0;
-        $itemsGrandTotalInclTax = 0;
-        $itemsMileage = 0;
-
-        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
-        $skuPrefix = $skuPrefix ?: '';
         $orderAllItems = $order->getAllItems();
+        $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
 
-        $cnt = 1;
         /** @var \Magento\Rma\Model\Item $rmaItem */
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            /** @var \Magento\Sales\Model\Order\Item $orderItem */
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
-                $mileagePerItem = $this->mileageSpentRateByItem(
-                    $orderSubtotal,
-                    $orderItem->getRowTotalInclTax(),
-                    $mileageUsedAmount,
-                    $isDecimalFormat
-                );
+                $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    continue;
+                }
+                $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
+                $itemDcamt = $orderItem->getDiscountAmount();
+                $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
+                $itemSlamt = $itemNsamt - $itemDcamt;
+                $itemMiamt = $orderItem->getData('mileage_amount');
+                $itemTaxAmount = $orderItem->getData('tax_amount');
+                $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
+
                 if($isEnableRewardsPoint) {
-                    if ($mileageUsedAmountExisted > $mileagePerItem) {
-                        $mileageUsedAmountExisted -= $mileagePerItem;
+                    if ($mileageUsedAmountExisted > $itemMiamt) {
+                        $mileageUsedAmountExisted -= $itemMiamt;
                     } else {
-                        $mileagePerItem = $mileageUsedAmountExisted;
+                        $itemMiamt = $mileageUsedAmountExisted;
                         $mileageUsedAmountExisted = 0;
                     }
                 }
-                $product = $this->productRepository->get($rmaItem->getProductSku());
-                $meins = $product->getData('meins');
-
-                $itemSubtotal = abs($this->roundingPrice($orderItem->getPrice() * $rmaItem->getQtyRequested(), $isDecimalFormat));
-                if ($this->roundingPrice($orderItem->getPrice(), $isDecimalFormat)) {
-                    $itemTotalDiscount = abs($this->roundingPrice($this->getRateAmount($orderItem->getDiscountAmount(), $orderItem->getQtyOrdered(), $rmaItem->getQtyRequested()), $isDecimalFormat) - $mileagePerItem);
-                } else {
-                    $itemTotalDiscount = 0;
-                }
-                $itemMileageUsed = abs($this->roundingPrice($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()), $isDecimalFormat));
-                $itemTaxAmount = abs($this->roundingPrice($this->getRateAmount($orderItem->getTaxAmount(), $this->getNetQty($orderItem), $rmaItem->getQtyRequested()), $isDecimalFormat));
-
-                $sku = str_replace($skuPrefix, '', $this->productTypeCheck($orderItem)->getSku());
-                $itemNsamt = $itemSubtotal;
-                $itemDcamt = $itemTotalDiscount;
-                $itemSlamt = $itemSubtotal - $itemTotalDiscount;
-                $itemNetwr = $itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount;
 
                 if ($websiteCode == 'vn_laneige_website') {
                     $itemNsamt = $orderItem->getData('sap_item_nsamt');
@@ -390,90 +377,31 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemSlamt = $orderItem->getData('sap_item_slamt');
                     $itemNetwr = $orderItem->getData('sap_item_netwr');
                 }
-                $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $mileagePerItem;
-                $rmaItemData[] = [
-                    'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
-                    'itemKunnr' => $this->config->getClient('store', $storeId),
-                    'itemOdrno' => "R" . $rma->getIncrementId(),
-                    'itemPosnr' => $cnt,
-                    'itemMatnr' => $sku,
-                    'itemMenge' => intval($rmaItem->getQtyRequested()),
-                    // 아이템 단위, Default : EA
-                    'itemMeins' => $this->getMeins($meins),
-                    'itemNsamt' => $itemNsamt,
-                    'itemDcamt' => $itemDcamt,
-                    'itemSlamt' => $itemSlamt,
-                    'itemMiamt' => $itemMileageUsed,
-                    // 상품이 무상제공인 경우 Y 아니면 N
-                    'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
-                    'itemMilfg' => ((bcsub($itemSubtotal, $itemTotalDiscount) == $mileagePerItem) && $itemSlamt > 0) ? 'Y' : 'N',
-                    'itemAuart' => $isMileageOrderItem ? self::SAMPLE_RETURN : self::RETURN_ORDER,
-                    'itemAugru' => $isMileageOrderItem ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
-                    'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
-                    'itemNetwr' => $itemNetwr,
-                    'itemMwsbp' => $itemTaxAmount,
-                    'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
-                    'itemKunnrOri' => $this->config->getClient('store', $storeId),
-                    'itemOdrnoOri' => $order->getIncrementId(),
-                    'itemPosnrOri' => $originPosnr[$rmaItem->getOrderItemId()]
-                ];
-                $cnt++;
-                $itemsSubtotal += $itemSubtotal;
-                $itemsGrandTotal += ($itemSubtotal - $itemTotalDiscount - $itemMileageUsed);
-                $itemsGrandTotalInclTax += ($itemSubtotal - $itemTotalDiscount - $itemMileageUsed - $itemTaxAmount);
-                $itemsDiscountAmount += $itemTotalDiscount;
-                $itemsMileage += $this->roundingPrice($this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested()), $isDecimalFormat);
+                $this->addReturnOrderItemData(
+                    $rma, $rmaItem, $itemNsamt,
+                    $itemDcamt, $itemSlamt, $itemMiamt,
+                    $itemNetwr, $itemTaxAmount, $originPosnr
+                );
             } else {
-                /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundlePriceType = $bundleProduct->getPriceType();
+                $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
-                    if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                        $bundleChildItemPrice = $this->productRepository->get($bundleChildrenItem->getSku(), false, $order->getStoreId())->getPrice();
-                    } else {
-                        $bundleChildItemPrice = $bundleChildrenItem->getOriginalPrice();
-                    }
-                    $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-                        $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getDiscountAmount()) :
-                        $bundleChildrenItem->getDiscountAmount();
-                    $mileagePerItem = $this->mileageSpentRateByItem(
-                        $orderSubtotal,
-                        $this->getProportionOfBundleChild(
-                            $orderItem,
-                            $bundleChildrenItem,
-                            $orderItem->getRowTotalInclTax()
-                        ),
-                        $mileageUsedAmount,
-                        $isDecimalFormat
-                    );
+                    $shippingAmountPerChild =  $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
+                    $itemDcamt = $bundleChildrenItem->getDiscountAmount();
+                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + $shippingAmountPerChild;
+                    $itemSlamt = $itemNsamt - $itemDcamt;
+                    $itemMiamt = $bundleChildrenItem->getData('mileage_amount');
+                    $itemTaxAmount = $bundleChildrenItem->getData('tax_amount');
+                    $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
+
                     if($isEnableRewardsPoint) {
-                        if ($mileageUsedAmountExisted > $mileagePerItem) {
-                            $mileageUsedAmountExisted -= $mileagePerItem;
+                        if ($mileageUsedAmountExisted > $itemMiamt) {
+                            $mileageUsedAmountExisted -= $itemMiamt;
                         } else {
-                            $mileagePerItem = $mileageUsedAmountExisted;
+                            $itemMiamt = $mileageUsedAmountExisted;
                             $mileageUsedAmountExisted = 0;
                         }
                     }
-                    $product = $this->productRepository->get($bundleChildrenItem->getSku(), false, $rma->getStoreId());
-                    $meins = $product->getData('meins');
-                    $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, $orderItem->getOriginalPrice()) / $qtyPerBundle;
-                    $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChildrenItem, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
-
-                    $itemDiscountAmount = abs($this->roundingPrice(
-                        $bundleChildDiscountAmount +
-                        (($product->getPrice() - $childPriceRatio) * $bundleChildrenItem->getQtyOrdered()) +
-                        $catalogRuledPriceRatio * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat) - $mileagePerItem
-                    );
-                    $itemSubtotal = abs($this->roundingPrice($bundleChildItemPrice * $rmaItem->getQtyRequested() * $qtyPerBundle, $isDecimalFormat));
-                    $itemTaxAmount = abs($this->roundingPrice($this->getRateAmount($bundleChildrenItem->getTaxAmount(), $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle), $isDecimalFormat));
-
-                    $sku = str_replace($skuPrefix, '', $bundleChildrenItem->getSku());
-                    $itemNsamt = $itemSubtotal;
-                    $itemDcamt = $itemDiscountAmount;
-                    $itemSlamt = $itemSubtotal - $itemDiscountAmount;
-                    $itemNetwr = $itemSubtotal - $itemDiscountAmount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount;
 
                     if ($websiteCode == 'vn_laneige_website') {
                         $item = $this->searchOrderItem($orderAllItems, $bundleChildrenItem->getSku(), $itemId);
@@ -482,235 +410,26 @@ class SapOrderReturnData extends AbstractSapOrder
                         $itemSlamt = $item->getData('sap_item_slamt');
                         $itemNetwr = $item->getData('sap_item_netwr');
                     }
-                    $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $mileagePerItem;
 
-                    $rmaItemData[] = [
-                        'itemVkorg' => $this->config->getSalesOrg('store', $storeId),
-                        'itemKunnr' => $this->config->getClient('store', $storeId),
-                        'itemOdrno' => "R" . $rma->getIncrementId(),
-                        'itemPosnr' => $cnt,
-                        'itemMatnr' => $sku,
-                        'itemMenge' => intval($rmaItem->getQtyRequested() * $qtyPerBundle),
-                        // 아이템 단위, Default : EA
-                        'itemMeins' => $this->getMeins($meins),
-                        'itemNsamt' => $itemNsamt,
-                        'itemDcamt' => $itemDcamt,
-                        'itemSlamt' => $itemSlamt,
-                        'itemMiamt' => $mileagePerItem,
-                        // 상품이 무상제공인 경우 Y 아니면 N
-                        'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
-                        'itemMilfg' => ((bcsub($itemSubtotal, $itemDiscountAmount) == $mileagePerItem) && $itemSlamt > 0) ? 'Y' : 'N',
-                        'itemAuart' => $isMileageOrderItem ? self::SAMPLE_RETURN : self::RETURN_ORDER,
-                        'itemAugru' => $isMileageOrderItem ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
-                        'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
-                        'itemNetwr' => $itemNetwr,
-                        'itemMwsbp' => $itemTaxAmount,
-                        'itemVkorgOri' => $this->config->getSalesOrg('store', $storeId),
-                        'itemKunnrOri' => $this->config->getClient('store', $storeId),
-                        'itemOdrnoOri' => $order->getIncrementId(),
-                        'itemPosnrOri' => $originPosnr[$bundleChildrenItem->getItemId()]
-                    ];
+                    $this->addReturnOrderItemData($rma, $rmaItem, $itemNsamt,
+                        $itemDcamt, $itemSlamt, $itemMiamt, $itemNetwr,
+                        $itemTaxAmount, $originPosnr, $bundleChildrenItem
+                    );
 
-                    $cnt++;
-                    $itemsSubtotal += $itemSubtotal;
-                    $itemsGrandTotal += ($itemSubtotal - $itemDiscountAmount - $this->roundingPrice($mileagePerItem, $isDecimalFormat));
-                    $itemsGrandTotalInclTax += ($itemSubtotal - $itemDiscountAmount - $this->roundingPrice($mileagePerItem, $isDecimalFormat) - $itemTaxAmount);
-                    $itemsDiscountAmount += $itemDiscountAmount;
-
-                    $qtyPerBundle = $bundleChildrenItem->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $itemsMileage += $this->roundingPrice($this->getRateAmount($mileagePerItem, $this->getNetQty($bundleChildrenItem), $rmaItem->getQtyRequested() * $qtyPerBundle), $isDecimalFormat);
                 }
             }
         }
-        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->roundingPrice($this->getRmaGrandTotal($rma), $isDecimalFormat);
-        $orderDiscountAmount = $this->roundingPrice($this->getRmaDiscountAmount($rma, $isDecimalFormat), $isDecimalFormat) - $mileageUsedAmount;
+        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal(), $isDecimalFormat);
+        $orderDiscountAmount = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $mileageUsedAmount;
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
-            $itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
-        }
-        if ($websiteCode != 'vn_laneige_website') {
-            $rmaItemData = $this->priceCorrector($orderSubtotal, $itemsSubtotal, $rmaItemData, 'itemNsamt', $isDecimalFormat);
-            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotalInclTax, $rmaItemData, 'itemSlamt', $isDecimalFormat);
-            $rmaItemData = $this->priceCorrector($orderGrandTotal, $itemsGrandTotal, $rmaItemData, 'itemNetwr', $isDecimalFormat);
-            $rmaItemData = $this->priceCorrector($orderDiscountAmount, $itemsDiscountAmount, $rmaItemData, 'itemDcamt', $isDecimalFormat);
-        }
-        $rmaItemData = $this->priceCorrector($mileageUsedAmount, $itemsMileage, $rmaItemData, 'itemMiamt', $isDecimalFormat);
-
-        if ($isDecimalFormat) {
-            $listToFormat = ['itemNsamt', 'itemSlamt', 'itemNetwr', 'itemDcamt', 'itemMiamt'];
-
-            foreach ($listToFormat as $field) {
-                foreach ($rmaItemData as $key => $value) {
-                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
-                        $rmaItemData[$key][$field] = $this->formatPrice($value[$field], $isDecimalFormat);
-                    }
-                }
-            }
+            $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
 
-        return $rmaItemData;
-    }
+        $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
+            $orderSubtotal + $order->getShippingAmount(), $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+        );
 
-    /**
-     * Get proportion of child in 1 bundle
-     *
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
-     * @param \Magento\Sales\Model\Order\Item $bundleChild
-     * @param float $valueToCalculate
-     * @return float|int
-     * @throws NoSuchEntityException
-     */
-    public function getProportionOfBundleChild($orderItem, $bundleChild, $valueToCalculate)
-    {
-        $originalPriceSum = $this->getSumOfChildrenOriginPrice($orderItem);
-
-        $bundleChildPrice = $this->productRepository->get($bundleChild->getSku(), false, $orderItem->getStoreId())->getPrice();
-        //get rate for product per bundle
-        $rate = ($bundleChildPrice / $originalPriceSum) * ($bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered());
-
-        return $valueToCalculate * $rate;
-    }
-
-    /**
-     * Get total price for original price
-     *
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
-     * @return float|null
-     * @throws NoSuchEntityException
-     * @throws \Exception
-     */
-    public function getSumOfChildrenOriginPrice(Item $orderItem)
-    {
-        $originalPriceSum = 0;
-
-        $childrenItems = $orderItem->getChildrenItems();
-        foreach ($childrenItems as $childItem) {
-            $originalProductPrice = $this->productRepository->get($childItem->getSku(), false, $orderItem->getStoreId())->getPrice();
-            //total original price product per bundle
-            $originalPriceSum += ($originalProductPrice * ($childItem->getQtyOrdered() / $orderItem->getQtyOrdered()));
-        }
-        return $originalPriceSum;
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     */
-    public function kunweCheck($order)
-    {
-        $kunwe = $this->config->getHomeDeliveryContractor('store', $order->getStoreId());
-        if ($this->cvsShippingCheck($order)) {
-            try {
-                $shippingAddress = $order->getShippingAddress();
-                $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-                $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-                $cvsType = $cvsStoreData->getLogisticsSubType();
-            } catch (NoSuchEntityException $e) {
-                // when cvs address data is missing, use default value.
-                // It does not matter anyway because it is not real customer address and we don't know the real cvs address fo return.
-                $cvsType = 'FAMI';
-            }
-            if ($cvsType == 'FAMI') {
-                $kunwe = $this->config->getFamilyMartCode('store', $order->getStoreId());
-            } else {
-                $kunwe = $this->config->getSevenElevenCode('store', $order->getStoreId());
-            }
-        }
-        return $kunwe;
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $rma
-     */
-    public function calculateItems($rma)
-    {
-        $itemCount = 0;
-        foreach ($rma->getItems() as $item) {
-            $orderItem = $this->orderItemRepository->get($item->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                foreach ($orderItem->getChildrenItems() as $childrenItem) {
-                    $itemCount++;
-                }
-            } else {
-                $itemCount++;
-            }
-        }
-        return $itemCount;
-    }
-
-    public function priceCorrector($orderAmount, $itemsAmount, $orderItemData, $field, $isDecimalFormat = false)
-    {
-        if ($orderAmount != $itemsAmount) {
-            $correctAmount = $orderAmount - $itemsAmount;
-
-            foreach ($orderItemData as $key => $value) {
-                if ($value['itemFgflg'] == 'Y') {
-                    continue;
-                }
-                $orderItemData[$key][$field] = $this->formatPrice($value[$field] + $correctAmount, $isDecimalFormat);
-                break;
-            }
-        }
-
-        return $orderItemData;
-    }
-
-    public function getMeins($value)
-    {
-        try {
-            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', 'meins');
-            $options = $attribute->getOptions();
-
-            $label = 'EA';
-            foreach ($options as $option) {
-                if ($option->getValue() == $value) {
-                    $label = $option->getLabel();
-                }
-            }
-            return $label;
-        } catch (\Exception $exception) {
-            return null;
-        }
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     */
-    public function cvsShippingCheck($order)
-    {
-        switch ($order->getShippingMethod()) {
-            case 'gwlogistics_CVS':
-                $cvsCheck = true;
-                break;
-            case 'flatrate_flatrate':
-                $cvsCheck = false;
-                break;
-            default:
-                $cvsCheck = false;
-        }
-        return $cvsCheck;
-    }
-
-    /**
-     * @param $shippingAddress
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function getCsvAddress($shippingAddress)
-    {
-        $cvsLocationId = $shippingAddress->getData('cvs_location_id');
-        $cvsAddress = '.';
-        try {
-            $cvsStoreData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
-            $cvsAddress = $cvsStoreData->getCvsAddress() . ' ' . $cvsStoreData->getCvsStoreName() . ' ' . $cvsStoreData->getLogisticsSubType();
-        } catch (NoSuchEntityException $e) {
-            //if order is older than 30days, cvs address might not exists.
-        }
-
-        return $cvsAddress;
-    }
-
-    public function dateFormatting($date, $format)
-    {
-        return $this->timezoneInterface->date($date)->format($format);
+        return $this->rmaItemData;
     }
 
     /**
@@ -769,11 +488,6 @@ class SapOrderReturnData extends AbstractSapOrder
         }
     }
 
-    public function getRateAmount($orderItemAmount, $orderItemQty, $rmaItemQty)
-    {
-        return $orderItemAmount * ($rmaItemQty / $orderItemQty);
-    }
-
     /**
      * @param \Magento\Rma\Model\Rma $rma
      */
@@ -802,229 +516,6 @@ class SapOrderReturnData extends AbstractSapOrder
         return $originPosnrData;
     }
 
-    public function mileageSpentRateByItem($orderTotal, $itemRowTotal, $mileageUsed, $isDecimalFormat = false)
-    {
-        if ($mileageUsed) {
-            return $this->roundingPrice(($itemRowTotal/$orderTotal) * $mileageUsed, $isDecimalFormat);
-        }
-        return is_null($mileageUsed) ? '0' : $mileageUsed;
-    }
-
-    /**
-     * @param $orderItem \Magento\Sales\Api\Data\OrderItemInterface
-     */
-    public function productTypeCheck($orderItem)
-    {
-        $simpleItemCollection = $this->getOrderChildItemCollection($orderItem->getOrderId(), $orderItem->getSku());
-        $simpleItem = $simpleItemCollection->getFirstItem();
-
-        if ($orderItem->getProductType() == "simple") {
-            return $orderItem;
-        } else {
-            return $simpleItem;
-        }
-    }
-
-    public function getOrderChildItemCollection($orderId, $sku)
-    {
-        /** @var Collection $collection */
-        $collection = $this->itemCollectionFactory->create();
-
-        $collection->addFieldToFilter('order_id', ['eq' => $orderId])
-            ->addFieldToFilter('sku', ['eq' => $sku])
-            ->addFieldToFilter('product_type', ['eq' => 'simple'])
-            ->addFieldToSelect(["item_id", "order_id", "parent_item_id", "store_id", "product_id", "sku"]);
-
-        return $collection;
-    }
-
-    /**
-     * Get rma grand total
-     *
-     * @param \Magento\Rma\Model\Rma $rma
-     * @return int
-     */
-    public function getRmaGrandTotal($rma)
-    {
-        $grandTotal = 0;
-        $rmaItems = $rma->getItems();
-
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId());
-                $bundlePriceType = $bundleProduct->getPriceType();
-
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-                        $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()) :
-                        $bundleChild->getDiscountAmount();
-                    $itemGrandTotalInclTax = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getRowTotalInclTax())
-                        - $bundleChildDiscountAmount;
-
-                    $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
-                    $grandTotal += $this->getRateAmount($itemGrandTotalInclTax, $this->getNetQty($bundleChild), $rmaItem->getQtyRequested() * $qtyPerBundle);
-                }
-            } else {
-                $itemGrandTotal = $orderItem->getRowTotal()
-                    - $orderItem->getDiscountAmount();
-
-                $itemGrandTotal = $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
-                $grandTotal += $this->getRateAmount($itemGrandTotal, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
-            }
-        }
-        return $grandTotal;
-    }
-
-    /**
-     * Get rma discount amount
-     *
-     * @param \Magento\Rma\Model\Rma $rma
-     * @param int $isDecimalFormat
-     * @return float|int
-     * @throws NoSuchEntityException
-     */
-    public function getRmaDiscountAmount($rma, $isDecimalFormat)
-    {
-        $order = $rma->getOrder();
-        $orderSubtotal = abs($this->roundingPrice(
-            $order->getSubtotalInclTax() + $this->getBundleExtraAmount($rma) + $this->getCatalogRuleDiscountAmount($rma),
-            $isDecimalFormat));
-        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : abs($this->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat));
-
-        return $orderSubtotal - $orderGrandTotal;
-    }
-
-    /**
-     * Get discount amount for bundle child
-     *
-     * @param int $bundlePriceType
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
-     * @param \Magento\Sales\Model\Order\Item $bundleChild
-     * @return float|int|null
-     * @throws NoSuchEntityException
-     */
-    public function getDiscountAmountForBundleChild($bundlePriceType, $orderItem, $bundleChild)
-    {
-        $bundleChildDiscountAmount = (int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC ?
-            $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getDiscountAmount()) :
-            $bundleChild->getDiscountAmount();
-
-        return $bundleChildDiscountAmount;
-    }
-
-    /**
-     * Get catalog rule discount amount
-     *
-     * @param \Magento\Rma\Model\Rma $rma
-     * @throws NoSuchEntityException
-     * @throws \Exception
-     */
-    public function getCatalogRuleDiscountAmount($rma, $isDecimalFormat = false)
-    {
-        $catalogRuleDiscount = 0;
-        $order = $rma->getOrder();
-        $rmaItems = $rma->getItems();
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() != 'bundle') {
-                if ($this->roundingPrice($orderItem->getPrice(), $isDecimalFormat)) {
-                    $catalogRuleDiscount += ($orderItem->getOriginalPrice() - $orderItem->getPrice()) *
-                        $rmaItem->getQtyRequested();
-                }
-            } else {
-                /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundlePriceType = $bundleProduct->getPriceType();
-
-                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                        $qtyPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
-                        $catalogRuledPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, ($orderItem->getOriginalPrice() - $orderItem->getPrice())) / $qtyPerBundle;
-
-                        $catalogRuleDiscount += $catalogRuledPriceRatio * $rmaItem->getQtyRequested() * $qtyPerBundle;
-                    }
-                } else {
-                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                        $catalogRuledPriceRatio = $bundleChild->getOriginalPrice() - $bundleChild->getPrice();
-                        $catalogRuleDiscount += $catalogRuledPriceRatio * $bundleChild->getQtyOrdered();
-                    }
-                }
-            }
-        }
-        return $catalogRuleDiscount;
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $rma
-     */
-    public function getRmaSubtotalInclTax($rma)
-    {
-        $subtotalInclTax = 0;
-        $rmaItems = $rma->getItems();
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            $subtotalInclTax += ($orderItem->getPrice() * $rmaItem->getQtyRequested());
-        }
-        return $subtotalInclTax;
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $rma
-     * @param $pointsUsed
-     * @param $orderTotal
-     * @return float|int|string
-     */
-    public function getRmaPointsUsed($rma, $pointsUsed, $orderTotal)
-    {
-        $mileage = 0;
-        $rmaItems = $rma->getItems();
-        $order = $rma->getOrder();
-        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
-
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            $mileagePerItem = $this->mileageSpentRateByItem(
-                $orderTotal,
-                $orderItem->getRowTotalInclTax(),
-                $pointsUsed,
-                $isDecimalFormat
-            );
-            $mileage += $this->getRateAmount($mileagePerItem, $this->getNetQty($orderItem), $rmaItem->getQtyRequested());
-        }
-        return $mileage;
-    }
-
-    /**
-     * @param \Magento\Rma\Model\Rma $rma
-     */
-    public function getRmaTaxAmount($rma)
-    {
-        $taxAmount = 0;
-        $rmaItems = $rma->getItems();
-
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            $taxAmount += $orderItem->getTaxAmount();
-        }
-        return $taxAmount;
-    }
-
-
-    /**
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
-     */
-    public function getNetQty($orderItem)
-    {
-        $netQty = $orderItem->getQtyOrdered() - $orderItem->getQtyRefunded() - $orderItem->getQtyReturned();
-        // When order item has been refunded before creating return, Net qty will be 0, it will cause an issue when calculating discount amount, ...
-        // Since our sites don't allow partial refund, so we can ignore refunded qty when calculating net qty
-        if (0 == $netQty) {
-            $netQty = $orderItem->getQtyOrdered() - $orderItem->getQtyReturned();
-        }
-        return $netQty;
-    }
-
     /**
      * Return bundle child item from all items by sku and parent item id
      *
@@ -1045,59 +536,89 @@ class SapOrderReturnData extends AbstractSapOrder
     }
 
     /**
-     * @param $price
-     * @param $isDecimal
-     * @return float|string
-     */
-    public function formatPrice($price, $isDecimal = false)
-    {
-        if ($isDecimal) {
-            return number_format($price, 2, '.', '');
-        }
-        return $price;
-    }
-
-    /**
-     * @param $price
-     * @param $isDecimal
-     * @return float
-     */
-    public function roundingPrice($price, $isDecimal = false)
-    {
-        $precision = $isDecimal ? 2 : 0;
-        return round($price, $precision);
-    }
-
-    /**
-     * get bundle extra amount
+     * Add rma item
      *
      * @param $rma
-     * @return float|int
+     * @param $rmaItem
+     * @param $itemNsamt
+     * @param $itemDcamt
+     * @param $itemSlamt
+     * @param $itemMiamt
+     * @param $itemNetwr
+     * @param $itemTaxAmount
+     * @param $originPosnr
+     * @param $bundleChild
+     * @return void
      * @throws NoSuchEntityException
      */
-    public function getBundleExtraAmount($rma)
-    {
-        $priceDifferences = 0;
-        $rmaItems = $rma->getItems();
-        $order = $rma->getOrder();
-        foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
-            if ($orderItem->getProductType() == 'bundle') {
-                /** @var \Magento\Catalog\Model\Product $bundleProduct */
-                $bundleProduct = $this->productRepository->getById($orderItem->getProductId(), false, $order->getStoreId());
-                $bundlePriceType = $bundleProduct->getPriceType();
-
-                if ((int)$bundlePriceType !== \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC) {
-                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                        $qtyProductPerBundle = $bundleChild->getQtyOrdered() / $orderItem->getQtyOrdered();
-                        $childPriceRatio = $this->getProportionOfBundleChild($orderItem, $bundleChild, $orderItem->getOriginalPrice()) / $qtyProductPerBundle;
-                        $originItemPrice = $this->productRepository->get($bundleChild->getSku(), false, $order->getStoreId())->getPrice();
-
-                        $priceDifferences += (($originItemPrice - $childPriceRatio) * $bundleChild->getQtyOrdered());
-                    }
-                }
-            }
+    private function addReturnOrderItemData(
+        $rma, $rmaItem, $itemNsamt,
+        $itemDcamt, $itemSlamt, $itemMiamt,
+        $itemNetwr, $itemTaxAmount,
+        $originPosnr, $bundleChild = null
+    ) {
+        if ($bundleChild) {
+            $sku = $bundleChild->getSku();
+            $itemId = $bundleChild->getItemId();
+        } else {
+            $sku = $rmaItem->getProductSku();
+            $itemId = $rmaItem->getOrderItemId();
         }
-        return $priceDifferences;
+
+        $storeId = $rma->getStoreId();
+        $order = $rma->getOrder();
+        $product = $this->productRepository->get($sku, false, $rma->getStoreId());
+        $meins = $product->getData('meins');
+        $skuPrefix = $this->config->getSapSkuPrefix($storeId);
+        $skuPrefix = $skuPrefix ?: '';
+        $sku = str_replace($skuPrefix, '', $sku);
+        $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
+        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $client = $this->config->getClient('store', $storeId);
+
+        $this->rmaItemData[] = [
+            'itemVkorg' => $salesOrg,
+            'itemKunnr' => $client,
+            'itemOdrno' => "R" . $rma->getIncrementId(),
+            'itemPosnr' => $this->cnt,
+            'itemMatnr' => $sku,
+            'itemMenge' => intval($rmaItem->getQtyRequested()),
+            // 아이템 단위, Default : EA
+            'itemMeins' => $this->getMeins($meins),
+            'itemNsamt' => $itemNsamt,
+            'itemDcamt' => $itemDcamt,
+            'itemSlamt' => $itemSlamt,
+            'itemMiamt' => $itemMiamt,
+            // 상품이 무상제공인 경우 Y 아니면 N
+            'itemFgflg' => $itemSlamt == 0 ? 'Y' : 'N',
+            'itemMilfg' => (($itemSlamt == $itemMiamt) && $itemSlamt > 0) ? 'Y' : 'N',
+            'itemAuart' => $isMileageOrderItem ? self::SAMPLE_RETURN : self::RETURN_ORDER,
+            'itemAugru' => $isMileageOrderItem ? self::AUGRU_MILEAGE_ALL_RETURN_CODE : self::AUGRU_RETURN_CODE,
+            'itemAbrvw' => $isMileageOrderItem ? self::ABRVW_MILEAGE_ALL_RETURN_CODE : self::ABRVW_RETURN_CODE,
+            'itemNetwr' => $itemNetwr,
+            'itemMwsbp' => $itemTaxAmount,
+            'itemVkorgOri' => $salesOrg,
+            'itemKunnrOri' => $client,
+            'itemOdrnoOri' => $order->getIncrementId(),
+            'itemPosnrOri' => $originPosnr[$itemId]
+        ];
+
+        $this->cnt++;
+        $this->itemsSubtotal += $itemNsamt;
+        $this->itemsGrandTotal += ($itemNsamt - $itemDcamt - $itemMiamt);
+        $this->itemsGrandTotalInclTax += ($itemNsamt - $itemDcamt - $itemMiamt - $itemTaxAmount);
+        $this->itemsDiscountAmount += $itemDcamt;
+        $this->itemsMileage += $itemMiamt;
+    }
+
+    /**
+     * Reset rma data
+     *
+     * @return void
+     */
+    protected function resetData()
+    {
+        parent::resetData();
+        $this->rmaItemData = [];
     }
 }
