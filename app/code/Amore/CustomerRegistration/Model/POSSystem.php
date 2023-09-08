@@ -14,7 +14,7 @@ use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Amore\CustomerRegistration\Helper\Data;
+use Amore\CustomerRegistration\Helper\Data as AmoreHelper;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\RegionFactory;
@@ -44,7 +44,7 @@ class POSSystem extends PosRequest
     private $timezone;
 
     /**
-     * @var Data
+     * @var Config
      */
     protected $config;
 
@@ -89,6 +89,11 @@ class POSSystem extends PosRequest
     protected $posLogger;
 
     /**
+     * @var AmoreHelper
+     */
+    protected $amoreHelper;
+
+    /**
      * @param Curl $curl
      * @param MiddlewareHelper $middlewareHelper
      * @param Logger $logger
@@ -100,6 +105,7 @@ class POSSystem extends PosRequest
      * @param ManagerInterface $eventManager
      * @param StoreManagerInterface $storeManager
      * @param POSLogger $posLogger
+     * @param AmoreHelper $amoreHelper
      */
     public function __construct(
         Curl $curl,
@@ -112,7 +118,8 @@ class POSSystem extends PosRequest
         TimezoneInterface $timezone,
         ManagerInterface $eventManager,
         StoreManagerInterface $storeManager,
-        POSLogger $posLogger
+        POSLogger $posLogger,
+        AmoreHelper $amoreHelper
     ) {
         $this->timezone = $timezone;
         $this->eventManager = $eventManager;
@@ -121,6 +128,7 @@ class POSSystem extends PosRequest
         $this->regionResourceModel = $regionResourceModel;
         $this->cityHelper = $cityHelper;
         $this->posLogger = $posLogger;
+        $this->amoreHelper = $amoreHelper;
         parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
@@ -216,7 +224,7 @@ class POSSystem extends PosRequest
     {
         if ($response['data']['mobilecheckCnt'] > 1) {
             $result['code'] = 4;
-            $cmsPage = $this->config->getDuplicateMembershipCmsPage();
+            $cmsPage = $this->amoreHelper->getDuplicateMembershipCmsPage();
             if ($cmsPage) {
                 $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
@@ -230,7 +238,7 @@ class POSSystem extends PosRequest
             $response['data']['customerInfo']['cstmIntgSeq'] == ''
         ) {
             $result['code'] = 5;
-            $cmsPage = $this->config->getMembershipErrorCmsPage();
+            $cmsPage = $this->amoreHelper->getMembershipErrorCmsPage();
             if ($cmsPage) {
                 $result['url'] = $this->storeManager->getStore()->getBaseUrl().$cmsPage;
             } else {
@@ -463,7 +471,7 @@ class POSSystem extends PosRequest
         if ($baCode) {
             $websiteId = $this->storeManager->getWebsite()->getId();
             $checkTW = substr($baCode, 0, 2);
-            $prefix = $this->config->getBaCodePrefix($websiteId);
+            $prefix = $this->amoreHelper->getBaCodePrefix($websiteId);
             if (in_array(strtolower($checkTW), ['tw', 'vn'])) {
                 $baCode = strtoupper($checkTW) . substr($baCode, 2);
             } else {
