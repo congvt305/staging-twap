@@ -33,6 +33,9 @@ class CalculatePrice
             $totalItemsQtyOrdered = 0;
             /** @var \Magento\Sales\Model\Order\Item $bundleItem */
             foreach ($bundleItems as $bundleItem) {
+                if ($bundleItem->getIsFreeGift()) {
+                    continue;
+                }
                 $totalItemsQtyOrdered += $bundleItem->getQtyOrdered();
             }
             $totalPrice = 0;
@@ -46,34 +49,45 @@ class CalculatePrice
             $parentProductPrice = $orderItem->getPrice() * $orderItem->getQtyOrdered();
             foreach ($bundleItems as $bundleItem) {
                 if (!$bundleItem->getPrice()) {
-                    $priceRatio = $bundleItem->getQtyOrdered() / $totalItemsQtyOrdered;
-                    $bundlItemPrice = $this->orderData->roundingPrice($parentProductPrice * $priceRatio, $isDecimalFormat);
-                    $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getTaxAmount() * $priceRatio, $isDecimalFormat);
-                    if ($isEnableRewardsPoint) {
-                        $rewardPointItem = $rewardPoint * $priceRatio;
-                        $mileageAmountItem = $this->orderData->roundingPrice($rewardPointItem / $spendingRate, $isDecimalFormat);
+                    if ($bundleItem->getIsFreeGift()) {
+                        $bundleItem->setData('normal_sales_amount', 0);
+                        $bundleItem->setData('am_spent_reward_points', 0);
+                        $bundleItem->setData('discount_amount', 0);
+                        $bundleItem->setData('mileage_amount', 0);
+                        $bundleItem->setData('tax_amount', 0);
                     } else {
-                        $rewardPointItem = 0;
-                        $mileageAmountItem = 0;
+                        $priceRatio = $bundleItem->getQtyOrdered() / $totalItemsQtyOrdered;
+                        $bundlItemPrice = $this->orderData->roundingPrice($parentProductPrice * $priceRatio, $isDecimalFormat);
+                        $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getTaxAmount() * $priceRatio, $isDecimalFormat);
+                        if ($isEnableRewardsPoint) {
+                            $rewardPointItem = $rewardPoint * $priceRatio;
+                            $mileageAmountItem = $this->orderData->roundingPrice($rewardPointItem / $spendingRate, $isDecimalFormat);
+                        } else {
+                            $rewardPointItem = 0;
+                            $mileageAmountItem = 0;
+                        }
+
+                        $bundleItemDiscountAmount = $this->orderData->roundingPrice($orderItem->getDiscountAmount() * $priceRatio, $isDecimalFormat) - $mileageAmountItem;
+                        $totalPrice += $bundlItemPrice;
+                        $totalRewardPoint += $rewardPointItem;
+                        $totalDiscountAmount -= $bundleItemDiscountAmount;
+                        $totalMileageAmount -= $mileageAmountItem;
+                        $totalTaxAmount -= $itemTaxAmount;
+
+                        $bundleItem->setData('normal_sales_amount', $bundlItemPrice);
+                        $bundleItem->setData('am_spent_reward_points', $rewardPointItem);
+                        $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
+                        $bundleItem->setData('mileage_amount', $mileageAmountItem);
+                        $bundleItem->setData('tax_amount', $itemTaxAmount);
                     }
-
-                    $bundleItemDiscountAmount = $this->orderData->roundingPrice($orderItem->getDiscountAmount() * $priceRatio, $isDecimalFormat) - $mileageAmountItem;
-                    $totalPrice += $bundlItemPrice;
-                    $totalRewardPoint += $rewardPointItem;
-                    $totalDiscountAmount -= $bundleItemDiscountAmount;
-                    $totalMileageAmount -= $mileageAmountItem;
-                    $totalTaxAmount -= $itemTaxAmount;
-
-                    $bundleItem->setData('normal_sales_amount', $bundlItemPrice);
-                    $bundleItem->setData('am_spent_reward_points', $rewardPointItem);
-                    $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
-                    $bundleItem->setData('mileage_amount', $mileageAmountItem);
-                    $bundleItem->setData('tax_amount', $itemTaxAmount);
                 }
             }
 
             //Correct price
             foreach ($bundleItems as $bundleItem) {
+                if ($bundleItem->getIsFreeGift()) {
+                    continue;
+                }
                 if ($parentProductPrice != $totalPrice) {
                     $gapAmount = $parentProductPrice - $totalPrice;
                     $bundleItem->setData('normal_sales_amount', $bundleItem->getData('normal_sales_amount') + $gapAmount);
