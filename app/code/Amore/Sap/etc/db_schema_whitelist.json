@@ -34,7 +34,8 @@
             "sap_item_nsamt": true,
             "sap_item_dcamt": true,
             "sap_item_slamt": true,
-            "sap_item_netwr": true
+            "sap_item_netwr": true,
+            "is_free_gift": true
         }
     }
 }
