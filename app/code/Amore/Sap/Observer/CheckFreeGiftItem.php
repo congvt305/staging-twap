@@ -42,7 +42,7 @@ class CheckFreeGiftItem implements ObserverInterface
     {
         $order = $observer->getEvent()->getOrder();
         foreach ($order->getAllItems() as $item) {
-            if ($item->getProductType() == 'bundle') {
+            if ($item->getProductType() == 'bundle' || $item->getProductType() == 'configurable') {
                 continue;
             }
             $productPrice = $this->productRepository->getById($item->getProductId())->getPrice();
