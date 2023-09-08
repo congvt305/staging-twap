@@ -354,7 +354,11 @@ class SapOrderReturnData extends AbstractSapOrder
                 if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
                     continue;
                 }
-                $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
+                if ($orderItem->getIsFreeGift()) {
+                    $shippingAmount = 0;
+                } else {
+                    $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
+                }
                 $itemDcamt = $orderItem->getDiscountAmount();
                 $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
                 $itemSlamt = $itemNsamt - $itemDcamt;
@@ -386,7 +390,12 @@ class SapOrderReturnData extends AbstractSapOrder
                 $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
-                    $shippingAmountPerChild =  $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
+                    if ($bundleChildrenItem->getIsFreeGift()) {
+                        $shippingAmountPerChild = 0;
+                    } else {
+                        $shippingAmountPerChild =  $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
+                    }
+
                     $itemDcamt = $bundleChildrenItem->getDiscountAmount();
                     $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + $shippingAmountPerChild;
                     $itemSlamt = $itemNsamt - $itemDcamt;
