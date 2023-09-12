@@ -176,8 +176,8 @@ class POSSystem extends PosRequest
                 $parameters
             );
 
-            $apiResponse = $this->sendRequest($parameters, $storeId, 'memberInfo');
-            $response = $this->middlewareHelper->unserializeData($apiResponse);
+            $response = $this->sendRequest($parameters, $storeId, 'memberInfo');
+
             $result = $this->handleResponse($response, 'memberInfo');
             $this->posLogger->addAPILog(
                 'POS get info API Response',
@@ -315,10 +315,8 @@ class POSSystem extends PosRequest
                 'POS set info API Call',
                 $parameters
             );
-            $apiResponse = $this->sendRequest($parameters, $storeId, 'memberJoin');
+            $response = $this->sendRequest($parameters, $storeId, 'memberJoin');
 
-
-            $response = $this->middlewareHelper->unserializeData($apiResponse);
             $result = $this->handleResponse($response, 'memberJoin');
 
             $this->posLogger->addAPILog(
@@ -419,8 +417,7 @@ class POSSystem extends PosRequest
                 'POS get BA Code info API Call',
                 $parameters
             );
-            $apiResponse = $this->sendRequest( $parameters, $storeId, 'baInfo');
-            $response = $this->middlewareHelper->unserializeData($apiResponse);
+            $response = $this->sendRequest( $parameters, $storeId, 'baInfo');
 
             $this->posLogger->addAPILog(
                 'POS get BA Code info API Response',
