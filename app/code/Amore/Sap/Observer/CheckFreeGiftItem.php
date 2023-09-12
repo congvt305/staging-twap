@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by Eguana.
- * User: Brian
- * Date: 2020-09-23
- * Time: 오후 6:08
- */
-
+declare(strict_types=1);
 namespace Amore\Sap\Observer;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
 
 class CheckFreeGiftItem implements ObserverInterface
 {
@@ -21,16 +14,12 @@ class CheckFreeGiftItem implements ObserverInterface
     private $productRepository;
 
     /**
-     * @var OrderRepositoryInterface
+     * @param ProductRepositoryInterface $productRepository
      */
-    private OrderRepositoryInterface $orderRepository;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        OrderRepositoryInterface $orderRepository
+        ProductRepositoryInterface $productRepository
     ) {
         $this->productRepository = $productRepository;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -40,16 +29,15 @@ class CheckFreeGiftItem implements ObserverInterface
      */
     public function execute(EventObserver $observer)
     {
-        $order = $observer->getEvent()->getOrder();
-        foreach ($order->getAllItems() as $item) {
+        $quote = $observer->getEvent()->getQuote();
+        foreach ($quote->getAllItems() as $item) {
             if ($item->getProductType() == 'bundle' || $item->getProductType() == 'configurable') {
                 continue;
             }
-            $productPrice = $this->productRepository->getById($item->getProductId())->getPrice();
-            if ($productPrice == 0) {
+            $product = $this->productRepository->getById($item->getProductId());
+            if ($product->getPrice() == 0 || $product->getIsFreeGift()) {
                 $item->setIsFreeGift(1);
             }
         }
-        $this->orderRepository->save($order);
     }
 }
