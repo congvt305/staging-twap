@@ -44,4 +44,8 @@
                 type="Amore\Sap\Model\ResourceModel\Order\Handler\CustomState" />
     <preference for="Magento\InventoryShipping\Observer\SourceDeductionProcessor"
                 type="Amore\Sap\Observer\SourceDeductionProcessor" />
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="custom_attribute_quote_to_order_item"
+                type="Amore\Sap\Plugin\AttributesQuoteItemToOrderItem"/>
+    </type>
 </config>

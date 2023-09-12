@@ -38,4 +38,7 @@
         <column xsi:type="text" name="sap_item_netwr" nullable="true" comment="SAP Order Item Netwr Amount"/>
         <column xsi:type="boolean" name="is_free_gift" nullable="false" comment="Is Free Gift" default="false"/>
     </table>
+    <table name="quote_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
+        <column xsi:type="boolean" name="is_free_gift" nullable="false" comment="Is Free Gift" default="false"/>
+    </table>
 </schema>

@@ -37,5 +37,10 @@
             "sap_item_netwr": true,
             "is_free_gift": true
         }
+    },
+    "quote_item": {
+        "column": {
+            "is_free_gift": true
+        }
     }
 }
