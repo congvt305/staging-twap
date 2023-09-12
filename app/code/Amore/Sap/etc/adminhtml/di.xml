@@ -9,5 +9,15 @@
     <preference for="Magento\Rma\Block\Adminhtml\Rma\Grid" type="Amore\Sap\Block\Adminhtml\Rma\CustomGrid" />
     <preference for="Magento\Rma\Model\ResourceModel\Rma\Grid\Collection"
                 type="Amore\Sap\Model\ResourceModel\Rma\Grid\Collection" />
-
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool"
+                 type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="is_free_gift" xsi:type="array">
+                    <item name="class" xsi:type="string">Amore\Sap\Ui\DataProvider\Product\Form\Modifier\IsFreeGiftAttribute</item>
+                    <item name="sortOrder" xsi:type="number">1000</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>
