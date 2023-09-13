@@ -29,6 +29,7 @@ class CalculatePrice
             $rewardPoint = $orderItem->getData('am_spent_reward_points');
             $mileageAmountItem = $this->orderData->roundingPrice($rewardPoint / $spendingRate);
         } else {
+            $rewardPoint = 0;
             $mileageAmountItem = 0;
         }
         $itemSubtotal = $this->orderData->roundingPrice($orderItem->getPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat);
