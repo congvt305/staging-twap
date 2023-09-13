@@ -539,13 +539,14 @@ class SapOrderConfirmData extends AbstractSapOrder
                     } else {
                         $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
                     }
-                    $itemMiamt = $orderItem->getData('mileage_amount');
-                    $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
-                    $itemDcamt = $orderItem->getData('discount_amount');
-                    $itemSlamt = $orderItem->getData('sales_amount') + $shippingAmount;
-                    $itemNetwr = $orderItem->getData('net_amount')  + $shippingAmount;
+                    $itemMiamt = $orderItem->getData('sap_item_miamt');
+                    $itemNsamt = $orderItem->getData('sap_item_nsamt') + $shippingAmount;
+                    $itemDcamt = $orderItem->getData('sap_item_dcamt');
+                    $itemSlamt = $orderItem->getData('sap_item_slamt') + $shippingAmount;
+                    $itemNetwr = $orderItem->getData('sap_item_netwr') + $shippingAmount;
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
+
                     if($isEnableRewardsPoint) {
                         if ($mileageUsedAmountExisted > $itemMiamt) {
                             $mileageUsedAmountExisted -= $itemMiamt;
@@ -554,10 +555,9 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $mileageUsedAmountExisted = 0;
                         }
 
-                        if ($orderItem->getData('am_spent_reward_points')) {
-                            $rewardPoints = $this->orderData->roundingPrice($orderItem->getData('am_spent_reward_points'), $isDecimalFormat);
+                        if ($orderItem->getData('sap_item_reward_point')) {
+                            $rewardPoints = $this->orderData->roundingPrice($orderItem->getData('sap_item_reward_point'), $isDecimalFormat);
                         }
-
                         $discountFromPoints = $rewardPoints / $spendingRate;
                         if ($discountFromPoints == $itemNsamt) {
                             $redemptionFlag = 'Y';
@@ -567,7 +567,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $this->addOrderItemData(
                         $order, $orderItem, $itemNsamt, $itemDcamt,
                         $itemSlamt, $itemMiamt, $itemNetwr,
-                        $orderItem->getTaxAmount(), $redemptionFlag, $rewardPoints
+                        $orderItem->getData('sap_item_mwsbp'), $redemptionFlag, $rewardPoints
                     );
                 } else {
                     $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
@@ -578,11 +578,11 @@ class SapOrderConfirmData extends AbstractSapOrder
                             $shippingAmountPerChild = $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChild->getQtyOrdered(), $isDecimalFormat);
                         }
 
-                        $itemDcamt = $bundleChild->getDiscountAmount();
-                        $itemNsamt = $bundleChild->getData('normal_sales_amount') + $shippingAmountPerChild;
+                        $itemDcamt = $bundleChild->getData('sap_item_dcamt');
+                        $itemNsamt = $bundleChild->getData('sap_item_nsamt') + $shippingAmountPerChild;
                         $itemSlamt = $itemNsamt - $itemDcamt;
-                        $itemMiamt = $bundleChild->getData('mileage_amount');
-                        $itemTaxAmount = $bundleChild->getData('tax_amount');
+                        $itemMiamt = $bundleChild->getData('sap_item_miamt');
+                        $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
                         $rewardPointsPerChild = 0;
                         $redemptionFlag = 'N';
 
@@ -594,8 +594,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                                 $mileageUsedAmountExisted = 0;
                             }
 
-                            if ($bundleChild->getData('am_spent_reward_points')) {
-                                $rewardPointsPerChild = $this->orderData->roundingPrice($bundleChild->getData('am_spent_reward_points'), $isDecimalFormat);
+                            if ($bundleChild->getData('sap_item_reward_point')) {
+                                $rewardPointsPerChild = $this->orderData->roundingPrice($bundleChild->getData('sap_item_reward_point'), $isDecimalFormat);
                             }
                             $discountFromPoints = $rewardPointsPerChild / $spendingRate;
                             if ($discountFromPoints >= $itemNsamt) {

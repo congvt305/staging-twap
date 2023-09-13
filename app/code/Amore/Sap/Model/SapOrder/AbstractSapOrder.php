@@ -277,6 +277,9 @@ abstract class AbstractSapOrder
                     $item->setData('sap_item_dcamt', $itemsData[$key]['itemDcamt']);
                     $item->setData('sap_item_slamt', $itemsData[$key]['itemSlamt']);
                     $item->setData('sap_item_netwr', $itemsData[$key]['itemNetwr']);
+                    $item->setData('sap_item_miamt', $itemsData[$key]['itemMiamt']);
+                    $item->setData('sap_item_reward_point', $itemsData[$key]['PointAccount']);
+                    $item->setData('sap_item_mwsbp',  $itemsData[$key]['itemMwsbp']);
                 }
             }
             $size = count($itemsData);
