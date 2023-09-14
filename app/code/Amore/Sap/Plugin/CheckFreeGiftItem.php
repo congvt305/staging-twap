@@ -1,12 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace Amore\Sap\Observer;
+
+namespace Amore\Sap\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Framework\Event\Observer as EventObserver;
-use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\QuoteManagement;
 
-class CheckFreeGiftItem implements ObserverInterface
+class CheckFreeGiftItem
 {
     /**
      * @var ProductRepositoryInterface
@@ -21,15 +24,22 @@ class CheckFreeGiftItem implements ObserverInterface
     ) {
         $this->productRepository = $productRepository;
     }
-
     /**
-     * @param EventObserver $observer
+     * Before submitOrder plugin.
+     *
+     * @param QuoteManagement $subject
+     * @param Quote $quote
+     * @param array $orderData
      * @return void
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function execute(EventObserver $observer)
-    {
-        $quote = $observer->getEvent()->getQuote();
+    public function beforeSubmit(
+        QuoteManagement $subject,
+        Quote $quote,
+        array $orderData = []
+    ): void {
+        //Must use this because LinePay mobile cannot go through observer checkout_submit_before
         foreach ($quote->getAllItems() as $item) {
             if ($item->getProductType() == 'bundle' || $item->getProductType() == 'configurable') {
                 continue;
