@@ -29,6 +29,7 @@ class CalculatePrice
             $rewardPoint = $orderItem->getData('am_spent_reward_points');
             $mileageAmountItem = $this->orderData->roundingPrice($rewardPoint / $spendingRate);
         } else {
+            $rewardPoint = 0;
             $mileageAmountItem = 0;
         }
         $itemSubtotal = $this->orderData->roundingPrice($orderItem->getPrice() * $orderItem->getQtyOrdered(), $isDecimalFormat);
@@ -37,11 +38,13 @@ class CalculatePrice
         $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getTaxAmount(), $isDecimalFormat);
 
         $itemNetwr = $itemSubtotal - $itemTotalDiscount - $this->orderData->roundingPrice($mileageAmountItem, $isDecimalFormat) - $itemTaxAmount;
-        $orderItem->setData('mileage_amount', $mileageAmountItem);
-        $orderItem->setData('normal_sales_amount', $itemSubtotal);
-        $orderItem->setData('discount_amount', $itemTotalDiscount);
-        $orderItem->setData('sales_amount', $itemSaleAmount);
-        $orderItem->setData('net_amount', $itemNetwr);
+        $orderItem->setData('sap_item_miamt', $mileageAmountItem);
+        $orderItem->setData('sap_item_nsamt', $itemSubtotal);
+        $orderItem->setData('sap_item_dcamt', $itemTotalDiscount);
+        $orderItem->setData('sap_item_slamt', $itemSaleAmount);
+        $orderItem->setData('sap_item_netwr', $itemNetwr);
+        $orderItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPoint ?? 0, $isDecimalFormat));
+        $orderItem->setData('sap_item_mwsbp', $itemTaxAmount);
         return $orderItem;
     }
 }
