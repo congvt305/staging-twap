@@ -32,13 +32,13 @@
         <column xsi:type="smallint" name="sap_creditmemo_send_check" nullable="true" comment="Check for credit memo send"/>
     </table>
     <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
-        <column xsi:type="text" name="sap_item_nsamt" nullable="false" default="0" comment="SAP Order Item Net Sale Amount"/>
-        <column xsi:type="text" name="sap_item_dcamt" nullable="false" default="0" comment="SAP Order Item Discount Amount"/>
-        <column xsi:type="text" name="sap_item_slamt" nullable="false" default="0" comment="SAP Order Item Sale Amount"/>
-        <column xsi:type="text" name="sap_item_netwr" nullable="false" default="0" comment="SAP Order Item Netwr Amount"/>
-        <column xsi:type="text" name="sap_item_miamt" nullable="false" default="0" comment="SAP Order Item Mileage Amount"/>
-        <column xsi:type="text" name="sap_item_mwsbp" nullable="false" default="0" comment="SAP Order Item Tax Amount"/>
-        <column xsi:type="text" name="sap_item_reward_point" nullable="true" comment="SAP Order Item Point Account"/>
+        <column xsi:type="decimal" name="sap_item_nsamt" nullable="false" default="0" comment="SAP Order Item Net Sale Amount"/>
+        <column xsi:type="decimal" name="sap_item_dcamt" nullable="false" default="0" comment="SAP Order Item Discount Amount"/>
+        <column xsi:type="decimal" name="sap_item_slamt" nullable="false" default="0" comment="SAP Order Item Sale Amount"/>
+        <column xsi:type="decimal" name="sap_item_netwr" nullable="false" default="0" comment="SAP Order Item Netwr Amount"/>
+        <column xsi:type="decimal" name="sap_item_miamt" nullable="false" default="0" comment="SAP Order Item Mileage Amount"/>
+        <column xsi:type="decimal" name="sap_item_mwsbp" nullable="false" default="0" comment="SAP Order Item Tax Amount"/>
+        <column xsi:type="decimal" name="sap_item_reward_point" nullable="true" comment="SAP Order Item Point Account"/>
         <column xsi:type="boolean" name="is_free_gift" nullable="false" comment="Is Free Gift" default="false"/>
     </table>
     <table name="quote_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
