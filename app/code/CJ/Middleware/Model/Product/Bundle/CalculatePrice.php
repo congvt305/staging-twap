@@ -74,11 +74,11 @@ class CalculatePrice
                         $totalMileageAmount -= $mileageAmountItem;
                         $totalTaxAmount -= $itemTaxAmount;
 
-                        $orderItem->setData('sap_item_miamt', $mileageAmountItem);
-                        $orderItem->setData('sap_item_nsamt', $bundlItemPrice);
-                        $orderItem->setData('sap_item_dcamt', $bundleItemDiscountAmount);
-                        $orderItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
-                        $orderItem->setData('sap_item_mwsbp', $itemTaxAmount);
+                        $bundleItem->setData('sap_item_miamt', $mileageAmountItem);
+                        $bundleItem->setData('sap_item_nsamt', $bundlItemPrice);
+                        $bundleItem->setData('sap_item_dcamt', $bundleItemDiscountAmount);
+                        $bundleItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
+                        $bundleItem->setData('sap_item_mwsbp', $itemTaxAmount);
                     }
                 }
             }
@@ -90,20 +90,20 @@ class CalculatePrice
                 }
                 if ($parentProductPrice != $totalPrice) {
                     $gapAmount = $parentProductPrice - $totalPrice;
-                    $bundleItem->setData('sap_item_nsamt', $bundleItem->getData('normal_sales_amount') + $gapAmount);
+                    $bundleItem->setData('sap_item_nsamt', $bundleItem->getData('sap_item_nsamt') + $gapAmount);
                 }
                 if ($rewardPoint != $totalRewardPoint) {
                     $gapRewardPointAmount = $rewardPoint - $totalRewardPoint;
-                    $bundleItem->setData('sap_item_reward_point', $bundleItem->getData('am_spent_reward_points') + $gapRewardPointAmount);
+                    $bundleItem->setData('sap_item_reward_point', $bundleItem->getData('sap_item_reward_point') + $gapRewardPointAmount);
                 }
                 if ($totalDiscountAmount > 0) {
-                    $bundleItem->setData('sap_item_dcamt', $bundleItem->getData('discount_amount') + $totalDiscountAmount);
+                    $bundleItem->setData('sap_item_dcamt', $bundleItem->getData('sap_item_dcamt') + $totalDiscountAmount);
                 }
                 if ($totalMileageAmount > 0) {
-                    $bundleItem->setData('sap_item_miamt', $bundleItem->getData('mileage_amount') + $totalMileageAmount);
+                    $bundleItem->setData('sap_item_miamt', $bundleItem->getData('sap_item_miamt') + $totalMileageAmount);
                 }
                 if ($totalTaxAmount > 0) {
-                    $bundleItem->setData('sap_item_mwsbp', $bundleItem->getData('tax_amount') + $totalTaxAmount);
+                    $bundleItem->setData('sap_item_mwsbp', $bundleItem->getData('sap_item_mwsbp') + $totalTaxAmount);
                 }
                 break;
             }
@@ -122,7 +122,7 @@ class CalculatePrice
                 $bundleItem->setData('sap_item_miamt', $mileageAmountItem);
                 $bundleItem->setData('sap_item_nsamt', $itemSlamt);
                 $orderItem->setData('sap_item_mwsbp', $bundleItem->getTaxAmount());
-                $orderItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem, $isDecimalFormat));
+                $orderItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
             }
         }
         return $orderItem;
