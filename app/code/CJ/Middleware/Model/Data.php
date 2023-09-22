@@ -44,6 +44,9 @@ class Data
      */
     public function roundingPrice($price, $isDecimal = false)
     {
+        if (!$price) {
+            return 0;
+        }
         $precision = $isDecimal ? 2 : 0;
         return round($price, $precision);
     }
