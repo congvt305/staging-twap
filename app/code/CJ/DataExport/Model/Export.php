@@ -4,6 +4,8 @@ namespace CJ\DataExport\Model;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Locale\ResolverInterface;
+use CJ\DataExport\Model\Export\CronSchedule\CronScheduleInterface;
+
 /**
  * Class Export
  */
@@ -49,10 +51,17 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      */
     protected $objectManager;
 
+    /**
+     * @var \CJ\DataExport\Model\Export\Adapter\CronScheduleCsv
+     */
+    protected $cjCronScheduleWriter;
+
     const ENTITY_RMA = 'cj_rma';
     const ENTITY_ORDER = 'cj_sales_order';
     const ENTITY_REDEMPTION = 'cj_redemption';
     const ENTITY_REDEMPTION_POS = 'cj_redemption_pos';
+    const ENTITY_CRON_SCHEDULE = 'cj_cron_schedule';
+
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
@@ -74,6 +83,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         \CJ\DataExport\Model\Export\Adapter\RedemptionCsv $redemptionCsv,
         \CJ\DataExport\Model\Export\Adapter\RedemptionPosCsv $redemptionPosCsv,
         \CJ\DataExport\Model\Export\Adapter\RmaCsv $rmaCsv,
+        \CJ\DataExport\Model\Export\Adapter\CronScheduleCsv $cronScheduleCsv,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\Serialize\SerializerInterface $serializer,
@@ -112,6 +122,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         $this->cjOrderWriter = $orderCsv;
         $this->cjRedemptionWriter = $redemptionCsv;
         $this->cjRedemptionPosWriter = $redemptionPosCsv;
+        $this->cjCronScheduleWriter = $cronScheduleCsv;
         $this->fileFormats = $this->_exportConfig->getFileFormats();
     }
 
@@ -129,6 +140,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             case self::ENTITY_REDEMPTION:
             case self::ENTITY_RMA:
             case self::ENTITY_ORDER:
+            case self::ENTITY_CRON_SCHEDULE:
                 $this->_logger->log('info', __('Begin export of %1', $this->getEntity()));
                 $fileFormat = $this->getFileFormat();
                 if (!isset($this->fileFormats[$fileFormat])) {
@@ -171,8 +183,23 @@ class Export extends \Amore\GcrmDataExport\Model\Export
                 return $this->cjRmaWriter;
             case self::ENTITY_ORDER:
                 return $this->cjOrderWriter;
+            case self::ENTITY_CRON_SCHEDULE:
+                return $this->cjCronScheduleWriter;
             default:
                 return parent::returnExport($className);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getScheduledFileName()
+    {
+        if ($this->getEntity() == CronScheduleInterface::ENTITY_TYPE) {
+            $runDate = $this->getRunDate() ? $this->getRunDate() : null;
+            return $this->_dateModel->date('Y-m-d', $runDate) . "-" . CronScheduleInterface::FILE_NAME;
+        } else {
+            return parent::getScheduledFileName();
         }
     }
 
@@ -191,6 +218,7 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             case self::ENTITY_RMA:
             case self::ENTITY_REDEMPTION:
             case self::ENTITY_REDEMPTION_POS:
+            case self::ENTITY_CRON_SCHEDULE:
                 $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
                 $this->collectionFactory
                     ->create()
