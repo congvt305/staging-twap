@@ -32,41 +32,11 @@ class CronScheduleCsv extends \Magento\ImportExport\Model\Export\Adapter\Abstrac
     protected $_fileHandler;
 
     /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
-     */
-    protected $orderRepositoryInterface;
-
-    /**
-     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
-     */
-    protected $timezoneInterface;
-
-    /**
-     * @var \Magento\Framework\App\ResourceConnection
-     */
-    protected $resourceConnection;
-
-    /**
-     * @var \CJ\DataExport\Model\Config\Config
-     */
-    protected $config;
-
-    /**
-     * @var \CJ\DataExport\Logger\Logger
-     */
-    protected $logger;
-
-    /**
      * @var string
      */
     protected $_namePrefix = 'cj_cron_schedule';
 
     /**
-     * @param \CJ\DataExport\Logger\Logger $logger
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \CJ\DataExport\Model\Config\Config $config
-     * @param OrderRepositoryInterface $orderRepositoryInterface
-     * @param TimezoneInterface $timezoneInterface
      * @param Filesystem $filesystem
      * @param null $destination
      * @param string $destinationDirectoryCode
@@ -74,22 +44,12 @@ class CronScheduleCsv extends \Magento\ImportExport\Model\Export\Adapter\Abstrac
      * @throws LocalizedException
      */
     public function __construct(
-        \CJ\DataExport\Logger\Logger $logger,
-        \Magento\Framework\App\ResourceConnection $resourceConnection,
-        \CJ\DataExport\Model\Config\Config $config,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepositoryInterface,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateModel,
         $destination = null,
         string $destinationDirectoryCode = DirectoryList::VAR_IMPORT_EXPORT
     ) {
         register_shutdown_function([$this, 'destruct']);
-        $this->resourceConnection = $resourceConnection;
-        $this->config = $config;
-        $this->logger = $logger;
-        $this->orderRepositoryInterface = $orderRepositoryInterface;
-        $this->timezoneInterface = $timezoneInterface;
         $this->_directoryHandle = $filesystem->getDirectoryWrite($destinationDirectoryCode);
         if (!$destination) {
             $dirPath = $destinationDirectoryCode . '/' . \Magento\ScheduledImportExport\Model\Scheduled\Operation::FILE_HISTORY_DIRECTORY . $dateModel->date('Y/m/d') . '/';

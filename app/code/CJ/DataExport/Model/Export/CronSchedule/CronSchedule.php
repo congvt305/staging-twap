@@ -123,10 +123,8 @@ class CronSchedule extends \Magento\ImportExport\Model\Export\AbstractEntity
     ];
 
     /**
-     * @param \CJ\DataExport\Model\Config\Config $configHelper
      * @param \CJ\DataExport\Model\Export\Adapter\CronScheduleCsv $cronScheduleCsv
      * @param \CJ\DataExport\Model\Export\Order\AttributeCollectionProvider $attributeCollectionProvider
-     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Amore\GcrmDataExport\Helper\Data $dataHelper
      * @param \CJ\DataExport\Logger\Logger $logger
@@ -140,10 +138,8 @@ class CronSchedule extends \Magento\ImportExport\Model\Export\AbstractEntity
      * @param array $data
      */
     public function __construct(
-        \CJ\DataExport\Model\Config\Config $configHelper,
         \CJ\DataExport\Model\Export\Adapter\CronScheduleCsv $cronScheduleCsv,
         \CJ\DataExport\Model\Export\Order\AttributeCollectionProvider $attributeCollectionProvider,
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Amore\GcrmDataExport\Helper\Data $dataHelper,
         \CJ\DataExport\Logger\Logger $logger,
@@ -156,10 +152,8 @@ class CronSchedule extends \Magento\ImportExport\Model\Export\AbstractEntity
         State $state,
         array $data = []
     ) {
-        $this->configHelper = $configHelper;
         $this->cronScheduleWriter = $cronScheduleCsv;
         $this->attributeCollectionProvider = $attributeCollectionProvider;
-        $this->resultRedirectFactory = $redirectFactory;
         $this->messageManager = $messageManager;
         $this->dataHelper = $dataHelper;
         $this->logger = $logger;
