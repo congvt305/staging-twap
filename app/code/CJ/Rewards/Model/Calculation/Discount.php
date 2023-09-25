@@ -277,7 +277,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         if ($oddTotal > 0 && $total->getSubtotal() + $total->getDiscountAmount() >= $oddTotal) {
             foreach ($items as $item) {
                 // to determine the child item discount, we calculate the parent
-                if ($item->getDiscountAmount() > 0) {
+                if ($item->getDiscountAmount() > 0 && !$this->promoItemHelper->isPromoItem($item)) {
                     $isAddOddTotal = true;
                     $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
                     $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
