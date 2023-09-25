@@ -10,7 +10,6 @@ namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Logger\Logger;
-use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\Data\CustomerInterface;
@@ -85,16 +84,6 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $rewardData;
 
     /**
-     * @var CalculatePrice
-     */
-    private $bundleCalculatePrice;
-
-    /**
-     * @var \CJ\Middleware\Model\Product\CalculatePrice
-     */
-    private $productCalculatePrice;
-
-    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -111,8 +100,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
      * @param \Amasty\Rewards\Model\Config $amConfig
      * @param \CJ\Rewards\Model\Data $rewardData
-     * @param CalculatePrice $bundleCalculatePrice
-     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
      * @param \CJ\Middleware\Model\Data $orderData
      */
     public function __construct(
@@ -132,8 +119,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         \CJ\Middleware\Helper\Data $middlewareHelper,
         \Amasty\Rewards\Model\Config $amConfig,
         \CJ\Rewards\Model\Data $rewardData,
-        CalculatePrice $bundleCalculatePrice,
-        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData
     ) {
         $this->invoiceRepository = $invoiceRepository;
@@ -145,8 +130,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
         $this->rewardData = $rewardData;
-        $this->bundleCalculatePrice = $bundleCalculatePrice;
-        $this->productCalculatePrice = $productCalculatePrice;
         parent::__construct(
             $searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config, $quoteCvsLocationRepository,
@@ -528,22 +511,15 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
 
         if ($invoice != null) {
-            $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
             $orderItems = $order->getAllVisibleItems();
             /** @var Item $orderItem */
             foreach ($orderItems as $orderItem) {
                 if ($orderItem->getProductType() != 'bundle') {
-                    $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
-                    if ($orderItem->getIsFreeGift()) {
-                        $shippingAmount = 0;
-                    } else {
-                        $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
-                    }
                     $itemMiamt = $orderItem->getData('sap_item_miamt');
-                    $itemNsamt = $orderItem->getData('sap_item_nsamt') + $shippingAmount;
+                    $itemNsamt = $orderItem->getData('sap_item_nsamt');
                     $itemDcamt = $orderItem->getData('sap_item_dcamt');
-                    $itemSlamt = $orderItem->getData('sap_item_slamt') + $shippingAmount;
-                    $itemNetwr = $orderItem->getData('sap_item_netwr') + $shippingAmount;
+                    $itemSlamt = $orderItem->getData('sap_item_slamt');
+                    $itemNetwr = $orderItem->getData('sap_item_netwr');
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
 
@@ -556,7 +532,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                         }
 
                         if ($orderItem->getData('sap_item_reward_point')) {
-                            $rewardPoints = $this->orderData->roundingPrice($orderItem->getData('sap_item_reward_point'), $isDecimalFormat);
+                            $rewardPoints = $orderItem->getData('sap_item_reward_point');
                         }
                         $discountFromPoints = $rewardPoints / $spendingRate;
                         if ($discountFromPoints == $itemNsamt) {
@@ -570,17 +546,10 @@ class SapOrderConfirmData extends AbstractSapOrder
                         $orderItem->getData('sap_item_mwsbp'), $redemptionFlag, $rewardPoints
                     );
                 } else {
-                    $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                     foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                        if ($bundleChild->getIsFreeGift()) {
-                            $shippingAmountPerChild = 0;
-                        } else {
-                            $shippingAmountPerChild = $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChild->getQtyOrdered(), $isDecimalFormat);
-                        }
-
                         $itemDcamt = $bundleChild->getData('sap_item_dcamt');
-                        $itemNsamt = $bundleChild->getData('sap_item_nsamt') + $shippingAmountPerChild;
-                        $itemSlamt = $itemNsamt - $itemDcamt;
+                        $itemNsamt = $bundleChild->getData('sap_item_nsamt');
+                        $itemSlamt = $bundleChild->getData('sap_item_slamt');
                         $itemMiamt = $bundleChild->getData('sap_item_miamt');
                         $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
                         $rewardPointsPerChild = 0;
@@ -595,7 +564,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                             }
 
                             if ($bundleChild->getData('sap_item_reward_point')) {
-                                $rewardPointsPerChild = $this->orderData->roundingPrice($bundleChild->getData('sap_item_reward_point'), $isDecimalFormat);
+                                $rewardPointsPerChild = $bundleChild->getData('sap_item_reward_point');
                             }
                             $discountFromPoints = $rewardPointsPerChild / $spendingRate;
                             if ($discountFromPoints >= $itemNsamt) {

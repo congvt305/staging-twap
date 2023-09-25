@@ -344,34 +344,6 @@ abstract class AbstractSapOrder
     }
 
     /**
-     * Get shipping amount per item
-     *
-     * @param Order $order
-     * @return float|int
-     */
-    protected function getShippingAmountPerItem($order)
-    {
-        $orderItems = $order->getAllVisibleItems();
-        $countItem = 0;
-        foreach($orderItems as $orderItem) {
-            if ($orderItem->getProductType() != 'bundle') {
-                if ($orderItem->getIsFreeGift()) {
-                    continue;
-                }
-                $countItem += $orderItem->getQtyOrdered();
-            } else {
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    if ($bundleChild->getIsFreeGift()) {
-                        continue;
-                    }
-                    $countItem += $bundleChild->getQtyOrdered();
-                }
-            }
-        }
-        return $order->getShippingAmount() / $countItem;
-    }
-
-    /**
      * @param $value
      * @param $key
      * @return void
