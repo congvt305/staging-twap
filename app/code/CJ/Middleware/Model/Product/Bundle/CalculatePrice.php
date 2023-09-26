@@ -121,8 +121,8 @@ class CalculatePrice
                 $bundleItem->setData('sap_item_dcamt', $bundleItemDiscountAmount);
                 $bundleItem->setData('sap_item_miamt', $mileageAmountItem);
                 $bundleItem->setData('sap_item_nsamt', $itemSlamt);
-                $orderItem->setData('sap_item_mwsbp', $bundleItem->getTaxAmount());
-                $orderItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
+                $bundleItem->setData('sap_item_mwsbp', $bundleItem->getTaxAmount());
+                $bundleItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
             }
         }
         return $orderItem;
