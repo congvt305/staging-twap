@@ -37,6 +37,12 @@ class CalculatePrice
         $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getTaxAmount(), $isDecimalFormat);
 
         $itemNetwr = $itemSubtotal - $itemTotalDiscount - $this->orderData->roundingPrice($mileageAmountItem, $isDecimalFormat) - $itemTaxAmount;
+
+        if ($itemNetwr < 0) {
+            $mileageAmountItem = $itemSubtotal - $itemTotalDiscount - $itemTaxAmount;
+            $rewardPoint = $mileageAmountItem * $spendingRate;
+        }
+
         $orderItem->setData('sap_item_miamt', $mileageAmountItem);
         $orderItem->setData('sap_item_nsamt', $itemSubtotal);
         $orderItem->setData('sap_item_dcamt', $itemTotalDiscount);

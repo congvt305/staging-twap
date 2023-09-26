@@ -74,7 +74,7 @@ class AddDataToSendMiddle implements ObserverInterface
     public function execute(Observer $observer)
     {
         $order = $observer->getData('order');
-        $orderItems = $order->getAllVisibleItems();
+        $orderItems = $order->getAllItems();
         $storeId = $order->getStoreId();
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
         $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
@@ -97,7 +97,8 @@ class AddDataToSendMiddle implements ObserverInterface
         }
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
-            if ($orderItem->getProductType() != 'bundle') {
+            //Have to check getParentItem because this observer hasn't set parentItemId yet so can not use allVisibileItem to get
+            if ($orderItem->getProductType() != 'bundle' && !$orderItem->getParentItem()) {
                 $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 if ($orderItem->getIsFreeGift()) {
                     $shippingAmount = 0;
@@ -108,21 +109,23 @@ class AddDataToSendMiddle implements ObserverInterface
                 $orderItem->setData('sap_item_slamt', $orderItem->getData('sap_item_slamt') + $shippingAmount);
                 $orderItem->setData('sap_item_netwr', $orderItem->getData('sap_item_netwr') + $shippingAmount);
             } else {
-                $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    if ($bundleChild->getIsFreeGift()) {
-                        $shippingAmountPerChild = 0;
-                    } else {
-                        $shippingAmountPerChild = $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChild->getQtyOrdered(), $isDecimalFormat);
+                if (!$orderItem->getParentItem()) {
+                    $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        if ($bundleChild->getIsFreeGift()) {
+                            $shippingAmountPerChild = 0;
+                        } else {
+                            $shippingAmountPerChild = $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChild->getQtyOrdered(), $isDecimalFormat);
+                        }
+                        $itemDcamt = $bundleChild->getData('sap_item_dcamt');
+                        $itemNsamt = $bundleChild->getData('sap_item_nsamt') + $shippingAmountPerChild;
+                        $itemSlamt = $itemNsamt - $itemDcamt;
+                        $itemMiamt = $bundleChild->getData('sap_item_miamt');
+                        $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
+                        $bundleChild->setData('sap_item_slamt', $itemSlamt);
+                        $bundleChild->setData('sap_item_netwr', ($itemSlamt - $itemMiamt - $itemTaxAmount));
+                        $bundleChild->setData('sap_item_nsamt', $itemNsamt);
                     }
-                    $itemDcamt = $bundleChild->getData('sap_item_dcamt');
-                    $itemNsamt = $bundleChild->getData('sap_item_nsamt') + $shippingAmountPerChild;
-                    $itemSlamt = $itemNsamt - $itemDcamt;
-                    $itemMiamt = $bundleChild->getData('sap_item_miamt');
-                    $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
-                    $bundleChild->setData('sap_item_slamt', $itemSlamt);
-                    $bundleChild->setData('sap_item_netwr', ($itemSlamt - $itemMiamt - $itemTaxAmount));
-                    $bundleChild->setData('sap_item_nsamt', $itemNsamt);
                 }
             }
         }
