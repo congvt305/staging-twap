@@ -48,4 +48,8 @@
         <plugin name="custom_attribute_quote_to_order_item"
                 type="Amore\Sap\Plugin\AttributesQuoteItemToOrderItem"/>
     </type>
+    <type name="\Magento\Quote\Model\QuoteManagement">
+        <plugin name="check_is_free_gift" type="Amore\Sap\Plugin\CheckFreeGiftItem"/>
+    </type>
+
 </config>

@@ -9,4 +9,6 @@
             entityAttributeFilterType="cj_redemption"/>
     <entity name="cj_redemption_pos" label="New Redemption To Pos" model="CJ\DataExport\Model\Export\Redemption\RedemptionPos"
             entityAttributeFilterType="cj_redemption_pos"/>
+    <entity name="cj_cron_schedule" label="Schedule Backup cron Logs" model="CJ\DataExport\Model\Export\CronSchedule\CronSchedule"
+            entityAttributeFilterType="cj_cron_schedule"/>
 </config>
