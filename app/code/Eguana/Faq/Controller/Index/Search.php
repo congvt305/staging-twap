@@ -55,7 +55,7 @@ class Search extends Action
         $searchValue = $this->getRequest()->getParam('faqSearchVal');
 
         if (!$searchValue) {
-            $this->_redirect('faq/index/index');
+            return $this->_redirect('faq/index/index');
         }
 
         $this->dataPersistor->set('searchValue', trim($searchValue));
