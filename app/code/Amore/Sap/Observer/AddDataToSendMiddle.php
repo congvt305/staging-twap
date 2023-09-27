@@ -140,20 +140,22 @@ class AddDataToSendMiddle implements ObserverInterface
      */
     private function getShippingAmountPerItem($order)
     {
-        $orderItems = $order->getAllVisibleItems();
+        $orderItems = $order->getAllItems();
         $countItem = 0;
         foreach($orderItems as $orderItem) {
-            if ($orderItem->getProductType() != 'bundle') {
+            if ($orderItem->getProductType() != 'bundle' && !$orderItem->getParentItem()) {
                 if ($orderItem->getIsFreeGift()) {
                     continue;
                 }
                 $countItem += $orderItem->getQtyOrdered();
             } else {
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    if ($bundleChild->getIsFreeGift()) {
-                        continue;
+                if (!$orderItem->getParentItem()) {
+                    foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                        if ($bundleChild->getIsFreeGift()) {
+                            continue;
+                        }
+                        $countItem += $bundleChild->getQtyOrdered();
                     }
-                    $countItem += $bundleChild->getQtyOrdered();
                 }
             }
         }
