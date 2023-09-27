@@ -322,23 +322,23 @@ abstract class AbstractSapOrder
      */
     protected function correctPriceOrderItemData($orderItemData, $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat)
     {
-        $orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
-
         if ($isDecimalFormat) {
             $listToFormat = ['itemNsamt', 'itemSlamt', 'itemDcamt', 'itemMiamt', 'itemNetwr'];
 
             foreach ($listToFormat as $field) {
                 foreach ($orderItemData as $key => $value) {
-                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                    if (isset($value[$field])) {
                         $orderItemData[$key][$field] = $this->orderData->formatPrice($value[$field], $isDecimalFormat);
                     }
                 }
             }
         }
+
+        $orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
 
         return $orderItemData;
     }
