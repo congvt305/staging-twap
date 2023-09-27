@@ -3,4 +3,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Amasty\Promo\Observer\Salesrule\Discount" type="CJ\AmastyPromo\Observer\Salesrule\Discount" />
     <preference for="Amasty\Promo\Model\ItemRegistry\PromoItemRemover" type="CJ\AmastyPromo\Override\Model\ItemRegistry\PromoItemRemover" />
+    <preference for="Magento\AdvancedSalesRule\Model\Rule\Condition\FilterTextGenerator\Product\Attribute"
+                type="CJ\AmastyPromo\Model\Rule\Condition\FilterTextGenerator\Product\Attribute"/>
 </config>
