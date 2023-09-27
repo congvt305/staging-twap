@@ -7,5 +7,10 @@
                 <limit>30</limit>
             </custom_catalog>
         </cj_custom_catalog>
+        <catalog>
+            <remove_special_character>
+                <enabled>0</enabled>
+            </remove_special_character>
+        </catalog>
     </default>
 </config>
