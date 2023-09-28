@@ -1,0 +1,137 @@
+diff --git a/vendor/amasty/promo/Model/SkipAddressValidationErrorRegistry.php b/vendor/amasty/promo/Model/SkipAddressValidationErrorRegistry.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..ddc34902691fc75c0915c70b8bbe609ad29c5776
+--- /dev/null
++++ b/vendor/amasty/promo/Model/SkipAddressValidationErrorRegistry.php
+@@ -0,0 +1,25 @@
++<?php
++
++namespace Amasty\Promo\Model;
++
++class SkipAddressValidationErrorRegistry
++{
++    /**
++     * @var array
++     */
++    private array $ids = [];
++
++    public function getIds(): array
++    {
++        return $this->ids;
++    }
++
++    public function addId(int $id): void
++    {
++        if (in_array($id, $this->ids)) {
++            return;
++        }
++
++        $this->ids[] = $id;
++    }
++}
+diff --git a/vendor/amasty/promo/Plugin/Quote/Model/Quote/TotalsCollectorPlugin.php b/vendor/amasty/promo/Plugin/Quote/Model/Quote/TotalsCollectorPlugin.php
+index b55d1e0..b4f2e46 100644
+--- a/vendor/amasty/promo/Plugin/Quote/Model/Quote/TotalsCollectorPlugin.php
++++ b/vendor/amasty/promo/Plugin/Quote/Model/Quote/TotalsCollectorPlugin.php
+@@ -12,6 +12,7 @@ use Amasty\Promo\Helper\Item as ItemHelper;
+ use Amasty\Promo\Model\Config;
+ use Amasty\Promo\Model\ItemRegistry\PromoItemRegistry;
+ use Amasty\Promo\Model\Registry;
++use Amasty\Promo\Model\SkipAddressValidationErrorRegistry;
+ use Amasty\Promo\Model\Storage;
+ use Magento\Catalog\Model\ProductRepository;
+ use Magento\Framework\Event\ManagerInterface;
+@@ -39,7 +40,12 @@ class TotalsCollectorPlugin
+      * @var ItemHelper
+      */
+     private $promoItemHelper;
+-
++
++    /**
++     * @var SkipAddressValidationErrorRegistry
++     */
++    private $skipAddressValidation;
++
+     /**
+      * @var Registry
+      */
+@@ -80,6 +86,7 @@ class TotalsCollectorPlugin
+     public function __construct(
+         Cart $promoCartHelper,
+         ItemHelper $promoItemHelper,
++        SkipAddressValidationErrorRegistry $skipAddressValidation,
+         Registry $promoRegistry,
+         Config $config,
+         ManagerInterface $eventManager,
+@@ -89,6 +96,7 @@ class TotalsCollectorPlugin
+     ) {
+         $this->promoCartHelper = $promoCartHelper;
+         $this->promoItemHelper = $promoItemHelper;
++        $this->skipAddressValidation = $skipAddressValidation;
+         $this->promoRegistry = $promoRegistry;
+         $this->config = $config;
+         $this->eventManager = $eventManager;
+@@ -129,6 +137,7 @@ class TotalsCollectorPlugin
+             $this->promoItemRegistry->resetQtyAllowed();
+         }
+
++        $this->skipAddressValidation->addId((int)$address->getId());
+         $totals = $proceed($quote, $address);
+
+         $address->setData(self::KEY_IS_ADDRESS_PROCESSED, true);
+diff --git a/vendor/amasty/promo/Plugin/SalesRule/Model/ResourceModel/Rule/Collection/SkipValidationError.php b/vendor/amasty/promo/Plugin/SalesRule/Model/ResourceModel/Rule/Collection/SkipValidationError.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..d98472bf4a6650a45c0815bd923b0bffc082c8aa
+--- /dev/null
++++ b/vendor/amasty/promo/Plugin/SalesRule/Model/ResourceModel/Rule/Collection/SkipValidationError.php
+@@ -0,0 +1,37 @@
++<?php
++
++namespace Amasty\Promo\Plugin\SalesRule\Model\ResourceModel\Rule\Collection;
++
++use Amasty\Promo\Model\SkipAddressValidationErrorRegistry;
++use Closure;
++use Magento\Quote\Model\Quote\Address;
++
++class SkipValidationError
++{
++    /**
++     * @var SkipAddressValidationErrorRegistry
++     */
++    private $skipAddressValidation;
++
++    public function __construct(SkipAddressValidationErrorRegistry $skipAddressValidation)
++    {
++        $this->skipAddressValidation = $skipAddressValidation;
++    }
++
++    public function beforeAroundSetValidationFilter(
++        $eePlugin,
++        $subject,
++        Closure $proceed,
++        $websiteId,
++        $customerGroupId,
++        $couponCode = '',
++        $now = null,
++        Address $address = null
++    ): array {
++        if (in_array($address->getId(), $this->skipAddressValidation->getIds())) {
++            $address->setData('skip_validation_filter', true);
++        }
++
++        return [$subject, $proceed, $websiteId, $customerGroupId, $couponCode, $now, $address];
++    }
++}
+diff --git a/vendor/amasty/promo/etc/di.xml b/vendor/amasty/promo/etc/di.xml
+index d003a21..768cbce 100644
+--- a/vendor/amasty/promo/etc/di.xml
++++ b/vendor/amasty/promo/etc/di.xml
+@@ -141,4 +141,8 @@
+         <plugin name="Amasty_Promo::disableFPTForFree"
+                 type="Amasty\Promo\Plugin\Weee\Helper\Data\DisableFPTForFree"/>
+     </type>
++    <type name="Magento\AdvancedSalesRule\Model\ResourceModel\Plugin\Rule\Collection">
++        <plugin name="SkipValidationError"
++                type="Amasty\Promo\Plugin\SalesRule\Model\ResourceModel\Rule\Collection\SkipValidationError"/>
++    </type>
+ </config>
