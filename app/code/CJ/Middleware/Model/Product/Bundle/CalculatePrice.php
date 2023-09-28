@@ -62,6 +62,7 @@ class CalculatePrice
                         if ($isEnableRewardsPoint) {
                             $rewardPointItem = $rewardPoint * $priceRatio;
                             $mileageAmountItem = $this->orderData->roundingPrice($rewardPointItem / $spendingRate, $isDecimalFormat);
+                            $rewardPointItem = $mileageAmountItem * $spendingRate; // to match with $mileageAmountItem in case decimal = 0 and $mileageAmountItem < 0.5;
                         } else {
                             $rewardPointItem = 0;
                             $mileageAmountItem = 0;
@@ -104,13 +105,13 @@ class CalculatePrice
                     $gapRewardPointAmount = $rewardPoint - $totalRewardPoint;
                     $bundleItem->setData('sap_item_reward_point', $bundleItem->getData('sap_item_reward_point') + $gapRewardPointAmount);
                 }
-                if ($totalDiscountAmount > 0) {
+                if ($totalDiscountAmount != 0) {
                     $bundleItem->setData('sap_item_dcamt', $bundleItem->getData('sap_item_dcamt') + $totalDiscountAmount);
                 }
-                if ($totalMileageAmount > 0) {
+                if ($totalMileageAmount != 0) {
                     $bundleItem->setData('sap_item_miamt', $bundleItem->getData('sap_item_miamt') + $totalMileageAmount);
                 }
-                if ($totalTaxAmount > 0) {
+                if ($totalTaxAmount != 0) {
                     $bundleItem->setData('sap_item_mwsbp', $bundleItem->getData('sap_item_mwsbp') + $totalTaxAmount);
                 }
                 break;
