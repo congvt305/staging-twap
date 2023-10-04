@@ -39,15 +39,17 @@ class IsFreeGiftObserver  implements ObserverInterface
         try {
             $product = $observer->getProduct();
             $price = $product->getPrice();
-            if ($price == null) {
-                $defaultProduct = $this->productRepository->getById($product->getId(), false, 0);
-                $price = $defaultProduct->getPrice();
+            if ($product->getTypeId() == 'simple') {
+                if ($price == null) {
+                    $product->setIsFreeGift(null); // remove store view config
+                } elseif ($price == 0) {
+                    $product->setIsFreeGift(1);
+                } else {
+                    $product->setIsFreeGift(0);
+                }
             }
-            if ($product->getEntityId() && $price == 0 && $product->getTypeId() == 'simple') {
-                $product->setIsFreeGift(1);
-            } else {
-                $product->setIsFreeGift(0);
-            }
+
+
         } catch (\Exception $exception) {
             $this->logger->error('Cannot update product free gift: ' . $exception->getMessage());
         }
