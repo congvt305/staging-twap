@@ -2,32 +2,32 @@
 
 namespace Amore\Sap\Observer;
 
-use Magento\Catalog\Model\Product\Action as ProductAction;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 
 class IsFreeGiftObserver  implements ObserverInterface
 {
     /**
-     * @var ProductAction
-     */
-    protected $productAction;
-
-    /**
-     * @var Logger
+     * @var LoggerInterface
      */
     protected $logger;
 
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @param LoggerInterface $logger
-     * @param ProductAction $productAction
+     * @param ProductRepository $productRepository
      */
     public function __construct(
         LoggerInterface $logger,
-        ProductAction $productAction
+        ProductRepository $productRepository
     ) {
         $this->logger = $logger;
-        $this->productAction = $productAction;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -38,7 +38,12 @@ class IsFreeGiftObserver  implements ObserverInterface
     {
         try {
             $product = $observer->getProduct();
-            if ($product->getEntityId() && $product->getPrice() == 0 && $product->getTypeId() == 'simple') {
+            $price = $product->getPrice();
+            if ($price == null) {
+                $defaultProduct = $this->productRepository->getById($product->getId(), false, 0);
+                $price = $defaultProduct->getPrice();
+            }
+            if ($product->getEntityId() && $price == 0 && $product->getTypeId() == 'simple') {
                 $product->setIsFreeGift(1);
             } else {
                 $product->setIsFreeGift(0);
