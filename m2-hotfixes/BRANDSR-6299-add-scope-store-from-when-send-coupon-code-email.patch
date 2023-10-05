@@ -1,0 +1,15 @@
+diff --git a/vendor/amasty/special-occasion-coupons/Model/Sender/AbstractSender.php b/vendor/amasty/special-occasion-coupons/Model/Sender/AbstractSender.php
+index ac1e1a84e..ced830aee 100644
+--- a/vendor/amasty/special-occasion-coupons/Model/Sender/AbstractSender.php
++++ b/vendor/amasty/special-occasion-coupons/Model/Sender/AbstractSender.php
+@@ -184,8 +184,8 @@ class AbstractSender
+                 ['area' => Area::AREA_FRONTEND, 'store' => $storeId]
+             )->setTemplateVars(
+                 $data
+-            )->setFrom(
+-                $this->helper->getModuleConfig('general/identity', $storeId)
++            )->setFromByScope(
++                $this->helper->getModuleConfig('general/identity', $storeId), $storeId
+             )->addTo(
+                 $customer->getEmail(),
+                 $customer->getName()
