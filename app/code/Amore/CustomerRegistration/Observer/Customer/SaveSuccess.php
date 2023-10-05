@@ -358,6 +358,21 @@ class SaveSuccess implements ObserverInterface
                 $parameters['homeState'] = '';
                 if ($cityName && $regionObject) {
                     $cities = $this->cityHelper->getCityData();
+
+                    //Add log to track issue undefined array key when registration
+                    if (!isset($cities[$regionObject->getRegionId()])) {
+                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6105.log');
+                        $logger = new \Zend_Log();
+                        $logger->addWriter($writer);
+                        $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+                        $backTrace = '';
+                        foreach ($debugBackTrace as $debug) {
+                            $backTrace .= @$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function'] . " | ";
+                        }
+                        $logger->crit('Back trace : ' . $backTrace);
+                        $logger->crit('Customer email: ' . $customer->getEmail() . ' has regionId: ' . $regionObject->getRegionId() . ', cityName: ' . $cityName);
+                        $logger->crit('Post Params: ' . json_encode($customerData));
+                    }
                     $regionCities = $cities[$regionObject->getRegionId()];
                     foreach ($regionCities as $regionCity) {
                         if ($regionCity['name'] == $cityName) {
