@@ -351,12 +351,12 @@ class SapOrderReturnData extends AbstractSapOrder
             $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             $quantityRatioPerItemPartial = $rmaItem->getQtyRequested() / $orderItem->getQtyOrdered();
             if ($orderItem->getProductType() != 'bundle') {
-                $itemDcamt = $orderItem->getData('sap_item_dcamt') * $quantityRatioPerItemPartial;
-                $itemNsamt = $orderItem->getData('sap_item_nsamt') * $quantityRatioPerItemPartial;
-                $itemSlamt = $orderItem->getData('sap_item_slamt') * $quantityRatioPerItemPartial;
-                $itemMiamt = $orderItem->getData('sap_item_miamt') * $quantityRatioPerItemPartial;
-                $itemTaxAmount = $orderItem->getData('sap_item_mwsbp') * $quantityRatioPerItemPartial;
-                $itemNetwr = $orderItem->getData('sap_item_netwr') * $quantityRatioPerItemPartial;
+                $itemDcamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_dcamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemNsamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_nsamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemSlamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_slamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemMiamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_miamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getData('sap_item_mwsbp') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemNetwr =$this->orderData->roundingPrice( $orderItem->getData('sap_item_netwr') * $quantityRatioPerItemPartial, $isDecimalFormat);
 
 
                 if($isEnableRewardsPoint) {
