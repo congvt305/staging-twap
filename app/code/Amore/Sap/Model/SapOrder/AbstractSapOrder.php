@@ -322,6 +322,12 @@ abstract class AbstractSapOrder
      */
     protected function correctPriceOrderItemData($orderItemData, $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat)
     {
+        $orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
+        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
+
         if ($isDecimalFormat) {
             $listToFormat = ['itemNsamt', 'itemSlamt', 'itemDcamt', 'itemMiamt', 'itemNetwr'];
 
@@ -333,12 +339,6 @@ abstract class AbstractSapOrder
                 }
             }
         }
-
-        $orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $orderItemData, 'itemNsamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $orderItemData, 'itemDcamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($mileageUsedAmount, $this->itemsMileage, $orderItemData, 'itemMiamt', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $orderItemData, 'itemNetwr', $isDecimalFormat);
-        $orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotalInclTax, $orderItemData, 'itemSlamt', $isDecimalFormat);
 
         return $orderItemData;
     }
