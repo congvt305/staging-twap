@@ -276,10 +276,10 @@ class PosOrderData extends AbstractPosOrder
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
                 $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
-                $itemNsamt = $orderItem->getData('normal_sales_amount');
-                $itemDcamt = $orderItem->getData('discount_amount');
-                $itemSlamt = $orderItem->getData('sales_amount');
-                $itemNetwr = $orderItem->getData('net_amount');
+                $itemNsamt = $orderItem->getData('sap_item_nsamt');
+                $itemDcamt = $orderItem->getData('sap_item_dcamt');
+                $itemSlamt = $orderItem->getData('sap_item_slamt');
+                $itemNetwr = $orderItem->getData('sap_item_netwr');
 
                 $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt,
                     $itemSlamt, $itemNetwr, $isDecimalFormat
@@ -288,10 +288,10 @@ class PosOrderData extends AbstractPosOrder
                 $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChild) {
                     $itemDcamt = $bundleChild->getDiscountAmount();
-                    $itemNsamt = $bundleChild->getData('normal_sales_amount');
+                    $itemNsamt = $bundleChild->getData('sap_item_nsamt');
                     $itemSlamt = $itemNsamt - $itemDcamt;
-                    $itemMiamt = $bundleChild->getData('mileage_amount');
-                    $itemTaxAmount = $bundleChild->getData('tax_amount');
+                    $itemMiamt = $bundleChild->getData('sap_item_miamt');
+                    $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
                     $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
                     $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt,
                         $itemSlamt, $itemNetwr, $isDecimalFormat, $bundleChild
