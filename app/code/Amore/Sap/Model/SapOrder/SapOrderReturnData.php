@@ -9,7 +9,6 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\RmaTrackNoException;
-use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -74,16 +73,6 @@ class SapOrderReturnData extends AbstractSapOrder
     private $rewardData;
 
     /**
-     * @var CalculatePrice
-     */
-    private $bundleCalculatePrice;
-
-    /**
-     * @var \CJ\Middleware\Model\Product\CalculatePrice
-     */
-    private $productCalculatePrice;
-
-    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -97,8 +86,6 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
      * @param \Amasty\Rewards\Model\Config $amConfig
      * @param \CJ\Rewards\Model\Data $rewardData
-     * @param CalculatePrice $bundleCalculatePrice
-     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -114,8 +101,6 @@ class SapOrderReturnData extends AbstractSapOrder
         \CJ\Middleware\Helper\Data $middlewareHelper,
         \Amasty\Rewards\Model\Config $amConfig,
         \CJ\Rewards\Model\Data $rewardData,
-        CalculatePrice $bundleCalculatePrice,
-        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData,
         \Amore\Sap\Logger\Logger $logger
     ) {
@@ -126,8 +111,6 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
         $this->rewardData = $rewardData;
-        $this->bundleCalculatePrice = $bundleCalculatePrice;
-        $this->productCalculatePrice = $productCalculatePrice;
         parent::__construct(
             $searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config, $quoteCvsLocationRepository,
@@ -341,7 +324,6 @@ class SapOrderReturnData extends AbstractSapOrder
         }
 
         $orderAllItems = $order->getAllItems();
-        $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
 
@@ -350,21 +332,12 @@ class SapOrderReturnData extends AbstractSapOrder
             /** @var \Magento\Sales\Model\Order\Item $orderItem */
             $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
-                $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
-                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
-                    continue;
-                }
-                if ($orderItem->getIsFreeGift()) {
-                    $shippingAmount = 0;
-                } else {
-                    $shippingAmount = $this->orderData->roundingPrice($shippingAmountPerItem * $orderItem->getQtyOrdered(), $isDecimalFormat);
-                }
-                $itemDcamt = $orderItem->getDiscountAmount();
-                $itemNsamt = $orderItem->getData('normal_sales_amount') + $shippingAmount;
-                $itemSlamt = $itemNsamt - $itemDcamt;
-                $itemMiamt = $orderItem->getData('mileage_amount');
-                $itemTaxAmount = $orderItem->getData('tax_amount');
-                $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
+                $itemDcamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_dcamt'), $isDecimalFormat);
+                $itemNsamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_nsamt'), $isDecimalFormat);
+                $itemSlamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_slamt'), $isDecimalFormat);
+                $itemMiamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_miamt'), $isDecimalFormat);
+                $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getData('sap_item_mwsbp'), $isDecimalFormat);
+                $itemNetwr = $this->orderData->roundingPrice( $orderItem->getData('sap_item_netwr'), $isDecimalFormat);
 
                 if($isEnableRewardsPoint) {
                     if ($mileageUsedAmountExisted > $itemMiamt) {
@@ -387,21 +360,14 @@ class SapOrderReturnData extends AbstractSapOrder
                     $itemNetwr, $itemTaxAmount, $originPosnr
                 );
             } else {
-                $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChildrenItem) {
                     $itemId = $rmaItem->getOrderItemId();
-                    if ($bundleChildrenItem->getIsFreeGift()) {
-                        $shippingAmountPerChild = 0;
-                    } else {
-                        $shippingAmountPerChild =  $this->orderData->roundingPrice($shippingAmountPerItem * $bundleChildrenItem->getQtyOrdered(), $isDecimalFormat);
-                    }
-
-                    $itemDcamt = $bundleChildrenItem->getDiscountAmount();
-                    $itemNsamt = $bundleChildrenItem->getData('normal_sales_amount') + $shippingAmountPerChild;
-                    $itemSlamt = $itemNsamt - $itemDcamt;
-                    $itemMiamt = $bundleChildrenItem->getData('mileage_amount');
-                    $itemTaxAmount = $bundleChildrenItem->getData('tax_amount');
-                    $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
+                    $itemDcamt = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_dcamt'), $isDecimalFormat);
+                    $itemNsamt = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_nsamt'), $isDecimalFormat);
+                    $itemSlamt = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_slamt'), $isDecimalFormat);
+                    $itemMiamt = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_miamt'), $isDecimalFormat);
+                    $itemTaxAmount = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_mwsbp'), $isDecimalFormat);
+                    $itemNetwr = $this->orderData->roundingPrice($bundleChildrenItem->getData('sap_item_netwr'), $isDecimalFormat);
 
                     if($isEnableRewardsPoint) {
                         if ($mileageUsedAmountExisted > $itemMiamt) {
