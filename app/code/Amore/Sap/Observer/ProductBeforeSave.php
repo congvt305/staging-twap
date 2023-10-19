@@ -5,8 +5,9 @@ namespace Amore\Sap\Observer;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use CJ\Catalog\Helper\Data as Helper;
 
-class IsFreeGiftObserver  implements ObserverInterface
+class ProductBeforeSave implements ObserverInterface
 {
     /**
      * @var LoggerInterface
@@ -19,15 +20,22 @@ class IsFreeGiftObserver  implements ObserverInterface
     private $productRepository;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * @param LoggerInterface $logger
      * @param ProductRepository $productRepository
      */
     public function __construct(
         LoggerInterface $logger,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        Helper $helper
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
+        $this->helper = $helper;
     }
 
     /**
@@ -49,7 +57,15 @@ class IsFreeGiftObserver  implements ObserverInterface
                 }
             }
 
-
+            //remove special characters in product name when saving it
+            if ($this->helper->isEnabledRemoveSpecialCharacter()) {
+                $productNameWithoutSpecial = $product->getName();
+                $listSpecialCharacters = $this->helper->getSpecialCharacterList();
+                foreach ($listSpecialCharacters as $specialCharacter) {
+                    $productNameWithoutSpecial = str_replace($specialCharacter, '', $productNameWithoutSpecial);
+                }
+                $product->setName(trim($productNameWithoutSpecial));
+            }
         } catch (\Exception $exception) {
             $this->logger->error('Cannot update product free gift: ' . $exception->getMessage());
         }
