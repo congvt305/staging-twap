@@ -7,6 +7,8 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\ScheduledImportExport\Model\Scheduled\Operation\Data;
 use Magento\Framework\Message\ManagerInterface;
+use CJ\DataExport\Model\Export\CronSchedule\CronScheduleInterface;
+
 /**
  * Class Operation
  */
@@ -40,8 +42,19 @@ class Operation
         'cj_rma',
         'cj_redemption',
         'cj_redemption_pos',
-        'cj_sales_order'
+        'cj_sales_order',
+        'cj_cron_schedule'
     ];
+
+    /**
+     * @var \Magento\Framework\Filesystem\Driver\File
+     */
+    protected $driverFile;
+
+    /**
+     * @var \Magento\Framework\Filesystem\DirectoryList
+     */
+    protected $directoryList;
 
     /**
      * @var array
@@ -89,6 +102,8 @@ class Operation
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\Filesystem\Io\Ftp $ftpAdapter,
         \Magento\Framework\Filesystem\Io\Sftp $sftpAdapter,
+        \Magento\Framework\Filesystem\Driver\File $driverFile,
+        \Magento\Framework\Filesystem\DirectoryList $directoryList,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         \Magento\Framework\Serialize\Serializer\Json $serializer = null,
@@ -116,7 +131,8 @@ class Operation
             $serializer,
             $data
         );
-
+        $this->driverFile = $driverFile;
+        $this->directoryList = $directoryList;
         $this->logger = $logger;
         $this->date = $date;
         $this->sftpAdapter = $sftpAdapter;
@@ -145,7 +161,14 @@ class Operation
             }
 
             $filePath = '/' . trim($filePath, '\\/');
+            if ($this->getEntityType() == CronScheduleInterface::ENTITY_TYPE) {
+                $filePath = isset($sftpArgs['filename_prefix']) ? $this->getFileNameCronScheduleExport($sftpArgs['filename_prefix']) : $this->getFileNameCronScheduleExport();
+                //1. save to local file
+                $logDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_IMPORT_EXPORT);
+                $fileContent = $this->saveLocalFile($fileContent, $logDirectory);
+            }
             $result = $this->ftpAdapter->write($filePath, $fileContent);
+
         } elseif ('sftp' == $fileInfo['server_type']) {
             $sftpArgs = $this->_prepareIoConfiguration($fileInfo);
             if (isset($sftpArgs['user'])) {
@@ -163,10 +186,22 @@ class Operation
                 $sftpFilePath = trim($sftpArgs['path'], '\\/');
                 $this->sftpAdapter->cd($sftpFilePath);
             }
+            if ($this->getEntityType() == CronScheduleInterface::ENTITY_TYPE) {
+                $sftpFileName = isset($sftpArgs['filename_prefix']) ? $this->getFileNameCronScheduleExport($sftpArgs['filename_prefix']) : $this->getFileNameCronScheduleExport();
+                //1. save to local file
+                $logDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_IMPORT_EXPORT);
+                $fileContent = $this->saveLocalFile($fileContent, $logDirectory);
+            }
             $result = $this->sftpAdapter->write($sftpFileName, $fileContent);
+
         } else {
             $rootDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
-            $result = $rootDirectory->writeFile($filePath, $fileContent);
+            if ($this->getEntityType() == CronScheduleInterface::ENTITY_TYPE) {
+                $fileContent = $this->_getCronSCheduleExportContent($fileContent, $rootDirectory, $filePath);
+                $result = $rootDirectory->writeFile($filePath, $fileContent, "a+");
+            } else {
+                $result = $rootDirectory->writeFile($filePath, $fileContent);
+            }
         }
 
         return $result;
@@ -243,5 +278,87 @@ class Operation
             // If entity type is not a custom type, we don't change any logic. The program will run like before
             return parent::_addCronTask();
         }
+    }
+
+    /**
+     * Get the path to file backup cron log
+     * @return string
+     * @throws FileSystemException
+     */
+    protected function getFilePathCronScheduleExport()
+    {
+        $logDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::VAR_IMPORT_EXPORT);
+        $dirPath = self::LOG_DIRECTORY . self::FILE_HISTORY_DIRECTORY . $this->_dateModel->date('Y/m/d') . '/';
+        $path = $dirPath;
+        $path .= $this->getFileNameCronScheduleExport();
+        return $path;
+    }
+
+    /**
+     * Get content for the cron schedule log
+     * The logic is if the file export is created, the content will be added to the exist file, no create new file
+     * In that case, header will not included
+     * If the file export is not exist, create a new file and write data to that file
+     *
+     * @param $oldContent
+     * @param $rootDirectory
+     * @param $filePath
+     * @return string
+     * @throws FileSystemException
+     */
+    public function _getCronSCheduleExportContent($oldContent, $rootDirectory, $filePath) {
+        $newContent = "";
+        if (!$rootDirectory->isExist($filePath) || !$this->driverFile->fileGetContents($rootDirectory->getAbsolutePath($filePath))) {
+            $newContent = $oldContent;
+        } else {
+            $flag = 0;
+            foreach (explode("\n", trim($oldContent, "\n")) as $line) {
+                if ($flag == 0) {
+                    $flag = 1;
+                    continue;
+                }
+                $newContent .= $line . "\n";
+            }
+        }
+        return $newContent;
+    }
+
+    /**
+     * Save content to the file on localsystem and return content
+     * @param $oldContent
+     * @param $rootDirectory
+     * @return string
+     * @throws FileSystemException
+     */
+    protected function saveLocalFile($oldContent, $logDirectory)
+    {
+        $newContent = "";
+        $path = $this->getFilePathCronScheduleExport();
+        if (!$logDirectory->isExist($path) || !$this->driverFile->fileGetContents($logDirectory->getAbsolutePath($path))) {
+            $newContent = $oldContent;
+        } else {
+            $flag = 0;
+            foreach (explode("\n", trim($oldContent, "\n")) as $line) {
+                if ($flag == 0) {
+                    $flag = 1;
+                    continue;
+                }
+                $newContent .= $line . "\n";
+            }
+        }
+        $logDirectory->writeFile($path, $newContent, "a+");
+        return $this->driverFile->fileGetContents($logDirectory->getAbsolutePath($path));
+    }
+
+    /**
+     * @param $prefix
+     * @return string
+     */
+    protected function getFileNameCronScheduleExport($prefix='')
+    {
+        $fileName = $this->_dateModel->date('Y-m-d');
+        $fileName .= "-" . CronScheduleInterface::FILE_NAME . $prefix;
+        $fileName .= ".csv";
+        return $fileName;
     }
 }
