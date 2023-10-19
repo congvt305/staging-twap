@@ -16,7 +16,7 @@ use Magento\Rma\Api\RmaAttributesManagementInterface;
 use Magento\Rma\Model\Item;
 use Magento\Rma\Model\Item\Attribute\Source\Status;
 use Magento\Rma\Model\Rma\EntityAttributesLoader;
-
+use Magento\Bundle\Model\Product\Type;
 
 /**
  * Class Rma
@@ -165,6 +165,7 @@ class Rma extends \Magento\Rma\Model\Rma
 
     /**
      * Prepares Item's data
+     * @see \Magento\Rma\Model\Rma::_preparePost
      * @param array $item
      * @return array
      */
@@ -260,29 +261,8 @@ class Rma extends \Magento\Rma\Model\Rma
     }
 
     /**
-     * Workaround method to check which status needs confirmation email to the customer
-     *
-     * By design only \Magento\Rma\Model\Item\Attribute\Source\Status::STATE_AUTHORIZED has such email
-     * but other statuses also need it
-     *
-     * @param string $status
-     * @return bool
-     */
-    public function isStatusNeedsAuthEmail($status): bool
-    {
-        $statusesNeedsEmail = [
-            Status::STATE_AUTHORIZED,
-            Status::STATE_RECEIVED,
-            Status::STATE_APPROVED,
-            Status::STATE_REJECTED,
-            Status::STATE_DENIED
-        ];
-
-        return in_array($status, $statusesNeedsEmail);
-    }
-
-    /**
      * Creates rma items collection by passed data
+     * @see \Magento\Rma\Model\Rma::_createItemsCollection
      * @param array $data
      * @return array|false|\Magento\Rma\Api\Data\ItemInterface[]|Item[]|mixed
      */
@@ -367,6 +347,20 @@ class Rma extends \Magento\Rma\Model\Rma
 
                 $itemModels[] = $itemModel;
 
+                if ($realItem = $order->getItemById($itemModel->getOrderItemId())) {
+                    //Add children item of bundle product
+                    if (!$itemModel->getEntityId() && $realItem->getProductType() === Type::TYPE_CODE) {
+                        $orderItemIds = array_column($data, 'order_item_id');
+
+                        //Ignore if item exist in request
+                        foreach ($this->getBundleChilds($item, $realItem->getItemId()) as $bundleItem) {
+                            if (!in_array($bundleItem->getOrderItemId(), $orderItemIds)) {
+                                $itemModels[] = $bundleItem;
+                            }
+                        }
+                    }
+                }
+
                 if ($this->isStatusNeedsAuthEmail($itemModel->getStatus())
                     && $itemModel->getOrigData(
                         'status'
@@ -403,7 +397,63 @@ class Rma extends \Magento\Rma\Model\Rma
         }
         $this->setItems($itemModels);
 
+        $itemStatuses = [];
+        foreach ($this->getItems() as $rmaItem) {
+            $itemStatuses[] = $rmaItem->getData('status');
+        }
+        $this->setStatus($this->_statusFactory->create()->getStatusByItems($itemStatuses))->setIsUpdate(1);
+
         return $this->getItems();
+    }
+
+    /**
+     * @param array $item
+     * @param int $orderItemId
+     * @return Item[]
+     */
+    private function getBundleChilds($item, $orderItemId)
+    {
+        $result = [];
+        foreach ($this->getOrder()->getItems() as $orderItem) {
+            if ($orderItem->getParentItemId() == $orderItemId) {
+                $itemModel = $this->_rmaItemFactory->create();
+                $item['order_item_id'] = $orderItem->getItemId();
+                $item['qty_requested'] = $itemModel->getReturnableQty($this->getOrder()->getId(), $orderItem->getItemId());
+                $itemPost = $this->_preparePost($item);
+                $key = 'bundle_child_'.$orderItem->getItemId();//Key using for matching $_FILES, this unique string is no-use
+                $itemModel->setData($itemPost)->prepareAttributes($itemPost, $key);
+                $result[] = $itemModel;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param $withoutAttributes
+     * @return \Magento\Rma\Model\ResourceModel\Item\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getItemsForDisplay($withoutAttributes = false)
+    {
+        /** @var $collection \Magento\Rma\Model\ResourceModel\Item\Collection */
+        $collection = $this->_itemsFactory->create();
+        $collection->joinField('product_type', 'sales_order_item', 'product_type', 'item_id=order_item_id', null, 'left');
+        $collection->addFieldToFilter(
+            'rma_entity_id',
+            $this->getEntityId()
+        )->addFieldToFilter(
+            'product_type',
+            ['neq' => 'bundle']
+        )->setOrder(
+            'order_item_id'
+        )->setOrder(
+            'entity_id'
+        );
+
+        if (!$withoutAttributes) {
+            $collection->addAttributeToSelect('*');
+        }
+        return $collection;
     }
 
 }
