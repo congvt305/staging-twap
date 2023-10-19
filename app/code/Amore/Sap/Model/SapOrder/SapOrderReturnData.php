@@ -310,6 +310,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $order->getStoreId());
         $orderSubtotal = abs($this->orderData->roundingPrice($order->getSubtotalInclTax(), $isDecimalFormat));
         $mileageUsedAmount = 0;
+        $originPosnr = $this->getOrderItemPosnr($rma);
         $mileageUsedAmountExisted = 0;
         $spendingRate = $this->amConfig->getPointsRate($storeId);
         if (!$spendingRate) {
@@ -358,7 +359,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 $this->addReturnOrderItemData(
                     $rma, $rmaItem, $itemNsamt,
                     $itemDcamt, $itemSlamt, $itemMiamt,
-                    $itemNetwr, $itemTaxAmount
+                    $itemNetwr, $itemTaxAmount, $originPosnr
                 );
             }
         }
@@ -446,20 +447,17 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param $itemMiamt
      * @param $itemNetwr
      * @param $itemTaxAmount
-     * @param $bundleChild
+     * @param $originPosnr
      * @return void
      * @throws NoSuchEntityException
      */
     private function addReturnOrderItemData(
         $rma, $rmaItem, $itemNsamt,
         $itemDcamt, $itemSlamt, $itemMiamt,
-        $itemNetwr, $itemTaxAmount, $bundleChild = null
+        $itemNetwr, $itemTaxAmount, $originPosnr
     ) {
-        if ($bundleChild) {
-            $sku = $bundleChild->getSku();
-        } else {
-            $sku = $rmaItem->getProductSku();
-        }
+        $sku = $rmaItem->getProductSku();
+        $itemId = $rmaItem->getOrderItemId();
 
         $storeId = $rma->getStoreId();
         $order = $rma->getOrder();
@@ -496,7 +494,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'itemVkorgOri' => $salesOrg,
             'itemKunnrOri' => $client,
             'itemOdrnoOri' => $order->getIncrementId(),
-            'itemPosnrOri' => $this->cnt
+            'itemPosnrOri' => $originPosnr[$itemId]
         ];
 
         $this->cnt++;
@@ -568,5 +566,32 @@ class SapOrderReturnData extends AbstractSapOrder
             }
         }
         return $totalReturn / $totalOrder;
+    }
+    /**
+     * @param \Magento\Rma\Model\Rma $rma
+     */
+    private function getOrderItemPosnr($rma)
+    {
+        $order = $rma->getOrder();
+        $orderItems = $order->getAllVisibleItems();
+        $originPosnrData = [];
+
+        $cnt = 1;
+
+        /** @var \Magento\Sales\Model\Order\Item $orderItem */
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getProductType() != 'bundle') {
+                $originPosnrData[$orderItem->getItemId()] = $cnt;
+                $cnt++;
+            } else {
+                $bundleChildren = $orderItem->getChildrenItems();
+                foreach ($bundleChildren as $bundleChild) {
+                    $originPosnrData[$bundleChild->getItemId()] = $cnt;
+                    $cnt++;
+                }
+            }
+        }
+
+        return $originPosnrData;
     }
 }
