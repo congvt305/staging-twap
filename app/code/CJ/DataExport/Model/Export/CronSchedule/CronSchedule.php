@@ -314,7 +314,7 @@ class CronSchedule extends \Magento\ImportExport\Model\Export\AbstractEntity
                 foreach ($this->includeColumns as $alias => $fieldName) {
                     $collection->addFieldToSelect($fieldName, $alias);
                 }
-                $collection->addFieldToFilter('main_table.finished_at', ['gteq' => $exportDate]);
+                $collection->addFieldToFilter('main_table.finished_at', ['gt' => $exportDate]);
 
             }
 
