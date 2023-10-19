@@ -50,11 +50,11 @@ class CalculatePrice
             foreach ($bundleItems as $bundleItem) {
                 if (!$bundleItem->getPrice()) {
                     if ($bundleItem->getIsFreeGift()) {
-                        $bundleItem->setData('normal_sales_amount', 0);
-                        $bundleItem->setData('am_spent_reward_points', 0);
-                        $bundleItem->setData('discount_amount', 0);
-                        $bundleItem->setData('mileage_amount', 0);
-                        $bundleItem->setData('tax_amount', 0);
+                        $bundleItem->setData('sap_item_nsamt', 0);
+                        $bundleItem->setData('sap_item_reward_point', 0);
+                        $bundleItem->setData('sap_item_dcamt', 0);
+                        $bundleItem->setData('sap_item_miamt', 0);
+                        $bundleItem->setData('sap_item_mwsbp', 0);
                     } else {
                         $priceRatio = $bundleItem->getQtyOrdered() / $totalItemsQtyOrdered;
                         $bundlItemPrice = $this->orderData->roundingPrice($parentProductPrice * $priceRatio, $isDecimalFormat);
@@ -62,23 +62,32 @@ class CalculatePrice
                         if ($isEnableRewardsPoint) {
                             $rewardPointItem = $rewardPoint * $priceRatio;
                             $mileageAmountItem = $this->orderData->roundingPrice($rewardPointItem / $spendingRate, $isDecimalFormat);
+                            $rewardPointItem = $mileageAmountItem * $spendingRate; // to match with $mileageAmountItem in case decimal = 0 and $mileageAmountItem < 0.5;
                         } else {
                             $rewardPointItem = 0;
                             $mileageAmountItem = 0;
                         }
 
                         $bundleItemDiscountAmount = $this->orderData->roundingPrice($orderItem->getDiscountAmount() * $priceRatio, $isDecimalFormat) - $mileageAmountItem;
+
+                        $itemNet = ($bundlItemPrice - $bundleItemDiscountAmount - $mileageAmountItem - $itemTaxAmount);
+                        //Just fix in case discount rewards point > net amount
+                        if ($itemNet < 0) {
+                            $mileageAmountItem = $bundlItemPrice - $bundleItemDiscountAmount - $itemTaxAmount;
+                            $rewardPointItem = $mileageAmountItem * $spendingRate;
+                        }
+
                         $totalPrice += $bundlItemPrice;
                         $totalRewardPoint += $rewardPointItem;
                         $totalDiscountAmount -= $bundleItemDiscountAmount;
                         $totalMileageAmount -= $mileageAmountItem;
                         $totalTaxAmount -= $itemTaxAmount;
 
-                        $bundleItem->setData('normal_sales_amount', $bundlItemPrice);
-                        $bundleItem->setData('am_spent_reward_points', $rewardPointItem);
-                        $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
-                        $bundleItem->setData('mileage_amount', $mileageAmountItem);
-                        $bundleItem->setData('tax_amount', $itemTaxAmount);
+                        $bundleItem->setData('sap_item_miamt', $mileageAmountItem);
+                        $bundleItem->setData('sap_item_nsamt', $bundlItemPrice);
+                        $bundleItem->setData('sap_item_dcamt', $bundleItemDiscountAmount);
+                        $bundleItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
+                        $bundleItem->setData('sap_item_mwsbp', $itemTaxAmount);
                     }
                 }
             }
@@ -90,35 +99,53 @@ class CalculatePrice
                 }
                 if ($parentProductPrice != $totalPrice) {
                     $gapAmount = $parentProductPrice - $totalPrice;
-                    $bundleItem->setData('normal_sales_amount', $bundleItem->getData('normal_sales_amount') + $gapAmount);
+                    $bundleItem->setData('sap_item_nsamt', $bundleItem->getData('sap_item_nsamt') + $gapAmount);
                 }
                 if ($rewardPoint != $totalRewardPoint) {
                     $gapRewardPointAmount = $rewardPoint - $totalRewardPoint;
-                    $bundleItem->setData('am_spent_reward_points', $bundleItem->getData('am_spent_reward_points') + $gapRewardPointAmount);
+                    $bundleItem->setData('sap_item_reward_point', $bundleItem->getData('sap_item_reward_point') + $gapRewardPointAmount);
                 }
-                if ($totalDiscountAmount > 0) {
-                    $bundleItem->setData('discount_amount', $bundleItem->getData('discount_amount') + $totalDiscountAmount);
+                if ($totalDiscountAmount != 0) {
+                    $bundleItem->setData('sap_item_dcamt', $bundleItem->getData('sap_item_dcamt') + $totalDiscountAmount);
                 }
-                if ($totalMileageAmount > 0) {
-                    $bundleItem->setData('mileage_amount', $bundleItem->getData('mileage_amount') + $totalMileageAmount);
+                if ($totalMileageAmount != 0) {
+                    $bundleItem->setData('sap_item_miamt', $bundleItem->getData('sap_item_miamt') + $totalMileageAmount);
                 }
-                if ($totalTaxAmount > 0) {
-                    $bundleItem->setData('tax_amount', $bundleItem->getData('tax_amount') + $totalTaxAmount);
+                if ($totalTaxAmount != 0) {
+                    $bundleItem->setData('sap_item_mwsbp', $bundleItem->getData('sap_item_mwsbp') + $totalTaxAmount);
                 }
                 break;
             }
         } else {
             foreach ($bundleItems as $bundleItem) {
                 if ($isEnableRewardsPoint) {
+                    $rewardPointItem = $bundleItem->getData('am_spent_reward_points');
                     $mileageAmountItem = $bundleItem->getData('am_spent_reward_points') / $spendingRate;
                 } else {
+                    $rewardPointItem = 0;
                     $mileageAmountItem = 0;
                 }
-                $itemSlamt = $this->orderData->roundingPrice($bundleItem->getPrice() * $bundleItem->getQtyOrdered(), $isDecimalFormat);
-                $bundleItemDiscountAmount = $bundleItem->getDiscountAmount() - $mileageAmountItem;
-                $bundleItem->setData('discount_amount', $bundleItemDiscountAmount);
-                $bundleItem->setData('mileage_amount', $mileageAmountItem);
-                $bundleItem->setData('normal_sales_amount', $itemSlamt);
+                $itemNsamt = $this->orderData->roundingPrice($bundleItem->getPrice() * $bundleItem->getQtyOrdered(), $isDecimalFormat);
+                $itemDcamt = $bundleItem->getDiscountAmount() - $mileageAmountItem;
+
+                $itemSlamt = $itemNsamt - $itemDcamt;
+                $itemTaxAmount = $bundleItem->getTaxAmount();
+
+                $itemNet = ($itemSlamt - $mileageAmountItem - $itemTaxAmount);
+
+                //Just fix in case discount rewards point > net amount
+                if ($itemNet < 0) {
+                    $mileageAmountItem = $itemSlamt - $itemTaxAmount;
+                    $rewardPointItem = $mileageAmountItem * $spendingRate;
+                }
+
+                $bundleItem->setData('sap_item_dcamt', $itemDcamt);
+                $bundleItem->setData('sap_item_miamt', $mileageAmountItem);
+                $bundleItem->setData('sap_item_slamt', $itemSlamt);
+                $bundleItem->setData('sap_item_netwr', $itemNet);
+                $bundleItem->setData('sap_item_nsamt', $itemNsamt);
+                $bundleItem->setData('sap_item_mwsbp', $itemTaxAmount);
+                $bundleItem->setData('sap_item_reward_point', $this->orderData->roundingPrice($rewardPointItem ?? 0, $isDecimalFormat));
             }
         }
         return $orderItem;

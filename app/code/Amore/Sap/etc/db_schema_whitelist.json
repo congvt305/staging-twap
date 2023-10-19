@@ -35,7 +35,10 @@
             "sap_item_dcamt": true,
             "sap_item_slamt": true,
             "sap_item_netwr": true,
-            "is_free_gift": true
+            "is_free_gift": true,
+            "sap_item_miamt": true,
+            "sap_item_mwsbp": true,
+            "sap_item_reward_point": true
         }
     },
     "quote_item": {

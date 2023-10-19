@@ -277,6 +277,9 @@ abstract class AbstractSapOrder
                     $item->setData('sap_item_dcamt', $itemsData[$key]['itemDcamt']);
                     $item->setData('sap_item_slamt', $itemsData[$key]['itemSlamt']);
                     $item->setData('sap_item_netwr', $itemsData[$key]['itemNetwr']);
+                    $item->setData('sap_item_miamt', $itemsData[$key]['itemMiamt']);
+                    $item->setData('sap_item_reward_point', $itemsData[$key]['PointAccount']);
+                    $item->setData('sap_item_mwsbp',  $itemsData[$key]['itemMwsbp']);
                 }
             }
             $size = count($itemsData);
@@ -338,33 +341,5 @@ abstract class AbstractSapOrder
         }
 
         return $orderItemData;
-    }
-
-    /**
-     * Get shipping amount per item
-     *
-     * @param Order $order
-     * @return float|int
-     */
-    protected function getShippingAmountPerItem($order)
-    {
-        $orderItems = $order->getAllVisibleItems();
-        $countItem = 0;
-        foreach($orderItems as $orderItem) {
-            if ($orderItem->getProductType() != 'bundle') {
-                if ($orderItem->getIsFreeGift()) {
-                    continue;
-                }
-                $countItem += $orderItem->getQtyOrdered();
-            } else {
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    if ($bundleChild->getIsFreeGift()) {
-                        continue;
-                    }
-                    $countItem += $bundleChild->getQtyOrdered();
-                }
-            }
-        }
-        return $order->getShippingAmount() / $countItem;
     }
 }

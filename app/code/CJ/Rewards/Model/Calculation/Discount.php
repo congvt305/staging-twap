@@ -74,6 +74,11 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
     private $messageManager;
 
     /**
+     * @var \CJ\Middleware\Helper\Data
+     */
+    private $middlewareHelper;
+
+    /**
      * @param Config $rewardsConfig
      * @param Applier $discountApplier
      * @param Distributor $discountDistributor
@@ -83,6 +88,8 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
      * @param TaxConfig $taxConfig
      * @param \Amasty\Promo\Helper\Item $promoItemHelper
      * @param Data $rewardData
+     * @param MessageManagerInterface $messageManager
+     * @param \CJ\Middleware\Helper\Data $middlewareHelper
      */
     public function __construct(
         Config $rewardsConfig,
@@ -94,7 +101,8 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         TaxConfig $taxConfig,
         \Amasty\Promo\Helper\Item $promoItemHelper,
         Data $rewardData,
-        MessageManagerInterface $messageManager
+        MessageManagerInterface $messageManager,
+        \CJ\Middleware\Helper\Data $middlewareHelper
     ) {
         $this->rewardsConfig = $rewardsConfig;
         $this->discountApplier = $discountApplier;
@@ -106,6 +114,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $this->promoItemHelper = $promoItemHelper;
         $this->rewardData = $rewardData;
         $this->messageManager = $messageManager;
+        $this->middlewareHelper = $middlewareHelper;
         parent::__construct(
             $rewardsConfig,
             $discountApplier,
@@ -141,7 +150,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
                 return 0;
             }
         }
-
+        $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
         if (!$points || !$rate || !$items || !$allCartPrice) {
             return 0;
         }
@@ -160,16 +169,24 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $oddTotal = 0;
         foreach ($items as $item) {
             $itemDiscount = $itemsDiscount[$item->getId()] ?? 0;
-            if ($itemDiscount > 0 ) {
+            if ($itemDiscount > 0) {
                 $oddDiscountAmount = $itemDiscount - ((int)$itemDiscount);
                 if ($oddDiscountAmount > 0) {
                     $oddTotal += $oddDiscountAmount;
                 }
             }
-            $this->discountApplier->apply($item, $total, (int)$itemDiscount, $rate);
+            if (!$isDecimalFormat) {
+                $this->discountApplier->apply($item, $total, (int)$itemDiscount, $rate);
+            } else {
+                $this->discountApplier->apply($item, $total, $itemDiscount, $rate);
+            }
+
             $discountValue += $itemsDiscount[$item->getId()];
         }
-        $this->addOddTotal($items, $total, $oddTotal, $rate);
+        if (!$isDecimalFormat) {
+            $this->addOddTotal($items, $total, $oddTotal, $rate);
+        }
+
         $appliedPoints = $discountValue * $rate;
 
 
@@ -277,7 +294,7 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         if ($oddTotal > 0 && $total->getSubtotal() + $total->getDiscountAmount() >= $oddTotal) {
             foreach ($items as $item) {
                 // to determine the child item discount, we calculate the parent
-                if ($item->getDiscountAmount() > 0) {
+                if ($item->getDiscountAmount() > 0 && !$this->promoItemHelper->isPromoItem($item)) {
                     $isAddOddTotal = true;
                     $item->setData(EntityInterface::POINTS_SPENT, $item->getData(EntityInterface::POINTS_SPENT) + $oddTotal * $rate);
                     $item->setDiscountAmount($item->getDiscountAmount() + $oddTotal);
