@@ -231,7 +231,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $nsamt = $this->itemsSubtotal;
             $dcamt = $this->itemsDiscountAmount;
             $miamt = $this->itemsMileage;
-            $slamt = $this->itemsGrandTotalInclTax;
+            $slamt = $nsamt - $dcamt;
             $isMileageOrder = ($this->itemsSubtotal == $this->itemsMileage && $this->itemsSubtotal > 0);
         }
 
