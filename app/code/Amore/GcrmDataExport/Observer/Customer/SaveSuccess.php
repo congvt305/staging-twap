@@ -245,19 +245,19 @@ class SaveSuccess implements ObserverInterface
                 $homeCity = $defaultBillingAddress->getRegion()->getRegionCode();
                 $homeAddr1 = implode(' ', $defaultBillingAddress->getStreet());
                 $homeZip = $defaultBillingAddress->getPostcode();
-                $cityName = $defaultBillingAddress->getCity();
-                if ($cityName) {
+                $cityId = $defaultBillingAddress->getCityId();
+                if ($cityId) {
                     $cities = $this->cityHelper->getCityData();
                     $regionCities = $cities[$defaultBillingAddress->getRegionId()];
                     foreach ($regionCities as $regionCity) {
-                        if ($regionCity['name'] == $cityName) {
+                        if ($regionCity['code'] == $cityId) {
                             $homeState = $regionCity['pos_code'];
                             break;
                         }
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->addAPILog($e->getMessage());
         }
 
@@ -295,7 +295,7 @@ class SaveSuccess implements ObserverInterface
                 $result = pg_exec($db_connection, $sql);
                 pg_close($db_connection);
             }
-        } catch(\Exception $e) {
+        } catch(\Throwable $e) {
             $this->logger->addAPILog($e->getMessage());
         }
     }

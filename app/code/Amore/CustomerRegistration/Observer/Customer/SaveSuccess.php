@@ -301,7 +301,7 @@ class SaveSuccess implements ObserverInterface
 
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->addAPILog($e->getMessage());
         }
     }
