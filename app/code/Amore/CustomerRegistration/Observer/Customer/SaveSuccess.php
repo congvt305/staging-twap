@@ -232,7 +232,7 @@ class SaveSuccess implements ObserverInterface
                     $this->POSSystem->syncMember($newDataAPIParameters, $newCustomerData->getStoreId());
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
     }
