@@ -18,5 +18,21 @@
                 </field>
             </group>
         </section>
+        <section id="catalog">
+            <group id="remove_special_character" translate="label" showInDefault="1" showInWebsite="0" showInStore="0"
+                   sortOrder="900">
+                <label>Remove Special Character in Product Name</label>
+                <field id="enabled" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="list" translate="label" type="textarea" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>List special character</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
     </system>
 </config>
