@@ -245,14 +245,24 @@ class SaveSuccess implements ObserverInterface
                 $homeCity = $defaultBillingAddress->getRegion()->getRegionCode();
                 $homeAddr1 = implode(' ', $defaultBillingAddress->getStreet());
                 $homeZip = $defaultBillingAddress->getPostcode();
-                $cityId = $defaultBillingAddress->getCityId();
-                if ($cityId) {
+                if ($cityId = $this->request->getParam('city_id')) {
                     $cities = $this->cityHelper->getCityData();
                     $regionCities = $cities[$defaultBillingAddress->getRegionId()];
                     foreach ($regionCities as $regionCity) {
                         if ($regionCity['code'] == $cityId) {
                             $homeState = $regionCity['pos_code'];
                             break;
+                        }
+                    }
+                } else {
+                    if ($cityName = $defaultBillingAddress->getCity()) {
+                        $cities = $this->cityHelper->getCityData();
+                        $regionCities = $cities[$defaultBillingAddress->getRegionId()];
+                        foreach ($regionCities as $regionCity) {
+                            if ($regionCity['name'] == $cityName) {
+                                $homeState = $regionCity['pos_code'];
+                                break;
+                            }
                         }
                     }
                 }
