@@ -341,10 +341,10 @@ class SapOrderReturnData extends AbstractSapOrder
             if ($orderItem->getProductType() != 'bundle') {
                 $itemDcamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_dcamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
                 $itemNsamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_nsamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
-                $itemSlamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_slamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemSlamt = $itemNsamt - $itemDcamt; // have to do this to correct price among Nsamt, Dcamt and Slamt
                 $itemMiamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_miamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
                 $itemTaxAmount = $this->orderData->roundingPrice($orderItem->getData('sap_item_mwsbp') * $quantityRatioPerItemPartial, $isDecimalFormat);
-                $itemNetwr =$this->orderData->roundingPrice( $orderItem->getData('sap_item_netwr') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemNetwr = $itemSlamt - $itemMiamt; // have to do this to correct price among Nsamt, Dcamt, Slamt and Netwr
 
 
                 if($isEnableRewardsPoint) {
@@ -371,12 +371,15 @@ class SapOrderReturnData extends AbstractSapOrder
             if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
                 $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
             }
-            $orderShippingAmount = $this->orderData->roundingPrice($order->getShippingAmount() * $quantityRatioForPartial, $isDecimalFormat);
+            if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+                $orderSubtotal += $order->getShippingAmount();
+            } else {
+                $orderGrandTotal -= $order->getShippingAmount();
+            }
             $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
-                $orderSubtotal + $orderShippingAmount, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+                $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
             );
         }
-        array_walk_recursive($this->rmaItemData, [$this, 'convertNumberToString']);
         return $this->rmaItemData;
     }
 
@@ -517,7 +520,7 @@ class SapOrderReturnData extends AbstractSapOrder
     }
 
     /**
-     * Get quantity ratio for partial
+     * Get Total item return
      *
      * @param \Magento\Rma\Model\Rma $rma
      * @return int
