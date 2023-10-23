@@ -27,6 +27,7 @@ class ProductBeforeSave implements ObserverInterface
     /**
      * @param LoggerInterface $logger
      * @param ProductRepository $productRepository
+     * @param Helper $helper
      */
     public function __construct(
         LoggerInterface $logger,
@@ -63,6 +64,9 @@ class ProductBeforeSave implements ObserverInterface
                 $listSpecialCharacters = $this->helper->getSpecialCharacterList();
                 foreach ($listSpecialCharacters as $specialCharacter) {
                     $productNameWithoutSpecial = str_replace($specialCharacter, '', $productNameWithoutSpecial);
+                }
+                if (!$productNameWithoutSpecial){
+                    $productNameWithoutSpecial = $product->getOrigData('name');
                 }
                 $product->setName(trim($productNameWithoutSpecial));
             }
