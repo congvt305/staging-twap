@@ -290,7 +290,10 @@ class SapOrderConfirmData extends AbstractSapOrder
             $paymtd = ($websiteCode != 'vn_laneige_website') ? $paymtd : 10;
             $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
 
-            $nsamt = $this->orderData->roundingPrice($orderData->getSubtotalInclTax() + $orderData->getShippingAmount(), $isDecimalFormat);
+            $nsamt = $this->orderData->roundingPrice($orderData->getSubtotalInclTax(), $isDecimalFormat);
+            if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+                $nsamt += $this->orderData->roundingPrice($orderData->getShippingAmount(), $isDecimalFormat);
+            }
             if ($orderData->getGrandTotal() == 0) {
                 $orderGrandTotal = $orderData->getGrandTotal();
             } else {
@@ -589,8 +592,12 @@ class SapOrderConfirmData extends AbstractSapOrder
         if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
             $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
         }
+        if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+            $orderSubtotal += $order->getShippingAmount();
+        }
+
         $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
-            $orderSubtotal + $order->getShippingAmount(), $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+            $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
         array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
         return $this->orderItemData;

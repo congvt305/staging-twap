@@ -215,7 +215,11 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt  = $order->getData('sap_slamt');
         } else {
             $paymtd = $order->getPayment()->getMethod() == 'ecpay_ecpaypayment' ? 'P' : 'S';
-            $nsamt  = $this->orderData->roundingPrice($order->getSubtotalInclTax() + $order->getShippingAmount(), $isDecimalFormat);;
+            $orderSubTotal = $order->getSubtotalInclTax();
+            if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+                $orderSubTotal += $order->getShippingAmount();
+            }
+            $nsamt  = $this->orderData->roundingPrice($orderSubTotal, $isDecimalFormat);
             $dcamt  = abs($this->orderData->roundingPrice($order->getDiscountAmount(), $isDecimalFormat)) - $miamt;
             $slamt = $nsamt - $dcamt;
         }
@@ -385,8 +389,12 @@ class SapOrderReturnData extends AbstractSapOrder
                 $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
             }
             $orderShippingAmount = $this->orderData->roundingPrice($order->getShippingAmount() * $quantityRatioForPartial, $isDecimalFormat);
+
+            if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+                $orderSubtotal += $orderShippingAmount;
+            }
             $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
-                $orderSubtotal + $orderShippingAmount, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
+                $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
             );
         }
         array_walk_recursive($this->rmaItemData, [$this, 'convertNumberToString']);
