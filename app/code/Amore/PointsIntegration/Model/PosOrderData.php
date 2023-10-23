@@ -11,7 +11,6 @@ namespace Amore\PointsIntegration\Model;
 use Amore\PointsIntegration\Model\Source\Config;
 use Amore\StaffReferral\Helper\Config as ReferralConfig;
 use CJ\Middleware\Helper\Data;
-use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Exception;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -101,16 +100,6 @@ class PosOrderData extends AbstractPosOrder
     private $rewardData;
 
     /**
-     * @var CalculatePrice
-     */
-    private $bundleCalculatePrice;
-
-    /**
-     * @var \CJ\Middleware\Model\Product\CalculatePrice
-     */
-    private $productCalculatePrice;
-
-    /**
      * @var \CJ\Middleware\Model\Data
      */
     private $orderData;
@@ -132,6 +121,7 @@ class PosOrderData extends AbstractPosOrder
      * @param \Amasty\Rewards\Model\Config $amConfig
      * @param ReferralConfig $referralConfig
      * @param \CJ\Rewards\Model\Data $rewardData
+     * @param \CJ\Middleware\Model\Data $orderData
      */
     public function __construct(
         RedInvoiceCollectionFactory    $redInvoiceCollectionFactory,
@@ -150,8 +140,6 @@ class PosOrderData extends AbstractPosOrder
         \Amasty\Rewards\Model\Config $amConfig,
         ReferralConfig $referralConfig,
         \CJ\Rewards\Model\Data $rewardData,
-        CalculatePrice $bundleCalculatePrice,
-        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData
     ) {
         $this->redInvoiceCollectionFactory = $redInvoiceCollectionFactory;
@@ -168,8 +156,6 @@ class PosOrderData extends AbstractPosOrder
         $this->orderStatusHistoryRepository = $orderStatusHistoryRepository;
         $this->amConfig = $amConfig;
         $this->rewardData = $rewardData;
-        $this->bundleCalculatePrice = $bundleCalculatePrice;
-        $this->productCalculatePrice = $productCalculatePrice;
         $this->orderData = $orderData;
         parent::__construct($referralConfig, $customerRepository, $config, $orderData);
     }
@@ -257,7 +243,7 @@ class PosOrderData extends AbstractPosOrder
         if (!$spendingRate) {
             $spendingRate = 1;
         }
-        if ($isEnableRewardsPoint = $this->amConfig->isEnabled($storeId)) {
+        if ($this->amConfig->isEnabled($storeId)) {
             $rewardPoints = 0;
             if ($order->getData('am_spent_reward_points')) {
                 $rewardPoints = $this->orderData->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
@@ -266,7 +252,6 @@ class PosOrderData extends AbstractPosOrder
                 $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
                 if ($rewardPoints) {
                     $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
-                    $spendingRate = $rewardPoints / $mileageUsedAmount;
                 } else {
                 $mileageUsedAmount = $rewardPoints / $spendingRate;
             }
@@ -275,7 +260,6 @@ class PosOrderData extends AbstractPosOrder
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
-                $orderItem = $this->productCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 $itemNsamt = $orderItem->getData('sap_item_nsamt');
                 $itemDcamt = $orderItem->getData('sap_item_dcamt');
                 $itemSlamt = $orderItem->getData('sap_item_slamt');
@@ -285,7 +269,6 @@ class PosOrderData extends AbstractPosOrder
                     $itemSlamt, $itemNetwr, $isDecimalFormat
                 );
             } else {
-                $orderItem = $this->bundleCalculatePrice->calculate($orderItem, $spendingRate, $isEnableRewardsPoint, $isDecimalFormat);
                 foreach ($orderItem->getChildrenItems() as $bundleChild) {
                     $itemDcamt = $bundleChild->getDiscountAmount();
                     $itemNsamt = $bundleChild->getData('sap_item_nsamt');
@@ -301,7 +284,12 @@ class PosOrderData extends AbstractPosOrder
         }
 
         $orderSubtotal = abs($this->orderData->roundingPrice($order->getSubtotalInclTax(), $isDecimalFormat));
-        $orderGrandTotal = $this->getOrderGrandTotal($order, $isDecimalFormat);
+        $orderGrandTotal = $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal(), $isDecimalFormat);
+
+        if ($this->middlewareConfig->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+            $orderSubtotal += $order->getShippingAmount();
+        }
+
         $orderDiscountAmount = $orderSubtotal - $orderGrandTotal - $mileageUsedAmount;
 
         $this->correctPricePOSOrderItemData($orderSubtotal, $orderDiscountAmount, $orderGrandTotal, $isDecimalFormat);

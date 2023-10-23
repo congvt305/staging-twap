@@ -77,7 +77,10 @@ class AddDataToSendMiddle implements ObserverInterface
         $orderItems = $order->getAllItems();
         $storeId = $order->getStoreId();
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
-        $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
+        $shippingAmountPerItem = 0;
+        if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
+            $shippingAmountPerItem = $this->getShippingAmountPerItem($order);
+        }
         $spendingRate = $this->amConfig->getPointsRate($storeId);
         if (!$spendingRate) {
             $spendingRate = 1;
@@ -159,6 +162,12 @@ class AddDataToSendMiddle implements ObserverInterface
                 }
             }
         }
-        return $order->getShippingAmount() / $countItem;
+
+        //Cover for case all order item is free gift
+        $shippingAmount = 0;
+        if ($countItem > 0) {
+            $shippingAmount = $order->getShippingAmount() / $countItem;
+        }
+        return $shippingAmount;
     }
 }
