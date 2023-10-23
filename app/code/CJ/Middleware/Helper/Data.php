@@ -39,6 +39,8 @@ class Data extends AbstractHelper
     const XML_PATH_IS_DECIMAL_FORMAT = 'middleware/general/is_decimal_format';
     const DISABLE_SAP_INTEGRATION = 'disable_sap_integration';
 
+    const INCLUDE_SHIPPING_AMOUNT_WHEN_SEND_REQUEST_ENABLE_XML_PATH = 'middleware/general/include_shipping_amount_when_send_request';
+
     /**
      * @var CustomerRepositoryInterface
      */
@@ -454,5 +456,19 @@ class Data extends AbstractHelper
         } else {
             return $product->getCustomAttribute(self::DISABLE_SAP_INTEGRATION)->getValue();
         }
+    }
+
+    /**
+     * Enable config to sum shipping amount into each item price when send SAP
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getIsIncludeShippingAmountWhenSendRequest($storeId = null) {
+        return $this->scopeConfig->getValue(
+            self::INCLUDE_SHIPPING_AMOUNT_WHEN_SEND_REQUEST_ENABLE_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }

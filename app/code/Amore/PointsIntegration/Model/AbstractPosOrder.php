@@ -169,15 +169,4 @@ abstract class AbstractPosOrder
         $this->itemsDiscountAmount = 0;
         $this->itemsGrandTotal = 0;
     }
-
-    /**
-     * Get order grand total
-     *
-     * @param Order $order
-     * @return float|null
-     */
-    protected function getOrderGrandTotal(Order $order, $isDecimalFormat = false)
-    {
-        return $order->getGrandTotal() == 0 ? $order->getGrandTotal() : $this->orderData->roundingPrice($order->getGrandTotal() - $order->getShippingAmount(), $isDecimalFormat);
-    }
 }
