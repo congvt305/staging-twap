@@ -63,7 +63,7 @@ class BeforeAddressSaveObserver implements ObserverInterface
             /** @var \Magento\Customer\Model\Address $address */
             $address = $observer->getData('customer_address');
             $regionId = $address->getRegionId();
-            $cityId = $this->requestApi->getParam('city_id');
+            $cityId = $this->requestApi->getParam('city_id') ? $this->requestApi->getParam('city_id') : $this->request->getParam('city_id');
             if ($cityId && $regionId) {
                 $cities = $this->cityHelper->getCityData();
                 $regionCities = $cities[$regionId];
