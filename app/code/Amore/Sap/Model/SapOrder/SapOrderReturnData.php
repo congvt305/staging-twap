@@ -336,6 +336,9 @@ class SapOrderReturnData extends AbstractSapOrder
             /** @var \Magento\Sales\Model\Order\Item $orderItem */
             $orderItem = $order->getItemById($rmaItem->getOrderItemId());
             if ($orderItem->getProductType() != 'bundle') {
+                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
+                    continue;
+                }
                 $itemDcamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_dcamt'), $isDecimalFormat);
                 $itemNsamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_nsamt'), $isDecimalFormat);
                 $itemSlamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_slamt'), $isDecimalFormat);
@@ -405,6 +408,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
             $orderSubtotal += $order->getShippingAmount();
+        } else {
             $orderGrandTotal -= $order->getShippingAmount();
         }
         $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,

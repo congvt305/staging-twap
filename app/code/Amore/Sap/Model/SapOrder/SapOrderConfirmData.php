@@ -594,6 +594,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         }
         if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
             $orderSubtotal += $order->getShippingAmount();
+        } else {
             $orderGrandTotal -= $order->getShippingAmount();
         }
 
