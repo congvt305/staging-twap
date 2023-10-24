@@ -55,6 +55,7 @@ class CreateShipment implements ObserverInterface
             try {
                 if (!$this->orderHasShipments($order)) {
                     $this->createShipmentCommand->execute($order);
+                    $this->logger->info('gwlogistics | created shipment for order id: ', [$order->getIncrementId()]);
                 }
             } catch (\Exception $e) {
                 $this->logger->error('gwlogistics | ' . $e->getMessage());
