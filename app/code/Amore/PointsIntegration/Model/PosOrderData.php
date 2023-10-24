@@ -288,6 +288,7 @@ class PosOrderData extends AbstractPosOrder
 
         if ($this->middlewareConfig->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
             $orderSubtotal += $order->getShippingAmount();
+            $orderGrandTotal -= $order->getShippingAmount();
         }
 
         $orderDiscountAmount = $orderSubtotal - $orderGrandTotal - $mileageUsedAmount;

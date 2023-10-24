@@ -405,6 +405,7 @@ class SapOrderReturnData extends AbstractSapOrder
         }
         if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
             $orderSubtotal += $order->getShippingAmount();
+            $orderGrandTotal -= $order->getShippingAmount();
         }
         $this->rmaItemData = $this->correctPriceOrderItemData($this->rmaItemData,
             $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
