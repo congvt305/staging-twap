@@ -2,6 +2,8 @@
 
 namespace Ipay88\Payment\Controller\Checkout;
 
+use Magento\Sales\Model\Order;
+
 class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpPostActionInterface,
                                                                        \Magento\Framework\App\CsrfAwareActionInterface
 {
@@ -264,7 +266,14 @@ class Redirect extends \Magento\Framework\App\Action\Action implements \Magento\
         }
 
         $this->magentoCache->save(1, "ipay88_payment_processing_{$salesOrder->getIncrementId()}");
-
+        //Customize remove qty cancel
+        if ($salesOrder->getState() == ORDER::STATE_CANCELED) {
+            foreach ($salesOrder->getAllItems() as $item) {
+                if ($item->getQtyCanceled()) {
+                    $item->setQtyCanceled(0);
+                }
+            }
+        }
         $salesInvoice = $this->magentoSalesInvoiceService->prepareInvoice($salesOrder);
         $salesInvoice->setTransactionId($response['trans_id']);
         //            $salesInvoice->setRequestedCaptureCase();
