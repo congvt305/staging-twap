@@ -1,0 +1,79 @@
+{
+    "magenest_popup_templates": {
+        "column": {
+            "template_id": true,
+            "template_name": true,
+            "template_type": true,
+            "html_content": true,
+            "css_style": true,
+            "class": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "magenest_popup": {
+        "column": {
+            "popup_id": true,
+            "popup_name": true,
+            "popup_type": true,
+            "popup_status": true,
+            "start_date": true,
+            "end_date": true,
+            "priority": true,
+            "popup_template_id": true,
+            "popup_trigger": true,
+            "number_x": true,
+            "popup_positioninpage": true,
+            "popup_position": true,
+            "popup_animation": true,
+            "visible_stores": true,
+            "enable_cookie_lifetime": true,
+            "cookie_lifetime": true,
+            "coupon_code": true,
+            "thankyou_message": true,
+            "html_content": true,
+            "css_style": true,
+            "click": true,
+            "view": true,
+            "ctr": true,
+            "popup_link": true,
+            "enable_floating_button": true,
+            "floating_button_content": true,
+            "floating_button_position": true,
+            "floating_button_text_color": true,
+            "floating_button_text_hover_color": true,
+            "floating_button_hover_color": true,
+            "floating_button_background_color": true,
+            "floating_button_display_popup": true,
+            "enable_mailchimp": true,
+            "api_key": true,
+            "audience_id": true,
+            "widget_instance": true,
+            "customer_group_ids": true,
+            "background_image": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "magenest_log": {
+        "column": {
+            "log_id": true,
+            "popup_id": true,
+            "content": true,
+            "created_at": true,
+            "popup_name": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "magenest_popup_layout": {
+        "column": {
+            "popup_id": true,
+            "layout_update_id": true
+        }
+    }
+}

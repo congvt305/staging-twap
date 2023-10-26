@@ -1,0 +1,41 @@
+<?php
+/** @var  Magenest\Popup\Block\Popup\Button $block
+ */
+?>
+<?php if (($block->checkEnableButton()) && $block->checkStoreButton()): ?>
+    <div id="<?= $block->escapeHtmlAttr($block->setButtonId()) ?>"
+         <?= isset($secureRenderer) ? '' : 'style= "' . $block->escapeHtmlAttr($block->styleButton()) . '"' ?>
+         class="magenest-popup-action">
+        <span><?= $block->getButtonContent() ?></span>
+    </div>
+<?php endif; ?>
+<?= isset($secureRenderer)
+    ? $secureRenderer->renderStyleAsTag($block->styleButton(), '.magenest-popup-action')
+    : ''
+?>
+<?php $scriptString = <<<script
+        require(['jquery'],
+        function($){
+            $(document).ready(function() {
+                $('.magenest-popup-action').on('mouseout', function() {
+                    $(this).css('background-color', '{$block->getBackgroundButtonColor()}');
+                });
+                $('.magenest-popup-action').on('mouseover', function() {
+                    $(this).css('background-color', '{$block->getHoverButtonColor()}');
+                });
+                 $('.magenest-popup-action').on('mouseout', function() {
+                    $(this).css('color', '{$block->getTextButtonColor()}');
+                });
+                $('.magenest-popup-action').on('mouseover', function() {
+                    $(this).css('color', '{$block->getTextButtonHoverColor()}');
+                });
+            });
+        });
+script;
+?>
+
+<?= isset($secureRenderer)
+        ? $secureRenderer->renderTag('script', [], $scriptString, false)
+        : '<script>' . $scriptString . '</script>'
+?>
+
