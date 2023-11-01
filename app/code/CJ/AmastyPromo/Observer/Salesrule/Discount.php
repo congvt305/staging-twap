@@ -81,7 +81,7 @@ class Discount extends \Amasty\Promo\Observer\Salesrule\Discount
                 /** @var Data $result */
                 $result = $observer->getResult();
                 if (!$item->getAmDiscountAmount()) {
-                    if ($rule->getSimpleAction() == 'ampromo_product') {
+                    if (in_array($rule->getSimpleAction(), ['ampromo_product', 'ampromo_cart'])) {
                         // reset discount amount
                         $item->setDiscountAmount(0);
                         $item->setBaseDiscountAmount(0);
