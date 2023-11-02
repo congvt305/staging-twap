@@ -2,11 +2,13 @@
 
 namespace Amore\Sap\Observer;
 
+use Exception;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use CJ\Catalog\Helper\Data as Helper;
 
-class IsFreeGiftObserver  implements ObserverInterface
+class ProductBeforeSave implements ObserverInterface
 {
     /**
      * @var LoggerInterface
@@ -19,15 +21,23 @@ class IsFreeGiftObserver  implements ObserverInterface
     private $productRepository;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * @param LoggerInterface $logger
      * @param ProductRepository $productRepository
+     * @param Helper $helper
      */
     public function __construct(
         LoggerInterface $logger,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        Helper $helper
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
+        $this->helper = $helper;
     }
 
     /**
@@ -36,8 +46,8 @@ class IsFreeGiftObserver  implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $product = $observer->getProduct();
         try {
-            $product = $observer->getProduct();
             $price = $product->getPrice();
             if ($product->getTypeId() == 'simple') {
                 if ($price == null) {
@@ -48,11 +58,23 @@ class IsFreeGiftObserver  implements ObserverInterface
                     $product->setIsFreeGift(0);
                 }
             }
-
-
         } catch (\Exception $exception) {
             $this->logger->error('Cannot update product free gift: ' . $exception->getMessage());
         }
+
+        //remove special characters in product name when saving it
+        if ($this->helper->isEnabledRemoveSpecialCharacter()) {
+            $productNameWithoutSpecial = $product->getName();
+            $listSpecialCharacters = $this->helper->getSpecialCharacterList();
+            foreach ($listSpecialCharacters as $specialCharacter) {
+                $productNameWithoutSpecial = str_replace($specialCharacter, '', $productNameWithoutSpecial);
+            }
+            if (!$productNameWithoutSpecial) {
+                throw new Exception('Can\'t save the product with product name containing all special characters.');
+            }
+            $product->setName(trim($productNameWithoutSpecial));
+        }
+
     }
 
 }

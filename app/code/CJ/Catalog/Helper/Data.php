@@ -8,19 +8,29 @@ namespace CJ\Catalog\Helper;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    const ENABLED_REMOVE_SPECIAL_CHARACTER = 'catalog/remove_special_character/enabled';
+
+    const LIST_SPECIAL_CHARACTER = 'catalog/remove_special_character/list';
     /**
      * @var \CJ\Catalog\Model\Config
      */
     protected $config;
 
     /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
+
+    /**
      * @inheritDoc
      */
     public function __construct(
         \CJ\Catalog\Model\Config $config,
-        \Magento\Framework\App\Helper\Context $context
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\Serialize\Serializer\Json $json
     ) {
         $this->config = $config;
+        $this->json = $json;
         parent::__construct($context);
     }
 
@@ -56,5 +66,20 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabledRemoveSpecialCharacter(){
+        return $this->scopeConfig->isSetFlag(self::ENABLED_REMOVE_SPECIAL_CHARACTER);
+    }
+
+    /**
+     * @return array|bool|float|int|mixed|string|null
+     */
+    public function getSpecialCharacterList(){
+        $listSpecialCharacter = $this->scopeConfig->getValue(self::LIST_SPECIAL_CHARACTER);
+        return $this->json->unserialize($listSpecialCharacter);
     }
 }
