@@ -232,7 +232,7 @@ class SaveSuccess implements ObserverInterface
                     $this->POSSystem->syncMember($newDataAPIParameters, $newCustomerData->getStoreId());
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
     }
@@ -345,18 +345,19 @@ class SaveSuccess implements ObserverInterface
             if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
-                $regionName = $customerData['dm_state'];
+                $regionId = $customerData['region_id'];
                 $regionObject = null;
-                if ($regionName) {
-                    $regionObject = $this->getRegionObject($regionName);
+                if ($regionId) {
+                    $regionObject = $this->getRegionObject($regionId);
                     $parameters['homeCity'] = $regionObject->getCode() ? $regionObject->getCode() : '';
                 } else {
                     $parameters['homeCity'] = '';
                 }
 
                 $cityName = $customerData['dm_city'];
+                $cityId = $customerData['city_id'];
                 $parameters['homeState'] = '';
-                if ($cityName && $regionObject) {
+                if ($cityId && $regionObject) {
                     $cities = $this->cityHelper->getCityData();
 
                     //Add log to track issue undefined array key when registration
@@ -375,7 +376,7 @@ class SaveSuccess implements ObserverInterface
                     }
                     $regionCities = $cities[$regionObject->getRegionId()];
                     foreach ($regionCities as $regionCity) {
-                        if ($regionCity['name'] == $cityName) {
+                        if ($regionCity['code'] == $cityId) {
                             $parameters['homeState'] = $regionCity['pos_code'];
                             break;
                         }
@@ -412,12 +413,12 @@ class SaveSuccess implements ObserverInterface
         }
     }
 
-    private function getRegionObject($regionName)
+    private function getRegionObject($regionId)
     {
         /** @var \Magento\Directory\Model\Region $region */
         $region = $this->regionFactory->create();
         try {
-            $this->regionResourceModel->load($region, $regionName, 'default_name');
+            $this->regionResourceModel->load($region, $regionId, 'region_id');
         } catch (\Exception $e) {
             $this->logger->addExceptionMessage($e->getMessage());
         }
@@ -436,15 +437,25 @@ class SaveSuccess implements ObserverInterface
         $parameters['homeCity'] = $address->getRegion()->getRegionCode();
         $parameters['homeAddr1'] = implode(' ', $address->getStreet());
         $parameters['homeZip'] = $address->getPostcode();
-        $cityName = $address->getCity();
         $parameters['homeState'] = '';
-        if ($cityName) {
+        if ($cityId = $this->request->getParam('city_id')) {
             $cities = $this->cityHelper->getCityData();
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
-                if ($regionCity['name'] == $cityName) {
+                if ($regionCity['code'] == $cityId) {
                     $parameters['homeState'] = $regionCity['pos_code'];
                     break;
+                }
+            }
+        } else {
+            if ($cityName = $address->getCity()) {
+                $cities = $this->cityHelper->getCityData();
+                $regionCities = $cities[$address->getRegionId()];
+                foreach ($regionCities as $regionCity) {
+                    if ($regionCity['name'] == $cityName) {
+                        $parameters['homeState'] = $regionCity['pos_code'];
+                        break;
+                    }
                 }
             }
         }
