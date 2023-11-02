@@ -1,0 +1,50 @@
+diff --git a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
+index 6206b23fb..927b0ccfe 100644
+--- a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
++++ b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
+@@ -394,6 +394,45 @@
+                 $this->_checkUnique($object);
+                 $this->objectRelationProcessor->validateDataIntegrity($this->getMainTable(), $object->getData());
+                 if ($this->isObjectNotNew($object)) {
++                    try {
++                        if ($object instanceof \Magento\Quote\Model\Quote\Address) {
++                            $select = $this->getConnection()->select()
++                                ->from(['soa' => 'quote_address'])
++                                ->where('soa.quote_id = ?', $object->getQuoteId())
++                                ->where('soa.address_type = ?', 'shipping');
++                            $currentAddressData = $this->getConnection()->fetchRow($select);
++                            if (!$object->getShippingMethod() && isset($currentAddressData['shipping_method']) && $currentAddressData['shipping_method']) {
++                                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
++                                $logger = new \Zend_Log();
++                                $logger->addWriter($writer);
++                                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                                $logger->crit('Error about missing shipping method');
++                                foreach ($debugBackTrace as $debug) {
++                                    $logger->crit(@$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function']);
++                                }
++                                $logger->crit('Customer data before: ' . json_encode($currentAddressData));
++                                $logger->crit('Customer data after: ' . json_encode($object->getData()));
++                            }
++                            if (!$object->getCvsLocationId() && isset($currentAddressData['cvs_location_id']) && $currentAddressData['cvs_location_id']) {
++                                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
++                                $logger = new \Zend_Log();
++                                $logger->addWriter($writer);
++                                $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                                $logger->crit('Error about cvs_location_id');
++                                foreach ($debugBackTrace as $debug) {
++                                    $logger->crit(@$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function']);
++                                }
++                                $logger->crit('Error about cvs_location_id');
++                                $logger->crit('Customer data before: ' . json_encode($currentAddressData));
++                                $logger->crit('Customer data after: ' . json_encode($object->getData()));
++                            }
++                        }
++                    } catch (\Throwable $exception) {
++                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
++                        $logger = new \Zend_Log();
++                        $logger->addWriter($writer);
++                        $logger->err('Error when log data: ' . $exception->getMessage());
++                    }
+                     $this->updateObject($object);
+                 } else {
+                     $this->saveNewObject($object);
