@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CJ\Catalog\Helper;
 
+use Magento\Store\Model\ScopeInterface;
+
 /**
  * Class Data
  */
@@ -71,15 +73,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return bool
      */
-    public function isEnabledRemoveSpecialCharacter(){
-        return $this->scopeConfig->isSetFlag(self::ENABLED_REMOVE_SPECIAL_CHARACTER);
+    public function isEnabledRemoveSpecialCharacter()
+    {
+        return $this->scopeConfig->isSetFlag(self::ENABLED_REMOVE_SPECIAL_CHARACTER, ScopeInterface::SCOPE_STORE);
     }
 
     /**
      * @return array|bool|float|int|mixed|string|null
      */
-    public function getSpecialCharacterList(){
-        $listSpecialCharacter = $this->scopeConfig->getValue(self::LIST_SPECIAL_CHARACTER);
+    public function getSpecialCharacterList()
+    {
+        $listSpecialCharacter = $this->scopeConfig->getValue(self::LIST_SPECIAL_CHARACTER, ScopeInterface::SCOPE_STORE);
         return $this->json->unserialize($listSpecialCharacter);
     }
 }
