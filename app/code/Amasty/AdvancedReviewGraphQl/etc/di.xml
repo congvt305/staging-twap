@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Amasty\AdvancedReviewGraphQl\Api\UploadImageInterface" type="Amasty\AdvancedReviewGraphQl\Model\UploadImage" />
-    
-    <preference for="Amasty\AdvancedReviewGraphQl\Api\Data\ImageContentInterface" type="Amasty\AdvancedReviewGraphQl\Model\Image\Content" />
-</config>
