@@ -65,14 +65,16 @@ class ProductBeforeSave implements ObserverInterface
         //remove special characters in product name when saving it
         if ($this->helper->isEnabledRemoveSpecialCharacter()) {
             $productNameWithoutSpecial = $product->getName();
-            $listSpecialCharacters = $this->helper->getSpecialCharacterList();
-            foreach ($listSpecialCharacters as $specialCharacter) {
-                $productNameWithoutSpecial = str_replace($specialCharacter, '', $productNameWithoutSpecial);
+            if ($productNameWithoutSpecial !== false){
+                $listSpecialCharacters = $this->helper->getSpecialCharacterList();
+                foreach ($listSpecialCharacters as $specialCharacter) {
+                    $productNameWithoutSpecial = str_replace($specialCharacter, '', $productNameWithoutSpecial);
+                }
+                if (!$productNameWithoutSpecial) {
+                    throw new Exception('Can\'t save the product with product name containing all special characters.');
+                }
+                $product->setName(trim($productNameWithoutSpecial));
             }
-            if (!$productNameWithoutSpecial) {
-                throw new Exception('Can\'t save the product with product name containing all special characters.');
-            }
-            $product->setName(trim($productNameWithoutSpecial));
         }
 
     }
