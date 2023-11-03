@@ -2,7 +2,7 @@
 
 namespace Pixlee\Pixlee\Block;
 
-use \Magento\Catalog\Block\Category\View;
+use \CJ\Catalog\Block\Category\View;
 
 class CatalogWidget extends View
 {
