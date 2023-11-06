@@ -3,6 +3,7 @@
 # Each route describes how an incoming URL is going to be processed.
 
 "http://{default}/":
+    type: redirect
     redirects:
       "expires" : "1d"
       "paths" : {
@@ -13,6 +14,7 @@
         }
       }
 "http://mcprod.*.{all}/":
+  type: redirect
   redirects:
     "expires" : "1d"
     "paths" : {
