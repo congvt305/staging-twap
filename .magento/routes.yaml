@@ -4,7 +4,7 @@
 
 "http://{default}/":
     type: upstream
-    upstream: "mymagento:http"
+    redirect:
     "expires" : "1d"
     "paths" : {
       "^/(.*)/$": {
@@ -15,7 +15,7 @@
     }
 "http://mcprod.*.{all}/":
   type: upstream
-  upstream: "mymagento:http"
+  redirect: 
   "expires" : "1d"
   "paths" : {
     "^/mcprod/": {
