@@ -3,27 +3,9 @@
 # Each route describes how an incoming URL is going to be processed.
 
 "http://{default}/":
-    type: upstream
-    redirect:
-    "expires" : "1d"
-    "paths" : {
-      "^/(.*)/$": {
-        "code": 301,
-        "regexp": true,
-        "to": "/$1"
-      }
-    }
-"http://mcprod.*.{all}/":
   type: upstream
-  redirect: 
-  "expires" : "1d"
-  "paths" : {
-    "^/mcprod/": {
-      "code": 301,
-      "regexp": true,
-      "to": "http://*.{all}/"
-    }
-  }
+  upstream: "mymagento:http"
+
 "http://{all}/":
     type: upstream
     upstream: "mymagento:http"
