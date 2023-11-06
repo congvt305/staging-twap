@@ -1,14 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @author Eguana Team
- * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
- * Created by PhpStorm
-* User: arslan
-* Date: 16/6/20
-* Time: 12:35 PM
- */
--->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
@@ -18,5 +8,15 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="head.additional">
+            <container name="canonical.url.cms.page.container">
+                <block class="Magento\Framework\View\Element\Text" name="canonical.url.cms.page">
+                    <arguments>
+                        <argument name="label" xsi:type="string">Adding canonical link with base URL</argument>
+                        <argument name="text" xsi:type="helper" helper="Eguana\VideoBoard\Helper\Data::getCanonicalForAllVideoBoardDetail"/>
+                    </arguments>
+                </block>
+            </container>
+        </referenceBlock>
     </body>
 </page>

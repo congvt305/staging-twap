@@ -234,6 +234,7 @@ class Index extends Action
                 $this->messageManager->addErrorMessage(
                     __('This redemption will be available at %1', $redemptionStartDate)
                 );
+                $resultRedirect->setHttpResponseCode(301);
                 return $resultRedirect->setUrl('/');
             }
             if ($redemptionId) {
