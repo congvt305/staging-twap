@@ -5,25 +5,25 @@
 "http://{default}/":
     type: upstream
     redirects:
-    "expires" : "1d"
-    "paths" : {
-      "^/(.*)/$": {
-        "code": 301,
-        "regexp": true,
-        "to": "/$1"
+      "expires" : "1d"
+      "paths" : {
+        "^/(.*)/$": {
+          "code": 301,
+          "regexp": true,
+          "to": "/$1"
+        }
       }
-    }
 "http://mcprod.*.{all}/":
   type: upstream
   redirects:
-  "expires" : "1d"
-  "paths" : {
-    "^/mcprod/": {
-      "code": 301,
-      "regexp": true,
-      "to": "http://*.{all}/"
+    "expires" : "1d"
+    "paths" : {
+      "^/mcprod/": {
+        "code": 301,
+        "regexp": true,
+        "to": "http://*.{all}/"
+      }
     }
-  }
 "http://{all}/":
     type: upstream
     upstream: "mymagento:http"
