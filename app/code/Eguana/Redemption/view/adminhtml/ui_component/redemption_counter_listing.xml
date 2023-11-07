@@ -205,6 +205,13 @@
                 <label translate="true">Email</label>
             </settings>
         </column>
+        <column name="is_member" sortOrder="55" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Eguana\Redemption\Model\Source\IsMember"/>
+                <dataType>select</dataType>
+                <label translate="true">Is Member</label>
+            </settings>
+        </column>
         <column name="telephone" sortOrder="60">
             <settings>
                 <filter>text</filter>
