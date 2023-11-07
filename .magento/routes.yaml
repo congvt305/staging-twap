@@ -3,13 +3,13 @@
 # Each route describes how an incoming URL is going to be processed.
 
 "http://{default}/":
-    type: upstream
+    type: redirect
     redirects:
       expires: 1d
       paths:
         "^/(.*)/$":
-          "code": 301,
-          "regexp": true,
+          "code": 301
+          "regexp": true
           "to": "/$1"
 
 "http://{all}/":
