@@ -42,7 +42,7 @@ class Data extends AbstractHelper
     {
         if ($id = $this->_request->getParam('id')) {
             return $this->createLink(
-                $this->scopeConfig->getValue('web/secure/base_url') . 'videoboard/detail/index/id/' . $id
+                $this->scopeConfig->getValue('web/secure/base_url', ScopeInterface::SCOPE_STORE) . 'videoboard/detail/index/id/' . $id
             );
         }
 
