@@ -71,6 +71,7 @@
             "redeem_date": true,
             "customer_name": true,
             "email": true,
+            "is_member": true,
             "address": true,
             "telephone": true,
             "counter_id": true,
