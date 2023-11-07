@@ -29,6 +29,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * This class is used to save the counter with Ajax Request
@@ -103,6 +104,11 @@ class CounterSaveAjax extends Action
     protected $customerFactory;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * CounterSaveAjax constructor.
      * @param ResultFactory $resultFactory
      * @param Context $context
@@ -118,6 +124,7 @@ class CounterSaveAjax extends Action
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param Data $facebookPixelHelper
      * @param CustomerFactory $customerFactory
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         ResultFactory $resultFactory,
@@ -133,7 +140,8 @@ class CounterSaveAjax extends Action
         FilterBuilder $filterBuilder,
         FilterGroupBuilder $filterGroupBuilder,
         Data $facebookPixelHelper,
-        CustomerFactory $customerFactory
+        CustomerFactory $customerFactory,
+        StoreManagerInterface $storeManager
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
@@ -149,6 +157,7 @@ class CounterSaveAjax extends Action
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->facebookPixelHelper = $facebookPixelHelper;
         $this->customerFactory = $customerFactory;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -174,12 +183,15 @@ class CounterSaveAjax extends Action
                 $model->setData('redemption_id', $post['redemption_id']);
                 $model->setData('redeem_date', null);
                 $model->setData('customer_name', $post['name']);
-                $isMember = true;
-                $customer = $this->getCustomerByEmailorPhone($post['email'], $post['phone']);
-                if (empty($customer->getData())) {
-                    $isMember = false;
+
+                if ($this->storeManager->getStore()->getCode() == 'my_laneige'){
+                    $isMember = true;
+                    $customer = $this->getCustomerByEmailorPhone($post['email'], $post['phone']);
+                    if ($customer->getData('store_id') != $storeId) {
+                        $isMember = false;
+                    }
+                    $model->setData('is_member', $isMember);
                 }
-                $model->setData('is_member', $isMember);
                 if (isset($post['last_name'])) {
                     $model->setData('last_name', $post['last_name']);
                 }
