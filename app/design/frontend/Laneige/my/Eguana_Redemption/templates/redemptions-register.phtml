@@ -36,10 +36,10 @@ $redemptionDetail = $viewModel->getRedemptionById($counterDetail->getRedemptionI
     </div>
     <?php if ($counterDetail->getStatus() == 1): ?>
         <div class="actions-toolbar">
-	        <p>-<?= $block->escapeHtml(__('Need to be confirmed by the counter staff')) ?>-</p>
+            <p><?= $block->escapeHtml(__('For office use only (by Beauty Advisor)')) ?>:</p>
             <div class="primary">
                 <a class="action primary action-confirm" href="<?=$block->escapeUrl($block->getBaseUrl() . 'redemption/details/index/counter_id/' . $counterDetail->getId()) . '/confirm/' . true?>">
-	                <span><?= $block->escapeHtml(__('complete conversion')) ?></span>
+                    <span><?= $block->escapeHtml(__('Complete redemption')) ?></span>
                 </a>
             </div>
         </div>
