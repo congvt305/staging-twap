@@ -13,7 +13,7 @@ index 6206b23fb..927b0ccfe 100644
 +                                ->where('soa.quote_id = ?', $object->getQuoteId())
 +                                ->where('soa.address_type = ?', 'shipping');
 +                            $currentAddressData = $this->getConnection()->fetchRow($select);
-+                            if (!$object->getShippingMethod() && isset($currentAddressData['shipping_method']) && $currentAddressData['shipping_method']) {
++                            if ($object->getAddressType() === 'shipping' && !$object->getShippingMethod() && isset($currentAddressData['shipping_method']) && $currentAddressData['shipping_method']) {
 +                                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
 +                                $logger = new \Zend_Log();
 +                                $logger->addWriter($writer);
@@ -25,7 +25,7 @@ index 6206b23fb..927b0ccfe 100644
 +                                $logger->crit('Customer data before: ' . json_encode($currentAddressData));
 +                                $logger->crit('Customer data after: ' . json_encode($object->getData()));
 +                            }
-+                            if (!$object->getCvsLocationId() && isset($currentAddressData['cvs_location_id']) && $currentAddressData['cvs_location_id']) {
++                            if ($object->getAddressType() === 'shipping' && !$object->getCvsLocationId() && isset($currentAddressData['cvs_location_id']) && $currentAddressData['cvs_location_id']) {
 +                                $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
 +                                $logger = new \Zend_Log();
 +                                $logger->addWriter($writer);
