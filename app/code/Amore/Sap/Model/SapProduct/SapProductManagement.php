@@ -34,6 +34,7 @@ use Magento\Framework\Api\SortOrderBuilder;
 use Magento\InventoryApi\Api\GetStockSourceLinksInterface;
 use Magento\InventoryApi\Api\SourceRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 class SapProductManagement implements SapProductManagementInterface
 {
@@ -125,6 +126,11 @@ class SapProductManagement implements SapProductManagementInterface
     private $eventManager;
 
     /**
+     * @var MiddlewareHelper
+     */
+    private $middlewareHelper;
+
+    /**
      * SapProductManagement constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param ProductRepositoryInterface $productRepository
@@ -167,7 +173,8 @@ class SapProductManagement implements SapProductManagementInterface
         Logger $logger,
         Config $config,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->productRepository = $productRepository;
@@ -189,6 +196,7 @@ class SapProductManagement implements SapProductManagementInterface
         $this->config = $config;
         $this->eavAttributeRepositoryInterface = $eavAttributeRepositoryInterface;
         $this->eventManager = $eventManager;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function inventoryStockUpdate(\Amore\Sap\Api\Data\SapInventoryStockInterface $stockData)
@@ -663,7 +671,7 @@ class SapProductManagement implements SapProductManagementInterface
         $exactStore = 0;
         $stores = $this->storeManagerInterface->getStores();
         foreach ($stores as $store) {
-            $configMallId = $this->config->getMallId('store', $store->getId());
+            $configMallId = $this->middlewareHelper->getMallId('store', $store->getId());
             if ($mallId == $configMallId) {
                 $exactStore = $store;
                 break;
@@ -679,7 +687,7 @@ class SapProductManagement implements SapProductManagementInterface
 
         $storeIdList = [];
         foreach ($stores as $store) {
-            $vkorgByStore = $this->config->getSalesOrg('store', $store->getId());
+            $vkorgByStore = $this->middlewareHelper->getSalesOrganizationCode('store', $store->getId());
             if ($vkorg == $vkorgByStore) {
                 $storeIdList[] = $store->getId();
             }
