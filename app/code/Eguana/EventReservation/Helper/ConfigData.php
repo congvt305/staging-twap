@@ -217,7 +217,8 @@ class ConfigData extends AbstractHelper
     {
         if ($this->_request->getParam('id')) {
             return $this->createLink(
-                $this->scopeConfig->getValue('web/secure/base_url', ScopeInterface::SCOPE_STORE) . $this->_request->getUri()->getPath()
+
+                $this->scopeConfig->getValue('web/secure/base_url', ScopeInterface::SCOPE_STORE) . preg_replace('/^\//', '', $this->_request->getUri()->getPath())
             );
         }
 
