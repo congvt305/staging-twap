@@ -5,7 +5,12 @@
 "http://{default}/":
   type: upstream
   upstream: "mymagento:http"
-
+  redirects:
+    paths:
+      "^/(.*)/$":
+        "code": 301
+        "regexp": true
+        "to": "/$1"
 "http://{all}/":
     type: upstream
     upstream: "mymagento:http"
