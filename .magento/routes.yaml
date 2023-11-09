@@ -11,14 +11,14 @@
         "code": 301
         "regexp": true
         "to": "/$1"
-      "//$":
+      "/$":
         "code": 301
         "regexp": true
-        "to": "/"
+        "to": ""
 
 "http://mcprod.{default}/":
   type: redirect
-  to: http://{default}/
+  to: "http://{default}/"
 
 "http://{all}/":
     type: upstream
