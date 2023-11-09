@@ -43,7 +43,9 @@ class Operation
         'cj_redemption',
         'cj_redemption_pos',
         'cj_sales_order',
-        'cj_cron_schedule'
+        'cj_cron_schedule',
+        'bigquery_order',
+        'bigquery_sales_order_item'
     ];
 
     /**

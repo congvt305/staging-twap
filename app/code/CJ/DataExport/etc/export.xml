@@ -11,4 +11,8 @@
             entityAttributeFilterType="cj_redemption_pos"/>
     <entity name="cj_cron_schedule" label="Schedule Backup cron Logs" model="CJ\DataExport\Model\Export\CronSchedule\CronSchedule"
             entityAttributeFilterType="cj_cron_schedule"/>
+    <entity name="bigquery_order" label="BigQuery Sales Orders" model="CJ\DataExport\Model\Export\BigQuery\SalesOrder"
+            entityAttributeFilterType="bigquery_order"/>
+    <entity name="bigquery_sales_order_item" label="BigQuery Sales Order Items" model="CJ\DataExport\Model\Export\BigQuery\SaleOrderItems"
+            entityAttributeFilterType="bigquery_sales_order_item"/>
 </config>

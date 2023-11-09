@@ -4,7 +4,24 @@
         <cj_scheduleexport>
             <general>
                 <enable>0</enable>
+                <enable_data_marketing>0</enable_data_marketing>
             </general>
         </cj_scheduleexport>
     </default>
+    <websites>
+        <tw_lageige_website>
+            <cj_scheduleexport>
+                <general>
+                    <enable_data_marketing>1</enable_data_marketing>
+                </general>
+            </cj_scheduleexport>
+        </tw_lageige_website>
+        <base>
+            <cj_scheduleexport>
+                <general>
+                    <enable_data_marketing>1</enable_data_marketing>
+                </general>
+            </cj_scheduleexport>
+        </base>
+    </websites>
 </config>
