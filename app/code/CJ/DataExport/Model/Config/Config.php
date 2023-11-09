@@ -11,6 +11,8 @@ class Config
 {
     const XML_PATH_ENABLE = 'cj_scheduleexport/general/enable';
 
+    const XML_PATH_ENABLE_DATA_MARKETING = 'cj_scheduleexport/general/enable_data_marketing';
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -46,5 +48,14 @@ class Config
     public function getModuleEnable($storeId = null)
     {
         return $this->getConfigValue(self::XML_PATH_ENABLE, $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getModuleEnableDataMarketing($storeId = null)
+    {
+        return $this->getConfigValue(self::XML_PATH_ENABLE_DATA_MARKETING, $storeId);
     }
 }
