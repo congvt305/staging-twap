@@ -18,6 +18,7 @@
         <link rel="alternate" hreflang="zh-Hant-tw" src="https://tw.laneige.com/contact/" src_type="url"/>
         <link rel="alternate" hreflang="id-id" src="https://www.laneige.com/id/id/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
         <link rel="alternate" hreflang="th-th" src="https://www.laneige.com/th/th/customer-center/send-your-inquiry/send-your-inquiry.html" src_type="url"/>
+        <link rel="canonical" src="https://tw.laneige.com/contact" src_type="url"/>
     </head>
     <body>
         <referenceBlock name="breadcrumbs">
