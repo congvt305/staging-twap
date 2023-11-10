@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="customer_address_entity" resource="default" comment="Customer Address Entity">
-        <column xsi:type="varchar" name="country_pos_code" length="10" nullable="true" comment="Country Pos Code"/>
-    </table>
-</schema>
