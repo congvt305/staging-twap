@@ -107,7 +107,6 @@ class CreateShipments
         $command = $this->createShipmentCommandFactory->create();
         try {
             $command->execute($order);
-            $this->logger->info(__('Send order %1 to GWL successfully', $order->getIncrementId()));
         } catch (\Exception $e) {
             $this->logger->info('Some error occurred.', ['error' => $e->getMessage()]);
         }
