@@ -13,6 +13,7 @@
     <preference for="Amasty\Rewards\Model\CheckoutRewardsManagement" type="CJ\Rewards\Model\CheckoutRewardsManagement" />
     <preference for="Amasty\Rewards\Controller\Index\RewardPost" type="CJ\Rewards\Controller\Index\RewardPost" />
     <preference for="Amasty\Rewards\Model\Calculation\Discount" type="CJ\Rewards\Model\Calculation\Discount" />
+    <preference for="Amasty\Rewards\Model\Calculation\Discount\ItemAmountCalculator" type="CJ\Rewards\Model\Calculation\Discount\ItemAmountCalculator" />
     <preference for="Amasty\Rewards\Model\Points\Converter\ToMoney" type="CJ\Rewards\Model\Points\Converter\ToMoney" />
     <type name="CJ\Rewards\Logger\Handler">
         <arguments>
