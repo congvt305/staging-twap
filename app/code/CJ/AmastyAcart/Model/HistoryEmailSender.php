@@ -164,7 +164,11 @@ class HistoryEmailSender extends AmastyHistoryEmailSender
         $this->registry = $registry;
         $this->messageBuilder = $messageBuilderFactory->create();
         $this->templateBuilder = $templateBuilder;
+        parent::__construct($templateBuilder, $date, $dateTime, $mailTransportFactory, $messageFactory, $quoteFactory,
+            $configProvider, $newsletterSubscriberCollection, $messageBuilderFactory, $urlManager, $historyRepository,
+            $blacklistRepository, $inventory, $trackingPixelModifier, $ruleQuoteRepository, $registry);
     }
+
 
     /**
      * @param HistoryInterface|History $history
