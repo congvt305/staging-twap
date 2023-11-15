@@ -782,7 +782,7 @@ return [
         'Amore_Base' => 1,
         'Amore_Cms' => 0,
         'Eguana_Base' => 1,
-        'Amore_GaTagging' => 1,
+        'Amore_GaTagging' => 0,
         'Eguana_StoreSms' => 1,
         'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
