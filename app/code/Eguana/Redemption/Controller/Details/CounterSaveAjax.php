@@ -28,6 +28,8 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Eguana\Redemption\Model\RedemptionConfiguration\RedemptionConfiguration;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * This class is used to save the counter with Ajax Request
@@ -97,6 +99,16 @@ class CounterSaveAjax extends Action
     private $redemptionConfig;
 
     /**
+     * @var CustomerFactory
+     */
+    protected $customerFactory;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * CounterSaveAjax constructor.
      * @param ResultFactory $resultFactory
      * @param Context $context
@@ -111,21 +123,25 @@ class CounterSaveAjax extends Action
      * @param FilterBuilder $filterBuilder
      * @param FilterGroupBuilder $filterGroupBuilder
      * @param Data $facebookPixelHelper
+     * @param CustomerFactory $customerFactory
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ResultFactory                 $resultFactory,
-        Context                       $context,
-        RedemptionConfiguration       $redemptionConfig,
-        CounterFactory                $counterFactory,
-        SearchCriteriaBuilder         $searchCriteriaBuilder,
-        CounterRepositoryInterface    $counterRepository,
+        ResultFactory $resultFactory,
+        Context $context,
+        RedemptionConfiguration $redemptionConfig,
+        CounterFactory $counterFactory,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CounterRepositoryInterface $counterRepository,
         RedemptionRepositoryInterface $redemptionRepository,
-        SmsSender                     $smsSender,
-        EmailSender                   $emailSender,
-        DateTime                      $date,
-        FilterBuilder                 $filterBuilder,
-        FilterGroupBuilder            $filterGroupBuilder,
-        Data                          $facebookPixelHelper
+        SmsSender $smsSender,
+        EmailSender $emailSender,
+        DateTime $date,
+        FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder,
+        Data $facebookPixelHelper,
+        CustomerFactory $customerFactory,
+        StoreManagerInterface $storeManager
     ) {
         $this->resultFactory = $resultFactory;
         $this->context = $context;
@@ -140,6 +156,8 @@ class CounterSaveAjax extends Action
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
         $this->facebookPixelHelper = $facebookPixelHelper;
+        $this->customerFactory = $customerFactory;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -165,6 +183,15 @@ class CounterSaveAjax extends Action
                 $model->setData('redemption_id', $post['redemption_id']);
                 $model->setData('redeem_date', null);
                 $model->setData('customer_name', $post['name']);
+
+                if ($this->storeManager->getStore()->getCode() == 'my_laneige'){
+                    $isMember = true;
+                    $customer = $this->getCustomerByEmailorPhone($post['email'], $post['phone']);
+                    if ($customer->getData('store_id') != $storeId) {
+                        $isMember = false;
+                    }
+                    $model->setData('is_member', $isMember);
+                }
                 if (isset($post['last_name'])) {
                     $model->setData('last_name', $post['last_name']);
                 }
@@ -314,5 +341,25 @@ class CounterSaveAjax extends Action
             $resultRedirect->setUrl('/');
             return $resultRedirect;
         }
+    }
+
+    /**
+     * @param $email
+     * @param $telephone
+     * @return mixed
+     */
+    public function getCustomerByEmailorPhone($email, $telephone)
+    {
+        $customer = $this->customerFactory->create()
+            ->getCollection()
+            ->addAttributeToFilter(
+                [
+                    ['attribute' => 'email', 'eq' => $email],
+                    ['attribute' => 'mobile_number', 'eq' => $telephone],
+                ]
+            )
+            ->getFirstItem();
+        return $customer;
+
     }
 }
