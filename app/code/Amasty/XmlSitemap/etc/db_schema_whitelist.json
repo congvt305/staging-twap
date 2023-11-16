@@ -1,0 +1,35 @@
+{
+    "amasty_xmlsitemap": {
+        "column": {
+            "sitemap_id": true,
+            "name": true,
+            "path": true,
+            "store_id": true,
+            "max_urls": true,
+            "max_file_size": true,
+            "last_generation": true,
+            "exclude_urls": true,
+            "date_format": true,
+            "is_additional_include": true,
+            "is_separate_entity": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amasty_xml_sitemap_entity_data": {
+        "column": {
+            "sitemap_id": true,
+            "enabled": true,
+            "entity_code": true,
+            "hreflang": true,
+            "priority": true,
+            "frequency": true,
+            "additional": true,
+            "filename": true
+        },
+        "constraint": {
+            "AMASTY_XML_SITEMAP_ENTITY": true
+        }
+    }
+}

@@ -1,0 +1,13 @@
+<div class="amseorichdata-item amseorichdata-rating"
+     if="ratingExist()"
+     data-bind="css: getRatingClass()"
+>
+    <div class="rating-summary">
+        <div class="rating-result" data-bind="attr: {title: previewRatingTitle()}">
+            <span data-bind="style: { width: previewRatingValue() + '%' }"></span>
+        </div>
+        <span class="label" if="isTypePercentage()" data-bind="i18n: 'Rating:'"></span>
+        <span class="amseorichdata-title" data-bind="text: previewRatingTitle()"></span>
+    </div>
+    <div class="amseorichdata-reviews" data-bind="i18n: getPreviewReviews()"></div>
+</div>

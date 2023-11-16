@@ -1,0 +1,24 @@
+{
+    "name": "amasty/checkout-graph-ql",
+    "description": "One Step Checkout GraphQl by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "magento/module-customer-graph-ql": ">=100.3.1",
+        "magento/module-quote-graph-ql": ">=100.3.1",
+        "amasty/base": ">=1.13.2",
+        "amasty/module-one-step-checkout-core": "*"
+    },
+    "type": "magento2-module",
+    "version": "1.2.1",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\CheckoutGraphQl\\": ""
+        }
+    }
+}

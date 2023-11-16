@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="search-engine-optimization">
+        <settings>
+            <additionalClasses>
+                <class name="amseorichdata-fieldset-wrapper">true</class>
+            </additionalClasses>
+        </settings>
+        <field name="rich_data_preview"
+               component="Amasty_SeoRichData/js/components/rich-data-preview"
+               sortOrder="0"
+               formElement="textarea">
+            <settings>
+                <label translate="true">Rich Data Preview</label>
+                <notice translate="true">Kindly note that values displayed in the preview snippet might be different on the frontend</notice>
+                <dataType>text</dataType>
+                <additionalClasses>
+                    <class name="amseorichdata-component-wrapper">true</class>
+                </additionalClasses>
+            </settings>
+        </field>
+    </fieldset>
+</form>

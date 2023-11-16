@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <crontab>
+            <default>
+                <jobs>
+                    <amshopbyfilteranalytics>
+                        <schedule>
+                            <cron_expr>0 4 * * *</cron_expr>
+                        </schedule>
+                    </amshopbyfilteranalytics>
+                </jobs>
+            </default>
+        </crontab>
+        <amshopbyfilteranalytics>
+            <analytic>
+                <enabled>1</enabled>
+            </analytic>
+            <cron>
+                <frequency>D</frequency>
+                <time>04,00,00</time>
+            </cron>
+        </amshopbyfilteranalytics>
+    </default>
+</config>

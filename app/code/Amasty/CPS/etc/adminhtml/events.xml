@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="amshopby_option_form_build_after">
+        <observer name="Amasty_CPS::AdditionalFormFields" instance="Amasty\CPS\Observer\Admin\OptionFormBuildAfter"/>
+    </event>
+
+    <event name="admin_system_config_changed_section_amshopby_brand">
+        <observer name="amasty_cps_config_save" instance="Amasty\CPS\Observer\Admin\SectionChanged"/>
+    </event>
+</config>

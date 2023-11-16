@@ -1,0 +1,256 @@
+//
+//  Toolbar Component Styles
+//  ____________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amerchui-toolbar {
+        & {
+            .am-flex(center, center);
+
+            position: relative;
+            align-self: flex-start;
+            flex-basis: 100%;
+            padding: @ammerchui__indent / 2;
+            background: @ammerchui__background-color;
+            font-size: 12px;
+        }
+
+        .ammerchui-close {
+            & {
+                position: absolute;
+                right: @ammerchui__indent;
+                z-index: 9;
+                display: inline-block;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            &:hover {
+                color: @ammerchui__active__color;
+            }
+        }
+    }
+
+    .ammerchui-page-products .ammerchui-products-list {
+        & {
+            .am-flex(none, stretch, wrap);
+        }
+
+        > .search-result {
+            border: 1px solid @ammerchui__active__color;
+        }
+
+        .ammerchui-controlbar {
+            .am-flex(space-between, center);
+
+            flex-basis: 100%;
+            margin: auto 0 0;
+            padding: 11px @ammerchui__indent;
+            background: @ammerchui__background-color;
+        }
+
+        // Styling magento elements
+        .combine-attribute div {
+            display: inline;
+            margin: 4px;
+        }
+        // end Styling magento elements
+    }
+
+    .ammerchui-image-wrapper {
+        & {
+            .am-flex(center, center);
+
+            position: relative;
+            flex-basis: 100%;
+            padding: @ammerchui__indent__xl 0 0 0;
+        }
+
+        .ammerchui-image {
+            max-width: 130px;
+            max-height: 130px;
+            border: 1px solid #ccc;
+        }
+
+        .ammerchui-stock {
+            position: absolute;
+            top: @ammerchui__indent;
+            right: @ammerchui__indent__xl;
+            box-sizing: border-box;
+            padding: 4px @ammerchui__indent;
+            border: 1px solid @ammerchui__active__color;
+            border-radius: @ammerchui__indent__xl * 2;
+            background: #fff;
+            font-size: 12px;
+        }
+    }
+
+    .ammerchui-product {
+        & {
+            .am-flex(none, none, wrap);
+
+            margin: 0 @ammerchui__indent__xxl @ammerchui__indent__xxl 0;
+            max-width: 180px;
+            width: 100%;
+            border: 1px solid #d8eeff;
+            border-radius: 2px;
+            background-color: #fff;
+            list-style: none;
+            cursor: pointer;
+        }
+
+        &:hover {
+            & {
+                border-color: #afd3f1;
+                box-shadow: 0 1px 16px rgba(63, 127, 180, .3), 0 2px 4px rgba(140, 159, 174, .3);
+            }
+
+            .ammerchui-controlbar,
+            .amerchui-toolbar {
+                background: #afd3f1;
+            }
+        }
+    }
+
+    .ammerchui-product.-manual {
+        & {
+            border-color: #1e79c2;
+        }
+
+        .ammerchui-switch-button {
+            & {
+                background: @ammerchui__active__color;
+            }
+
+            &:before {
+                filter: brightness(5);
+            }
+        }
+
+        .amerchui-toolbar {
+            background: #1e79c2;
+        }
+
+        .ammerchui-close,
+        .ammerchui-close:hover,
+        .amerchui-toolbar,
+        .amerchui-toolbar:hover {
+            color: #fff;
+        }
+
+        &:hover {
+            & {
+                border-color: #026bb3;
+            }
+
+            .amerchui-toolbar {
+                background: #026bb3;
+            }
+        }
+    }
+
+    .ammerchui-info {
+        & {
+            .am-flex();
+
+            flex-direction: column;
+            margin: @ammerchui__indent @ammerchui__indent__xxl @ammerchui__indent__l;
+            cursor: default;
+        }
+
+        .ammerchui-sku {
+            .am-flex();
+
+            word-break: break-word;
+            word-break: break-all;
+        }
+
+        .ammerchui-input {
+            padding: 0;
+            border: none;
+            border-radius: 0;
+        }
+
+        .ammerchui-name {
+            margin: 0 0 @ammerchui__indent;
+            font-weight: 700;
+        }
+
+        .ammerchui-text {
+            margin: 0 0 8px;
+        }
+    }
+
+    .ammerchui-page-block {
+        & {
+            .am-flex(none, center);
+
+            position: relative;
+        }
+
+        .ammerchui-text {
+            margin-right: 2px;
+            font-size: 11px;
+        }
+
+        // override magento default styles
+        input.ammerchui-input {
+            & {
+                .transition();
+
+                padding: 4px 17px 4px  @ammerchui__indent / 2;
+                min-width: 45px;
+                display: inline-block;
+                max-width: 6rem;
+                max-height: @ammerchui__indent__xxl;
+                border: 1px solid #68a1cf;
+                border-radius: 2px;
+                font-size: 12px;
+                -webkit-appearance: none;
+                -moz-appearance: textfield;
+            }
+
+            &:focus,
+            &:hover {
+                border-color: #4c89bb;
+            }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+            }
+        }
+        // end override magento default styles
+
+        .ammerchui-arrow.-full {
+            & {
+                &:extend(._clear-button);
+                .transition();
+
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                margin: 1px 2px 1px 0;
+                padding: @ammerchui__indent;
+                background-image: @ammenu-arrowfull__background;
+                background-position: center;
+                background-repeat: no-repeat;
+                cursor: pointer;
+            }
+
+            &:hover {
+                filter: @ammerchui__filter__hover;
+                transform: translateX(1px);
+            }
+        }
+    }
+
+    .ammerchui-first-page .ammerchui-product:nth-of-type(1) .ammerchui-move-top {
+        visibility: hidden;
+    }
+}
