@@ -1,0 +1,41 @@
+<?php
+/**
+ * Amasty VisualMerchUi widget select
+ */
+
+$options = $block->getSelectOptions()
+?>
+
+<div class="ammerchui-sort-field">
+    <?php if ($block->getData('label')): ?>
+        <label class="ammerchui-label" for="<?= $block->escapeHtml($block->getData('name')); ?>">
+            <?= $block->escapeHtml($block->getLabel()); ?>
+        </label>
+    <?php endif; ?>
+    <select id="<?= $block->escapeHtml($block->getId()); ?>"
+            class="admin__control-select <?= $block->escapeHtml($block->getData('class')); ?>"
+            data-form-part="category_form"
+            name="<?= $block->escapeHtml($block->getData('name')); ?>">
+        <?php foreach ($options as $key => $value): ?>
+            <?php if (is_array($value)): ?>
+                <optgroup label="<?= $block->escapeHtml($key); ?>">
+                    <?php foreach ($value as $optionValue => $optionLabel): ?>
+                        <?php $disabled = $block->getIsOptionDisabled($optionValue); ?>
+                        <option value="<?= $block->escapeHtml($optionValue); ?>"
+                                <?= /* @noEscape */ ($block->getSelectValue() == $optionValue) ? 'selected="selected"' : '' ?>
+                                <?= /* @noEscape */ $disabled ? 'disabled="disabled"' : '' ?>>
+                            <?= $block->escapeHtml($optionLabel); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </optgroup>
+            <?php else: ?>
+                <?php $disabled = $block->getIsOptionDisabled($key); ?>
+                <option value="<?= $block->escapeHtml($key); ?>"
+                        <?= /* @noEscape */ ($block->getSelectValue() == $key) ? 'selected="selected"' : '' ?>
+                        <?= /* @noEscape */ $disabled ? 'disabled="disabled"' : ''?>>
+                    <?= $block->escapeHtml($value); ?>
+                </option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </select>
+</div>

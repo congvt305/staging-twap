@@ -1,0 +1,83 @@
+//
+//  Page load button component styles
+//  ____________________________________________
+
+//
+//  Imports
+//  --------------------------------------------
+
+@import '../_utils';
+
+//
+//  Common
+//  --------------------------------------------
+
+& when (@media-common = true) {
+    .amscroll-load-button {
+        & {
+            .am-flex(none, center);
+
+            margin: 5px auto;
+            padding: 5px @amscroll__indent__l;
+            max-width: 100%;
+            width: max-content;
+            border: 1px solid;
+            border-radius: 2px;
+            background-color: transparent;
+            text-align: center;
+            text-transform: capitalize;
+            letter-spacing: .03em;
+            font-weight: 700;
+            font-size: 1.6rem;
+            line-height: 2rem;
+            cursor: pointer;
+            transition: color @amscroll__transition-duration;
+        }
+
+        ._keyfocus &:focus {
+            box-shadow: none;
+        }
+
+        &:not(.focus-visible) {
+            border-color: transparent !important; // override set by Js property
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: transparent;
+        }
+
+        &:hover > .amscroll-text {
+            filter: @amscroll__hover-filter;
+        }
+
+        .ie11 & {
+            width: 120px;
+        }
+
+        & > .amscroll-text {
+            .am-word-break;
+
+            transition: filter @amscroll__transition-duration;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        & > .amscroll-loading-icon {
+            display: none;
+            margin-right: @amscroll__indent;
+        }
+
+        &.-amscroll-loading {
+            & {
+                pointer-events: none;
+                user-select: none;
+            }
+
+            & > .amscroll-loading-icon {
+                display: block;
+            }
+        }
+    }
+}

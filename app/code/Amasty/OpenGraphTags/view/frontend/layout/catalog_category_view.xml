@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <attribute name="prefix" value="og: http://ogp.me/ns# category: http://ogp.me/ns/category#" />
+    </head>
+    <body>
+        <referenceContainer name="head.additional">
+            <block name="amopengraphtags.category" class="Magento\Framework\View\Element\Template"
+                   template="Amasty_OpenGraphTags::category/og_markup.phtml"
+                   ifconfig="amopengraphtags/category_page/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amasty\OpenGraphTags\ViewModel\CategoryOgMarkup</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

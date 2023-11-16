@@ -15,6 +15,11 @@ $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper(Magento\Msrp\Helper\Data::class);
 $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$cjCatalogHelper = $this->helper(CJ\CatalogProduct\Helper\Data::class);
+$bundleOptions = isset($_item->getBuyRequest()['bundle_option']) ? $_item->getBuyRequest()['bundle_option'] : [];
+$cartItemBlock = $cjCatalogHelper->getProductStock($product, $_item->getQty(), $bundleOptions);
+$isInStock = isset($cartItemBlock['is_in_stock']) && $cartItemBlock['is_in_stock'];
+$stockMessage = $cartItemBlock['message'] ?? '';
 $messageError = false;
 ?>
 <tbody class="cart item">
@@ -87,13 +92,12 @@ $messageError = false;
                 <?php if ($_options = $block->getOptionList()) :?>
                     <div class="bundle-detail-cart">
                         <button class="bundle-button-toggle" type="button">
-                            <span><?= $block->escapeHtml(__('SET GOODS')) ?>(<span class="count"><?= count($_options); ?></span>)</span>
+                            <span><?= $block->escapeHtml(__('SET GOODS')) ?> (<span class="count"><?= count($_options); ?></span>)</span>
                         </button>
                         <dl class="item-options">
                             <?php foreach ($_options as $_option) :?>
                                 <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                                 <dd>
-                                    <span class="label"><?= $block->escapeHtml($_option['label']) ?>:</span>
                                     <?php if (isset($_formatedOptionValue['full_view'])) :?>
                                         <?= $block->escapeHtml($_formatedOptionValue['full_view']) ?>
                                     <?php else :?>
@@ -109,13 +113,16 @@ $messageError = false;
             <div class="product-item-details-qty col qty" data-th="<?= $block->escapeHtmlAttr(__('Qty')) ?>">
                 <div class="field qty">
                     <div class="control qty qty_control">
-                        <button type="button"   id="<?= /* @escapeNotVerified */ $_item->getId() ?>-dec"  class="decreaseQty"></button>
+                        <button type="button"
+                                id="<?= /* @escapeNotVerified */ $_item->getId() ?>-dec"
+                                class="decreaseQty<?php if ($block->getQty() <= 1): ?> disable<?php endif; ?>"></button>
                         <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
                                name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
                                data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
                                value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
                                type="number"
                                size="4"
+                               min="0"
                                step="any"
                                title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
                                class="input-text qty"
@@ -125,7 +132,12 @@ $messageError = false;
                                 readonly
                             <?php endif; ?>
                         />
-                        <button type="button"  id="<?= /* @escapeNotVerified */ $_item->getId() ?>-upt" class="increaseQty"></button>
+                        <button type="button"
+                                id="<?= /* @escapeNotVerified */ $_item->getId() ?>-upt"
+                                class="increaseQty<?php if (!$isInStock): ?> disable<?php endif; ?>"></button>
+                    </div>
+                    <div class="stock-status">
+                        <span class="option-stock stock-message"><?= $block->escapeHtml($stockMessage) ?></span>
                     </div>
                 </div>
                 <div class="item-actions item-actions-mobile">
@@ -159,6 +171,8 @@ $messageError = false;
                         <span class="giveaway"><?= __('Give Away') ?></span>
                         <strong class="product-item-name">
                             <?= $block->escapeHtml($giftItem->getProduct()->getName()) ?>
+                            <span><?= __(' / ') ?></span>
+                            <?= $block->escapeHtml($giftItem->getQty()) ?>
                         </strong>
                     </div>
                     <?= $block->getRowTotalHtml($giftItem) ?>

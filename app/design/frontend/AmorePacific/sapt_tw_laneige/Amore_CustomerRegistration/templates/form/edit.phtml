@@ -146,7 +146,7 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
         </div>
     </fieldset>
 
-    <?php $beautyProfileStatus = $block->getLayout()->createBlock(\Sapt\Customer\Block\Widget\BeautyProfile::class, 'beauty_profile', ['data'=>['attribute_code'=>'beauty_profile', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'beauty_profile'))]]) ?>
+    <?php $beautyProfileStatus = $block->getLayout()->createBlock(\Satp\Customer\Block\Widget\BeautyProfile::class, 'beauty_profile', ['data'=>['attribute_code'=>'beauty_profile', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'beauty_profile'))]]) ?>
     <?php if ($beautyProfileStatus->isEnabled()) : ?>
         <?= $beautyProfileStatus->toHtml() ?>
     <?php endif ?>

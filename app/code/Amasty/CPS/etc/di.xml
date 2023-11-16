@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\CPS\Api\Data\BrandProductInterface" type="Amasty\CPS\Model\BrandProduct" />
+    <preference for="Amasty\CPS\Api\Indexer\DataHandlerInterface" type="Amasty\CPS\Model\Indexer\DataHandler" />
+
+    <type name="Magento\Elasticsearch\Model\Adapter\DataMapper\ProductDataMapper">
+        <plugin name="Amasty_CPS::AdditionalDataMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalDataMapper" />
+    </type>
+    <type name="Magento\Elasticsearch\Model\Adapter\BatchDataMapper\ProductDataMapper">
+        <plugin name="Amasty_CPS::AdditionalBatchDataMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalBatchDataMapper" />
+    </type>
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\ProductFieldMapper">
+        <plugin name="Amasty_CPS::AdditionalFieldMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalFieldMapper" />
+    </type>
+    <type name="Magento\Elasticsearch\Elasticsearch5\Model\Adapter\FieldMapper\ProductFieldMapperProxy">
+        <plugin name="Amasty_CPS::AdditionalFieldMapperElasticSearch5"
+                type="Amasty\CPS\Plugin\ElasticSearch\ElasticSearch5\Model\Adapter\FieldMapper\AdditionalFieldMapper" />
+    </type>
+    <type name="Amasty\ElasticSearch\Model\Indexer\Structure\EntityBuilder\Product">
+        <plugin name="Amasty_CPS::AdditionalFieldMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalFieldMapper"/>
+    </type>
+    <type name="Amasty\ElasticSearch\Model\Search\GetRequestQuery\GetAggregations\FieldMapper">
+        <plugin name="Amasty_CPS::AdditionalFieldMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalFieldMapper"/>
+    </type>
+    <type name="Amasty\ElasticSearch\Model\Indexer\Data\Product\ProductDataMapper">
+        <plugin name="Amasty_CPS::AdditionalBatchDataMapper"
+                type="Amasty\CPS\Plugin\ElasticSearch\Model\Adapter\AdditionalBatchDataMapper"/>
+    </type>
+    <type name="Amasty\ElasticSearch\Model\Search\GetRequestQuery\SortingProvider">
+        <plugin name="Amasty_CPS::AdditionalSortBuilder"
+                type="Amasty\CPS\Plugin\ElasticSearch\SearchAdapter\Query\Builder\SortPlugin"/>
+    </type>
+    <type name="Magento\Elasticsearch\SearchAdapter\Query\Builder\Sort">
+        <plugin name="Amasty_CPS::AdditionalSortBuilder"
+                type="Amasty\CPS\Plugin\ElasticSearch\SearchAdapter\Query\Builder\SortPlugin"/>
+    </type>
+    <type name="Magento\CatalogSearch\Model\Indexer\Fulltext">
+        <plugin name="Amasty_CPS::ReindexBrand"
+                type="Amasty\CPS\Plugin\Catalogsearch\Model\Indexer\FulltextPlugin"/>
+    </type>
+</config>

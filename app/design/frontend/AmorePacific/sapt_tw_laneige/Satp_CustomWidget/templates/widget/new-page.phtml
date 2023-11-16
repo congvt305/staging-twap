@@ -17,8 +17,8 @@ $galleryId = $block->getData('id');
 
 <?php if ($block->getProductCollection()): ?>
     <?php
-    /** @var \Sapt\CustomWidget\Helper\GalleryImage $_helperGallery */
-    $_helperGallery = $this->helper(\Sapt\CustomWidget\Helper\GalleryImage::class);
+    /** @var \Satp\CustomWidget\Helper\GalleryImage $_helperGallery */
+    $_helperGallery = $this->helper(\Satp\CustomWidget\Helper\GalleryImage::class);
     $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
     $type = 'widget-product-grid';
 
