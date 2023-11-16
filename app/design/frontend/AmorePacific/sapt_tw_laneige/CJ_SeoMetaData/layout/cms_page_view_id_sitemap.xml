@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>蘭芝香港官方線上網站﹡全站導覽 | Laneige Hong Kong Official</title>
+        <meta name="description" content="韓國著名草本護膚天然成分化妝品品牌 | 想購物卻沒時間？我來幫您節省時間！輕鬆一點、快速瀏覽蘭芝香港官方線上網站 | Laneige Hong Kong"/>
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <referenceBlock name="default.opengraph" template="CJ_SeoMetaData::head/site_map_opengraph.phtml"/>
+            <referenceBlock name="default.twitter" template="CJ_SeoMetaData::head/site_map_twitter.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

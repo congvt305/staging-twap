@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+<!--            after discount & shipping discount -->
+            <item name="amore_rounded" instance="Amore\Currency\Model\Quote\Address\Total\Rounded" sort_order="500"/>
+        </group>
+    </section>
+    <section name="order_invoice">
+        <group name="totals">
+            <!--            after discount & shipping discount -->
+            <item name="amore_rounded" instance="Amore\Currency\Model\Order\Invoice\Total\Rounded" sort_order="160"/>
+        </group>
+    </section>
+    <section name="order_creditmemo">
+        <group name="totals">
+            <!--            after discount & shipping discount -->
+            <item name="amore_rounded" instance="Amore\Currency\Model\Order\Creditmemo\Total\Rounded" sort_order="210"/>
+        </group>
+    </section>
+</config>

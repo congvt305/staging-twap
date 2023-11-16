@@ -18,7 +18,7 @@ $pointSearchResult = $block->getPointsSearchResult();
                     <?php endif; ?>
                 </p>
                 <div class="rank">
-                    <h2><?php // $groupName ?></h2>
+                    <h2><?= $groupName ?></h2>
                     <a class="view_all" href="<?= $block->getUrl('membership/member.html') ?>"><?= $block->escapeHtml(__('View all benefits')) ?></a>
                 </div>
             </div>

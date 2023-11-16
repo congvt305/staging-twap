@@ -1,0 +1,15 @@
+<?php
+$helper = $this->helper(\CJ\SeoMetaData\Helper\Data::class);
+if ($helper->getEnable()) :
+    ?>
+    <meta property="og:type" content="website" />
+    <meta property="og:title"
+          content="網上訂購辦法及送貨方式說明 | 蘭芝(Laneige) 香港官方線上網站" />
+    <meta property="og:image"
+          content="<?= $block->escapeUrl($block->getViewFileUrl('Eguana_Theme::images/og.png')) ?>" />
+    <meta property="og:description"
+          content="韓國著名草本護膚化妝品品牌 | 由此查看網上訂購及送貨服務注意事項，讓蘭芝帶給您不因歲月流逝而蛻色的高雅肌膚 | 蘭芝(Laneige) Hong Kong" />
+    <meta property="og:url" content="<?= $block->escapeUrl($block->getCurrentUrl()) ?>" />
+<?php
+endif;
+?>

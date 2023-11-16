@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Block\Product\View">
+        <plugin name="Amasty_OpenGraphTags::ModifyProductOGTags"
+                type="Amasty\OpenGraphTags\Plugin\Catalog\Block\Product\View\RemoveMagentoOGTagsContent"/>
+    </type>
+
+    <virtualType name="replacedDataFromAmastyMetaModule" type="Amasty\OpenGraphTags\Model\Di\Wrapper">
+        <arguments>
+            <argument name="name" xsi:type="string">Amasty\Meta\Model\Meta\ReplacedData</argument>
+            <argument name="isShared" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\OpenGraphTags\Model\Meta\GetReplacedMetaData">
+        <arguments>
+            <argument name="replacedMetaData" xsi:type="object">replacedDataFromAmastyMetaModule</argument>
+        </arguments>
+    </type>
+</config>

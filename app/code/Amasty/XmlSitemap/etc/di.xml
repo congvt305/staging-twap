@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\XmlSitemap\Api\SitemapInterface" type="Amasty\XmlSitemap\Model\Sitemap" />
+    <preference for="Amasty\XmlSitemap\Api\SitemapRepositoryInterface" type="Amasty\XmlSitemap\Model\Repository\SitemapRepository" />
+    <preference for="Amasty\XmlSitemap\Api\SitemapEntity\SitemapEntityDataInterface" type="Amasty\XmlSitemap\Model\Sitemap\SitemapEntityData"/>
+
+    <!-- Declaration of additional actions -->
+    <virtualType name="Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\SaveAdditionalActionsPool" type="Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\AdditionalActionsPool">
+        <arguments>
+            <argument name="actions" xsi:type="array">
+                <item name="0" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="action" xsi:type="object">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\Save\SaveSitemapEntityData</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\LoadAdditionalActionsPool" type="Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\AdditionalActionsPool">
+        <arguments>
+            <argument name="actions" xsi:type="array">
+                <item name="0" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="action" xsi:type="object">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\Load\LoadSitemapEntityData</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Append additional actions to ResourceModel and Collection -->
+    <type name="Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Collection">
+        <arguments>
+            <argument name="loadActionsPool" xsi:type="object">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\LoadAdditionalActionsPool</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\XmlSitemap\Model\ResourceModel\Sitemap">
+        <arguments>
+            <argument name="loadActionsPool" xsi:type="object">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\LoadAdditionalActionsPool</argument>
+            <argument name="saveActionsPool" xsi:type="object">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Actions\SaveAdditionalActionsPool</argument>
+        </arguments>
+    </type>
+
+    <!-- Adminhtml UI declaration -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="amasty_xml_sitemap_listing_data_source" xsi:type="string">Amasty\XmlSitemap\Model\ResourceModel\Sitemap\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Declaration sources & xml tags for sitemap -->
+    <type name="Amasty\XmlSitemap\Model\Sitemap\SourceProvider">
+        <arguments>
+            <argument name="sources" xsi:type="array">
+                <item name="product" xsi:type="string">Amasty\XmlSitemap\Model\Source\Product</item>
+                <item name="category" xsi:type="string">Amasty\XmlSitemap\Model\Source\Category</item>
+                <item name="cms" xsi:type="string">Amasty\XmlSitemap\Model\Source\Page</item>
+                <item name="extra" xsi:type="string">Amasty\XmlSitemap\Model\Source\Extra</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\XmlSitemap\Model\Sitemap\XmlMetaProvider">
+        <arguments>
+            <argument name="meta" xsi:type="array">
+                <item name="product" xsi:type="array">
+                    <item name="last_modified" xsi:type="string">lastmod</item>
+                    <item name="image" xsi:type="array">
+                        <item name="wrapper" xsi:type="string">image:image</item>
+                        <item name="caption" xsi:type="string">image:caption</item>
+                        <item name="loc" xsi:type="string">image:loc</item>
+                        <item name="title" xsi:type="string">image:title</item>
+                    </item>
+                </item>
+
+                <item name="category" xsi:type="array">
+                    <item name="last_modified" xsi:type="string">lastmod</item>
+                    <item name="image" xsi:type="array">
+                        <item name="wrapper" xsi:type="string">image:image</item>
+                        <item name="caption" xsi:type="string">image:caption</item>
+                        <item name="loc" xsi:type="string">image:loc</item>
+                        <item name="title" xsi:type="string">image:title</item>
+                    </item>
+                </item>
+
+                <item name="cms" xsi:type="array">
+                    <item name="last_modified" xsi:type="string">lastmod</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="Amasty_XmlSitemap:GenerateXmlSiteMap" xsi:type="object">Amasty\XmlSitemap\Console\Command\GenerateXmlSiteMap</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\XmlSitemap\Model\Sitemap\HreflangProvider">
+        <arguments>
+            <argument name="urlProvider"
+                      xsi:type="object">Amasty\XmlSitemap\Model\Sitemap\Hreflang\UrlProvider\RewriteUrlProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="Amasty\XmlSitemap\Model\Sitemap\CmsHreflangProvider"
+                 type="Amasty\XmlSitemap\Model\Sitemap\HreflangProvider">
+        <arguments>
+            <argument name="urlProvider"
+                      xsi:type="object">Amasty\XmlSitemap\Model\Sitemap\Hreflang\UrlProvider\CmsUrlProvider</argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\XmlSitemap\Model\Source\Page">
+        <arguments>
+            <argument name="hreflangProvider"
+                      xsi:type="object">Amasty\XmlSitemap\Model\Sitemap\CmsHreflangProvider</argument>
+        </arguments>
+    </type>
+</config>

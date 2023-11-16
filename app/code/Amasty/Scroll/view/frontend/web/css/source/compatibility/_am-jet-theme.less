@@ -1,0 +1,63 @@
+//
+//  JetTheme compatibility
+//  _____________________________________________
+
+//
+//  Variables
+//  ----------------------------------------------
+
+@amscroll-load-button__indent: 80px;
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amasty-jet-theme.-amscroll-backtotop-enabled .amtheme-backtotop-wrap {
+        display: none;
+    }
+
+    .amscroll-page-num {
+        margin: 20px 0;
+    }
+
+    .amtheme-search-terms + .amscroll-page-num {
+        margin-top: 0;
+    }
+
+    .amscroll-load-button {
+        &:hover {
+            border: 1px solid transparent;
+        }
+
+        &.-after {
+            margin-top: @amscroll-load-button__indent;
+        }
+
+        &.-before {
+            margin-bottom: 15px;
+        }
+    }
+}
+
+//
+//  Desktop
+//  ----------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .products-grid.amscroll-page ~ .page-title-wrapper.amtheme-title-search {
+        margin-top: 25px;
+    }
+
+    .products.products-grid.amscroll-page:not(:first-of-type),
+    .products.products-grid.amscroll-pages:not(:first-of-type) {
+        margin-bottom: @indent__s;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__xl) {
+    .products.products-grid.amscroll-page:not(:first-of-type),
+    .products.products-grid.amscroll-pages:not(:first-of-type) {
+        margin-bottom: @indent__l;
+    }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>註冊成為Laneige香港網店會員</title>
+        <meta name="description" content="立即註冊及登入網店會員帳戶，尊享獨家購物禮遇。"/>
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <referenceBlock name="default.opengraph" template="CJ_SeoMetaData::head/customer_account_create_opengraph.phtml"/>
+            <referenceBlock name="default.twitter" template="CJ_SeoMetaData::head/customer_account_create_twitter.phtml"/>
+        </referenceBlock>
+    </body>
+</page>
