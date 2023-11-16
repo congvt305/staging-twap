@@ -1,0 +1,30 @@
+button_label,button_label
+"Filters have been successfully sorted based on analytics.","Filters have been successfully sorted based on analytics."
+"An item needs to be selected. Select and try again.","An item needs to be selected. Select and try again."
+"Options have been successfully sorted based on analytics.","Options have been successfully sorted based on analytics."
+Forbidden,Forbidden
+"We can't save the cron expression.","We can't save the cron expression."
+"Filter Analytics","Filter Analytics"
+"Are you sure?","Are you sure?"
+"Filters usage statistics will be permanently removed. Are you sure?","Filters usage statistics will be permanently removed. Are you sure?"
+Refresh,Refresh
+"Improved Layered Navigation: Filter Analytics","Improved Layered Navigation: Filter Analytics"
+"Analytics Block","Analytics Block"
+"Gather Filter Analytics Data","Gather Filter Analytics Data"
+"Number of Displayed Filter Options per Filter","Number of Displayed Filter Options per Filter"
+"Options will be displayed starting with the most popular one.
+ Leave empty to display all options.","Options will be displayed starting with the most popular one.
+ Leave empty to display all options."
+"Flush Filters Data","Flush Filters Data"
+"Cron Settings","Cron Settings"
+Frequency,Frequency
+"Start Time","Start Time"
+Date,Date
+From:,From:
+To:,To:
+"Sort Options by Popularity","Sort Options by Popularity"
+"Filter Label","Filter Label"
+"Attribute Code","Attribute Code"
+Uses,Uses
+Back,Back
+"Sort Filters by Popularity","Sort Filters by Popularity"

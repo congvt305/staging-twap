@@ -1,0 +1,112 @@
+//
+//  Amasty Shop By Filter Analytics table grid styles
+//  ____________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+
+@amshopbyfa-cell__offset: 10px;
+
+//
+//  Common
+//  --------------------------------------------
+
+& when (@media-common = true) {
+    // START override magento selectors
+    .amasty_shopby_filters_amasty_shopby_filters_analytics_modal {
+        .data-grid {
+            .amshopbyfa-grid-column {
+                padding-right: 0;
+                padding-left: 0;
+                vertical-align: top;
+                font-size: 1.4rem;
+            }
+
+            .data-grid-checkbox-cell {
+                vertical-align: top;
+            }
+        }
+
+        > .modal-inner-wrap > .modal-content {
+            height: 100%;
+        }
+    }
+    // END override magento selectors
+
+    .amshopbyfa-expandable-title {
+        padding-right: @amshopbyfa-cell__offset;
+        padding-left: @amshopbyfa-cell__offset;
+        font-weight: 700;
+    }
+
+    .amshopbyfa-expandable-cell {
+        .amshopbyfa-content.-short {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .amshopbyfa-content.-detailed {
+            & {
+                display: none;
+                margin-top: 5px;
+            }
+
+            &.-expanded {
+                display: block;
+            }
+        }
+
+        .amshopbyfa-column {
+            display: flex;
+            align-items: center;
+            min-height: 28px;
+        }
+    }
+
+    .amshopbyfa-row-label.-expandable {
+        & {
+            position: relative;
+            cursor: pointer;
+        }
+
+        &:before {
+            position: absolute;
+            top: 50%;
+            border-width: 5px 4px 0;
+            border-style: solid;
+            border-color: #000 transparent transparent;
+            content: '';
+            transform: translate(0, -50%);
+        }
+
+        &.-expanded:before {
+            transform: translate(0, -50%) rotate(180deg);
+        }
+
+        .cell-content {
+            margin-left: 20px;
+            font-weight: 700;
+        }
+    }
+
+    .amshopbyfa-cell-detailed {
+        .amshopbyfa-item.detailed-info {
+            & {
+                padding-right: @amshopbyfa-cell__offset;
+                padding-left: @amshopbyfa-cell__offset;
+                cursor: pointer;
+            }
+
+            &.-hovered {
+                background: #b5e8fc;
+            }
+        }
+
+        .amshopbyfa-value {
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 1.9rem;
+        }
+    }
+}

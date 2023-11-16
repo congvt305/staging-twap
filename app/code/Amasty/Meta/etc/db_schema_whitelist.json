@@ -1,0 +1,53 @@
+{
+    "amasty_meta_config": {
+        "column": {
+            "config_id": true,
+            "category_id": true,
+            "store_id": true,
+            "is_custom": true,
+            "custom_url": true,
+            "priority": true,
+            "custom_meta_title": true,
+            "custom_meta_keywords": true,
+            "custom_meta_description": true,
+            "custom_canonical_url": true,
+            "custom_robots": true,
+            "custom_h1_tag": true,
+            "custom_in_page_text": true,
+            "cat_meta_title": true,
+            "cat_meta_description": true,
+            "cat_meta_keywords": true,
+            "cat_h1_tag": true,
+            "cat_description": true,
+            "cat_image_alt": true,
+            "cat_image_title": true,
+            "cat_after_product_text": true,
+            "product_meta_title": true,
+            "product_meta_keywords": true,
+            "product_meta_description": true,
+            "product_h1_tag": true,
+            "product_short_description": true,
+            "product_description": true,
+            "sub_product_meta_title": true,
+            "sub_product_meta_keywords": true,
+            "sub_product_meta_description": true,
+            "sub_product_h1_tag": true,
+            "sub_product_short_description": true,
+            "sub_product_description": true,
+            "is_brand_config": true,
+            "brand_meta_title": true,
+            "brand_meta_description": true,
+            "brand_meta_keywords": true,
+            "brand_h1_tag": true,
+            "brand_description": true,
+            "brand_after_product_text": true,
+            "stores": true
+        },
+        "index": {
+            "AMASTY_META_CONFIG_CONFIG_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

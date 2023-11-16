@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package Amasty Advanced Reviews PageBuilder for Magento 2 (System)
+*/-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" extends="pagebuilder_base_form">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">amasty_reviews_form.amasty_reviews_form_data_source</item>
+            <item name="deps" xsi:type="string">amasty_reviews_form.amasty_reviews_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Review Widget</item>
+    </argument>
+    <settings>
+        <namespace>amasty_reviews_form</namespace>
+    </settings>
+    <dataSource name="amasty_reviews_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_PageBuilder/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider name="amasty_reviews_form_data_source" class="Amasty\ReviewPageBuilder\Model\DataProvider\DataProvider">
+            <settings>
+                <requestFieldName/>
+                <primaryFieldName/>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="appearance_fieldset" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-fieldset">
+        <settings>
+            <label translate="true">Appearance</label>
+            <additionalClasses>
+                <class name="admin__fieldset-visual-select-large">true</class>
+            </additionalClasses>
+            <collapsible>false</collapsible>
+            <opened>true</opened>
+            <imports>
+                <link name="hideFieldset">${$.name}.appearance:options</link>
+                <link name="hideLabel">${$.name}.appearance:options</link>
+            </imports>
+        </settings>
+        <field name="appearance" formElement="select" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-visual-select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">default</item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                    <class name="admin__field-visual-select-container">true</class>
+                </additionalClasses>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <elementTmpl>Magento_PageBuilder/form/element/visual-select</elementTmpl>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="AppearanceSourceBlock" />
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="general" sortOrder="20">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">General</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="opened" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <field name="title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Header</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">title</item>
+                    <item name="source" xsi:type="string">reviews</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reviews_count">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Number of Reviews to Show</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">reviews_count</item>
+                    <item name="source" xsi:type="string">reviews</item>
+                </item>
+            </argument>
+        </field>
+        <field name="current_category">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="source" xsi:type="string">reviews</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Reviews from Current Category Only</item>
+                </item>
+            </argument>
+        </field>
+        <field name="review_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Amasty\AdvancedReview\Model\OptionSource\Widget\Type</item>
+                <item name="source" xsi:type="string">reviews</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Reviews Type</item>
+                </item>
+            </argument>
+        </field>
+        <field name="higher_than">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Do not Display Reviews with Average Rating less than</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">higher_than</item>
+                    <item name="source" xsi:type="string">reviews</item>
+                </item>
+            </argument>
+        </field>
+        <field name="template">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Amasty\AdvancedReview\Model\Sources\Template</item>
+                <item name="source" xsi:type="string">reviews</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Template</item>
+                </item>
+            </argument>
+        </field>
+        <field name="enable_slider">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="source" xsi:type="string">reviews</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Enable Slider</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

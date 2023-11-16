@@ -1,0 +1,15 @@
+<?php
+$helper = $this->helper(\CJ\SeoMetaData\Helper\Data::class);
+if ($helper->getEnable()) :
+    ?>
+    <meta property="twitter:card" content="website" />
+    <meta property="twitter:title"
+          content="蘭芝香港官方網站條款及細則 || Laneige Hong Kong Official" />
+    <meta property="twitter:image"
+          content="<?= $block->escapeUrl($block->getViewFileUrl('Eguana_Theme::images/og.png')) ?>" />
+    <meta property="twitter:description"
+          content="韓國著名草本護膚化妝品品牌 | 在此確認網站服務挑款及細則等相關說明，期望蘭芝香港能帶給您一趟美好的煥膚之旅 | Laneige Hong Kong" />
+    <meta property="twitter:url" content="<?= $block->escapeUrl($block->getCurrentUrl()) ?>" />
+<?php
+endif;
+?>

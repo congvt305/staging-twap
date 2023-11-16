@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package SEO Toolkit Base for Magento 2
+*/-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Amasty_SeoToolkitLite::seotoolkitlite"
+             title="SEO Toolkit Lite"
+             module="Amasty_SeoToolkitLite"
+             sortOrder="10"
+             parent="Magento_Backend::content"
+             resource="Amasty_SeoToolkitLite::seotoolkitlite"/>
+
+        <add id="Amasty_SeoToolkitLite::config"
+             title="Settings"
+             module="Amasty_SeoToolkitLite"
+             sortOrder="10"
+             parent="Amasty_SeoToolkitLite::seotoolkitlite"
+             action="adminhtml/system_config/edit/section/amseotoolkit"
+             resource="Amasty_SeoToolkitLite::config"/>
+
+        <add id="Amasty_SeoToolkitLite::seo"
+             title="Amasty SEO Toolkit Lite "
+             module="Amasty_SeoToolkitLite"
+             parent="Magento_Backend::marketing"
+             sortOrder="40"
+             resource="Amasty_SeoToolkitLite::seo"/>
+
+        <add id="Amasty_SeoToolkitLite::redirects"
+             title="Manage Redirects"
+             module="Amasty_SeoToolkitLite"
+             sortOrder="10"
+             parent="Amasty_SeoToolkitLite::seo"
+             action="amasty_seotoolkitlite/redirect/index"
+             resource="Amasty_SeoToolkitLite::redirects"/>
+    </menu>
+</config>

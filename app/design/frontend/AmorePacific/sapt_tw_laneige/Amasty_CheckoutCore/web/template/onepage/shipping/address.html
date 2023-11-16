@@ -1,0 +1,82 @@
+<li id="customer-email-wrapper" class="const-guest checkout-shipping-address amcheckout-shipping-address" data-bind="fadeVisible: visible(), visible: !isLoggedIn()">
+    <p class="step-title amcheckout-title"
+       data-amcheckout-js="step-title"
+       data-bind="i18n: getCustomerTitle()"
+       data-role="title"></p>
+    <!-- ko ifnot: quoteIsVirtual -->
+    <!-- ko fastForEach: getRegion('customer-email') -->
+    <!-- ko fastForEach: getRegion('amazon-button-region') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <!--/ko-->
+    <button type="button"
+            style="display: none"
+            data-bind="click: showFormPopUp"
+            class="action action-show-popup amcheckout-button -new-address">
+        <span data-bind="i18n: 'New Address'"></span></button>
+    <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible">
+        <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
+    </div>
+</li>
+
+<li id="shipping" class="checkout-shipping-address amcheckout-shipping-address" data-bind="fadeVisible: visible()">
+    <p class="step-title amcheckout-title"
+       data-amcheckout-js="step-title"
+       data-bind="i18n: getNameShippingAddress()"
+       data-role="title"></p>
+    <div id="checkout-step-shipping"
+         class="step-content amcheckout-content"
+         data-amcheckout-js="step-content"
+         data-role="content"
+         data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
+        <div class="amcheckout-wrapper">
+            <!-- ko ifnot: isFormInline -->
+            <div class="pickup-information-options" style="display: none">
+                    <p class="select-address-tit" translate="'Select shipping information type'"></p>
+                    <div class="select-address-menu">
+                        <div class="rdo-set"
+                             css="'active': isSamePerson()"
+                             click= "chooseSamePersonAddressType" >
+                            <input type="radio"
+                                   id="address-type-1"
+                                   name="address-type"
+                                   class="input-rdo"
+                                   checked="true"
+                                   value="0"
+                            >
+                            <label for="address-type-1"><span translate="'Use member address'"></span></label>
+                        </div>
+                        <div class="rdo-set"
+                             css="'active': isDifferentPerson()"
+                             click= "chooseDifferentPersonAddressType" >
+                            <input
+                                type="radio"
+                                id="address-type-2"
+                                name="address-type"
+                                class="input-rdo"
+                                value="1"
+                            >
+                            <label for="address-type-2"><span translate="'Use another shipping address'"></span></label>
+                        </div>
+                    </div>
+                </div>
+            <!-- /ko -->
+
+            <!-- ko fastForEach: getRegion('address-list-additional-addresses') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko fastForEach: getRegion('before-form') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
+
+            <!-- ko fastForEach: getRegion('billing-address-form-shared') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+    </div>
+</li>

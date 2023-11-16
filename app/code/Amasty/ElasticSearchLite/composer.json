@@ -1,0 +1,23 @@
+{
+    "name": "amasty/module-elastic-search-lite",
+    "description": "Elastic Search Lite by Amasty",
+    "require": {
+        "php": ">=7.3",
+        "amasty/base": ">=1.13.4",
+        "amasty/xsearch": "*"
+    },
+    "homepage": "https://amasty.com/",
+    "type": "magento2-module",
+    "version": "1.18.1",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ElasticSearchLite\\": ""
+        }
+    }
+}

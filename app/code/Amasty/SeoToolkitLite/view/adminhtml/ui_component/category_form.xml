@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package SEO Toolkit Base for Magento 2
+*/-->
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="search_engine_optimization">
+        <field name="amtoolkit_robots">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Robots</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataScope" xsi:type="string">amtoolkit_robots</item>
+                    <item name="sortOrder" xsi:type="string">160</item>
+                </item>
+                <item name="options" xsi:type="object">Amasty\SeoToolkitLite\Model\Source\Eav\Robots</item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

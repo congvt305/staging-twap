@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Amasty\OpenGraphTags\ViewModel\CmsOgMarkup $viewModel
+ */
+
+$viewModel = $block->getViewModel();
+$title = $viewModel->getCmsMetaTitle();
+$description = $viewModel->getCmsMetaDescription();
+?>
+
+<?php if ($viewModel->isShowBlock()):?>
+    <meta property="og:type" content="cms"/>
+
+    <?php if ($title):?>
+        <meta property="og:title" content="<?= $escaper->escapeHtml($title); ?>"/>
+    <?php endif;?>
+
+    <?php if ($description):?>
+        <meta property="og:description" content="<?= $escaper->escapeHtml($description); ?>"/>
+    <?php endif;?>
+
+    <meta property="og:url" content="<?= $escaper->escapeUrl($viewModel->getPageUrl()); ?>"/>
+    <meta property="og:site_name" content="<?= $escaper->escapeHtml($viewModel->getSiteName()); ?>"/>
+<?php endif;?>

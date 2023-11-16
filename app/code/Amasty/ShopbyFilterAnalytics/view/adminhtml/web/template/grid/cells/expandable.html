@@ -1,0 +1,28 @@
+<div class="data-grid-cell-content amshopbyfa-expandable-title"
+     css="'amshopbyfa-row-label -expandable': $col.resolveExpandControl($row())"
+     data-amshopbyfa-js="toggle-element"
+     data-bind="click: $col.toggleRow.bind($col, $row()._rowIndex)">
+    <div class="cell-content" text="$col.getLabel($row())"></div>
+</div>
+<div class="data-grid-cell-content amshopbyfa-expandable-cell">
+    <div class="amshopbyfa-content -detailed"
+         data-amshopbyfa-js="toggle-element">
+        <div class="amshopbyfa-cell-detailed data-grid-cell-expanded-content">
+            <!-- ko foreach: { data: $col.getDetailedItems($row()), as: 'detailed' } -->
+            <div class="amshopbyfa-column detailed-info amshopbyfa-item info-item"
+                data-bind="
+                    attr: { 'data-amshopbyfa-id': option_id },
+                    event: {
+                        click: $col.toggleCheckbox.bind($col),
+                        mouseover: $col.toggleHover.bind($col),
+                        mouseout: $col.toggleHover.bind($col)
+                    }
+            ">
+                <span if="$col.hasData(detailed[$col.index])"
+                      class="amshopbyfa-value info-item-value"
+                      text="detailed[$col.index]"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

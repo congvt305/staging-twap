@@ -1,0 +1,59 @@
+<?php /** @var \Amasty\CPS\Block\Adminhtml\Products $block */ ?>
+
+<div class="ammerchui-page-products" data-role="am-page-products">
+    <div class="ammerch-sorting-container">
+        <div class="ammerch-sorting-block">
+            <?= $block->getChildHtml('store'); ?>
+            <?= $block->getSortOrderBlock()->toHtml(); ?>
+            <?= $block->getSortOrderButtonBlock()->toHtml(); ?>
+        </div>
+        <div class="ammerchui-search-form">
+            <form id="am-products-search-form" class="ammerchui-form">
+                <?= $block->getSearchBlock()->toHtml(); ?>
+                <?= $block->getSearchButtonBlock()->toHtml(); ?>
+            </form>
+        </div>
+        <?php if ($block->getAddProductsButtonBlock()): ?>
+            <?= $block->getAddProductsButtonBlock()->toHtml(); ?>
+        <?php endif; ?>
+    </div>
+    <div class="ammerchui-tabs" data-role="am-tabs">
+        <div id="tab_tile" class="tabs-tab-tile ammerchui-tab" role="tabpanel">
+            <?= $block->getListingBlock()->toHtml(); ?>
+        </div>
+        <div class="no-display">
+            <input id="vm_landing_products"
+                   type="hidden"
+                   data-form-part="category_form"
+                   name="vm_landing_products"
+                   value="<?= $block->escapeHtml($block->getPositionDataJson()); ?>"
+            />
+            <input id="vm_landing_products_manual"
+                   type="hidden"
+                   data-form-part="category_form" name="vm_landing_products_manual"
+                   value="<?= $block->escapeHtml($block->getPositionDataJson()); ?>"
+            />
+        </div>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'ammerchuiProducts',
+        'domReady!'
+    ], function ($) {
+        $(function () {
+            $('[data-role="am-page-products"]').ammerchuiProducts({
+                "assignProductsUrl": "<?= $block->escapeUrl($block->getAssignProductsUrl()); ?>",
+                "savePositionsUrl": "<?= $block->escapeUrl($block->getSavePositionsUrl()); ?>",
+                "searchProductsUrl": "<?= $block->escapeUrl($block->getSearchProductsUrl()); ?>",
+                "addProductsUrl":  "<?= $block->escapeUrl($block->getAddProductsUrl()); ?>",
+                "removeProductUrl":  "<?= $block->escapeUrl($block->getRemoveProductUrl()); ?>",
+                "currentPageId": "<?= $block->escapeHtml($block->getEntityId()); ?>",
+                "isDynamicDisplayMode": <?= /* @noEscape */ $block->getDispayMode() ? 'true' : 'false' ?>,
+                "formSelector": "#edit_form"
+            });
+        });
+    });
+</script>

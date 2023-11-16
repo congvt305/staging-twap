@@ -1,0 +1,14 @@
+<div data-part="filter-form" keyboard="{ 13: apply }">
+    <!-- ko foreach: getRanges() -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko foreach: getPlain() -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+
+    <span class="field-row admin__control-filter" if="buttonVisible">
+        <button class="action-secondary" type="button" data-action="grid-filter-apply" click="apply">
+            <span translate="'Refresh'"></span>
+        </button>
+    </span>
+</div>

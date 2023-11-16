@@ -1,0 +1,17 @@
+"Amasty Open Graph Tags: %1","Amasty Open Graph Tags: %1"
+"%1 is not a valid value. Please check the list of available variables in the setting tooltip","%1 is not a valid value. Please check the list of available variables in the setting tooltip"
+"Attribute code %1 does not exist","Attribute code %1 does not exist"
+"Provided argument is not in PSR-0 or underscore notation.","Provided argument is not in PSR-0 or underscore notation."
+exception,exception
+"Home Page","Home Page"
+"SEO Open Graph","SEO Open Graph"
+"Product Page","Product Page"
+Enabled,Enabled
+"Open Graph Title","Open Graph Title"
+"Open Graph Description","Open Graph Description"
+"Category Page","Category Page"
+"Please check setting’s tooltip for the available values. The extension will use Meta Tags Templates values if applicable","Please check setting’s tooltip for the available values. The extension will use Meta Tags Templates values if applicable"
+"CMS Pages","CMS Pages"
+"Enable Open Graph on Home Page","Enable Open Graph on Home Page"
+"Enable Open Graph on CMS Pages","Enable Open Graph on CMS Pages"
+"Please check setting’s tooltip for the available values","Please check setting’s tooltip for the available values"

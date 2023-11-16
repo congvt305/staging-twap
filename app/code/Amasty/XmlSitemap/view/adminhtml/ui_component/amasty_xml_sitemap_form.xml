@@ -1,0 +1,1070 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="component" xsi:type="string">Amasty_XmlSitemap/js/form/form-unique</item>
+            <item name="provider" xsi:type="string">amasty_xml_sitemap_form.amasty_xml_sitemap_form_form_data_source</item>
+            <item name="deps" xsi:type="string">amasty_xml_sitemap_form.amasty_xml_sitemap_form_data_source</item>
+        </item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">amasty_xml_sitemap_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Sitemap configuration</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+            <item name="resetbutton" xsi:type="string">Amasty\XmlSitemap\Block\Adminhtml\Sitemap\ResetButton</item>
+            <item name="delete" xsi:type="string">Amasty\XmlSitemap\Block\Adminhtml\Sitemap\DeleteButton</item>
+            <item name="generate" xsi:type="string">Amasty\XmlSitemap\Block\Adminhtml\Sitemap\GenerateButton</item>
+            <item name="save_and_continue" xsi:type="array">
+                <item name="name" xsi:type="string">save_and_continue</item>
+                <item name="label" xsi:type="string" translate="true">Save and Continue Edit</item>
+                <item name="class" xsi:type="string">action-default</item>
+                <item name="sort_order" xsi:type="string">40</item>
+                <item name="data_attribute" xsi:type="array">
+                    <item name="mage-init" xsi:type="array">
+                        <item name="button" xsi:type="array">
+                            <item name="event" xsi:type="string">saveAndContinueEdit</item>
+                            <item name="target" xsi:type="string">#edit_form</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+            <item name="save" xsi:type="array">
+                <item name="name" xsi:type="string">save</item>
+                <item name="label" xsi:type="string" translate="true">Save</item>
+                <item name="class" xsi:type="string">save primary</item>
+                <item name="type" xsi:type="string">submit</item>
+            </item>
+        </item>
+    </argument>
+
+    <settings>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+    </settings>
+
+    <dataSource name="amasty_xml_sitemap_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Amasty\XmlSitemap\Ui\DataProvider\Form\SitemapDataProvider</argument>
+            <argument name="name" xsi:type="string">amasty_xml_sitemap_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">sitemap_id</argument>
+            <argument name="requestFieldName" xsi:type="string">sitemap_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="*/*/save"/>
+                </item>
+            </argument>
+        </argument>
+
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">General</label>
+            <opened>true</opened>
+            <dataScope>data</dataScope>
+        </settings>
+
+        <field name="name" sortOrder="10" formElement="input">
+            <settings>
+                <label translate="true">Name</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="store_id" sortOrder="20" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">1</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Store</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="path" sortOrder="30" formElement="input">
+            <settings>
+                <label translate="true">Path to Sitemap File</label>
+                <notice translate="true">Example: "sitemap/sitemap1.xml". Make sure path is writable and accessible through internet</notice>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-no-html-tags" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="is_separate_entity" sortOrder="35" formElement="checkbox">
+            <settings>
+                <label translate="true">Create Sitemap File for Each Entity</label>
+                <notice translate="true">When set to Yes, the extension will create a separate sitemap file for each included entity and add them to the sitemap index file.  Exceeding Max Items per File / Max File Size (kB) values will create index files for each entity separately.</notice>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="max_urls" sortOrder="40" formElement="input">
+            <settings>
+                <label translate="true">Max Items per File</label>
+                <dataType>number</dataType>
+                <notice translate="true">If exceed, index file will be created</notice>
+            </settings>
+        </field>
+
+        <field name="max_file_size" sortOrder="50" formElement="input">
+            <settings>
+                <label translate="true">Max File Size (kB)</label>
+                <dataType>number</dataType>
+                <notice translate="true">If exceed, index file will be created</notice>
+            </settings>
+        </field>
+
+        <field name="exclude_urls" sortOrder="60" formElement="textarea">
+            <settings>
+                <label translate="true">Exclude URLs</label>
+                <notice translate="true">URL to exclude, one per line. Specify URL with * to exclude all similar URLs</notice>
+            </settings>
+        </field>
+
+        <field name="date_format" sortOrder="70" formElement="select">
+            <settings>
+                <label translate="true">Date Format</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Model\OptionSource\DateFormat"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+
+    <fieldset name="product" sortOrder="20">
+        <settings>
+            <label translate="true">Products</label>
+        </settings>
+
+        <field name="enabled" sortOrder="10" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Products</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.hreflang</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_title</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_template</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.priority</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="5">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="6">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.last_modified</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="7">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.exclude_out_of_stock</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="8">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.exclude_product_type</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.hreflang</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_title</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_template</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="4">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.priority</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="5">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="6">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.last_modified</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="7">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.exclude_out_of_stock</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="8">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.exclude_product_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="filename"
+               component="Amasty_XmlSitemap/js/form/components/field-entity-name"
+               formElement="input"
+               sortOrder="15">
+        </field>
+
+        <field name="hreflang" sortOrder="20" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Hreflang Tags</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="image" sortOrder="30" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Images</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_title</target>
+                                    <callback>disable</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_title</target>
+                                    <callback>clear</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_template</target>
+                                    <callback>disable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_title</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="image_title" sortOrder="50" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Images Titles</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_template</target>
+                                    <callback>disable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.product.product.image_template</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="image_template" sortOrder="60" formElement="input">
+            <settings>
+                <label translate="true">Template for Image Title</label>
+                <notice>Specify text to be used for empty captions with {product_name} placeholder for product name. Example - "enjoy {product_name} from e-store"</notice>
+            </settings>
+        </field>
+
+        <field name="priority" sortOrder="70" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">0.5</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Priority</label>
+                <dataType>float</dataType>
+                <notice>0.01-0.99</notice>
+                <validation>
+                    <rule name="validate-number-range" xsi:type="string">0.01-0.99</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="frequency" sortOrder="80" formElement="select">
+            <settings>
+                <label translate="true">Frequency</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Model\OptionSource\Frequency"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="last_modified" sortOrder="90" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Last Modified</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="exclude_out_of_stock" sortOrder="100" formElement="checkbox">
+            <settings>
+                <label translate="true">Exclude out of Stock Products</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="exclude_product_type" sortOrder="110" formElement="multiselect">
+            <settings>
+                <label translate="true">Exclude Product Types</label>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Magento\Catalog\Model\Product\Type"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+    </fieldset>
+
+    <fieldset name="category" sortOrder="30">
+        <settings>
+            <label translate="true">Categories</label>
+        </settings>
+
+        <field name="enabled" sortOrder="10" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Categories</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.hreflang</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.image</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.priority</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.last_modified</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="5">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.excluded_ids</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.hreflang</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.image</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.priority</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="4">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.last_modified</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="5">
+                                    <target>amasty_xml_sitemap_form.areas.category.category.excluded_ids</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="filename"
+               component="Amasty_XmlSitemap/js/form/components/field-entity-name"
+               formElement="input"
+               sortOrder="15">
+        </field>
+
+        <field name="hreflang" sortOrder="20" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Hreflang Tags</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="image" sortOrder="30" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Images</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="priority" sortOrder="40" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">0.5</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Priority</label>
+                <dataType>float</dataType>
+                <notice>0.01-0.99</notice>
+                <validation>
+                    <rule name="validate-number-range" xsi:type="string">0.01-0.99</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="frequency" sortOrder="50" formElement="select">
+            <settings>
+                <label translate="true">Frequency</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Model\OptionSource\Frequency"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="last_modified" sortOrder="60" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Last Modified</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="excluded_ids"
+               sortOrder="70"
+               component="Amasty_XmlSitemap/js/form/components/exclude-category"
+               formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="breakLine" xsi:type="boolean">true</item>
+                    <item name="visibleValue" xsi:type="string">3</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <label translate="true">Exclude Categories</label>
+                <dataScope>excluded_ids</dataScope>
+                <componentType>field</componentType>
+                <additionalClasses>
+                    <class name="amxmlsitemap-exclude-categories">true</class>
+                </additionalClasses>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Ui\Component\Form\Categories"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+
+    <fieldset name="cms" sortOrder="40">
+        <settings>
+            <label translate="true">CMS Pages</label>
+        </settings>
+
+        <field name="enabled" sortOrder="10" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Pages</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.hreflang</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.priority</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.last_modified</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.hreflang</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.priority</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>amasty_xml_sitemap_form.areas.cms.cms.last_modified</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="filename"
+               component="Amasty_XmlSitemap/js/form/components/field-entity-name"
+               formElement="input"
+               sortOrder="15">
+        </field>
+
+        <field name="hreflang" sortOrder="20" formElement="checkbox">
+            <settings>
+                <label translate="true">Add Hreflang Tags</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="priority" sortOrder="30" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">0.5</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Priority</label>
+                <dataType>float</dataType>
+                <notice>0.01-0.99</notice>
+                <validation>
+                    <rule name="validate-number-range" xsi:type="string">0.01-0.99</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="frequency" sortOrder="40" formElement="select">
+            <settings>
+                <label translate="true">Frequency</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Model\OptionSource\Frequency"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="last_modified" sortOrder="50" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Last Modified</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+    </fieldset>
+
+    <fieldset name="additional" sortOrder="50">
+        <settings>
+            <label translate="true">Custom Items</label>
+            <dataScope>data</dataScope>
+            <additionalClasses>
+                <class name="amxmlsitemap-fieldset-block">true</class>
+                <class name="amxmlsitemap-customitems-fieldset">true</class>
+            </additionalClasses>
+        </settings>
+
+        <field name="warning" sortOrder="5" formElement="input" component="Amasty_XmlSitemap/js/form/components/warning">
+            <settings>
+                <dataType>string</dataType>
+            </settings>
+        </field>
+
+        <field name="is_additional_include" sortOrder="10" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Custom Items</label>
+                <additionalClasses>
+                    <class name="amxmlsitemap-field">true</class>
+                </additionalClasses>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <dynamicRows name="entities">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Amasty_XmlSitemap/js/dynamic-rows/dynamic-rows-unique</item>
+                </item>
+            </argument>
+            <settings>
+                <addButtonLabel translate="true">Add Item</addButtonLabel>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                </dndConfig>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <dataScope>additional</dataScope>
+            </settings>
+
+            <container name="record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="deleteValue" xsi:type="boolean">true</item>
+                        <item name="deleteProperty" xsi:type="string" translate="true">Remove</item>
+                    </item>
+                </argument>
+
+                <field name="entity_code" sortOrder="10" formElement="select">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="component" xsi:type="string">Amasty_XmlSitemap/js/form/element/select-unique</item>
+                            <item name="imports" xsi:type="array">
+                                <item name="availableEntities" xsi:type="string">${ $.provider }:availableEntities</item>
+                            </item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <label translate="true">Item Name</label>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Amasty\XmlSitemap\Model\OptionSource\AdditionalEntities"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+
+                <field name="filename"
+                       component="Amasty_XmlSitemap/js/form/components/field-entity-name"
+                       formElement="input"
+                       sortOrder="15">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="isDynamicRowField" xsi:type="boolean">true</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <label translate="true">Sitemap Entity Filename</label>
+                    </settings>
+                </field>
+
+                <field name="priority" sortOrder="20" formElement="input">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">0.5</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <label translate="true">Priority</label>
+                        <dataType>float</dataType>
+                        <validation>
+                            <rule name="validate-number-range" xsi:type="string">0.01-0.99</rule>
+                        </validation>
+                    </settings>
+                </field>
+
+                <field name="frequency" sortOrder="30" formElement="select">
+                    <settings>
+                        <label translate="true">Frequency</label>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Amasty\XmlSitemap\Model\OptionSource\Frequency"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+
+                <actionDelete sortOrder="40" template="Magento_Backend/dynamic-rows/cells/action-delete">
+
+                </actionDelete>
+
+            </container>
+        </dynamicRows>
+    </fieldset>
+
+    <fieldset name="extra" sortOrder="60">
+        <settings>
+            <label translate="true">Extra</label>
+        </settings>
+
+        <field name="enabled" sortOrder="10" formElement="checkbox">
+            <settings>
+                <label translate="true">Include Extra Links</label>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.priority</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.extra_links</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.priority</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>amasty_xml_sitemap_form.areas.extra.extra.extra_links</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="filename"
+               component="Amasty_XmlSitemap/js/form/components/field-entity-name"
+               formElement="input"
+               sortOrder="15">
+        </field>
+
+        <field name="priority" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">0.5</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Priority</label>
+                <dataType>float</dataType>
+                <notice>0.01-0.99</notice>
+                <validation>
+                    <rule name="validate-number-range" xsi:type="string">0.01-0.99</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="frequency" sortOrder="30" formElement="select">
+            <settings>
+                <label translate="true">Frequency</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Amasty\XmlSitemap\Model\OptionSource\Frequency"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="extra_links" sortOrder="40" formElement="textarea">
+            <settings>
+                <validation>
+                    <rule name="max_text_length" xsi:type="number">65535</rule>
+                </validation>
+                <label translate="true">Extra Links to include</label>
+            </settings>
+        </field>
+    </fieldset>
+</form>

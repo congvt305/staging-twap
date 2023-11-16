@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="admin_system_config_changed_section_catalog">
+        <observer name="Amasty_SeoSingleUrl::save_catalog"
+                  instance="Amasty\SeoSingleUrl\Observer\System\ConfigChanged"/>
+    </event>
+
+    <event name="admin_system_config_changed_section_amasty_seourl">
+        <observer name="Amasty_SeoSingleUrl::save_amasty_seourl"
+                  instance="Amasty\SeoSingleUrl\Observer\System\ConfigChanged"/>
+    </event>
+</config>

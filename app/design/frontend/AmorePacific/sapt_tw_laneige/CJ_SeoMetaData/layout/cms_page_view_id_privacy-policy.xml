@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>私人隱私政策及個資收集聲明 | 蘭芝(Laneige) 香港官方線上網站</title>
+        <meta name="description" content="韓國著名草本護膚化妝品品牌 | 由此確認消費者隱私權保護聲明，讓蘭芝香港幫您把關網上購物安全，與您一同安心購物 | Laneige Hong Kong"/>
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <referenceBlock name="default.opengraph" template="CJ_SeoMetaData::head/cms_page_view_id_privacy-policy_opengraph.phtml"/>
+            <referenceBlock name="default.twitter" template="CJ_SeoMetaData::head/cms_page_view_id_privacy-policy_twitter.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

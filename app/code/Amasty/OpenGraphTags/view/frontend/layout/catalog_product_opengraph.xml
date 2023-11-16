@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="head.additional">
+            <block name="amopengraphtags.product" class="Magento\Framework\View\Element\Template"
+                   template="Amasty_OpenGraphTags::product/og_markup.phtml"
+                   ifconfig="amopengraphtags/product_page/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amasty\OpenGraphTags\ViewModel\ProductOgMarkup</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,7 @@
+{
+    "customer_address_entity": {
+        "column": {
+            "country_pos_code": true
+        }
+    }
+}

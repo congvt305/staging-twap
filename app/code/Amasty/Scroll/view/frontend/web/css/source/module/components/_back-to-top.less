@@ -1,0 +1,194 @@
+//
+//  Back to top button component styles
+//  ____________________________________________
+
+//
+//  Imports
+//  --------------------------------------------
+
+@import '../_utils';
+
+//
+//  Variables
+//  --------------------------------------------
+
+@amscroll-backtotop-text__color: #fff;
+@amscroll-backtotop__offset: 30px;
+@amscroll-backtotop-arrow__size: 50px;
+@amscroll-backtotop__radius__l: 100px;
+@amscroll-backtotop__radius__s: 20px 20px 0 0;
+
+//
+//  Common
+//  --------------------------------------------
+
+.amscroll-arrow-style {
+    & {
+        padding: 0;
+        width: @amscroll-backtotop-arrow__size;
+        height: @amscroll-backtotop-arrow__size;
+        border-radius: @amscroll-backtotop__radius__l;
+    }
+
+    &:before {
+        border-radius: @amscroll-backtotop__radius__l;
+    }
+
+    &:after {
+        .amscroll-arrow-icon;
+    }
+
+    .amscroll-text {
+        display: none;
+    }
+}
+
+.amscroll-text-style {
+    & {
+        padding-right: 7px;
+        border-radius: @amscroll-backtotop__radius__l;
+        transform: rotate(-90deg) translate(60px, 60px);
+    }
+
+    &:before {
+        border-radius: @amscroll-backtotop__radius__l;
+    }
+
+    &:after {
+        .amscroll-chevron-icon;
+    }
+}
+
+.amscroll-edge-style {
+    & {
+        right: 0;
+        padding: 4px 26px 4px 20px;
+        border-radius: @amscroll-backtotop__radius__s;
+        transform: rotate(-90deg) translate(71px, 72px);
+    }
+
+    .amscroll-text {
+        margin-right: @amscroll__indent__l;
+    }
+
+    &:before {
+        border-radius: @amscroll-backtotop__radius__s;
+    }
+
+    &:after {
+        .amscroll-arrow-icon;
+
+        transform: rotate(90deg) translateX(2px);
+    }
+}
+
+& when (@media-common = true) {
+    .amscroll-backtotop-block {
+        & {
+            .am-flex(center, center);
+
+            position: fixed;
+            right: @amscroll-backtotop__offset;
+            bottom: @amscroll-backtotop__offset;
+            z-index: 99999;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 6px 12px;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            color: @amscroll-backtotop-text__color;
+            transition: right @amscroll__transition-duration;
+        }
+
+        &:not(.-amscroll-active) {
+            right: -(@amscroll-backtotop__offset * 2) !important; // Override prop form different button styles
+        }
+
+        ._keyfocus &:focus,
+        &:not(.primary) {
+            box-shadow: none;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            border: 0;
+            box-shadow: none;
+            color: @amscroll-backtotop-text__color;
+        }
+
+        .amscroll-text {
+            position: relative;
+            z-index: 1;
+            margin-right: @amscroll__indent;
+            font-weight: 600;
+            font-size: 1.8rem;
+            line-height: 2.5rem;
+        }
+
+        &:before {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+            content: '';
+            opacity: 0;
+            filter: @amscroll__hover-filter;
+            transition: opacity @amscroll__transition-duration;
+        }
+
+        &:after {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            content: '';
+        }
+
+        &:hover:before {
+            opacity: 1;
+        }
+    }
+}
+
+//
+//  Mobile
+//  -------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .amscroll-backtotop-block.-mobile {
+        &-arrow {
+            .amscroll-arrow-style;
+        }
+
+        &-text {
+            .amscroll-text-style;
+        }
+    }
+}
+
+//
+//  Desktop
+//  -------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .amscroll-backtotop-block.-desktop {
+        &-arrow {
+            .amscroll-arrow-style;
+        }
+
+        &-text {
+            .amscroll-text-style;
+        }
+
+        &-edge {
+            .amscroll-edge-style;
+        }
+    }
+}

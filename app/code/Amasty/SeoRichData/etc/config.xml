@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amseorichdata>
+            <product>
+                <price_valid_until />
+                <replace_price_valid_until>1</replace_price_valid_until>
+                <rating_format>0</rating_format>
+                <custom_properties>sku&#xA;mpn,sku</custom_properties>
+                <number_reviews>100</number_reviews>
+            </product>
+            <category>
+                <enabled>0</enabled>
+            </category>
+        </amseorichdata>
+    </default>
+</config>

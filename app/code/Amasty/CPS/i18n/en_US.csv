@@ -1,0 +1,33 @@
+"Sort Order","Sort Order"
+Sort,Sort
+"Search by SKU or name","Search by SKU or name"
+Search,Search
+"Page Products","Page Products"
+"In Stock","In Stock"
+"Out of Stock","Out of Stock"
+"Please update Amasty Base module. Re-upload it and replace all the files.","Please update Amasty Base module. Re-upload it and replace all the files."
+"Default Sorting","Default Sorting"
+"%1 doesn't implement SortInterface","%1 doesn't implement SortInterface"
+"Requested sort method does not have proper method instance","Requested sort method does not have proper method instance"
+"Name: Ascending","Name: Ascending"
+"Name: Descending","Name: Descending"
+"Newest products first","Newest products first"
+"Move out of stock to bottom","Move out of stock to bottom"
+"Price: Ascending","Price: Ascending"
+"Price: Descending","Price: Descending"
+None,None
+"Use Default","Use Default"
+"Set 'No' to configure custom display order of products for current store view.","Set 'No' to configure custom display order of products for current store view."
+Yes,Yes
+No,No
+Products,Products
+"Please be informed that application of sorting on All Store Views level may return 
+            incorrect results due to product availability status, price differences, etc. For more accurate results we 
+            recommend to configure products sequence on Store View level.","Please be informed that application of sorting on All Store Views level may return 
+            incorrect results due to product availability status, price differences, etc. For more accurate results we 
+            recommend to configure products sequence on Store View level."
+"Amasty Custom Product Sorting indexation error: Brand attribute is not set","Amasty Custom Product Sorting indexation error: Brand attribute is not set"
+"Warning message","Warning message"
+"The order of products on brand pages (configured in Brand Management tab) will be lost.","The order of products on brand pages (configured in Brand Management tab) will be lost."
+"Custom Product Sorting","Custom Product Sorting"
+Information,Information

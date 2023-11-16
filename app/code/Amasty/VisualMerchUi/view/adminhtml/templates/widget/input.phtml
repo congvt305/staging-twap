@@ -1,0 +1,16 @@
+<?php
+/**
+ * Amasty VisualMerchUi widget input
+ *
+ */
+
+$label = $block->getData('label');
+?>
+
+<input id="<?= $block->escapeHtml($block->getId()); ?>"
+       class="admin__control-text <?= $block->escapeHtml($block->getData('class')); ?>"
+       type="text"
+       data-form-part="category_form"
+       name="<?= $block->escapeHtml($block->getData('name')); ?>"
+       placeholder="<?= $block->escapeHtml($label ? $label : ''); ?>"
+/>

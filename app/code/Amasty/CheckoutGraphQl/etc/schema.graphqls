@@ -1,0 +1,274 @@
+type Query {
+    getAdditionalFields(cartId: String!): GetAdditionalFieldsOutput
+    @resolver(class: "Amasty\\CheckoutGraphQl\\Model\\Resolver\\GetAdditionalFields")
+    getDefaultIpData: GetDefaultIpDataOutput
+    @resolver(class: "Amasty\\CheckoutGraphQl\\Model\\Resolver\\GetDefaultIpData")
+    getAvailableShippingMethods(cartId: String!): GetAvailableShippingMethodsOutput
+    @resolver(class: "Amasty\\CheckoutGraphQl\\Model\\Resolver\\GetAvailableShippingMethods")
+    getSelectedShippingMethod(cartId: String!): GetSelectedShippingMethodOutput
+    @resolver(class: "Amasty\\CheckoutGraphQl\\Model\\Resolver\\GetSelectedShippingMethod")
+}
+
+type GetAdditionalFieldsOutput {
+    comment: String @doc(description: "Is comment message for order")
+    is_subscribe: Boolean @doc(description: "Is customer subscribe information")
+    is_register: Boolean @doc(description: "Is customer register information after place order")
+    register_dob: String @doc(description: "Is customer register date of birth information")
+}
+
+type GetDefaultIpDataOutput {
+    country_id: String @doc(description: "Is default country id")
+    region: String @doc(description: "Is default region")
+    region_id: String @doc(description: "Is default region id")
+    city: String @doc(description: "Is default city")
+    postcode: String @doc(description: "Is default postcode")
+}
+
+type GetAvailableShippingMethodsOutput {
+    available_shipping_methods: String
+}
+
+type GetSelectedShippingMethodOutput {
+    carrier_code: String
+    method_code: String
+}
+
+type StoreConfig @doc(description: "The type contains information about a store config") {
+    amasty_checkout_general_enabled : Boolean @doc(description: "Is enabled one step checkout")
+    amasty_checkout_general_title : String @doc(description: "Checkout page title")
+    amasty_checkout_general_description : String @doc(description: "Checkout page description")
+    amasty_checkout_general_allow_edit_options : Boolean @doc(description: "Allow to edit products in the order summary")
+    amasty_checkout_general_bundling : Boolean @doc(description: "Enable JS and HTML bundling and minifying for checkout page")
+    amasty_checkout_options_guest_checkout : Boolean @doc(description: "Allow guest checkout")
+    amasty_checkout_options_display_billing_address_on : Int @doc(description: "Display billing address on: 0 => Payment Method, 1 => Payment Page, 2 => Below Shipping Address")
+    amasty_checkout_options_enable_agreements : Boolean @doc(description: "Enable terms and conditions")
+    amasty_checkout_design_checkout_design : Int @doc(description: "Checkout design: 0 => Classic, 1 => Modern")
+    amasty_checkout_design_layout : String @doc(description: "Checkout page layout: 2columns => 2 Columns, 3columns => 3 Columns")
+    amasty_checkout_design_layout_modern : String @doc(description: "Checkout page layout: 1column => 1 Column, 2columns => 2 Columns (1 Column with a Fixed Order Summary Sidebar), 3columns => 3 Columns")
+    amasty_checkout_design_place_button_layout : String @doc(description: "Place order button position: payment => Below the Selected Payment Method, summary => Below the Order Total")
+    amasty_checkout_design_display_shipping_address_in : Int @doc(description: "Display multiple shipping address in: 0 => Grid, 1 => Dropdown Menu")
+    amasty_checkout_design_heading_color : String @doc(description: "Heading text color")
+    amasty_checkout_design_summary_color : String @doc(description: "Order summary background")
+    amasty_checkout_design_bg_color : String @doc(description: "Checkout background color")
+    amasty_checkout_design_button_color : String @doc(description: "Place order button color")
+    amasty_checkout_design_header_footer : Boolean @doc(description: "Display header and footer")
+    amasty_checkout_additional_options_create_account : Int @doc(description: "Let customers create an account at checkout: 0 => No, 1 => After Placing an Order, 2 => While Placing an Order")
+    amasty_checkout_additional_options_create_account_checked : Boolean @doc(description: "`Create an Account` checkbox is checked by default")
+    amasty_checkout_additional_options_automatically_login : Boolean @doc(description: "Automatically Log in Customers After Creating an Account at Checkout")
+    amasty_checkout_additional_options_discount : Boolean @doc(description: "Discount field")
+    amasty_checkout_additional_options_newsletter : Boolean @doc(description: "Newsletter checkbox")
+    amasty_checkout_additional_options_newsletter_checked : Boolean @doc(description: "Newsletter is checked by default")
+    amasty_checkout_additional_options_display_agreements : String @doc(description: "Terms and conditions checkbox positioning: payment_method => Below the Selected Payment Method, order_totals => Below the Order Total")
+    amasty_checkout_additional_options_comment : Boolean @doc(description: "Order comment")
+    amasty_checkout_default_values_shipping_method : String @doc(description: "Default shipping method")
+    amasty_checkout_default_values_payment_method : String @doc(description: "Default payment method")
+    amasty_checkout_default_values_address_country_id : String @doc(description: "Default country")
+    amasty_checkout_default_values_address_region_id : String @doc(description: "Default region/state")
+    amasty_checkout_default_values_address_postcode : String @doc(description: "Default zip/postal code")
+    amasty_checkout_default_values_address_city : String @doc(description: "Default city")
+    amasty_checkout_customer_address_street_lines : Int @doc(description: "Number of lines in a street address")
+    amasty_checkout_customer_create_account_vat_frontend_visibility : Boolean @doc(description: "Show VAT number on storefront")
+    amasty_checkout_custom_blocks_top_block_id : Int @doc(description: "Top block")
+    amasty_checkout_custom_blocks_bottom_block_id : Int @doc(description: "Bottom block")
+    amasty_checkout_success_page_block_id : Int @doc(description: "Success page custom block")
+    amasty_checkout_delivery_date_enabled : Boolean @doc(description: "Is enabled delivery date")
+    amasty_checkout_delivery_date_date_required : Boolean @doc(description: "Delivery date field is mandatory")
+    amasty_checkout_delivery_date_delivery_comment_enable : Boolean @doc(description: "Enable delivery comment")
+    amasty_checkout_delivery_date_delivery_comment_default : String @doc(description: "Delivery comment default text")
+    amasty_checkout_geolocation_ip_detection : Boolean @doc(description: "Geo IP location")
+    amasty_checkout_geolocation_google_address_suggestion : Boolean @doc(description: "Google address suggestion")
+    amasty_checkout_geolocation_google_api_key : String @doc(description: "Google API key")
+    amasty_checkout_sales_gift_options_allow_order : Boolean @doc(description: "Allow gift messages on order level")
+    amasty_checkout_sales_gift_options_allow_items : Boolean @doc(description: "Allow gift messages on order items")
+    amasty_checkout_gifts_gift_wrap : Boolean @doc(description: "Gift wrap")
+    amasty_checkout_gifts_gift_wrap_fee : Float @doc(description: "Gift wrap fee")
+    amasty_checkout_additional_configuration : CheckoutConfiguration @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\CheckoutConfiguration") @doc(description: "Checkout configuration resolver")
+    amasty_checkout_manage_checkout_fields : ManageCheckoutFields @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\ManageCheckoutFields") @doc(description: "Manage checkout fields resolver")
+}
+
+type CheckoutConfiguration {
+    amasty_checkout_design_font: String @doc(description: "Checkout text font")
+    amasty_checkout_delivery_date_format: String @doc(description: "Checkout date format")
+    amasty_checkout_delivery_date_available_days : String @doc(description: "Available delivery days")
+    amasty_checkout_delivery_date_available_hours : String @doc(description: "Available delivery hours")
+    amasty_checkout_layout_builder_frontend_layout_config: String @doc(description: "Layout blocks config")
+}
+
+type ManageCheckoutFields {
+    amasty_checkout_checkout_fields: String @doc(description: "Checkout fields")
+}
+
+type Mutation {
+    addGiftMessageForOrderItems(input: AddGiftMessageForOrderItemsInput): AddGiftMessageForOrderItemsOutput
+    @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\AddGiftMessageForOrderItems")
+    addGiftMessageForWholeOrder(input: AddGiftMessageForWholeOrderInput): AddGiftMessageForWholeOrderOutput
+    @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\AddGiftMessageForWholeOrder")
+    updateGiftWrapInformation(input: UpdateGiftWrapInformationInput): UpdateGiftWrapInformationOutput
+    @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\UpdateGiftWrapInformation")
+    updateDeliveryInformation(input: UpdateDeliveryInformationInput): UpdateDeliveryInformationOutput
+    @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\UpdateDeliveryInformation")
+    saveAdditionalFields(input: SaveAdditionalFieldsInput): SaveAdditionalFieldsOutput
+    @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\SaveAdditionalFields")
+}
+
+input AddGiftMessageForOrderItemsInput @doc(description: "Defines the input required to run the addGiftMessageForOrderItems mutation") {
+    cart_id: String! @doc(description: "The unique ID that identifies the customer's cart")
+    cart_items: [GiftMessageForOrderItemsInput!]!
+}
+
+input GiftMessageForOrderItemsInput {
+    item_id: Int! @doc(description: "The unique ID that identifies the quote item")
+    message: String @doc(description: "Is the gift message for order item")
+    sender: String @doc(description: "Is the gift sender information for order item")
+    recipient: String @doc(description: "Is the gift recipient information for order item")
+}
+
+input AddGiftMessageForWholeOrderInput @doc(description: "Defines the input required to run the addGiftMessageForWholeOrder mutation") {
+    cart_id: String! @doc(description: "The unique ID that identifies the customer's cart")
+    message: String @doc(description: "Is the gift message for order")
+    sender: String @doc(description: "Is the gift sender information for order")
+    recipient: String @doc(description: "Is the gift recipient information for order")
+}
+
+input UpdateGiftWrapInformationInput @doc(description: "Defines the input required to run the updateGiftWrapInformation mutation") {
+    cart_id: String! @doc(description: "The unique ID that identifies the customer's cart")
+    checked: Boolean! @doc(description: "The checked information about gift wrap to be applied to the order")
+}
+
+input UpdateDeliveryInformationInput @doc(description: "Defines the input required to run the updateDeliveryInformation mutation") {
+    cart_id: String! @doc(description: "The unique ID that identifies the customer's cart")
+    date: String! @doc(description: "The delivery date to be applied to the order")
+    time: Int @doc(description: "Enter the number corresponding to the desired interval, e.g. '0' -> 0:00 - 1:00, '1' -> 1:00 - 2:00, etc.")
+    comment: String @doc(description: "The delivery comment to be applied to the order")
+}
+
+input SaveAdditionalFieldsInput @doc(description: "Defines the input required to run the saveAdditionalFields mutation") {
+    cart_id: String! @doc(description: "The unique ID that identifies the customer's cart")
+    comment: String @doc(description: "The comment to be applied to the order")
+    is_subscribe: Boolean @doc(description: "The subscribe information to be applied to the order")
+    is_register: Boolean @doc(description: "The register information to be applied to the order")
+    register_dob: String @doc(description: "The date of birth information to be applied to the order")
+}
+
+interface CartAddressInterface {
+    custom_attributes: [CustomAttribute] @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\AddressCustomAttributes")
+}
+
+type CustomAttribute {
+    attribute_code: String! @doc(description: "Attribute code")
+    value: String! @doc(description: "Attribute value")
+}
+
+input SetShippingAddressesOnCartInput {
+    shipping_addresses: [ShippingAddressInput!]! @doc(description: "Extends from quote-graph-ql schema")
+}
+
+input ShippingAddressInput {
+    address: CartAddressInput
+}
+
+input SetBillingAddressOnCartInput {
+    billing_address: BillingAddressInput!
+}
+
+input BillingAddressInput {
+    address: CartAddressInput
+}
+
+input CartAddressInput {
+    custom_attributes: [CustomAttributeInput] @doc(description: "Set custom attributes to quote.")
+}
+
+input CustomAttributeInput {
+    attribute_code: String! @doc(description: "Attribute code")
+    value: String! @doc(description: "Attribute value")
+}
+
+type AddGiftMessageForOrderItemsOutput {
+    response: String @doc(description: "Mutation response")
+    cart: Cart! @doc(description: "Describes the contents of the specified shopping cart")
+}
+
+type AddGiftMessageForWholeOrderOutput {
+    response: String @doc(description: "Mutation response")
+    cart: Cart! @doc(description: "Describes the contents of the specified shopping cart")
+}
+
+type UpdateGiftWrapInformationOutput {
+    response: String @doc(description: "Mutation response")
+    cart: Cart! @doc(description: "Describes the contents of the specified shopping cart")
+    amount: String @doc(description: "Is the applied gift wrap amount")
+    base_amount: String @doc(description: "Is the applied gift wrap base amount")
+}
+
+type UpdateDeliveryInformationOutput {
+    response: String @doc(description: "Mutation response")
+    cart: Cart! @doc(description: "Describes the contents of the specified shopping cart")
+}
+
+type SaveAdditionalFieldsOutput {
+    response: String @doc(description: "Mutation response")
+    cart: Cart! @doc(description: "Describes the contents of the specified shopping cart")
+}
+
+type Cart {
+    amasty_gift_wrap: GiftWrapInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftWrapCartInformation") @doc(description: "Gift wrap data in shopping cart query")
+    amasty_delivery_date: DeliveryInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\DDCartInformation") @doc(description: "Delivery data in shopping cart query")
+    order_gift_message: GiftMessageForOrderOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftMessageForOrderInCart") @doc(description: "Order gift message in shopping cart query")
+}
+
+type Order {
+    amasty_order_date: String @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\OrderDate") @doc(description: "Order date")
+}
+
+type PlaceOrderOutput {
+    amasty_gift_wrap: GiftWrapInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftWrapOrderInformation") @doc(description: "Gift wrap data in place order query")
+    amasty_delivery_date: DeliveryInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\DDOrderInformation") @doc(description: "Delivery data in place order query")
+}
+
+type CustomerOrder {
+    amasty_gift_wrap: GiftWrapInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftWrapCustomerOrderInformation")
+    amasty_delivery_date: DeliveryInformationOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\DDCustomerOrderInformation")
+    amasty_order_comment: String @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\CustomerOrderCommentInformation")
+    order_gift_message: GiftMessageForOrderOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftMessageForOrderInOrder")
+}
+
+type GiftWrapInformationOutput {
+    amount: Float @doc(description: "Is the gift wrap amount")
+    base_amount: Float @doc(description: "Is the gift wrap base amount")
+    currency_code: String @doc(description: "Cart or order currency code")
+}
+
+type DeliveryInformationOutput {
+    date: String @doc(description: "Is delivery date information")
+    comment: String @doc(description: "Is delivery comment information")
+    time: DeliveryTime @doc(description: "This number corresponds to the interval, e.g. '0' -> 0:00 - 1:00, '1' -> 1:00 - 2:00, etc.")
+}
+
+type DeliveryTime {
+    value: Int @doc(description: "Is delivery time value")
+    displayValue: String @doc(description: "Is delivery time interval information")
+}
+
+interface CartItemInterface {
+    item_gift_message: GiftMessageForOrderOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftMessageForOrderItemInCart")
+}
+
+interface OrderItemInterface {
+    item_gift_message: GiftMessageForOrderOutput @resolver(class: "\\Amasty\\CheckoutGraphQl\\Model\\Resolver\\GiftMessageForOrderItemInOrder")
+}
+
+type GiftMessageForOrderOutput {
+    message: String @doc(description: "Is the gift message for order (item)")
+    sender: String @doc(description: "Is the gift sender information for order (item)")
+    recipient: String @doc(description: "Is the gift recipient information for order (item)")
+}
+
+type OrderAddress {
+    custom_attributes: [CustomAttributeOutput] @doc(description: "Display custom attributes in order address.")
+}
+
+type CustomAttributeOutput {
+    attribute_code: String @doc(description: "Attribute code")
+    value: String @doc(description: "Attribute value")
+}

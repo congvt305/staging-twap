@@ -1,0 +1,23 @@
+{
+    "name": "amasty\/rewards-graph-ql",
+    "description": "Reward Points GraphQl By Amasty",
+    "require": {
+        "php": ">=7.3",
+        "magento\/module-customer-graph-ql": ">=100.3.1",
+        "amasty\/base": ">=1.13.3",
+        "amasty\/rewards": ">=1.17.2"
+    },
+    "type": "magento2-module",
+    "version": "1.1.1",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\RewardsGraphQl\\": ""
+        }
+    }
+}

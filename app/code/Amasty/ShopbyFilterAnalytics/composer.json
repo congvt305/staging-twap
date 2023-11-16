@@ -1,0 +1,23 @@
+{
+    "name": "amasty\/shopby-filter-analytics",
+    "description": "Improved Layered Navigation by Amasty - Filter Analytics",
+    "require": {
+        "amasty\/base": ">=1.0.1",
+        "amasty\/module-shop-by-base": ">=2.15.6",
+        "amasty\/module-shop-by-quick-config": ">=1.1.1",
+        "php": ">=7.3.0"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\ShopbyFilterAnalytics\\": ""
+        }
+    }
+}

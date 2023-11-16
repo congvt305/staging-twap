@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amopengraphtags>
+            <product_page>
+                <enabled>0</enabled>
+                <open_graph_title>meta_title</open_graph_title>
+                <open_graph_description>meta_description</open_graph_description>
+            </product_page>
+            <category_page>
+                <enabled>0</enabled>
+                <open_graph_title>meta_title</open_graph_title>
+                <open_graph_description>meta_description</open_graph_description>
+            </category_page>
+            <cms_pages>
+                <enabled_on_home>0</enabled_on_home>
+                <enabled_on_cms>0</enabled_on_cms>
+                <open_graph_title>meta_title</open_graph_title>
+                <open_graph_description>meta_description</open_graph_description>
+            </cms_pages>
+        </amopengraphtags>
+    </default>
+</config>

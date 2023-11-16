@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ammeta>
+            <product>
+                <enabled>1</enabled>
+                <automatically_modify_url_key>0</automatically_modify_url_key>
+            </product>
+            <cat>
+                <enabled>1</enabled>
+            </cat>
+        </ammeta>
+    </default>
+</config>

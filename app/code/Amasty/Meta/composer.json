@@ -1,0 +1,24 @@
+{
+    "name": "amasty\/meta",
+    "description": "Meta Tags Templates by Amasty",
+    "require": {
+        "php": ">=7.3.0",
+        "amasty\/base": ">=1.13.3"
+    },
+    "suggest": {
+        "amasty\/module-meta-mftf-3": "Install module-meta-mftf-3 module to be able to run Meta Tags Templates MFTF tests for Magento 2.4.0+ version."
+    },
+    "type": "magento2-module",
+    "version": "1.3.3",
+    "license": [
+        "Commercial"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Amasty\\Meta\\": ""
+        }
+    }
+}

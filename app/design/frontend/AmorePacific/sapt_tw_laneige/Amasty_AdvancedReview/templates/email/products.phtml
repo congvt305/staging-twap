@@ -1,0 +1,42 @@
+<?php
+/**
+ * @var \Amasty\AdvancedReview\Block\Email\ReminderEmailContent $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$products = $block->getProducts();
+?>
+<?php if (!empty($products)): ?>
+    <ul class="amreview-container amreview-grid-container">
+        <?php foreach ($products as $product): ?>
+            <?php $productUrl = $escaper->escapeUrl($block->getProductUrl($product)) ?>
+            <li class="amreview-item">
+                <a href="<?= $escaper->escapeUrl($productUrl) ?>"
+                   class="amreview-img-block amreview-link"
+                   aria-label="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
+                   title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>">
+                    <img src="<?= $escaper->escapeUrl($block->getImageUrl($product)) ?>"
+                         class="amreview-img"
+                         alt="<?= $escaper->escapeHtmlAttr($product->getName()) ?>" />
+                </a>
+                <div class="amreview-content">
+                    <a href="<?= $escaper->escapeUrl($productUrl) ?>"
+                       class="amreview-link"
+                       aria-label="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
+                       title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>">
+                        <span class="amreview-name"><?= $escaper->escapeHtml($product->getName()) ?></span>
+                    </a>
+                    <?php if ($shortDescription = $block->getFilteredContent($product->getShortDescription())): ?>
+                        <div class="amreview-description"><?= /* @noEscape */  $shortDescription ?></div>
+                    <?php endif; ?>
+
+                    <a class="amreview-button"
+                       href="<?= $escaper->escapeUrl($productUrl) . '#reviews' ?>"
+                       aria-label="<?= $escaper->escapeHtmlAttr(__('Leave a review')) ?>"
+                       title="<?= $escaper->escapeHtmlAttr(__('Leave a review')) ?>">
+                        <?= $escaper->escapeHtml(__('Leave a review')) ?>
+                    </a>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="amasty_checkout_general_enabled" xsi:type="string">amasty_checkout/general/enabled</item>
+                <item name="amasty_checkout_general_title" xsi:type="string">amasty_checkout/general/title</item>
+                <item name="amasty_checkout_general_description" xsi:type="string">amasty_checkout/general/description</item>
+                <item name="amasty_checkout_general_allow_edit_options" xsi:type="string">amasty_checkout/general/allow_edit_options</item>
+                <item name="amasty_checkout_general_bundling" xsi:type="string">amasty_checkout/general/bundling</item>
+                <item name="amasty_checkout_options_guest_checkout" xsi:type="string">checkout/options/guest_checkout</item>
+                <item name="amasty_checkout_options_display_billing_address_on" xsi:type="string">checkout/options/display_billing_address_on</item>
+                <item name="amasty_checkout_options_enable_agreements" xsi:type="string">checkout/options/enable_agreements</item>
+                <item name="amasty_checkout_design_checkout_design" xsi:type="string">amasty_checkout/design/checkout_design</item>
+                <item name="amasty_checkout_design_layout" xsi:type="string">amasty_checkout/design/layout</item>
+                <item name="amasty_checkout_design_layout_modern" xsi:type="string">amasty_checkout/design/layout_modern</item>
+                <item name="amasty_checkout_design_place_button_layout" xsi:type="string">amasty_checkout/design/place_button_layout</item>
+                <item name="amasty_checkout_design_display_shipping_address_in" xsi:type="string">amasty_checkout/design/display_shipping_address_in</item>
+                <item name="amasty_checkout_design_heading_color" xsi:type="string">amasty_checkout/design/heading_color</item>
+                <item name="amasty_checkout_design_summary_color" xsi:type="string">amasty_checkout/design/summary_color</item>
+                <item name="amasty_checkout_design_bg_color" xsi:type="string">amasty_checkout/design/bg_color</item>
+                <item name="amasty_checkout_design_button_color" xsi:type="string">amasty_checkout/design/button_color</item>
+                <item name="amasty_checkout_design_header_footer" xsi:type="string">amasty_checkout/design/header_footer</item>
+                <item name="amasty_checkout_additional_options_create_account" xsi:type="string">amasty_checkout/additional_options/create_account</item>
+                <item name="amasty_checkout_additional_options_create_account_checked" xsi:type="string">amasty_checkout/additional_options/create_account_checked</item>
+                <item name="amasty_checkout_additional_options_automatically_login" xsi:type="string">amasty_checkout/additional_options/automatically_login</item>
+                <item name="amasty_checkout_additional_options_discount" xsi:type="string">amasty_checkout/additional_options/discount</item>
+                <item name="amasty_checkout_additional_options_newsletter" xsi:type="string">amasty_checkout/additional_options/newsletter</item>
+                <item name="amasty_checkout_additional_options_newsletter_checked" xsi:type="string">amasty_checkout/additional_options/newsletter_checked</item>
+                <item name="amasty_checkout_additional_options_display_agreements" xsi:type="string">amasty_checkout/additional_options/display_agreements</item>
+                <item name="amasty_checkout_additional_options_comment" xsi:type="string">amasty_checkout/additional_options/comment</item>
+                <item name="amasty_checkout_default_values_shipping_method" xsi:type="string">amasty_checkout/default_values/shipping_method</item>
+                <item name="amasty_checkout_default_values_payment_method" xsi:type="string">amasty_checkout/default_values/payment_method</item>
+                <item name="amasty_checkout_default_values_address_country_id" xsi:type="string">amasty_checkout/default_values/address_country_id</item>
+                <item name="amasty_checkout_default_values_address_region_id" xsi:type="string">amasty_checkout/default_values/address_region_id</item>
+                <item name="amasty_checkout_default_values_address_postcode" xsi:type="string">amasty_checkout/default_values/address_postcode</item>
+                <item name="amasty_checkout_default_values_address_city" xsi:type="string">amasty_checkout/default_values/address_city</item>
+                <item name="amasty_checkout_customer_address_street_lines" xsi:type="string">customer/address/street_lines</item>
+                <item name="amasty_checkout_customer_create_account_vat_frontend_visibility" xsi:type="string">customer/create_account/vat_frontend_visibility</item>
+                <item name="amasty_checkout_custom_blocks_top_block_id" xsi:type="string">amasty_checkout/custom_blocks/top_block_id</item>
+                <item name="amasty_checkout_custom_blocks_bottom_block_id" xsi:type="string">amasty_checkout/custom_blocks/bottom_block_id</item>
+                <item name="amasty_checkout_success_page_block_id" xsi:type="string">amasty_checkout/success_page/block_id</item>
+                <item name="amasty_checkout_delivery_date_enabled" xsi:type="string">amasty_checkout/delivery_date/enabled</item>
+                <item name="amasty_checkout_delivery_date_date_required" xsi:type="string">amasty_checkout/delivery_date/date_required</item>
+                <item name="amasty_checkout_delivery_date_delivery_comment_enable" xsi:type="string">amasty_checkout/delivery_date/delivery_comment_enable</item>
+                <item name="amasty_checkout_delivery_date_delivery_comment_default" xsi:type="string">amasty_checkout/delivery_date/delivery_comment_default</item>
+                <item name="amasty_checkout_geolocation_ip_detection" xsi:type="string">amasty_checkout/geolocation/ip_detection</item>
+                <item name="amasty_checkout_geolocation_google_address_suggestion" xsi:type="string">amasty_address_autocomplete/general/google_address_suggestion</item>
+                <item name="amasty_checkout_geolocation_google_api_key" xsi:type="string">amasty_address_autocomplete/general/google_api_key</item>
+                <item name="amasty_checkout_sales_gift_options_allow_order" xsi:type="string">sales/gift_options/allow_order</item>
+                <item name="amasty_checkout_sales_gift_options_allow_items" xsi:type="string">sales/gift_options/allow_items</item>
+                <item name="amasty_checkout_gifts_gift_wrap" xsi:type="string">amasty_checkout/gifts/gift_wrap</item>
+                <item name="amasty_checkout_gifts_gift_wrap_fee" xsi:type="string">amasty_checkout/gifts/gift_wrap_fee</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Cart\SetShippingAddressesOnCart">
+        <plugin name="Amasty_CheckoutGraphQl::SetShippingCustomAttributes" type="Amasty\CheckoutGraphQl\Plugin\QuoteGraphQl\Model\Cart\SetShippingAddressesOnCart\SetCustomAttributes"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\Cart\SetBillingAddressOnCart">
+        <plugin name="Amasty_CheckoutGraphQl::SetBillingCustomAttributes" type="Amasty\CheckoutGraphQl\Plugin\QuoteGraphQl\Model\Cart\SetBillingAddressOnCart\SetCustomAttributes"/>
+    </type>
+    <type name="Magento\CustomerGraphQl\Model\Customer\Address\PopulateCustomerAddressFromInput">
+        <plugin name="Amasty_CheckoutGraphQl::SetCustomAttributesToCustomerAddress" type="Amasty\CheckoutGraphQl\Plugin\CustomerGraphQl\Model\Customer\Address\PopulateCustomerAddressFromInput\SetCustomAttributesToAddress"/>
+    </type>
+    <type name="Magento\CustomerGraphQl\Model\Customer\Address\PopulateCustomerAddressFromInput">
+        <plugin name="Amasty_CheckoutGraphQl::SetCustomAttributesForResult" type="Amasty\CheckoutGraphQl\Plugin\CustomerGraphQl\Model\Customer\Address\PopulateCustomerAddressFromInput\SetCustomAttributesForResult"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="Amasty_CheckoutGraphQl::AddCustomAttributesToAddCAToStorageForOrderAddressOutput" type="Amasty\CheckoutGraphQl\Plugin\Sales\Api\OrderRepository\AddCAToStorage"/>
+    </type>
+    <type name="Magento\SalesGraphQl\Model\Order\OrderAddress">
+        <plugin name="Amasty_CheckoutGraphQl::AddCustomAttributesToOrderBillingAddressOutput" type="Amasty\CheckoutGraphQl\Plugin\SalesGraphQl\Model\Order\OrderAddress\AddCAToOrderBillingAddress"/>
+        <plugin name="Amasty_CheckoutGraphQl::AddCustomAttributesToOrderShippingAddressOutput" type="Amasty\CheckoutGraphQl\Plugin\SalesGraphQl\Model\Order\OrderAddress\AddCAToOrderShippingAddress"/>
+    </type>
+
+    <!-- fix for PWA .../venia-ui/lib/components/CheckoutPage/BillingAddress/billingAddress.js#L39 because Venia theme always has street2 field -->
+    <type name="Magento\Customer\Helper\Address">
+        <plugin name="Amasty_CheckoutGraphQl::SetMinValueToAllowedStreetLines" type="Amasty\CheckoutGraphQl\Plugin\Customer\Helper\Address\SetMinValue"/>
+    </type>
+
+    <!-- fix for Magento logic .../Magento/Quote/Model/ShippingAddressManagement.php#L99-L100 -->
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="Amasty_CheckoutGraphQl::SetCustomAttributeRightValue" type="Amasty\CheckoutGraphQl\Plugin\Quote\Model\Quote\SetCustomAttributeRightValue"/>
+    </type>
+</config>

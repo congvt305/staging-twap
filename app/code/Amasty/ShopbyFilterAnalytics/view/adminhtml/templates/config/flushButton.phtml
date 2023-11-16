@@ -1,0 +1,12 @@
+<?php /** @var $block \Amasty\ShopbyFilterAnalytics\Block\System\FlushButton */ ?>
+<?php /** @var $escaper \Magento\Framework\Escaper */ ?>
+<button class="scalable" type="button" id="<?= $block->getHtmlId() ?>" data-mage-init='{"amShopAnalyticsFlush":{
+    "confirm": {
+        "title": "<?= $escaper->escapeHtml(__('Are you sure?')) ?>",
+        "content": "<?= $escaper->escapeHtml(
+            __('Filters usage statistics will be permanently removed. Are you sure?')
+) ?>"
+    },
+    "url": "<?= $escaper->escapeUrl($block->getAjaxUrl()) ?>"}}'>
+    <span><?= $escaper->escapeHtml($block->getButtonLabel()) ?></span>
+</button>

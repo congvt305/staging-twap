@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\OpenGraphTags\Model\Config\Backend\ValidateProductAttribute">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="productAttributeRepository" xsi:type="object">Magento\Catalog\Api\ProductAttributeRepositoryInterface</item>
+                <item name="messageManager" xsi:type="object">Magento\Framework\Message\ManagerInterface</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\OpenGraphTags\Model\Config\Backend\ValidateCategoryValues">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="messageManager" xsi:type="object">Magento\Framework\Message\ManagerInterface</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\OpenGraphTags\Model\Config\Backend\ValidateCmsValues">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="messageManager" xsi:type="object">Magento\Framework\Message\ManagerInterface</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
