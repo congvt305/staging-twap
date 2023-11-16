@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Eguana Commerce
+ * @copyright Copyright (c) 2020 Eguana Abbas
+ * @package Amore_Base
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="amore_extensions_tab" translate="label" sortOrder="2000">
+            <label>Amore Extensions</label>
+        </tab>
+    </system>
+</config>

@@ -1,0 +1,21 @@
+<?php
+/** @var \Satp\Ajaxcart\Block\Ajax $block */
+
+$quickview = 'true';
+?>
+<?php if ($block->isEnabled()): ?>
+<div id="satp_ajaxcart_popup"></div>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "satpAjaxcart": {
+                "addUrl": "<?php echo $block->escapeUrl($block->getUrl('ajaxcart')); ?>",
+                "quickview": <?php echo $block->escapeJsQuote($quickview); ?>,
+                "quickViewUrl": "<?php echo $block->escapeUrl($block->getUrl('ajaxcart/index/view/')); ?>",
+                "isProductView": <?= $block->isProductView() ? 1 : 0 ?>,
+                "addToCartSelector": ".action.tocart"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="Amasty_CheckoutGraphQl::CreateCustomerAccount" instance="Amasty\CheckoutGraphQl\Observer\GraphQl\Quote\Submit\CreateCustomerAccount"/>
+        <observer name="Amasty_CheckoutGraphQl::CreateOrderCustomerDelegate" instance="Amasty\CheckoutGraphQl\Observer\GraphQl\Quote\Submit\CreateOrderCustomerDelegate"/>
+    </event>
+</config>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_meta_config" resource="default" engine="innodb" comment="amasty_meta_config">
+        <column xsi:type="int" name="config_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Config_id"/>
+        <column xsi:type="int" name="category_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Category_id"/>
+        <column xsi:type="text" name="stores" nullable="true" disabled="true"/>
+        <column xsi:type="int" name="store_id" padding="10" unsigned="true" nullable="false" identity="false" default="0" comment="Store_id"/>
+        <column xsi:type="smallint" name="is_custom" padding="5" unsigned="true" nullable="false" identity="false" default="0" comment="Is_custom"/>
+        <column xsi:type="text" name="custom_url" nullable="true" comment="Custom_url"/>
+        <column xsi:type="int" name="priority" padding="10" unsigned="true" nullable="false" identity="false" default="0" comment="Priority"/>
+        <column xsi:type="text" name="custom_meta_title" nullable="true" comment="Custom_meta_title"/>
+        <column xsi:type="text" name="custom_meta_keywords" nullable="true" comment="Custom_meta_keywords"/>
+        <column xsi:type="text" name="custom_meta_description" nullable="true" comment="Custom_meta_description"/>
+        <column xsi:type="text" name="custom_canonical_url" nullable="true" comment="Custom_canonical_url"/>
+        <column xsi:type="smallint" name="custom_robots" padding="5" unsigned="true" nullable="false" identity="false" default="0" comment="Custom_robots"/>
+        <column xsi:type="text" name="custom_h1_tag" nullable="true" comment="Custom_h1_tag"/>
+        <column xsi:type="text" name="custom_in_page_text" nullable="true" comment="Custom_in_page_text"/>
+        <column xsi:type="text" name="cat_meta_title" nullable="true" comment="Cat_meta_title"/>
+        <column xsi:type="text" name="cat_meta_description" nullable="true" comment="Cat_meta_description"/>
+        <column xsi:type="text" name="cat_meta_keywords" nullable="true" comment="Cat_meta_keywords"/>
+        <column xsi:type="text" name="cat_h1_tag" nullable="true" comment="Cat_h1_tag"/>
+        <column xsi:type="text" name="cat_description" nullable="true" comment="Cat_description"/>
+        <column xsi:type="text" name="cat_image_alt" nullable="true" comment="Cat_image_alt"/>
+        <column xsi:type="text" name="cat_image_title" nullable="true" comment="Cat_image_title"/>
+        <column xsi:type="text" name="cat_after_product_text" nullable="true" comment="Cat_after_product_text"/>
+        <column xsi:type="text" name="product_meta_title" nullable="true" comment="Product_meta_title"/>
+        <column xsi:type="text" name="product_meta_keywords" nullable="true" comment="Product_meta_keywords"/>
+        <column xsi:type="text" name="product_meta_description" nullable="true" comment="Product_meta_description"/>
+        <column xsi:type="text" name="product_h1_tag" nullable="true" comment="Product_h1_tag"/>
+        <column xsi:type="text" name="product_short_description" nullable="true" comment="Product_short_description"/>
+        <column xsi:type="text" name="product_description" nullable="true" comment="Product_description"/>
+        <column xsi:type="text" name="sub_product_meta_title" nullable="true" comment="Sub_product_meta_title"/>
+        <column xsi:type="text" name="sub_product_meta_keywords" nullable="true" comment="Sub_product_meta_keywords"/>
+        <column xsi:type="text" name="sub_product_meta_description" nullable="true" comment="Sub_product_meta_description"/>
+        <column xsi:type="text" name="sub_product_h1_tag" nullable="true" comment="Sub_product_h1_tag"/>
+        <column xsi:type="text" name="sub_product_short_description" nullable="true" comment="Sub_product_short_description"/>
+        <column xsi:type="text" name="sub_product_description" nullable="true" comment="Sub_product_description"/>
+        <column xsi:type="smallint" name="is_brand_config" padding="6" unsigned="false" nullable="true" identity="false" default="0" comment="Is Brand Config"/>
+        <column xsi:type="text" name="brand_meta_title" nullable="true" comment="Brand Meta Title"/>
+        <column xsi:type="text" name="brand_meta_description" nullable="true" comment="Brand Meta Description"/>
+        <column xsi:type="text" name="brand_meta_keywords" nullable="true" comment="Brand Meta Keywords"/>
+        <column xsi:type="text" name="brand_h1_tag" nullable="true" comment="Brand H1 Tag"/>
+        <column xsi:type="text" name="brand_description" nullable="true" comment="Brand Description"/>
+        <column xsi:type="text" name="brand_after_product_text" nullable="true" comment="Brand After Product Text"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="config_id"/>
+        </constraint>
+
+        <index referenceId="CONFIG_ID" indexType="btree">
+            <column name="config_id"/>
+        </index>
+    </table>
+</schema>

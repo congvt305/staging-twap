@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider"
+                  xsi:type="string">amasty_shopby_analytics.amasty_shopby_analytics_data_source
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>columns</spinner>
+        <deps>
+            <dep>amasty_shopby_analytics.amasty_shopby_analytics_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="amasty_shopby_analytics_data_source"
+                component="Amasty_ShopbyFilterAnalytics/js/view/grid/uncachableProvider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">attribute_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider name="amasty_shopby_analytics_data_source"
+                      class="Amasty\ShopbyFilterAnalytics\Ui\DataProvider\AnalyticList">
+            <settings>
+                <primaryFieldName>id</primaryFieldName>
+                <requestFieldName>id</requestFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>false</sticky>
+        </settings>
+        <paging name="listing_paging"/>
+        <filters name="statistic_filter" class="Amasty\ShopbyFilterAnalytics\Ui\Component\Grid\Filters"
+                 template="Amasty_ShopbyFilterAnalytics/grid/filter/filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="buttonVisible" xsi:type="boolean">false</item>
+                    <!--@see \Amasty\ShopbyFilterAnalytics\Ui\DataProvider\AnalyticsModifier\DateFilterModifier -->
+                </item>
+            </argument>
+            <settings>
+                <listens>
+                    <!--Immediately apply. Apply grid filters on filters update -->
+                    <link name="update">apply</link>
+                </listens>
+            </settings>
+            <filterRange name="date"
+                         component="Magento_Ui/js/grid/filters/range"
+                         class="Magento\Ui\Component\Filters\Type\Date"
+                         template="Amasty_ShopbyFilterAnalytics/grid/filter/group"
+                         provider="${ $.parentName }">
+                <settings>
+                    <rangeType>date</rangeType>
+                    <label translate="true">Date</label>
+                    <templates>
+                        <base name="inline" xsi:type="array">
+                            <item name="template"
+                                  xsi:type="string">Amasty_ShopbyFilterAnalytics/grid/filter/field</item>
+                        </base>
+                        <ranges name="labels" xsi:type="array">
+                            <item name="from" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">From:</item>
+                            </item>
+                            <item name="to" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">To:</item>
+                            </item>
+                        </ranges>
+                    </templates>
+                    <dataScope>date</dataScope>
+                </settings>
+            </filterRange>
+        </filters>
+        <massaction name="listing_massaction" class="Amasty\ShopbyFilterAnalytics\Ui\Component\Grid\MassAction">
+            <settings>
+                <selectProvider>amasty_shopby_analytics.amasty_shopby_analytics.columns.ids</selectProvider>
+                <indexField>attribute_id</indexField>
+            </settings>
+            <action name="sort_options">
+                <settings>
+                    <url path="amasty_shopbyanalytic/sorting/attributeOptions"/>
+                    <type>sort_options</type>
+                    <label translate="true">Sort Options by Popularity</label>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+
+    <columns name="columns" class="Magento\Ui\Component\Listing\Columns">
+        <selectionsColumn name="ids" class="Amasty\ShopbyFilterAnalytics\Ui\Component\Grid\Column">
+            <settings>
+                <indexField>attribute_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="frontend_label"
+                sortOrder="10"
+                component="Amasty_ShopbyFilterAnalytics/js/view/grid/expandable"
+                template="Amasty_ShopbyFilterAnalytics/grid/cells/expandable">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="expandControl" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Filter Label</label>
+                <fieldClass>
+                    <class name="amshopbyfa-grid-column">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <column name="attribute_code"
+                sortOrder="20"
+                component="Amasty_ShopbyFilterAnalytics/js/view/grid/expandable"
+                template="Amasty_ShopbyFilterAnalytics/grid/cells/expandable">
+            <settings>
+                <label translate="true">Attribute Code</label>
+                <fieldClass>
+                    <class name="amshopbyfa-grid-column">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <column name="counter"
+                sortOrder="30"
+                component="Amasty_ShopbyFilterAnalytics/js/view/grid/expandable"
+                template="Amasty_ShopbyFilterAnalytics/grid/cells/expandable">
+            <settings>
+                <label translate="true">Uses</label>
+                <fieldClass>
+                    <class name="amshopbyfa-grid-column">true</class>
+                </fieldClass>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,159 @@
+<?php
+/**
+ * @var \Amasty\VisualMerch\Block\Adminhtml\Products\Listing $block
+ * @var \Magento\Catalog\Helper\Image $imageBlock
+ */
+
+$imageHelper =  $block->getImageHelper();
+$productCollection = $block->getCollection();
+$countRecords = $productCollection->count() ? $productCollection->getSize() : $productCollection->count();
+$currentPage = $block->getCurrentPage();
+$lastPage = $block->getLastPageNumber();
+$isCanRemove = $block->isCanRemove();
+?>
+
+<div class="ammerchui-page-products" data-role="page_products">
+    <ul class="ammerchui-toolbar-block">
+        <li class="ammerchui-item">
+            <strong class="ammerchui-label"><?= $block->escapeHtml(__('Visible items')) ?>:</strong>
+            <span id="<?= $block->getHtmlId() ?>-total-count" <?= /* @noEscape */ $block->getUiId('total-count') ?> class="ammerchui-value">
+                <?= $block->escapeHtml($countRecords) ?>
+            </span>
+            <?php if ($block->getInvisibleProductsCount()): ?>
+                <strong class="ammerchui-label"><?= $block->escapeHtml(__('Invisible items')) ?>:</strong>
+                <span id="<?= $block->getHtmlId() ?>-invisible-count" <?= /* @noEscape */$block->getUiId('invisible-count') ?> class="ammerchui-value">
+                    <?= $block->escapeHtml($block->getInvisibleProductsCount()) ?>
+                </span>
+            <?php endif; ?>
+        </li>
+        <?php if ($block->getPagerVisibility()): ?>
+            <li class="ammerchui-item">
+                <select id="<?= $block->getHtmlId() ?>_page-limit"
+                        class="ammerchui-select admin__control-select"
+                        name="<?= $block->escapeHtml($block->getVarNameLimit()) ?>"
+                        data-role="page_limiter">
+                    <?php foreach ($block->getPerPageSize() as $perPageSize): ?>
+                        <option value="<?= $block->escapeHtml($perPageSize) ?>"
+                            <?= /* @noEscape */ $block->getPageSize() == $perPageSize ? 'selected="selected"' : '' ?>>
+                            <?= $block->escapeHtml($perPageSize) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <span class="ammerchui-label">
+                    <?= $block->escapeHtml(__('per page')) ?>
+                </span>
+                <div class="ammerchui-block">
+                    <button class="action-previous <?= /* @noEscape */ $currentPage > 1 ? '' : 'disabled' ?>"
+                            type="button"
+                            data-role="button_previous"
+                            data-value="<?= $block->escapeHtml(($currentPage - 1)) ?>">
+                    </button>
+                    <input id="<?= $block->getHtmlId() ?>-current-page"
+                           class="ammerchui-input admin__control-text"
+                           type="text"
+                           name="<?= $block->escapeHtml($block->getVarNamePage()) ?>"
+                           value="<?= $block->escapeHtml($currentPage) ?>"
+                           data-role="input_page"
+                           <?= $block->escapeHtml($block->getUiId('current-page')) ?> />
+                    <label class="ammerchui-label" for="<?= $block->getHtmlId() ?>-current-page">
+                        <?= $block->escapeHtml(__('of %1', $lastPage)) ?>
+                    </label>
+                    <button class="action-next <?= /* @noEscape */ $currentPage <  $lastPage? '' : 'disabled' ?>"
+                            type="button"
+                            title="<?= $block->escapeHtml(__('Next page')) ?>"
+                            data-role="button_next"
+                            data-value="<?= $block->escapeHtml(($currentPage + 1)) ?>">
+                    </button>
+                </div>
+            </li>
+        <?php endif ?>
+    </ul>
+    <?php if ($countRecords): ?>
+    <ul class="ammerchui-products-list <?= /* @noEscape */ $block->isFirstPage() ? 'ammerchui-first-page' : '' ?>"
+        data-ammerchui-js="product-list">
+            <?php foreach ($productCollection as $index => $product): ?>
+                <?php /** @var \Magento\Catalog\Model\Product $product */ ?>
+                <li class="ammerchui-product <?= /* @noEscape */ $product->getIsSearchResult() ? 'search-result' : '' ?> <?= /* @noEscape */ $product->getIsManual() ? '-manual' : '' ?>"
+                    data-ammerchui-js="product-item">
+                    <input type="hidden" name="entity_id" value="<?= $block->escapeHtml($product->getId()) ?>"/>
+                    <?php if (!$block->isDynamicMode()): ?>
+                        <div class="amerchui-toolbar">
+                            <span class="ammerchui-text" data-ammerchui-js="label-text">
+                                <?= $block->escapeHtml($product->getIsManual() ? __('Pinned') : __('Auto')) ?>
+                            </span>
+                            <?php if ($isCanRemove): ?>
+                                <span class="ammerchui-close" data-ammerchui-js="remove-product" title="<?= $block->escapeHtml(__('Remove product')); ?>">×</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="ammerchui-image-wrapper">
+                        <span class="ammerchui-stock">
+                            <?= $block->escapeHtml($block->renderStock($product)) ?>
+                        </span>
+                        <img class="ammerchui-image" src="<?= $block->escapeHtml($block->getImageUrl($product)) ?>" alt="<?= $block->escapeHtml(__('Product image')) ?>"/>
+                    </div>
+
+                    <div class="ammerchui-info">
+                        <?php foreach ($block->getAttributesToDisplay($product) as $attribute): ?>
+                            <span class=" ammerchui-text ammerchui-<?= $block->escapeHtmlAttr($attribute->getCode()) ?>">
+                                <?= /* @noEscape */ $attribute->getValue() ?>
+                                <?php if ($attribute->getCode() === 'sku'): ?>
+                                    <button class="ammerchui-copy-button"
+                                            type="button"
+                                            data-mage-init='{"ammerchuiClipText": {"copiedValue": "<?= $block->escapeHtml($attribute->getValue()) ?>"}}'>
+                                    </button>
+                                <?php endif; ?>
+                            </span>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="ammerchui-controlbar">
+                        <div class="ammerchui-switch-button ammerchui-icon <?= /* @noEscape */ $product->getIsManual() ? '-manual' : '' ?>"
+                             title="<?= /* @noEscape */ $product->getIsManual() ? __('Enable Auto Sorting') : __('Enable Manual Sorting') ?>"
+                             data-role="switcher"
+                             data-ammerchui-js="switch-button">
+                            <input name="position"
+                                   type="hidden"
+                                   value="<?= $block->escapeHtml($product->getPosition()) ?>"/>
+                            <input id="am-position_<?= $block->escapeHtml($index) ?>_checkbox"
+                                   class="ammerchui-mode"
+                                   name="manual_sort"
+                                   type="checkbox"
+                                   data-ammerchui-js="display-mode"
+                                   value="0"
+                                   <?= /* @noEscape */ $product->getIsManual() ? 'checked="checked"' : '' ?> />
+                        </div>
+                        <label class="ammerchui-page-block">
+                            <span class="ammerchui-text"><?= $block->escapeHtml(__('page')) ?></span>
+                            <input class="ammerchui-input"
+                                   type="number"
+                                   min="1"
+                                   max="<?= $block->escapeHtmlAttr($lastPage) ?>"
+                                   value="<?= $block->escapeHtmlAttr($currentPage) ?>"
+                                   current="<?= $block->escapeHtmlAttr($currentPage) ?>"
+                                   data-ammerchui-js="page-input">
+                            <button class="ammerchui-arrow -full" data-ammerchui-js="set-page" type="button"></button>
+                        </label>
+                        <a class="ammerchui-move-top ammerchui-icon"
+                           href="#"
+                           data-ammerchui-js="move-top"
+                           title="<?= $block->escapeHtml(__('Move to top')) ?>">
+                        </a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "Amasty_VisualMerchUi/js/pager"
+    ], function ($) {
+        $('[data-role="page_products"]').amvisualmerchProductsPager({
+            "gridUrl": "<?= $block->escapeHtml($block->getGridUrl()) ?>",
+            "varNamePage": "<?= $block->escapeHtml($block->getVarNamePage()) ?>"
+        });
+    });
+</script>

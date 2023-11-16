@@ -1,0 +1,43 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Store\Block\Switcher $block */
+$stores = [
+    ['name' => '한국/한국어', 'url' => 'https://www.laneige.com/kr/ko/index.html'],
+    ['name' => 'INTERNATIONAL/ENGLISH', 'url' => 'https://www.laneige.com/int/en/index.html'],
+    ['name' => '中文', 'url' => 'https://www.laneige.com.cn/index.html'],
+    ['name' => '繁體中文', 'url' => 'https://hk.laneige.com'],
+    ['name' => '日本/日本語', 'url' => 'https://www.laneige.com/jp/ja'],
+    ['name' => 'SINGAPORE/ENGLISH', 'url' => 'https://sg.laneige.com/'],
+    ['name' => 'MALAYSIA/ENGLISH', 'url' => 'https://my.laneige.com/'],
+    ['name' => 'ประเทศไทย/ไทย', 'url' => 'https://th.laneige.com/'],
+    ['name' => 'VIỆT NAM/TIẾNG VIỆT', 'url' => 'https://www.laneige.com.vn/'],
+    ['name' => 'INDONESIA/BAHASA INDONESIA', 'url' => 'https://www.laneige.com/id/id/index.html'],
+    ['name' => 'PHILIPPINES/ENGLISH', 'url' => 'https://ph.laneige.com/'],
+    ['name' => 'CANADA/ENGLISH', 'url' => 'https://www.laneige.com/ca/en/index.html'],
+    ['name' => 'USA/ENGLISH', 'url' => 'https://us.laneige.com/'],
+]
+?>
+<div class="switcher language switcher-language">
+    <select>
+        <?php foreach ($stores as $_lang) : ?>
+        <option value="<?= $block->escapeUrl($_lang['url']) ?>" <?= $_lang['url'] == 'https://hk.laneige.com' ? 'selected' : '' ?>><?= $block->escapeHtml($_lang['name']) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<script>
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        $('.page-footer .switcher-language select').change(function() {
+            window.open($(this).val(), '_blank');
+        });
+
+        if ($(window).width() <= 768) {
+            $('.page-footer .switcher-language').insertAfter(".footer_bottom .footer_links");
+        }
+    });
+});
+</script>

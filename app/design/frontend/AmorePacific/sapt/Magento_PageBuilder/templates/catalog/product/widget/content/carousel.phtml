@@ -37,7 +37,8 @@ $viewModel = $block->getData('wishlistStatusViewModel');
                         <div class="product-item-actions">
                             <div class="actions-secondary" data-role="add-to-links">
                                 <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>
-                                    <?php if ($viewModel->moduleStatus()): ?>
+                                    <?php //if ($viewModel->moduleStatus()): ?>
+                                    <?php if (true): ?>
                                         <!-- ko scope: 'ajaxwishlist' -->
                                         <a data-bind="css:{wishlisticon : wishlistitem().all_wishlist_items?typeof wishlistitem().all_wishlist_items['<?= $block->escapeHtmlAttr($_item->getId()) ?>'] != 'undefined':false}"
                                            data-wishlist-action='<?= /* @noEscape */ $block ->getAddToWishlistParams($_item) ?>'

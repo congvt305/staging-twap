@@ -26,8 +26,7 @@
     <type name="Magento\Catalog\Block\Product\ProductList\Toolbar">
         <plugin name="catalog_productlist_toolbar_plugin" type="CJ\CatalogProduct\Plugin\Catalog\Block\Product\ProductList\Toolbar" />
     </type>
-    <type name="Magento\Catalog\Model\Config">
-        <plugin name="custom_catalog_model_config" type="CJ\CatalogProduct\Plugin\Catalog\Model\Config"/>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="cj_catalog_product_verify_bundle_options" type="CJ\CatalogProduct\Plugin\Checkout\Model\Cart\BundleOptions"/>
     </type>
-    <preference for="Magento\Catalog\Block\Product\ProductList\Toolbar" type="CJ\CatalogProduct\Rewrite\Catalog\Block\Product\ProductList\Toolbar" />
 </config>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
+* @package SEO Toolkit Base for Magento 2
+*/-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amseotoolkit>
+            <general>
+                <enable_seo_url>0</enable_seo_url>
+                <seo_key>search</seo_key>
+            </general>
+            <redirect_settings>
+                <home_redirect>0</home_redirect>
+                <four_zero_four_redirect>0</four_zero_four_redirect>
+                <deleted_products_redirects>
+                    <enabled>0</enabled>
+                    <redirect_type>301</redirect_type>
+                    <redirect_lifetime>30</redirect_lifetime>
+                </deleted_products_redirects>
+                <deleted_categories_redirects>
+                    <enabled>0</enabled>
+                    <redirect_type>301</redirect_type>
+                    <redirect_lifetime>30</redirect_lifetime>
+                </deleted_categories_redirects>
+            </redirect_settings>
+            <pager>
+                <prev_next>1</prev_next>
+                <meta_title>0</meta_title>
+                <meta_description>0</meta_description>
+            </pager>
+        </amseotoolkit>
+    </default>
+</config>

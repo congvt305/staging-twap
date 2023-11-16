@@ -14,6 +14,9 @@
                 <enable_sort_best_sellers>0</enable_sort_best_sellers>
                 <enable_filter_on_sale>0</enable_filter_on_sale>
             </best_seller_products>
+            <bundle_product>
+                <allow_quick_buy_bundle_product>1</allow_quick_buy_bundle_product>
+            </bundle_product>
         </catalog>
     </default>
 </config>

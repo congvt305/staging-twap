@@ -12,5 +12,8 @@
                 <argument name="template" xsi:type="string">CJ_CatalogProduct::product/list/toolbar.phtml</argument>
             </action>
         </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Category\View" name="category.bottom" template="CJ_CatalogProduct::catalog/category/view/bottom.phtml" after="-"/>
+        </referenceContainer>
     </body>
 </page>

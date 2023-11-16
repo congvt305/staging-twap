@@ -5,6 +5,7 @@ namespace CJ\CatalogProduct\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
+use CJ\CatalogProduct\Model\GetProductQtyLeft;
 
 class Data extends AbstractHelper
 {
@@ -16,10 +17,21 @@ class Data extends AbstractHelper
     const ON_SALES_ATTRIBUTE_CODE = 'on_sales';
     const RANKING_ATTRIBUTE_CODE = 'ranking';
     const RANKING_STATUS_ATTRIBUTE_CODE = 'ranking_status';
+    const XML_PATH_ALLOW_QUICK_BUY_BUNDLE_PRODUCT = 'catalog/bundle_product/allow_quick_buy_bundle_product';
 
-    public function __construct(Context $context)
+    /**
+     * @var GetProductQtyLeft
+     */
+    protected GetProductQtyLeft $getProductQtyLeft;
+
+    /**
+     * @param Context $context
+     * @param GetProductQtyLeft $getProductQtyLeft
+     */
+    public function __construct(Context $context, GetProductQtyLeft $getProductQtyLeft)
     {
         parent::__construct($context);
+        $this->getProductQtyLeft = $getProductQtyLeft;
     }
 
     public function getLimitProducts($storeId)
@@ -49,5 +61,24 @@ class Data extends AbstractHelper
     public function getEnableFilterOnSale($storeId)
     {
         return $this->scopeConfig->getValue(self::XML_PATH_ENABLE_FILTER_ON_SALE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $websiteId
+     * @return mixed
+     */
+    public function isAllowQuickBuyBundleProduct($websiteId = null)
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_ALLOW_QUICK_BUY_BUNDLE_PRODUCT, ScopeInterface::SCOPE_WEBSITE, $websiteId);
+    }
+
+    /**
+     * @param $sku
+     * @param $qty
+     * @return array
+     */
+    public function getProductStock($product, $qty, $bundleOptions = [])
+    {
+        return $this->getProductQtyLeft->execute($product, $qty, $bundleOptions);
     }
 }

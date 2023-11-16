@@ -41,4 +41,18 @@ class Toolbar
         }
         return $result;
     }
+
+    /**
+     * @param \Magento\Catalog\Block\Product\ProductList\Toolbar $subject
+     * @param \Magento\Framework\Data\Collection $collection
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function beforeSetCollection(\Magento\Catalog\Block\Product\ProductList\Toolbar $subject, \Magento\Framework\Data\Collection $collection)
+    {
+        $storeId = $this->storeManager->getStore()->getId();
+        if ($storeId && $this->data->getEnableFilterOnSale($storeId) && $subject->getRequest()->getParam('on_sale')) {
+            $collection->getSelect()->where('price_index.final_price < price_index.price');
+        }
+    }
 }

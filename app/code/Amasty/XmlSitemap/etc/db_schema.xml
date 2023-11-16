@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_xmlsitemap" resource="default" engine="innodb" comment="Amasty XmlSitemap Entity">
+        <column xsi:type="int" name="sitemap_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Sitemap ID"/>
+        <column xsi:type="varchar" name="name" length="255" nullable="false" comment="Sitemap Name"/>
+        <column xsi:type="varchar" name="path" length="255" nullable="false" comment="Sitemap File Path"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store ID"/>
+        <column xsi:type="int" name="max_urls" padding="11" unsigned="true" nullable="false" identity="false" comment="Max Urls"/>
+        <column xsi:type="int" name="max_file_size" padding="11" unsigned="true" nullable="false" identity="false" comment="Max File Size"/>
+        <column xsi:type="datetime" name="last_generation" on_update="false" nullable="true" comment="Last Generation Time"/>
+        <column xsi:type="text" name="exclude_urls" nullable="true" comment="Urls To Exclude In Sitemap"/>
+        <column xsi:type="varchar" name="date_format" length="20" nullable="false" comment="Date Format"/>
+        <column xsi:type="boolean" name="is_additional_include" nullable="false" comment="Is Custom Items Include"/>
+        <column xsi:type="boolean" name="is_separate_entity" nullable="false" comment="Split Sitemap by Entity"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="sitemap_id"/>
+        </constraint>
+    </table>
+
+    <table name="amasty_xml_sitemap_entity_data" resource="default" engine="innodb" comment="Amasty XmlSitemap Entities Data">
+        <column xsi:type="int" name="sitemap_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Sitemap ID"/>
+        <column xsi:type="varchar" name="entity_code" length="255" nullable="false" comment="Entity Code"/>
+        <column xsi:type="boolean" name="enabled" nullable="false" comment="Is Entity Generation Enabled"/>
+        <column xsi:type="boolean" name="hreflang" nullable="false" comment="Add HrefLang To Entity"/>
+        <column xsi:type="float" name="priority" unsigned="true" scale="2" precision="3" nullable="false" comment="Entity Priority"/>
+        <column xsi:type="varchar" name="frequency" length="16" nullable="false" comment="Entity Frequency"/>
+        <column xsi:type="text" name="additional" nullable="false" comment="Additional Settings In JSON Format"/>
+        <column xsi:type="varchar" name="filename" length="50" nullable="true" comment="Filename for Split Sitemap"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="sitemap_id"/>
+            <column name="entity_code"/>
+        </constraint>
+
+        <constraint xsi:type="foreign"
+                    referenceId="AMASTY_XML_SITEMAP_ENTITY"
+                    table="amasty_xml_sitemap_entity_data"
+                    column="sitemap_id"
+                    referenceTable="amasty_xmlsitemap"
+                    referenceColumn="sitemap_id"
+                    onDelete="CASCADE"
+        />
+    </table>
+
+    <table name="cms_page">
+        <column xsi:type="varchar" name="amasty_hreflang_uuid" length="255" nullable="true"
+                comment="Amasty Hreflang UUID" />
+    </table>
+</schema>

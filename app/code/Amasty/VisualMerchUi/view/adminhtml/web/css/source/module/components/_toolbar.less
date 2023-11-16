@@ -1,0 +1,86 @@
+//
+//  Toolbar Component Styles
+//  ____________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    #am-add-products-button {
+        margin-left: 50px;
+    }
+
+    .ammerchui-toolbar-block {
+        & {
+            .am-flex(space-between, center);
+
+            margin: 0 0 35px;
+            list-style: none;
+        }
+
+        .ammerchui-item {
+            .am-flex(center, center);
+        }
+
+        .ammerchui-select,
+        .ammerchui-block,
+        .ammerchui-label,
+        .ammerchui-value {
+            margin: 0 @ammerchui__indent / 2 0 0;
+        }
+
+        .ammerchui-input {
+            padding: 4px;
+            max-width: 50px;
+        }
+    }
+
+    .ammerch-sorting-container {
+        & {
+            .am-flex(space-between, center);
+
+            padding: 0 0 @ammerchui__indent__xxl 0;
+        }
+
+        .ammerch-sorting-block {
+            .am-flex(none, center);
+        }
+
+        .ammerchui-search-form {
+            .am-flex();
+
+            flex-basis: 30%;
+            margin-left: 50px;
+        }
+
+        .ammerchui-form {
+            .am-flex();
+
+            flex-basis: 100%;
+        }
+
+        // Styling magento elements
+        .sort-products {
+            margin: 0 0 0 @ammerchui__indent;
+        }
+
+        .admin__control-text,
+        .admin__field {
+            width: 100%;
+        }
+
+        // end Styling magento elements
+    }
+
+    .ammerchui-sort-field {
+        & {
+            .am-flex(none, center);
+        }
+
+        .ammerchui-label {
+            margin: 0 @ammerchui__indent 0 0;
+            white-space: nowrap;
+        }
+    }
+}

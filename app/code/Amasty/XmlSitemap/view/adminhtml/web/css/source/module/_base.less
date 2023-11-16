@@ -1,0 +1,91 @@
+//
+//  Base Styles
+//  ______________________________________________
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .amxmlsitemap-fieldset-block .admin__fieldset-wrapper-content .admin__fieldset {
+        padding: 0;
+    }
+
+    .amxmlsitemap-fieldset-block.-amxmlsitemap-lite {
+        &,
+        .admin__scope-old .fieldset-wrapper & {
+            border: none;
+        }
+
+        > .fieldset-wrapper-title {
+            display: none;
+        }
+    }
+
+    .amxmlsitemap-fieldset-block .admin__control-table {
+        & > thead,
+        & > tbody {
+            th,
+            td {
+                &:first-child {
+                    padding-left: 3rem;
+                }
+
+                &:nth-child(3) {
+                    padding-right: 2rem;
+                }
+            }
+        }
+
+        & > tfoot button {
+            margin-left: 2rem;
+        }
+
+        & > tbody td .admin__field-control .admin__control-select {
+            width: 100%;
+        }
+
+        .action-delete:before {
+            color: #aaa;
+        }
+    }
+
+    .amxmlsitemap-customitems-fieldset .amxmlsitemap-field {
+        padding: 3rem 20px 10px;
+    }
+
+    .amxmlsitemap-exclude-categories {
+        .admin__control-checkbox[checked='true'] + label:before {
+            &:extend(.admin__control-checkbox:checked + label:before all); // Magento ui-select checked state fix
+        }
+
+        .admin__action-multiselect-wrap .action-menu {
+            position: relative;
+        }
+
+        .admin__action-multiselect-wrap .action-menu-item._unclickable {
+            & {
+                pointer-events: none;
+                user-select: none;
+            }
+
+            &._with-checkbox > .admin__action-multiselect-label {
+                padding-left: 0;
+            }
+
+            > .admin__action-multiselect-dropdown {
+                pointer-events: initial;
+                user-select: initial;
+            }
+
+            &._hover {
+                background-color: #fff;
+            }
+
+            > .admin__control-checkbox,
+            > .admin__action-multiselect-label:before {
+                display: none;
+            }
+        }
+    }
+}
