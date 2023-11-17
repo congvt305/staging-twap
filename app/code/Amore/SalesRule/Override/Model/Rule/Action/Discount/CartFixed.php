@@ -12,6 +12,7 @@ use Magento\SalesRule\Model\Rule;
 use Magento\SalesRule\Model\Rule\Action\Discount\Data;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
 use Magento\SalesRule\Model\Validator;
+use Magento\Quote\Api\CartRepositoryInterface;
 
 class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 {
@@ -36,12 +37,23 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
     protected $promoItemHelper;
 
     /**
+     * @var \Magento\Checkout\Model\Session
+     */
+    protected $checkoutSession;
+
+    /**
+     * @var CartRepositoryInterface
+     */
+    protected $cartRepository;
+
+    /**
      * @param Validator $validator
      * @param DataFactory $discountDataFactory
      * @param PriceCurrencyInterface $priceCurrency
      * @param DeltaPriceRound $deltaPriceRound
      * @param \Amasty\Promo\Helper\Item $promoItemHelper
      * @param CartFixedDiscount|null $cartFixedDiscount
+     * @param \Magento\Checkout\Model\Session $checkoutSession
      */
     public function __construct(
         Validator $validator,
@@ -49,8 +61,12 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         PriceCurrencyInterface $priceCurrency,
         DeltaPriceRound $deltaPriceRound,
         \Amasty\Promo\Helper\Item $promoItemHelper,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        CartRepositoryInterface $cartRepository,
         ?CartFixedDiscount $cartFixedDiscount = null
     ) {
+        $this->checkoutSession = $checkoutSession;
+        $this->cartRepository = $cartRepository;
         $this->deltaPriceRound = $deltaPriceRound;
         $this->cartFixedDiscountHelper = $cartFixedDiscount ?:
             ObjectManager::getInstance()->get(CartFixedDiscount::class);
@@ -205,6 +221,20 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 $cartRules[$rule->getId()] = 0;
             }
 
+            if ($rule->getData("enable_exclude_skus")) {
+                $ratio = 1;
+                $totalValidItemsQty = $this->getItemsValidForRule($rule);
+                if ($totalValidItemsQty){
+                    $ratio = $item->getQty() / $totalValidItemsQty;
+                }
+                $discountAmount = $rule->getDiscountAmount() * $ratio;
+                $baseDiscountAmount = $rule->getDiscountAmount() * $ratio;
+                $excludeSkus = $this->getExcludeSkusOfRule($rule);
+                if (in_array($item->getProduct()->getSku(), $excludeSkus)) {
+                    $baseDiscountAmount = $discountAmount = 0.0;
+                }
+            }
+
             $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $discountAmount)));
             $discountData->setBaseAmount($baseDiscountAmount);
             $discountData->setOriginalAmount(min($itemOriginalPrice * $qty, $discountAmount));
@@ -213,5 +243,36 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         $quote->setCartFixedRules($cartRules);
 
         return $discountData;
+    }
+
+    public function getItemsValidForRule($rule)
+    {
+        $itemsValidQty = 0;
+        $quoteId = $this->checkoutSession->getQuoteId();
+        if ($quoteId){
+            $quote = $this->cartRepository->get($quoteId);
+            $quoteItems = $quote->getItems();
+            foreach ($quoteItems as $item) {
+                $isValid = $rule->getActions()->validate($item);
+                if ($isValid) {
+                    $itemsValidQty += $item->getQty();
+                }
+            }
+        }
+
+        return $itemsValidQty;
+    }
+
+    /**
+     * @param $rule
+     * @return array|string[]
+     */
+    public function getExcludeSkusOfRule($rule)
+    {
+        $exludeSkus = [];
+        if ($rule->getData("exclude_skus")) {
+            $exludeSkus = explode(",", $rule->getData("exclude_skus"));
+        }
+        return $exludeSkus;
     }
 }

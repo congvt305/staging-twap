@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule" resource="default" engine="innodb" comment="Salesrule">
+        <column xsi:type="smallint" name="enable_exclude_skus" nullable="true" default="0" comment="Enable Exclude SKUs"/>
+        <column xsi:type="text" name="exclude_skus" nullable="true" comment="List SKUs exclude"/>
+    </table>
+</schema>
