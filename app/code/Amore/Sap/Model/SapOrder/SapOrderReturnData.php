@@ -224,7 +224,7 @@ class SapOrderReturnData extends AbstractSapOrder
             $slamt = $nsamt - $dcamt;
         }
 
-        $isMileageOrder = ($slamt == $miamt && $slamt > 0);
+
         $cvsShippingCheck = $this->cvsShippingCheck($order);
         $telephone = $this->getTelephone($shippingAddress->getTelephone());
         $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
@@ -236,9 +236,9 @@ class SapOrderReturnData extends AbstractSapOrder
             $dcamt = $this->itemsDiscountAmount;
             $miamt = $this->itemsMileage;
             $slamt = $nsamt - $dcamt;
-            $isMileageOrder = ($this->itemsSubtotal == $this->itemsMileage && $this->itemsSubtotal > 0);
         }
 
+        $isMileageOrder = ($slamt == $miamt && $slamt > 0);
         $bindData[] = [
             'vkorg' => $salesOrg,
             'kunnr' => $client,
