@@ -1,0 +1,59 @@
+<div id="popup-modal" class="popup_cookie">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('tw_laneige_popup_cookie_content')->toHtml();?>
+</div>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'mage/url',
+            'mage/translate',
+            'jquery-ui-modules/widget',
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'cookie-modal',
+                buttons: [
+                    {
+                        text: "<?=__('Don’t open for a day');?>",
+                        class: 'modal-close-aday',
+                        click: function () {
+                            this.closeModal();
+                            localStorage.setItem('popupShowTime', (new Date()).getTime() + (24*60*60000));
+                        }
+                    },
+                    {
+                        text: $.mage.__('Close'),
+                        class: 'modal-close',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }
+                ]
+            };
+
+            if ($('body#html-body').hasClass('cms-index-index')){
+                var popup = modal(options, $('#popup-modal'));
+                var time = localStorage.getItem('popupShowTime');
+                var currentTime = (new Date()).getTime();
+                if (time === null || currentTime > parseInt(time)) {
+                    $('#popup-modal').modal('openModal');
+                }
+            }
+
+
+
+            if ($('.cookie-modal .modal-inner-wrap').find('.popup_cookie')){
+                $('.cookie-modal .modal-inner-wrap').addClass('modal_cookie')
+                $('.cookie-modal .modals-wrapper').addClass('has_modal_cookie')
+            }
+        }
+    );
+
+</script>

@@ -2,8 +2,8 @@ var config = {
     map: {
         '*': {
 
-            addAjaxWishlist:  'Satp_AjaxWishlist/js/ajax-wishlist',
-            wishlistAction:  'Satp_AjaxWishlist/js/wishlist-actions',
+            addAjaxWishlist:  'Sapt_AjaxWishlist/js/ajax-wishlist',
+            wishlistAction:  'Sapt_AjaxWishlist/js/wishlist-actions',
 
         }
     }

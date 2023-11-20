@@ -10,11 +10,11 @@
         <remove src="Amasty_Base::vendor/slick/amslick.min.css"/>
     </head>
     <body>
-        <move element="catalog.leftnav" destination="sidebar.main" before="-" />
+        <!-- <move element="catalog.leftnav" destination="sidebar.main" before="-" />
         <move element="category.view.container" destination="page.top" before="breadcrumbs" />
         <referenceBlock name="catalog.compare.sidebar" remove="false"/>
         <move element="catalog.compare.sidebar" destination="sidebar.main" after="-" />
         <referenceBlock name="page.main.title" remove="true" />
-        <move element="category.description" destination="category.products.list" />
+        <move element="category.description" destination="category.products.list" /> -->
     </body>
 </page>

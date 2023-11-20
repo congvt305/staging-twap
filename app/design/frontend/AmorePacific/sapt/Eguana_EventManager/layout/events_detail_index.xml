@@ -22,7 +22,7 @@
                     <argument name="detail_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventDetail</argument>
                 </arguments>
             </block>
-            <block class="Satp\CommonSatp\Block\ListBlock" name="eventmanager.list" template="Eguana_EventManager::list.phtml">
+            <block class="Sapt\CommonSapt\Block\ListBlock" name="eventmanager.list" template="Eguana_EventManager::list.phtml">
                 <arguments>
                     <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
                 </arguments>

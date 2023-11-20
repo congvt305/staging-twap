@@ -4,7 +4,7 @@ TODO: event best seller page template
  */
 
 use Magento\Framework\App\Action\Action;
-use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
+use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
 
 // @codingStandardsIgnoreFile
 
@@ -17,8 +17,8 @@ use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
 <?php if ($block->getProductCollection()): ?>
 
     <?php
-    /** @var \Satp\CustomWidget\Helper\GalleryImage $_helperGallery */
-    $_helperGallery = $this->helper(\Satp\CustomWidget\Helper\GalleryImage::class);
+    /** @var \Sapt\CustomWidget\Helper\GalleryImage $_helperGallery */
+    $_helperGallery = $this->helper(\Sapt\CustomWidget\Helper\GalleryImage::class);
     $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
     $galleryId = $block->getData('id');
     $type = 'widget-product-grid';

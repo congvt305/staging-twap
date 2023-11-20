@@ -1,0 +1,32 @@
+{
+    "sapt_geo_target": {
+        "column": {
+            "entity_id": true,
+            "page_path": true,
+            "geo_tag": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "SAPT_GEO_TARGET_PAGE_PATH": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sapt_geo_target_store": {
+        "column": {
+            "entity_id": true,
+            "link_id": true,
+            "store_id": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "SAPT_GEO_TARGET_STORE_LINK_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

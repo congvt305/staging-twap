@@ -19,17 +19,17 @@
         </referenceBlock>
         <referenceBlock name="sales.order.print.renderers.default">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.print.renderers.bundle">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.print.renderers.grouped">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
     </body>

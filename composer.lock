@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0246dd46e7c21f5cd22aa4d95c91e48e",
+    "content-hash": "da7738f3977627f575dd14ac17a45b26",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -182,6 +182,84 @@
             "description": "Advanced Review by Amasty"
         },
         {
+            "name": "amasty/advanced-review-graphql",
+            "version": "1.0.4",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/advanced-review-graphql-1.0.4-ee.zip"
+            },
+            "require": {
+                "amasty/advanced-review": ">=1.15.3",
+                "amasty/base": ">=1.13.2",
+                "magento/module-graph-ql": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\AdvancedReviewGraphQl\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Advanced Review Graphql By Amasty"
+        },
+        {
+            "name": "amasty/advanced-reviews-page-builder",
+            "version": "1.0.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/advanced-reviews-page-builder-1.0.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "magento/module-page-builder": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ReviewPageBuilder\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty Advanced Review Page Builder"
+        },
+        {
+            "name": "amasty/ajax-scroll",
+            "version": "1.4.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/ajax-scroll-1.4.7-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Scroll\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "AJAX Scroll by Amasty"
+        },
+        {
             "name": "amasty/amcart",
             "version": "1.16.0",
             "dist": {
@@ -259,6 +337,34 @@
             "description": "Amasty Base"
         },
         {
+            "name": "amasty/checkout-graph-ql",
+            "version": "1.2.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/checkout-graph-ql-1.2.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/module-one-step-checkout-core": "*",
+                "magento/module-customer-graph-ql": ">=100.3.1",
+                "magento/module-quote-graph-ql": ">=100.3.1",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\CheckoutGraphQl\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "One Step Checkout GraphQl by Amasty"
+        },
+        {
             "name": "amasty/coupons",
             "version": "2.1.1",
             "dist": {
@@ -308,6 +414,33 @@
                 "proprietary"
             ],
             "description": "Cron Schedule List by Amasty"
+        },
+        {
+            "name": "amasty/custom_product_sorting",
+            "version": "1.0.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/custom_product_sorting-1.0.7-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.4.5",
+                "amasty/module-shop-by-brand": ">=2.12.7",
+                "amasty/visual-merch-ui": ">=1.0.9",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\CPS\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty CPS"
         },
         {
             "name": "amasty/customer-group-assign",
@@ -414,6 +547,59 @@
                 "Commercial"
             ],
             "description": "Amasty Customer Group Catalog"
+        },
+        {
+            "name": "amasty/html-sitemap",
+            "version": "1.2.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/html-sitemap-1.2.6.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.4",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SeoHtmlSitemap\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "HTML Sitemap by Amasty"
+        },
+        {
+            "name": "amasty/meta",
+            "version": "1.3.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/meta-1.3.3-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-meta-mftf-3": "Install module-meta-mftf-3 module to be able to run Meta Tags Templates MFTF tests for Magento 2.4.0+ version."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Meta\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Meta Tags Templates by Amasty"
         },
         {
             "name": "amasty/module-advanced-conditions",
@@ -601,6 +787,58 @@
             "homepage": "https://amasty.com/"
         },
         {
+            "name": "amasty/module-cross-linking",
+            "version": "1.2.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-cross-linking-1.2.5-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\CrossLinks\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Amasty Seo Cross Linking"
+        },
+        {
+            "name": "amasty/module-elastic-search-lite",
+            "version": "1.18.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-elastic-search-lite-1.18.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.4",
+                "amasty/xsearch": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ElasticSearchLite\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Elastic Search Lite by Amasty",
+            "homepage": "https://amasty.com/"
+        },
+        {
             "name": "amasty/module-google-address-autocomplete",
             "version": "1.0.2",
             "dist": {
@@ -625,6 +863,34 @@
             ],
             "description": "Google Address Autocomplete By Amasty",
             "homepage": "https://amasty.com/"
+        },
+        {
+            "name": "amasty/module-google-rich-snippets",
+            "version": "1.6.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-google-rich-snippets-1.6.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-seo-rich-data-yotpo": "Install amasty/module-seo-rich-data-yotpo module to activate Yotpo Reviews and SEO Rich Data integration."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SeoRichData\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Google Rich Snippets by Amasty"
         },
         {
             "name": "amasty/module-image-optimizer",
@@ -679,6 +945,32 @@
             "description": "Image Optimizer Ui by Amasty"
         },
         {
+            "name": "amasty/module-improved-layered-navigation-page",
+            "version": "2.7.14",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-improved-layered-navigation-page-2.7.14-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.0.1",
+                "amasty/module-shop-by-base": ">=2.15.6",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopbyPage\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Improved Layered Navigation by Amasty - Page sub-module"
+        },
+        {
             "name": "amasty/module-lazy-load",
             "version": "1.1.6",
             "dist": {
@@ -729,6 +1021,57 @@
                 "Commercial"
             ],
             "description": "Lazy Load Admin Ui by Amasty"
+        },
+        {
+            "name": "amasty/module-legacy-templates",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-legacy-templates-1.0.0-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\LegacyTemplates\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Legacy Templates by Amasty",
+            "homepage": "https://amasty.com/"
+        },
+        {
+            "name": "amasty/module-mage24fix",
+            "version": "1.0.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-mage24fix-1.0.7-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Mage24Fix\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Fix for Magento 2.4.0 by Amasty"
         },
         {
             "name": "amasty/module-one-step-checkout-core",
@@ -790,6 +1133,58 @@
                 "Commercial"
             ],
             "description": "One Step Checkout Premium Package by Amasty"
+        },
+        {
+            "name": "amasty/module-one-step-checkout-pro-package",
+            "version": "2.1.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-one-step-checkout-pro-package-2.1.3-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "amasty/module-single-step-checkout": ">=2.8.1",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\CheckoutProPackage\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "One Step Checkout Pro Package by Amasty"
+        },
+        {
+            "name": "amasty/module-open-graph-tags",
+            "version": "1.0.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-open-graph-tags-1.0.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": "*",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\OpenGraphTags\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Open Graph Tags by Amasty",
+            "homepage": "https://amasty.com/"
         },
         {
             "name": "amasty/module-page-speed-optimizer",
@@ -871,6 +1266,176 @@
             "description": "Sales Rule Wizard by Amasty"
         },
         {
+            "name": "amasty/module-seo-toolkit",
+            "version": "2.1.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-seo-toolkit-2.1.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.4",
+                "amasty/html-sitemap": ">=1.2.3",
+                "amasty/meta": ">=1.2.5",
+                "amasty/module-cross-linking": ">=1.2.2",
+                "amasty/module-google-rich-snippets": ">=1.5.0",
+                "amasty/module-open-graph-tags": "*",
+                "amasty/module-seo-toolkit-lite": ">=1.1.0",
+                "amasty/module-unique-product-url": ">=1.0.22",
+                "amasty/module-xml-google-sitemap": ">=2.0.0",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SeoToolKit\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "SEO Toolkit by Amasty"
+        },
+        {
+            "name": "amasty/module-seo-toolkit-lite",
+            "version": "1.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-seo-toolkit-lite-1.1.2-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.4",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SeoToolkitLite\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "SEO Toolkit Lite by Amasty",
+            "homepage": "https://amasty.com/"
+        },
+        {
+            "name": "amasty/module-shop-by-base",
+            "version": "2.15.6",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-base-2.15.6-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/module-mage24fix": ">=1.0.6",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "mobiledetect/mobiledetectlib": "We recommend using the 3rd-party library to improve the mobile detection algorithm."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopbyBase\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Base Improved Layered Navigation by Amasty"
+        },
+        {
+            "name": "amasty/module-shop-by-brand",
+            "version": "2.12.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-brand-2.12.7-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/module-shop-by-base": ">=2.15.6",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-shop-by-brand-graphql": "Install module-shop-by-brand-graphql module to activate GraphQl and Shop By Brand integration."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopbyBrand\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Shop by Brand by Amasty"
+        },
+        {
+            "name": "amasty/module-shop-by-quick-config",
+            "version": "1.1.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-quick-config-1.1.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/shopby": ">=2.18.5",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopByQuickConfig\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "ILN Quick Config by Amasty"
+        },
+        {
+            "name": "amasty/module-shopby-premium",
+            "version": "1.12.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shopby-premium-1.12.0-ee.zip"
+            },
+            "require": {
+                "amasty/ajax-scroll": ">=1.4.7",
+                "amasty/base": "*",
+                "amasty/custom_product_sorting": ">=1.0.7",
+                "amasty/module-shop-by-quick-config": ">=1.1.1",
+                "amasty/shopby": ">=2.12.8",
+                "amasty/shopby-filter-analytics": ">=1.0.0",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "psr-4": {
+                    "Amasty\\ShopbyPremium\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Improved Layered Navigation Premium by Amasty"
+        },
+        {
             "name": "amasty/module-single-step-checkout",
             "version": "4.1.6",
             "dist": {
@@ -931,6 +1496,60 @@
                 "Commercial"
             ],
             "description": "Thank You Page by Amasty"
+        },
+        {
+            "name": "amasty/module-unique-product-url",
+            "version": "1.0.24",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-unique-product-url-1.0.24-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.0.6",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-unique-product-url-mftf-3": "Install module-unique-product-url-mftf-3 module to be able to run Unique Product URL MFTF tests for Magento 2.4.0+ version."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\SeoSingleUrl\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Unique Product URL by Amasty"
+        },
+        {
+            "name": "amasty/module-xml-google-sitemap",
+            "version": "2.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-xml-google-sitemap-2.1.2-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "amasty/cron-schedule-list": ">=1.0.6",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\XmlSitemap\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "XML Google Sitemap By Amasty"
         },
         {
             "name": "amasty/orderattr",
@@ -1047,15 +1666,15 @@
         },
         {
             "name": "amasty/rewards",
-            "version": "1.17.4",
+            "version": "1.17.2",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/rewards-1.17.4.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/rewards-1.17.2-ee.zip"
             },
             "require": {
-                "amasty/base": ">=1.13.6",
-                "amasty/cron-schedule-list": "*",
-                "amasty/module-advanced-conditions": ">=1.3.6",
+                "amasty/base": ">=1.13.3",
+                "amasty/cron-schedule-list": ">=1.0.6",
+                "amasty/module-advanced-conditions": ">=1.5.5",
                 "php": ">=7.3"
             },
             "suggest": {
@@ -1076,6 +1695,33 @@
                 "Commercial"
             ],
             "description": "Amasty Rewards"
+        },
+        {
+            "name": "amasty/rewards-graph-ql",
+            "version": "1.1.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/rewards-graph-ql-1.1.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.3",
+                "amasty/rewards": ">=1.17.2",
+                "magento/module-customer-graph-ql": ">=100.3.1",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\RewardsGraphQl\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Reward Points GraphQl By Amasty"
         },
         {
             "name": "amasty/rgrid",
@@ -1101,6 +1747,97 @@
                 "Commercial"
             ],
             "description": "Extended Rules Grid by Amasty"
+        },
+        {
+            "name": "amasty/shopby",
+            "version": "2.18.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/shopby-2.18.5-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "amasty/module-improved-layered-navigation-page": ">=2.7.14",
+                "amasty/module-shop-by-base": ">=2.15.6",
+                "amasty/module-shop-by-brand": ">=2.12.7",
+                "amasty/shopby-seo": ">=2.13.1",
+                "magento/module-catalog-search": ">=101.0.2",
+                "magento/module-layered-navigation": ">=100.2.0",
+                "magento/module-swatches": ">=100.2.0",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-grouped-options": "Install module-grouped-options module to activate Grouped Options integration.",
+                "amasty/module-shopby-mftf-2": "Install module-shopby-mftf-2 module to implement mftf-tests for Magento 2.3.6+ versions.",
+                "amasty/module-shopby-mftf-3": "Install module-shopby-mftf-3 module to implement mftf-tests for Magento 2.4.1+ versions.",
+                "amasty/shopby-graphql": "Install shopby-graph-ql module to activate GraphQl and Shopby integration."
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Shopby\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Improved Layered Navigation by Amasty"
+        },
+        {
+            "name": "amasty/shopby-filter-analytics",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/shopby-filter-analytics-1.0.0-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.0.1",
+                "amasty/module-shop-by-base": ">=2.15.6",
+                "amasty/module-shop-by-quick-config": ">=1.1.1",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopbyFilterAnalytics\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Improved Layered Navigation by Amasty - Filter Analytics"
+        },
+        {
+            "name": "amasty/shopby-seo",
+            "version": "2.13.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/shopby-seo-2.13.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.0.1",
+                "amasty/module-shop-by-base": ">=2.15.6",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\ShopbySeo\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Improved Layered Navigation by Amasty - SEO sub-module"
         },
         {
             "name": "amasty/social-login",
@@ -1159,6 +1896,61 @@
                 "Commercial"
             ],
             "description": "Special Occasion Coupons by Amasty"
+        },
+        {
+            "name": "amasty/visual-merch-ui",
+            "version": "1.0.9",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/visual-merch-ui-1.0.9-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.2",
+                "php": ">=7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\VisualMerchUi\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Visual merchandiser ui part by Amasty"
+        },
+        {
+            "name": "amasty/xsearch",
+            "version": "1.18.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/xsearch-1.18.1-ee.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.13.4",
+                "magento/module-cms": "*",
+                "php": ">=7.3.0"
+            },
+            "suggest": {
+                "amasty/module-xsearch-mftf-2": "Install xsearch-mftf-2 module to be able to run Advanced Search MFTF tests for Magento 2.3.5+ version",
+                "amasty/module-xsearch-mftf-3": "Install xsearch-mftf-3 module to be able to run Advanced Search MFTF tests for Magento 2.4.0+ version"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Xsearch\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Search Autocomplete by Amasty"
         },
         {
             "name": "astock/stock-api-libphp",
@@ -29402,5 +30194,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

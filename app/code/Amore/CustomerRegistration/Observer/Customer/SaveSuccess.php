@@ -301,7 +301,7 @@ class SaveSuccess implements ObserverInterface
 
                 }
             }
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             $this->logger->addAPILog($e->getMessage());
         }
     }
@@ -420,19 +420,18 @@ class SaveSuccess implements ObserverInterface
             if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
-                $regionId = $customerData['region_id'];
+                $regionName = $customerData['dm_state'];
                 $regionObject = null;
-                if ($regionId) {
-                    $regionObject = $this->getRegionObject($regionId);
+                if ($regionName) {
+                    $regionObject = $this->getRegionObject($regionName);
                     $parameters['homeCity'] = $regionObject->getCode() ? $regionObject->getCode() : '';
                 } else {
                     $parameters['homeCity'] = '';
                 }
 
                 $cityName = $customerData['dm_city'];
-                $cityId = $customerData['city_id'];
                 $parameters['homeState'] = '';
-                if ($cityId && $regionObject) {
+                if ($cityName && $regionObject) {
                     $cities = $this->cityHelper->getCityData();
 
                     //Add log to track issue undefined array key when registration
@@ -451,7 +450,7 @@ class SaveSuccess implements ObserverInterface
                     }
                     $regionCities = $cities[$regionObject->getRegionId()];
                     foreach ($regionCities as $regionCity) {
-                        if ($regionCity['code'] == $cityId) {
+                        if ($regionCity['name'] == $cityName) {
                             $parameters['homeState'] = $regionCity['pos_code'];
                             break;
                         }
@@ -513,25 +512,15 @@ class SaveSuccess implements ObserverInterface
         $parameters['homeCity'] = $address->getRegion()->getRegionCode();
         $parameters['homeAddr1'] = implode(' ', $address->getStreet());
         $parameters['homeZip'] = $address->getPostcode();
+        $cityName = $address->getCity();
         $parameters['homeState'] = '';
-        if ($cityId = $this->request->getParam('city_id')) {
+        if ($cityName) {
             $cities = $this->cityHelper->getCityData();
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
-                if ($regionCity['code'] == $cityId) {
+                if ($regionCity['name'] == $cityName) {
                     $parameters['homeState'] = $regionCity['pos_code'];
                     break;
-                }
-            }
-        } else {
-            if ($cityName = $address->getCity()) {
-                $cities = $this->cityHelper->getCityData();
-                $regionCities = $cities[$address->getRegionId()];
-                foreach ($regionCities as $regionCity) {
-                    if ($regionCity['name'] == $cityName) {
-                        $parameters['homeState'] = $regionCity['pos_code'];
-                        break;
-                    }
                 }
             }
         }

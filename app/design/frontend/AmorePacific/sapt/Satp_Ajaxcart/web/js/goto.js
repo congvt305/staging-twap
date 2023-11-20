@@ -3,7 +3,7 @@ define([
     ], function ($) {
         'use strict';
 
-        $.widget('satp.gotoproduct', {
+        $.widget('sapt.gotoproduct', {
             _create: function () {
                 var self = this;
 
@@ -16,5 +16,5 @@ define([
             }
         });
 
-        return $.satp.gotoproduct;
+        return $.sapt.gotoproduct;
     });
