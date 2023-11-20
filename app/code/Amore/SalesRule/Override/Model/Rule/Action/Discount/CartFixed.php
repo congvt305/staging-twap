@@ -12,6 +12,7 @@ use Magento\SalesRule\Model\Rule;
 use Magento\SalesRule\Model\Rule\Action\Discount\Data;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
 use Magento\SalesRule\Model\Validator;
+use CJ\CustomSales\Helper\Data as Helper;
 
 class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 {
@@ -36,6 +37,11 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
     protected $promoItemHelper;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * @param Validator $validator
      * @param DataFactory $discountDataFactory
      * @param PriceCurrencyInterface $priceCurrency
@@ -49,9 +55,11 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         PriceCurrencyInterface $priceCurrency,
         DeltaPriceRound $deltaPriceRound,
         \Amasty\Promo\Helper\Item $promoItemHelper,
+        Helper $helper,
         ?CartFixedDiscount $cartFixedDiscount = null
     ) {
         $this->deltaPriceRound = $deltaPriceRound;
+        $this->helper = $helper;
         $this->cartFixedDiscountHelper = $cartFixedDiscount ?:
             ObjectManager::getInstance()->get(CartFixedDiscount::class);
         $this->promoItemHelper = $promoItemHelper;
@@ -203,6 +211,20 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 $baseDiscountAmount += $cartRules[$rule->getId()];
                 $discountAmount += $cartRules[$rule->getId()];
                 $cartRules[$rule->getId()] = 0;
+            }
+
+            if ($rule->getData("enable_exclude_skus")) {
+                $ratio = 1;
+                $totalValidItemsQty = $this->helper->getItemsValidForRule($rule);
+                if ($totalValidItemsQty){
+                    $ratio = $item->getQty() / $totalValidItemsQty;
+                }
+                $discountAmount = $rule->getDiscountAmount() * $ratio;
+                $baseDiscountAmount = $rule->getDiscountAmount() * $ratio;
+                $excludeSkus = $this->helper->getExcludeSkusOfRule($rule);
+                if (in_array($item->getProduct()->getSku(), $excludeSkus)) {
+                    $baseDiscountAmount = $discountAmount = 0.0;
+                }
             }
 
             $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $discountAmount)));

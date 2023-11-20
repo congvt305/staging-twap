@@ -8,7 +8,7 @@ use Magento\SalesRule\Model\Quote\ChildrenValidationLocator;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
 use Magento\SalesRule\Model\Rule\Action\Discount\CalculatorFactory;
 use Magento\Store\Model\StoreManagerInterface;
-
+use Magento\Quote\Model\Quote\Item\AbstractItem;
 /**
  * Override Rule applier model
  */
