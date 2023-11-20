@@ -818,7 +818,6 @@ return [
         'Eguana_StoreSms' => 1,
         'Amore_CustomerRegistration' => 0,
         'Amore_GcrmDataExport' => 1,
-        'Amore_Persistent' => 1,
         'Amore_PointsIntegration' => 1,
         'Amore_Sales' => 1,
         'Amore_SalesRule' => 1,
