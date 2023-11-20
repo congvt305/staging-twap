@@ -8,7 +8,7 @@ use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config as SapConfig;
-//use Eguana\BizConnect\Model\OperationLogRepository;
+use Eguana\BizConnect\Model\OperationLogRepository;
 use Exception;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -55,7 +55,7 @@ class SendOrderToSap extends SapRequest
     /**
      * @var OperationLogRepository
      */
-  //  protected $operationLogRepository;
+    protected $operationLogRepository;
     /**
      * @var Json
      */
@@ -80,6 +80,7 @@ class SendOrderToSap extends SapRequest
      * @param OrderMassSend $orderMassSend
      * @param GetTrackUrlByOrderInterface $getTrackUrlByOrder
      * @param StoresConfig $storesConfig
+     * @param OperationLogRepository $operationLogRepository
      * @param SapConfig $sapConfig
      */
     public function __construct(
@@ -93,6 +94,7 @@ class SendOrderToSap extends SapRequest
         OrderMassSend $orderMassSend,
         GetTrackUrlByOrderInterface $getTrackUrlByOrder,
         StoresConfig $storesConfig,
+        OperationLogRepository $operationLogRepository,
         SapConfig $sapConfig
     ) {
         $this->orderCollectionFactory = $orderCollectionFactory;
@@ -101,6 +103,7 @@ class SendOrderToSap extends SapRequest
         $this->orderMassSend = $orderMassSend;
         $this->getTrackUrlByOrder = $getTrackUrlByOrder;
         $this->storesConfig = $storesConfig;
+        $this->operationLogRepository = $operationLogRepository;
         $this->sapConfig = $sapConfig;
         parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
@@ -327,5 +330,29 @@ class SendOrderToSap extends SapRequest
         $this->orderRepository->save($order);
 
         return $orderItemData;
+    }
+
+    /**
+     * @param $serializedData
+     * @param $status
+     * @param $resultMessage
+     * @param $storeId
+     */
+    private function logOperation(
+        $serializedData,
+        $status,
+        $resultMessage
+    )
+    {
+        $loggedOperationId = $this->operationLogRepository->createOrUpdateMessage(
+            'amore.sap.order.cronsend.request',
+            $serializedData,
+            'SAP',
+            $status,
+            'outgoing',
+            null
+        );
+
+        $this->operationLogRepository->addLogToOperation($loggedOperationId, $resultMessage);
     }
 }
