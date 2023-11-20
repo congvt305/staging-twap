@@ -38,11 +38,11 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
                     <?php //phpcs:enable ?>
                     <div class="control" id="username-block">
                         <?php //phpcs:disable ?>
-                        <select id="country-mobile" name="country_mobile_id" style="display: none">
-                            <option value="HK" selected><?= __('852') ?></option>
-                            <option value="MO"><?= __('853') ?></option>
-                            <option value="CN"><?= __('86') ?></option>
-                        </select>
+                       <!-- <select id="country-mobile" name="country_mobile_id" style="display: none">
+                            <option value="HK" selected><?php __('852') ?></option>
+                            <option value="MO"><?php __('853') ?></option>
+                            <option value="CN"><?php __('86') ?></option>
+                        </select> -->
                         <?php //phpcs:enable ?>
                         <input
                             placeholder="<?= $block->escapeHtmlAttr(__('Email')) ?>"
