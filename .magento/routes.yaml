@@ -23,6 +23,6 @@
   upstream: "mymagento:http"
   redirects:
     "paths":
-      "vn.mcstaging.laneige.com":
+      "/vn.mcstaging.laneige.com":
         "code": 301
         "to": "https://mcstaging.vn.laneige.com/"
