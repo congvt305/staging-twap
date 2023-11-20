@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 30/6/20
+* Time: 12:39 PM
+*/
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Events</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magento\Cms\Block\Block" name="hk_sulhwasoo_banner_event" before="-">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">hk_sulhwasoo_banner_event_list_page</argument>
+                </arguments>
+            </block>
+            <block class="Sapt\CommonSapt\Block\ListBlock" name="eventmanager.list" template="Eguana_EventManager::list.phtml">
+                <arguments>
+                    <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="page.main.title" remove="true"/>
+    </body>
+</page>

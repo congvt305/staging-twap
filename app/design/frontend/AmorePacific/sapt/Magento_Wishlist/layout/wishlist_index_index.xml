@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.top">
+            <referenceBlock name="breadcrumbs">
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Home</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Home</item>
+                        <item name="label" xsi:type="string" translate="true">Home</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string" translate="true">My Page</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string" translate="true">My Page</item>
+                        <item name="label" xsi:type="string" translate="true">My Page</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}customer/account/dashboard</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Wish list</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Wish list</item>
+                        <item name="label" xsi:type="string" translate="true">Wish list</item>
+                    </argument>
+                </action>
+            </referenceBlock>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
+        </referenceContainer>
+        <referenceBlock name="customer-account-navigation-wish-list-link">
+            <arguments>
+                <argument name="is_highlighted" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer.wishlist.button.update" remove="true"/>
+        <referenceBlock name="customer.wishlist.item.edit" remove="true"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Wish list</argument>
+            </action>
+        </referenceBlock>
+        <move element="page.main.title" destination="content" before="-"/>
+        <referenceContainer name="customer.wishlist.buttons">
+            <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.button.sharesocial" template="Magento_Wishlist::button/share_icon_list.phtml" cacheable="false"/>
+            <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.button.removeall" template="Magento_Wishlist::button/removeall.phtml" cacheable="false"/>
+        </referenceContainer>
+        <referenceBlock name="customer.wishlist.button.share" remove="true"/>
+        <referenceBlock name="customer.wishlist.button.update" remove="true"/>
+        <referenceBlock name="customer.wishlist.button.toCart" remove="true"/>
+    </body>
+</page>
