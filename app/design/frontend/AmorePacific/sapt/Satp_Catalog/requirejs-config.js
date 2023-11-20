@@ -5,7 +5,7 @@
 var config = {
     map: {
         '*': {
-            compareAction: 'Satp_Catalog/js/compare-actions'
+            compareAction: 'Sapt_Catalog/js/compare-actions'
         }
     }
 };

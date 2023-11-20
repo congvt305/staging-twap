@@ -36,7 +36,7 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
@@ -46,27 +46,27 @@
         <move element="page.main.title" destination="content" before="-"/>
 
         <referenceContainer name="content">
-            <block class="Satp\Sales\Block\Order\SearchHistory" name="sales.order.history.search" template="Satp_Sales::order/history/search.phtml" before="sales.order.history"/>
+            <block class="Sapt\Sales\Block\Order\SearchHistory" name="sales.order.history.search" template="Sapt_Sales::order/history/search.phtml" before="sales.order.history"/>
         </referenceContainer>
 
         <referenceBlock name="sales.order.history">
-            <block class="Satp\Sales\Block\Order\History\Items" name="order_items" template="Magento_Sales::order/items.phtml" cacheable="false">
+            <block class="Sapt\Sales\Block\Order\History\Items" name="order_items" template="Magento_Sales::order/items.phtml" cacheable="false">
                 <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list"/>
             </block>
         </referenceBlock>
         <referenceBlock name="sales.order.items.renderers.default">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.items.renderers.bundle">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.items.renderers.grouped">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
     </body>

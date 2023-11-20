@@ -18,7 +18,7 @@
             </block>
         </referenceContainer>
         <referenceContainer name="page.top">
-            <block class="Magento\Framework\View\Element\Template" name="satp.taskbar" template="Magento_Theme::html/taskbar.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="sapt.taskbar" template="Magento_Theme::html/taskbar.phtml" before="-"/>
         </referenceContainer>
         <referenceContainer name="footer">
             <block class="Magento\Cms\Block\Block" name="social_links" after="footer_links">
@@ -71,7 +71,7 @@
                 </container>
             </container>
             <!-- <block class="Magento\Framework\View\Element\Template" name="popup.cookie"
-                   template="Magento_Theme::html/popup_cookie.phtml" ifconfig="satp_general/main_popup/enabled"/>
+                   template="Magento_Theme::html/popup_cookie.phtml" ifconfig="sapt_general/main_popup/enabled"/>
             <block class="Magento\Framework\View\Element\Template" name="policy.cookie" template="Magento_Theme::html/popup_cookie_policy.phtml"/> -->
         </referenceContainer>
         <referenceContainer name="footer">

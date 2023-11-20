@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
-    <menu>
-        <add id="Satp_Megamenu::megamenu" title="Mega Menu" module="Satp_Megamenu" sortOrder="505" parent="Magento_Backend::content" resource="Satp_Megamenu::megamenu"/>
-        <add id="Satp_Megamenu::configration" title="Configuration" module="Satp_Megamenu" sortOrder="10" parent="Satp_Megamenu::megamenu" action="adminhtml/system_config/edit/section/satp_megamenu" resource="Satp_Megamenu::config_megamenu"/>
-    </menu>
-</config>

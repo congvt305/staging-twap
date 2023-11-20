@@ -26,7 +26,7 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceBlock name="customer-account-navigation-account-link">
             <arguments>
@@ -43,7 +43,7 @@
 
         <referenceBlock name="customer_account_dashboard_top" remove="true"/>
         <referenceContainer name="content">
-            <block class="Satp\Customer\Block\Widget\BeautyProfile" name="customer_account_dashboard_beauty_profile" template="Satp_Customer::dashboard/beauty_profile.phtml">
+            <block class="Sapt\Customer\Block\Widget\BeautyProfile" name="customer_account_dashboard_beauty_profile" template="Sapt_Customer::dashboard/beauty_profile.phtml">
                 <arguments>
                     <argument name="attribute_code" xsi:type="string">beauty_profile</argument>
                     <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Edit</argument>

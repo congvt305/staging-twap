@@ -13,10 +13,10 @@
     <update handle="customer_account"/>
     <body>
         <referenceContainer name="page.top">
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Satp\EguanaCustomerBulletin\Block\Index\CreateTicket" name="ticket_createticket" template="Eguana_CustomerBulletin::createticket.phtml">
+            <block class="Sapt\EguanaCustomerBulletin\Block\Index\CreateTicket" name="ticket_createticket" template="Eguana_CustomerBulletin::createticket.phtml">
                 <arguments>
                     <argument name="ticket_createticket" xsi:type="object">Eguana\CustomerBulletin\ViewModel\CreateTicket</argument>
                 </arguments>

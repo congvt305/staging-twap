@@ -26,18 +26,18 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceBlock name="catalog.compare.sidebar" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
         <referenceContainer name="content">
-            <block class="Satp\Customer\Block\Order\Recent" name="customer_account_dashboard_top" template="Satp_Customer::order/recent.phtml">
+            <block class="Sapt\Customer\Block\Order\Recent" name="customer_account_dashboard_top" template="Sapt_Customer::order/recent.phtml">
                 <arguments>
-                    <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                    <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
                 </arguments>
             </block>
             <block class="Magento\Review\Block\Customer\Recent" name="customer_account_dashboard_info1" template="Magento_Review::customer/recent.phtml" cacheable="false" ifconfig="catalog/review/active"/>
-            <block class="Satp\Customer\Block\History" template="Satp_Customer::history/recent.phtml" name="customer_account_history_product" cacheable="false">
+            <block class="Sapt\Customer\Block\History" template="Sapt_Customer::history/recent.phtml" name="customer_account_history_product" cacheable="false">
                 <arguments>
                     <argument name="type" xsi:type="string">history</argument>
                     <argument name="view_model_get_default_name" xsi:type="object">Eguana\CustomCatalog\ViewModel\GetDefaultCategory</argument>
@@ -53,13 +53,13 @@
             </block>
             <referenceBlock name="related.product.addto.wishlist">
                 <action method="setTemplate">
-                    <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
+                    <argument name="template" xsi:type="string">Sapt_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
                     </argument>
                 </action>
                 <arguments>
                     <argument
                         name="moduleStatusViewModel"
-                        xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                        xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                     </argument>
                 </arguments>
             </referenceBlock>

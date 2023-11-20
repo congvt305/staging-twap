@@ -9,7 +9,7 @@
     <body>
         <referenceBlock name="rma.returns.history">
             <arguments>
-                <argument name="order_item_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="order_item_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
     </body>

@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 use Magento\Framework\App\Action\Action;
-use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
+use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
 
 // @codingStandardsIgnoreFile
 
@@ -13,7 +13,7 @@ use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
     <?php
     $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-    $optionDataHelper = $this->helper(Satp\Catalog\Helper\OptionData::class);
+    $optionDataHelper = $this->helper(Sapt\Catalog\Helper\OptionData::class);
     $sliderId = $block->getData('id') ?: 'products-slider';
     $showProgress = $block->getData('progress') ?: false;
     $desktop = $block->getData('desktop') ?: 4;

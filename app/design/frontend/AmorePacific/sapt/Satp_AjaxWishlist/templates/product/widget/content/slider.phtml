@@ -5,7 +5,7 @@ use Magento\Catalog\Helper\Product\Compare;
 use Magento\CatalogWidget\Block\Product\ProductsList;
 use Magento\Framework\App\Action\Action;
 use Magento\Wishlist\Helper\Data as CoreHelper;
-use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
+use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
 
 /** @var ProductsList $block */
 ?>
@@ -52,7 +52,7 @@ use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
                                                     data-wishlist-action='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>'
                                                     data-action="wishlist-actions"
                                                     data-product-id='<?= /* @noEscape */ $_item->getId() ?>'
-                                                    class="action towishlist" 
+                                                    class="action towishlist"
                                                     title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?> ">
                                                     <span>
                                                         <?= $block->escapeHtml(__('Add to Wish List')) ?>
@@ -92,7 +92,7 @@ use Satp\AjaxWishlist\Helper\Data as AjaxHelper;
                                         <div class="product-reviews-summary empty">
                                             <div class="reviews-actions">
                                                 <a class="action add" href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>#review-form">
-                                                    <?= __('Be the First to Review'); ?>           
+                                                    <?= __('Be the First to Review'); ?>
                                                 </a>
                                             </div>
                                         </div>

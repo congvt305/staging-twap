@@ -2,18 +2,18 @@
 /**
  * Top menu for store
  *
- * @see \Satp\Megamenu\Block\Topmenu
+ * @see \Sapt\Megamenu\Block\Topmenu
  */
 ?>
 <?php
-    $_helper = $this->helper('Satp\Megamenu\Helper\Data');
-    $_config = $_helper->getConfig('satp_megamenu');
+    $_helper = $this->helper('Sapt\Megamenu\Helper\Data');
+    $_config = $_helper->getConfig('sapt_megamenu');
     $columnsLimit = 0;
     if($_config['general']['enable']) {
 ?>
 <?php $_menu = $block->getMegamenuHtml(); ?>
 
-<nav class="navigation satp-megamenu side-megamenu" role="navigation">
+<nav class="navigation sapt-megamenu side-megamenu" role="navigation">
     <ul>
         <?php echo $_menu; ?>
     </ul>
@@ -22,9 +22,9 @@
 <script type="text/javascript">
     require([
         'jquery',
-        'Satp_Megamenu/js/satp_megamenu'
+        'Sapt_Megamenu/js/sapt_megamenu'
     ], function ($) {
-        $(".satp-megamenu").satpMegamenu();
+        $(".sapt-megamenu").saptMegamenu();
     });
 </script>
 <?php
