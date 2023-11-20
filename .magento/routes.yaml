@@ -17,12 +17,12 @@
 "http://*.{all}/":
     type: upstream
     upstream: "mymagento:http"
-
-"https://{all}/":
+"https://vn.mcstaging.laneige.com/":
   type: upstream
   upstream: "mymagento:http"
   redirects:
     "paths":
-      "/vn.mcstaging.laneige.com":
+      "/(.*)":
         "code": 301
+        regexp: true
         "to": "https://mcstaging.vn.laneige.com/"
