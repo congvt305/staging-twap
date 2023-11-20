@@ -17,7 +17,7 @@
 "http://*.{all}/":
     type: upstream
     upstream: "mymagento:http"
-"https://vn.mcstaging.laneige.com/":
+"https://mcstaging.my.sulwhasoo.com/":
   type: upstream
   upstream: "mymagento:http"
   redirects:
