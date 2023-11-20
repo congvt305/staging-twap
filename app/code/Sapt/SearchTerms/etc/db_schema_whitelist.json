@@ -1,0 +1,17 @@
+{
+    "sapt_search_query_rank": {
+        "column": {
+            "entity_id": true,
+            "query_text": true,
+            "store_id": true,
+            "rank": true,
+            "created_at": true
+        },
+        "index": {
+            "SAPT_SEARCH_QUERY_RANK_STORE_ID_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

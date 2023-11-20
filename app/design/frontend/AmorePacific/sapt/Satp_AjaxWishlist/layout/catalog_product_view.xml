@@ -4,37 +4,37 @@
     <body>
         <referenceBlock name="view.addto.wishlist">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/view/addto/wishlist.phtml
+                <argument name="template" xsi:type="string">Sapt_AjaxWishlist::catalog/product/view/addto/wishlist.phtml
                 </argument>
             </action>
             <arguments>
                 <argument
                     name="moduleStatusViewModel"
-                    xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                    xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                 </argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="related.product.addto.wishlist">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
+                <argument name="template" xsi:type="string">Sapt_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
                 </argument>
             </action>
             <arguments>
                 <argument
                     name="moduleStatusViewModel"
-                    xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                    xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                 </argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="upsell.product.addto.wishlist">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
+                <argument name="template" xsi:type="string">Sapt_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
                 </argument>
             </action>
             <arguments>
                 <argument
                     name="moduleStatusViewModel"
-                    xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                    xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                 </argument>
             </arguments>
         </referenceBlock>

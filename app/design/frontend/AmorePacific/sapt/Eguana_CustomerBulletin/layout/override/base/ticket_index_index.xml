@@ -13,7 +13,7 @@
     <update handle="customer_account"/>
     <body>
         <referenceContainer name="page.top">
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="columns.top">
             <container name="page.messages" htmlTag="div" htmlClass="page messages">
@@ -22,7 +22,7 @@
             </container>
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Satp\EguanaCustomerBulletin\Block\Index\Index" name="ticket_list" template="Eguana_CustomerBulletin::list.phtml"  cacheable="false" >
+            <block class="Sapt\EguanaCustomerBulletin\Block\Index\Index" name="ticket_list" template="Eguana_CustomerBulletin::list.phtml"  cacheable="false" >
             </block>
         </referenceContainer>
         <referenceBlock name="page.main.title" remove="true">

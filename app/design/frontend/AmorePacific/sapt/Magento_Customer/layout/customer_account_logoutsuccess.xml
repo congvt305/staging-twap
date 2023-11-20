@@ -36,7 +36,7 @@
                     <argument name="block_id" xsi:type="string">hk_sulwhasoo_logoutsuccess_favorites</argument>
                 </arguments>
             </block>
-            <block class="Satp\Event\Block\EventList" name="eventmanager.list" template="Satp_Event::list.phtml" />
+            <block class="Sapt\Event\Block\EventList" name="eventmanager.list" template="Sapt_Event::list.phtml" />
         </referenceContainer>
 
         <move element="page.main.title" destination="content" before="-"/>

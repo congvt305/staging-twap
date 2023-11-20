@@ -1,1 +1,0 @@
-# Satp Search Terms Rank 

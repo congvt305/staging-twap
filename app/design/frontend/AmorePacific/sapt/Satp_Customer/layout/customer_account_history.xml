@@ -3,7 +3,7 @@
     <update handle="customer_account"/>
     <body>
         <referenceContainer name="content">
-            <block class="Satp\Customer\Block\History" template="Magento_Catalog::product/list/items.phtml" name="customer_account_history_product" cacheable="false">
+            <block class="Sapt\Customer\Block\History" template="Magento_Catalog::product/list/items.phtml" name="customer_account_history_product" cacheable="false">
                 <arguments>
                     <argument name="type" xsi:type="string">history</argument>
                     <argument name="view_model_get_default_name" xsi:type="object">Eguana\CustomCatalog\ViewModel\GetDefaultCategory</argument>
@@ -20,13 +20,13 @@
         </referenceContainer>
         <referenceBlock name="related.product.addto.wishlist">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Satp_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
+                <argument name="template" xsi:type="string">Sapt_AjaxWishlist::catalog/product/list/addto/wishlist.phtml
                 </argument>
             </action>
             <arguments>
                 <argument
                     name="moduleStatusViewModel"
-                    xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                    xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                 </argument>
             </arguments>
         </referenceBlock>
@@ -57,7 +57,7 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
 
         <referenceBlock name="page.main.title">

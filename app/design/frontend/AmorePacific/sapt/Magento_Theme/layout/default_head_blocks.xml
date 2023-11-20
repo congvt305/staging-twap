@@ -20,6 +20,6 @@
 <!--        <remove src="Amasty_ShopbyBase::css/swiper.min.css"/>-->
     </head>
     <referenceContainer name="head.additional">
-        <block class="Satp\GeoTarget\Block\GeoTarget" name="satp_geotarget_head" template="Satp_GeoTarget::geo_target.phtml"/>
+        <block class="Sapt\GeoTarget\Block\GeoTarget" name="sapt_geotarget_head" template="Sapt_GeoTarget::geo_target.phtml"/>
     </referenceContainer>
 </page>

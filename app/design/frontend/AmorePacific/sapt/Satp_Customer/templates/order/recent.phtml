@@ -7,8 +7,8 @@
 // phpcs:disable Magento2.Templates.ThisInTemplate
 use Magento\Framework\App\Action\Action;
 
-/** @var \Satp\Customer\Block\Order\Recent $block */
-/** @var \Satp\Sales\ViewModel\Product $viewModel */
+/** @var \Sapt\Customer\Block\Order\Recent $block */
+/** @var \Sapt\Sales\ViewModel\Product $viewModel */
 
 $viewModel = $block->getData('view_model');
 ?>
@@ -72,7 +72,7 @@ $viewModel = $block->getData('view_model');
                     <?php foreach ($_orders as $_order) : ?>
                         <?php
                             $orderItems = $_order->getAllVisibleItems();
-                            $moreProduct = count($orderItems) - 1;    
+                            $moreProduct = count($orderItems) - 1;
                             $item = $block->getProduct($orderItems[0]);
                         ?>
                         <tr>
@@ -81,9 +81,9 @@ $viewModel = $block->getData('view_model');
                                     <span><?= $block->escapeHtml($block->formatOrderDate($_order->getCreatedAt())) ?></span>
                                 </a>
                                 <span class="product-thumbnail-wrapper">
-                                    <img class="product-thumbnail" 
-                                        src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($orderItems[0])) ?>" 
-                                        loading="lazy" 
+                                    <img class="product-thumbnail"
+                                        src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($orderItems[0])) ?>"
+                                        loading="lazy"
                                         alt="<?= $escaper->escapeHtml($orderItems[0]->getName()) ?>" />
                                 </span>
                             </td>

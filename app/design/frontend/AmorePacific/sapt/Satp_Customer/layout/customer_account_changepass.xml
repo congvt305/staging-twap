@@ -37,7 +37,7 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceBlock name="head.components">
             <block class="Magento\Framework\View\Element\Js\Components" name="customer_account_edit_head_components" template="Magento_Customer::js/components.phtml"/>
@@ -48,7 +48,7 @@
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Customer\Block\Form\Edit" name="customer_edit" template="Satp_Customer::form/changepass.phtml" cacheable="false">
+            <block class="Magento\Customer\Block\Form\Edit" name="customer_edit" template="Sapt_Customer::form/changepass.phtml" cacheable="false">
                 <container name="form.additional.info" as="form_additional_info"/>
             </block>
         </referenceContainer>
