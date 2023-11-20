@@ -31,7 +31,7 @@
                 </container>
             </container>
             <block class="Magento\Framework\View\Element\Template" name="popup.cookie"
-                   template="Magento_Theme::html/popup_cookie.phtml" ifconfig="satp_general/main_popup/enabled"/>
+                   template="Magento_Theme::html/popup_cookie.phtml" ifconfig="sapt_general/main_popup/enabled"/>
             <!-- <block class="Magento\Framework\View\Element\Template" name="policy.cookie" template="Magento_Theme::html/popup_cookie_policy.phtml"/> -->
         </referenceContainer>
         <referenceContainer name="footer">
