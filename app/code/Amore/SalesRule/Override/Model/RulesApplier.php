@@ -5,15 +5,10 @@ namespace Amore\SalesRule\Override\Model;
 use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
 use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
 use Magento\SalesRule\Model\Quote\ChildrenValidationLocator;
-use Magento\SalesRule\Model\Rule;
 use Magento\SalesRule\Model\Rule\Action\Discount\DataFactory;
 use Magento\SalesRule\Model\Rule\Action\Discount\CalculatorFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Quote\Model\Quote\Address;
 use Magento\Quote\Model\Quote\Item\AbstractItem;
-use Magento\SalesRule\Model\Data\RuleDiscount;
-use Magento\Framework\App\ObjectManager;
-use Magento\SalesRule\Model\Rule\Action\Discount\Data;
 /**
  * Override Rule applier model
  */
@@ -42,16 +37,6 @@ class RulesApplier extends \Magento\SalesRule\Model\RulesApplier
         DiscountDataInterfaceFactory $discountDataInterfaceFactory = null)
     {
         $this->storeManager = $storeManager;
-        $this->calculatorFactory = $calculatorFactory;
-        $this->validatorUtility = $utility;
-        $this->_eventManager = $eventManager;
-        $this->childrenValidationLocator = $childrenValidationLocator
-            ?: ObjectManager::getInstance()->get(ChildrenValidationLocator::class);
-        $this->discountFactory = $discountDataFactory ?: ObjectManager::getInstance()->get(DataFactory::class);
-        $this->discountInterfaceFactory = $discountInterfaceFactory
-            ?: ObjectManager::getInstance()->get(RuleDiscountInterfaceFactory::class);
-        $this->discountDataInterfaceFactory = $discountDataInterfaceFactory
-            ?: ObjectManager::getInstance()->get(DiscountDataInterfaceFactory::class);
         parent::__construct($calculatorFactory, $eventManager, $utility, $childrenValidationLocator, $discountDataFactory, $discountInterfaceFactory, $discountDataInterfaceFactory);
     }
 
