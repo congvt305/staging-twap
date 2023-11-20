@@ -744,6 +744,7 @@ return [
         'Magento_GiftCardGraphQl' => 1,
         'Adyen_Payment' => 0,
         'Amasty_Acart' => 1,
+        'CJ_AmastyAcart' => 1,
         'Amasty_AdvancedReview' => 1,
         'Amasty_AdvancedReviewGraphQl' => 1,
         'Amasty_BannersLite' => 1,
