@@ -1,0 +1,28 @@
+<div class="modal-body">
+    <div class="bootbox-body">
+        <h2>Body</h2>
+        <p>
+            <%- message %>
+        </p>
+        <br/><br/>
+        <h2>History</h2>
+        <% _.each(logs, function(value){ console.log(value);%>
+        <h3><%- value.logged_at %></h3>
+        <p class="clickable" id="error-title-<%- value.operation_id %>"
+           onclick="toggleVisibility(<%- value.operation_id %>);">
+            <%- value.error_title %>
+        </p>
+        <p class="clickable" id="error-body-<%- value.operation_id %>" style="display: none;"
+           onclick="toggleVisibility(<%- value.operation_id %>);">
+            <%- value.result_message %>
+        </p>
+        <% }); %>
+    </div>
+</div>
+
+<script>
+    function toggleVisibility(id) {
+        jQuery('#error-title-' + id).toggle();
+        jQuery('#error-body-' + id).toggle();
+    }
+</script>

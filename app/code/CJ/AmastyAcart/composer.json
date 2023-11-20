@@ -1,0 +1,21 @@
+{
+  "name": "cj/module-amasty-acart",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "amasty/amcart": "1.16.*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "CJ\\AmastyAcart\\": ""
+    }
+  }
+}
