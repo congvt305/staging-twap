@@ -1,0 +1,103 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+use Magento\Framework\App\Action\Action;
+/** @var $block \Magento\Bundle\Block\Sales\Order\Items\Renderer */
+$parentItem = $block->getItem();
+$_order = $parentItem->getOrder();
+$shippingMethod = $parentItem->getOrder()->getShippingDescription();
+$shippingMethod = str_replace('In-Store Pickup Delivery','店鋪自取',$shippingMethod);
+$product = $parentItem->getProduct();
+$viewModel = $block->getData('view_model');
+$items = $parentItem->getChildrenItems();
+$index = 1;
+$prevOptionId = '';
+/** @var \Magento\Framework\Pricing\Helper\Data $priceHelper */
+$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+$layoutHander = $block->getRequest()->getFullActionName();
+if ($layoutHander == "sales_order_history") {
+    $orderItems = $_order->getAllVisibleItems();
+    $productItemsCount = 0;
+    foreach($orderItems as $orderItem) {
+        if ($orderItem->getRowTotal() == $orderItem->getDiscountAmount()) {
+            continue;
+        }
+        $productItemsCount++;
+    }
+    $orderGrandTotal = $_order->getGrandTotal();
+}
+?>
+<?php if($product): ?>
+<tr id="order-item-row-<?= (int) $parentItem->getId() ?>" class="item-info">
+    <td class="col item" data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
+        <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"
+           title="<?= $block->escapeHtmlAttr($block->getProductName()) ?>"
+           tabindex="-1"
+           class="product-item-photo">
+            <?= $viewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?>
+        </a>
+        <div class="product-item-details">
+            <div class="shipping">
+                <span class="in-delivery"><?= $escaper->escapeHtml(__($_order->getStatusLabel())) ?></span>
+                <span class="method"><?= $escaper->escapeHtml(__($shippingMethod)) ?></span>
+            </div>
+            <strong class="product-item-name">
+                <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
+            </strong>
+            <?php if($layoutHander == 'sales_order_history'): ?>
+                <?php if ($productItemsCount > 1): ?>
+                    <div class="total-items"><?= __("Total %1 items", $productItemsCount) ?></div>
+                <?php endif; ?>
+                <div class="order-grandtotal">
+                    <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
+                    <?= $priceHelper->currency($orderGrandTotal) ?>
+                </div>
+            <?php else: ?>
+                <div class="product-price">
+                    <?= $priceHelper->currency($parentItem->getRowTotal()) ?> <span class="product-qty-ordered"><?= __(' / ') ?> <?= __("QTY %1", (int)$parentItem->getQtyOrdered()) ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="bundle-detail-cart">
+            <button class="bundle-button-toggle" type="button">
+                <span><?= $block->escapeHtml(__('SET GOODS')) ?> (<span class="count"><?= count($items); ?></span>)</span>
+            </button>
+            <dl class="item-options">
+                <?php foreach ($items as $item) : ?>
+                    <?php $attributes = $block->getSelectionAttributes($item) ?>
+                    <dd><?= __($block->getValueHtml($item)); ?></dd>
+                    <?php $index++ ?>
+                <?php endforeach; ?>
+            </dl>
+        </div>
+    </td>
+    <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
+        <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
+            <a href="#" class="btn secondary review" data-order-item-id="<?= $parentItem->getId() ?>"><?= __('Review') ?></a>
+            <?php $postParams = $viewModel->getPostData($product, $block); ?>
+            <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($product->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                <?php $optionsData = $viewModel->getOptionsData($product); ?>
+                <?php foreach ($optionsData as $optionItem): ?>
+                    <input type="hidden"
+                           name="<?= $block->escapeHtml($optionItem['name']) ?>"
+                           value="<?= $block->escapeHtml($optionItem['value']) ?>">
+                <?php endforeach; ?>
+                <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                <?= $block->getBlockHtml('formkey') ?>
+                <button type="submit"
+                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                        class="action tocart primary">
+                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                </button>
+            </form>
+            <?= /* @noEscape */ $viewModel->getAddReviewForm($parentItem, $block) ?>
+        <?php endif; ?>
+    </td>
+</tr>
+<?php else: ?>
+    <span><?= __("This product doesn't exist.") ?></span>
+<?php endif; ?>

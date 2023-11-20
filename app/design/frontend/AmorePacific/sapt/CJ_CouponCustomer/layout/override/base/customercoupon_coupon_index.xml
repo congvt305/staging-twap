@@ -28,17 +28,17 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="content">
             <block class="CJ\CouponCustomer\Block\Coupon\Index" name="ticket_list" template="CJ_CouponCustomer::coupon.phtml" cacheable="false"/>
-            <block class="Amore\PointsIntegration\Block\Points\Index" name="customer.content.membership" template="Satp_Customer::coupon/membership.phtml" after="ticket_list"/>
-            <block class="Magento\Framework\View\Element\Template" name="customer.point.history" template="Satp_Customer::coupon/point-history.phtml" after="customer.content.membership">
+            <block class="Amore\PointsIntegration\Block\Points\Index" name="customer.content.membership" template="Sapt_Customer::coupon/membership.phtml" after="ticket_list"/>
+            <block class="Magento\Framework\View\Element\Template" name="customer.point.history" template="Sapt_Customer::coupon/point-history.phtml" after="customer.content.membership">
                 <arguments>
                     <argument name="history_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\HistoryAjax</argument>
                 </arguments>
             </block>
-            <block class="Magento\Framework\View\Element\Template" name="customer.redemption.history" template="Satp_Customer::coupon/redemption-history.phtml" after="customer.point.history">
+            <block class="Magento\Framework\View\Element\Template" name="customer.redemption.history" template="Sapt_Customer::coupon/redemption-history.phtml" after="customer.point.history">
                 <arguments>
                     <argument name="redeem_view_model" xsi:type="object">Amore\PointsIntegration\ViewModel\Points\RedeemAjax</argument>
                 </arguments>

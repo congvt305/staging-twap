@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Block\Order\History">
+        <plugin name="Sapt_Sales::getOrders"
+                type="Sapt\Sales\Plugin\Block\Order\History"
+                sortOrder="1"/>
+    </type>
+
+    <preference for="Magento\Rma\Block\Returns\History" type="Sapt\Sales\Block\Returns\History" />
+
+<!--    <type name="Magento\Sales\Block\Order\Totals">-->
+<!--        <plugin name="Sapt_Sales::addPointTotal"-->
+<!--                type="Sapt\Sales\Plugin\Block\Order\Totals"-->
+<!--                sortOrder="1"/>-->
+<!--    </type>-->
+</config>

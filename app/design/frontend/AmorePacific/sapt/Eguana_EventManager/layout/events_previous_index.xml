@@ -20,7 +20,7 @@
                     <argument name="block_id" xsi:type="string">hk_sulhwasoo_banner_event_list_page</argument>
                 </arguments>
             </block>
-            <block class="Satp\CommonSatp\Block\ListBlock" name="eventmanager.list.previous" template="Eguana_EventManager::list_previous.phtml">
+            <block class="Sapt\CommonSapt\Block\ListBlock" name="eventmanager.list.previous" template="Eguana_EventManager::list_previous.phtml">
                 <arguments>
                     <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
                 </arguments>

@@ -34,7 +34,7 @@
                     </argument>
                 </action>
             </referenceBlock>
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
 
         <referenceBlock name="page.main.title">
@@ -44,12 +44,12 @@
         </referenceBlock>
 
         <referenceContainer name="content">
-            <block class="Satp\Sales\Block\Returns\SearchHistory" name="rma.order.history.search" template="Satp_Sales::return/history/search.phtml" before="rma.returns.history"/>
+            <block class="Sapt\Sales\Block\Returns\SearchHistory" name="rma.order.history.search" template="Sapt_Sales::return/history/search.phtml" before="rma.returns.history"/>
         </referenceContainer>
 
         <referenceBlock name="rma.returns.history">
             <arguments>
-                <argument name="order_item_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="order_item_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
 

@@ -1,1 +1,0 @@
-# Satp Catalog Search extensions

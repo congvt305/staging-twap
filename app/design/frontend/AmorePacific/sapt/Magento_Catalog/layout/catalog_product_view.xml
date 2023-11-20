@@ -113,11 +113,11 @@
                 </arguments>
             </block>
             <block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="view.addto.wishlist.sticky"
-                   template="Satp_AjaxWishlist::catalog/product/view/addto/wishlist.phtml">
+                   template="Sapt_AjaxWishlist::catalog/product/view/addto/wishlist.phtml">
                 <arguments>
                     <argument
                         name="moduleStatusViewModel"
-                        xsi:type="object">Satp\AjaxWishlist\ViewModel\AjaxWishlistStatus
+                        xsi:type="object">Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus
                     </argument>
                 </arguments>
             </block>
@@ -321,12 +321,12 @@
                     </arguments>
                 </block>
             </block>
-            <block class="Satp\Catalog\Block\Freebies"
+            <block class="Sapt\Catalog\Block\Freebies"
                    name="product.info.freebies" as="freebies"
                    template="Magento_Catalog::product/view/freebies.phtml" after="-"/>
-            <block class="Satp\Review\Block\Product\OneLine"
+            <block class="Sapt\Review\Block\Product\OneLine"
                    name="product.review.oneline" as="one.line.review"
-                   template="Satp_Review::product/oneline.phtml"
+                   template="Sapt_Review::product/oneline.phtml"
                    ifconfig="catalog/review/active" after="-"/>
         </referenceContainer>
 

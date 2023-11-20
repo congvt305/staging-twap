@@ -8,7 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="page.top">
-            <block class="Satp\Customer\Block\Membership" name="customer.membership" template="Satp_Customer::membership.phtml" after="breadcrumbs"/>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
@@ -71,17 +71,17 @@
         <referenceBlock name="sales.order.info.links" remove="true"/>
         <referenceBlock name="sales.order.items.renderers.default">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.items.renderers.bundle">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
         <referenceBlock name="sales.order.items.renderers.grouped">
             <arguments>
-                <argument name="view_model" xsi:type="object">Satp\Sales\ViewModel\Product</argument>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
     </body>
