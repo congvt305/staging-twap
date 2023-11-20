@@ -488,12 +488,12 @@ class SaveSuccess implements ObserverInterface
         }
     }
 
-    private function getRegionObject($regionName)
+    private function getRegionObject($regionId)
     {
         /** @var \Magento\Directory\Model\Region $region */
         $region = $this->regionFactory->create();
         try {
-            $this->regionResourceModel->load($region, $regionName, 'default_name');
+            $this->regionResourceModel->load($region, $regionId, 'region_id');
         } catch (\Exception $e) {
             $this->logger->addAPILog($e->getMessage());
         }
