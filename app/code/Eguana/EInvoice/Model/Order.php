@@ -10,33 +10,12 @@
 
 namespace Eguana\EInvoice\Model;
 
-use Magento\Framework\Api\FilterBuilder;
-use Magento\Framework\Api\Search\FilterGroupBuilder;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Sales\Api\Data\OrderSearchResultInterface;
-use Magento\Sales\Api\OrderRepositoryInterface;
 use Eguana\EInvoice\Model\Source\Config;
 
 class Order
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-    /**
-     * @var FilterBuilder
-     */
-    private $filterBuilder;
-    /**
-     * @var FilterGroupBuilder
-     */
-    private $filterGroupBuilder;
-
     /**
      * @var DateTime
      */
@@ -48,75 +27,46 @@ class Order
     private $config;
 
     /**
-     * Order constructor.
-     * @param OrderRepositoryInterface $orderRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param FilterBuilder $filterBuilder
-     * @param FilterGroupBuilder $filterGroupBuilder
+     * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
+     */
+    private $orderCollectionFactory;
+
+    /**
      * @param DateTime $dateTime
      * @param Config $config
+     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
         DateTime $dateTime,
-        Config $config
+        Config $config,
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
         $this->dateTime = $dateTime;
         $this->config = $config;
+        $this->orderCollectionFactory = $orderCollectionFactory;
     }
 
     /**
+     * Get complete order to check whether if the order has einvoice or not
+     *
      * @param $storeId
      * @return OrderSearchResultInterface
      */
     public function getCompletedOrders($storeId)
     {
-        $storeFilter = $this->filterBuilder->setField('store_id')
-            ->setValue($storeId)
-            ->setConditionType('eq')
-            ->create();
-        $andFilter = $this->filterGroupBuilder
-            ->addFilter($storeFilter)
-            ->create();
         $daysLimit = $this->config->getDaysLimit($storeId);
         $dateFrom = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -'.$daysLimit.'days'));
-        $dateLimitFilter = $this->filterBuilder->setField('created_at')
-            ->setValue($dateFrom)
-            ->setConditionType('gteq')
-            ->create();
-        $andFilter2 = $this->filterGroupBuilder
-            ->addFilter($dateLimitFilter)
-            ->create();
 
-        $statusFilterShipmentProcessing = $this->filterBuilder->setField('status')
-            ->setValue('shipment_processing')
-            ->setConditionType('eq')
-            ->create();
-        $statusFilterComplete = $this->filterBuilder->setField('status')
-            ->setValue('complete')
-            ->setConditionType('eq')
-            ->create();
-        $statusFilterDeliveryComplete = $this->filterBuilder->setField('status')
-            ->setValue('delivery_complete')
-            ->setConditionType('eq')
-            ->create();
-        $orFilter = $this->filterGroupBuilder
-            ->addFilter($statusFilterShipmentProcessing)
-            ->addFilter($statusFilterComplete)
-            ->addFilter($statusFilterDeliveryComplete)
-            ->create();
-
-        $this->searchCriteriaBuilder->setFilterGroups([$andFilter, $andFilter2, $orFilter]);
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-
-        return $this->orderRepository->getList($searchCriteria);
+        $collection = $this->orderCollectionFactory->create();
+        $collection->addFieldToFilter('store_id', $storeId)
+            ->addFieldToFilter('created_at', ['gteq' => $dateFrom])
+            ->addFieldToFilter('status', ['in' => ['shipment_processing', 'complete', 'delivery_complete']])
+            ->join(
+                ['sop' => 'sales_order_payment'],
+                'main_table.entity_id = sop.parent_id',
+                ['additional_data', 'amount_paid']
+            );
+        return $collection;
     }
 
     /**
@@ -129,11 +79,10 @@ class Order
 
         $notIssuedOrderList = [];
         foreach ($orderList->getItems() as $order) {
-            $payment = $order->getPayment();
-            if (!$payment->getAmountPaid()) {
+            if (!$order->getAmountPaid()) {
                 continue;
             }
-            $eInvoiceData = json_decode($payment->getAdditionalData()??'', true);
+            $eInvoiceData = json_decode($order->getAdditionalData()??'', true);
 
             if (empty($eInvoiceData) || (isset($eInvoiceData["RtnCode"]) && $eInvoiceData["RtnCode"] != 1)) {
                 $notIssuedOrderList[] = $order;
