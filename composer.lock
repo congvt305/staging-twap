@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e30db2cfc929099fb64ff355e16b479c",
+    "content-hash": "f16addd6a4e2c67edbd4f1ecf3f2fb4f",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -469,13 +469,13 @@
         },
         {
             "name": "amasty/feed",
-            "version": "2.8.1",
+            "version": "2.7.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/feed-2.8.1.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/feed-2.7.0.zip"
             },
             "require": {
-                "amasty/base": ">=1.14.7",
+                "amasty/base": ">=1.13.6",
                 "amasty/cron-schedule-list": ">=1.0.1",
                 "php": ">=7.3"
             },
@@ -489,7 +489,7 @@
                 }
             },
             "license": [
-                "proprietary"
+                "Commercial"
             ],
             "description": "Product Feed by Amasty"
         },
