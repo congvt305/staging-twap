@@ -40,7 +40,7 @@
         "amasty/coupons": "2.1.1",
         "amasty/cron-schedule-list": ">=1.0.5",
         "amasty/custom_product_sorting": "^1.1",
-        "amasty/feed": "^2.7.0",
+        "amasty/feed": "2.7.0",
         "amasty/groupcat": "^1.9",
         "amasty/html-sitemap": "^1.3",
         "amasty/meta": "^1.3",
