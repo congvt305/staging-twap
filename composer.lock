@@ -1217,13 +1217,13 @@
         },
         {
             "name": "amasty/module-page-speed-tools",
-            "version": "2.0.2",
+            "version": "1.0.8",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-tools-2.0.2.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-page-speed-tools-1.0.8.zip"
             },
             "require": {
-                "amasty/base": ">=1.14.7",
+                "amasty/base": ">=1.13.6",
                 "php": ">=7.3"
             },
             "type": "magento2-module",
@@ -1236,7 +1236,7 @@
                 }
             },
             "license": [
-                "proprietary"
+                "Commercial"
             ],
             "description": "Google Page Speed Tools by Amasty"
         },
