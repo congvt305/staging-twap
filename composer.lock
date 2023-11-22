@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78594042849b46ae5bffb7dd69d3e95c",
+    "content-hash": "ebd42e0ca03158472d6854ea6dfc4d95",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -417,15 +417,15 @@
         },
         {
             "name": "amasty/custom_product_sorting",
-            "version": "1.1.3",
+            "version": "1.1.2",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/custom_product_sorting-1.1.3.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/custom_product_sorting-1.1.2.zip"
             },
             "require": {
-                "amasty/base": ">=1.14.7",
-                "amasty/module-shop-by-brand": ">=2.16.0",
-                "amasty/visual-merch-ui": ">=1.0.13",
+                "amasty/base": ">=1.14.6",
+                "amasty/module-shop-by-brand": ">=2.13.2",
+                "amasty/visual-merch-ui": ">=1.0.10",
                 "php": ">=7.3.0"
             },
             "type": "magento2-module",
@@ -1354,10 +1354,10 @@
         },
         {
             "name": "amasty/module-shop-by-base",
-            "version": "2.16.8",
+            "version": "2.16.7",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-base-2.16.8.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-base-2.16.7.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -1383,10 +1383,10 @@
         },
         {
             "name": "amasty/module-shop-by-brand",
-            "version": "2.16.0",
+            "version": "2.15.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-brand-2.16.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-shop-by-brand-2.15.0.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
