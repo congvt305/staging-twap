@@ -814,7 +814,7 @@ return [
         'Eguana_Base' => 1,
         'CJ_Middleware' => 1,
         'Eguana_StoreSms' => 1,
-        'Amore_CustomerRegistration' => 0,
+        'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
         'Amore_PointsIntegration' => 1,
         'Amore_Sales' => 1,
