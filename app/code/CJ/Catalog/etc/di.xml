@@ -3,4 +3,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\CatalogSearch\Model\Layer\Filter\Price"
                 type="CJ\Catalog\Rewrite\Model\Layer\Filter\Price" />
+    <preference for="Magento\Catalog\Block\Category\View"
+                type="CJ\Catalog\Block\Category\View" />
 </config>

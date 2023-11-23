@@ -147,7 +147,7 @@ class ValidateLoggedInCustomer implements ObserverInterface
                     ])
                 );
             } else {
-                $controller->getResponse()->setRedirect($redirectionUrl)->sendResponse();
+                $controller->getResponse()->setRedirect($redirectionUrl)->setHttpResponseCode(301)->sendResponse();
             }
         }
         return $this;
