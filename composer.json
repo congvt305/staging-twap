@@ -38,6 +38,7 @@
         "amasty/feed": "^2.7.0",
         "amasty/module-advanced-conditions": ">=1.5.3",
         "amasty/module-banners-lite": ">=1.0.19",
+        "amasty/module-facebook-pixel-pro-package": "^1.0",
         "amasty/module-one-step-checkout-premium-package": "^2.0",
         "amasty/module-page-speed-optimizer": "^2.2",
         "amasty/module-salesrulewizard": ">=1.0.3",
