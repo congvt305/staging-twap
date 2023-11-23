@@ -13,10 +13,9 @@
      'Magento_Checkout/js/model/shipping-address/form-popup-state',
      'Magento_Checkout/js/checkout-data',
      'Magento_Customer/js/customer-data',
-     'CJ_SFLocker/js/view/home-delivery-selector',
      'mage/translate',
      'Magento_Customer/js/model/customer'
- ], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData, homeDeliverySelector, $t, customer) {
+ ], function ($, ko, Component, _, selectShippingAddressAction, quote, formPopUpState, checkoutData, customerData, $t, customer) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
