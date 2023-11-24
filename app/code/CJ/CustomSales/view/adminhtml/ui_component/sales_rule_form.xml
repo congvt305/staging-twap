@@ -421,6 +421,10 @@
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
                                     <callback>show</callback>
                                 </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
+                                    <callback>show</callback>
+                                </action>
                             </actions>
                         </rule>
                         <rule name="1">
@@ -428,6 +432,10 @@
                             <actions>
                                 <action name="0">
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
                             </actions>
@@ -439,6 +447,10 @@
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
                             </actions>
                         </rule>
                         <rule name="3">
@@ -446,6 +458,10 @@
                             <actions>
                                 <action name="0">
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
                             </actions>
@@ -457,6 +473,10 @@
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
                             </actions>
                         </rule>
                         <rule name="5">
@@ -464,6 +484,10 @@
                             <actions>
                                 <action name="0">
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
                             </actions>
@@ -475,6 +499,10 @@
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
                             </actions>
                         </rule>
                         <rule name="7">
@@ -484,6 +512,10 @@
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
                             </actions>
                         </rule>
                         <rule name="8">
@@ -491,6 +523,10 @@
                             <actions>
                                 <action name="0">
                                     <target>sales_rule_form.sales_rule_form.actions.enable_exclude_skus</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>sales_rule_form.sales_rule_form.actions.exclude_skus</target>
                                     <callback>hide</callback>
                                 </action>
                             </actions>
