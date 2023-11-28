@@ -13,5 +13,11 @@
                           xsi:type="object">Eguana\CustomCatalog\ViewModel\GetDefaultCategory</argument>
             </arguments>
         </referenceBlock>
+        <referenceContainer name="checkout.cart.form.before">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="checkout.cart.additional"
+                   before="-"
+                   template="CJ_Checkout::cart/additional_information.phtml"/>
+        </referenceContainer>
     </body>
 </page>
