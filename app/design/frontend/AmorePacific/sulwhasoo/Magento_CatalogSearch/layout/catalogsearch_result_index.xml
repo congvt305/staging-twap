@@ -13,8 +13,5 @@
             </action>
         </referenceBlock>
         <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>
-        <referenceContainer name="content">
-            <block class="Magento\Catalog\Block\Category\View" name="category.bottom" template="CJ_CatalogProduct::catalog/category/view/bottom.phtml" after="-"/>
-        </referenceContainer>
     </body>
 </page>
