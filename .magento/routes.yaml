@@ -26,4 +26,4 @@
       "/(.*)?":
         "code": 301
         regexp: true
-        "to": "https://mcstaging.vn.laneige.com/"
+        "to": "https://mcstaging.vn.laneige.com/$1"
