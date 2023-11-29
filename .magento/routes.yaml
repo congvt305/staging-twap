@@ -18,7 +18,7 @@
     type: upstream
     upstream: "mymagento:http"
 
-"http://mcprod.tw.laneige.com/":
+"http://mcstaging.my.sulwhasoo.com/":
   type: upstream
   upstream: "mymagento:http"
   redirects:
@@ -26,4 +26,4 @@
       "/(.*)?":
         "code": 301
         regexp: true
-        "to": "https://tw.laneige.com/$1"
+        "to": "https://mcstaging.vn.laneige.com/$1"
