@@ -70,5 +70,6 @@
                 </argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="page.main.title" display="false"/>
     </body>
 </page>
