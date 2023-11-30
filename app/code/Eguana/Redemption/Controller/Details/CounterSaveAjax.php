@@ -186,8 +186,8 @@ class CounterSaveAjax extends Action
 
                 if ($this->storeManager->getStore()->getCode() == 'my_laneige'){
                     $isMember = true;
-                    $customer = $this->getCustomerByEmailorPhone($post['email'], $post['phone']);
-                    if ($customer->getData('store_id') != $storeId) {
+                    $customer = $this->getCustomerByEmailorPhone($post['email'], $post['phone'], $storeId);
+                    if (empty($customer->getData())) {
                         $isMember = false;
                     }
                     $model->setData('is_member', $isMember);
@@ -346,9 +346,10 @@ class CounterSaveAjax extends Action
     /**
      * @param $email
      * @param $telephone
+     * @param $storeId
      * @return mixed
      */
-    public function getCustomerByEmailorPhone($email, $telephone)
+    public function getCustomerByEmailorPhone($email, $telephone, $storeId)
     {
         $customer = $this->customerFactory->create()
             ->getCollection()
@@ -358,6 +359,7 @@ class CounterSaveAjax extends Action
                     ['attribute' => 'mobile_number', 'eq' => $telephone],
                 ]
             )
+            ->addAttributeToFilter('store_id', $storeId)
             ->getFirstItem();
         return $customer;
 
