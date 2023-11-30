@@ -21,7 +21,8 @@
   type: upstream
   upstream: "mymagento:http"
   redirects:
-    "/(.*)?":
-      "code": 301
-      regexp: true
-      "to": "https://tw.laneige.com/$1"
+    paths:
+      "/(.*)?":
+        "code": 301
+        "regexp": true
+        "to": "https://tw.laneige.com/$1"
