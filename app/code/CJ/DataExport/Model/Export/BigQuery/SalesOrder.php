@@ -51,6 +51,11 @@ class SalesOrder extends \Amore\GcrmDataExport\Model\Export\Order\SalesOrder
     private $orderColFactory;
 
     /**
+     * @var ExportCollection
+     */
+    private $ExportCollectionFactory;
+
+    /**
      * @param ExportCollection $ExportCollectionFactory
      * @param OrderRepositoryInterface $orderRepository
      * @param \Amore\GcrmDataExport\Model\Export\Order\AttributeCollectionProvider $attributeCollectionProvider
@@ -88,6 +93,7 @@ class SalesOrder extends \Amore\GcrmDataExport\Model\Export\Order\SalesOrder
     ) {
         $this->orderColFactory = $orderColFactory;
         $this->cjExportConfig = $cjExportConfig;
+        $this->ExportCollectionFactory = $ExportCollectionFactory;
         parent::__construct(
             $ExportCollectionFactory,
             $orderRepository,
@@ -120,9 +126,15 @@ class SalesOrder extends \Amore\GcrmDataExport\Model\Export\Order\SalesOrder
                 $storeEnable[] = $store->getId();
             }
         }
-        /** @var Collection $collection */
+        $customExportData = $this->ExportCollectionFactory->create()
+            ->addFieldToFilter('entity_code', ['eq' => 'bigquery_order'])->getFirstItem();
+        $exportDate = $customExportData->getData('updated_at');
         $collection = $this->orderColFactory->create();
         $collection->getSelect()->reset(Select::COLUMNS)->columns(self::HEAD_COLUMNS_NAME);
+        if ($exportDate != "NULL") {
+            $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+        }
+
         $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
         return $collection;
     }
