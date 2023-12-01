@@ -14,7 +14,9 @@ use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\ImportExport\Model\Export\Factory;
 use Magento\ImportExport\Model\ResourceModel\CollectionByPagesIteratorFactory;
+use Magento\Sales\Model\ResourceModel\Order\Collection as OrderCollection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
+use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
 use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -30,6 +32,31 @@ class SaleOrderItems extends \Amore\GcrmDataExport\Model\Export\OrderItems\Order
      * @var CJConfig
      */
     private $cjExportConfig;
+
+    /**
+     * @var ExportCollection
+     */
+    private $exportCollectionFactory;
+
+    /**
+     * @var OrderCollectionFactory
+     */
+    private $orderCollectionFactory;
+
+    /**
+     * @var ConfigHeler
+     */
+    private $configHelper;
+
+    /**
+     * @var DataPersistorInterface
+     */
+    private $dataPersistor;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param ExportCollection $exportCollectionFactory
@@ -69,8 +96,13 @@ class SaleOrderItems extends \Amore\GcrmDataExport\Model\Export\OrderItems\Order
         CJConfig $cjExportConfig,
         array $data = []
     ) {
+        $this->exportCollectionFactory = $exportCollectionFactory;
+        $this->configHelper = $configHelper;
+        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->dataPersistor = $dataPersistor;
         $this->orderItemsColFactory = $orderItemsColFactory;
         $this->cjExportConfig = $cjExportConfig;
+        $this->logger = $logger;
         parent::__construct(
             $exportCollectionFactory,
             $attributeCollectionProvider,
@@ -108,15 +140,48 @@ class SaleOrderItems extends \Amore\GcrmDataExport\Model\Export\OrderItems\Order
      */
     public function joinedItemCollection()
     {
-        $storeEnable = [];
-        foreach ($this->_storeManager->getStores() as $store) {
-            if ($this->cjExportConfig->getModuleEnableDataMarketing($store->getId())) {
-                $storeEnable[] = $store->getId();
+        try {
+            $storeEnable = [];
+            foreach ($this->_storeManager->getStores() as $store) {
+                if ($this->cjExportConfig->getModuleEnableDataMarketing($store->getId())) {
+                    $storeEnable[] = $store->getId();
+                }
             }
-        }
+            $customExportData = $this->exportCollectionFactory->create()
+                ->addFieldToFilter('entity_code', ['eq' => 'bigquery_sales_order_item'])->getFirstItem();
+            $exportDate = $customExportData->getData('updated_at');
 
-        $collection = $this->orderItemsColFactory->create();
-        $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
-        return $collection->getData();
+            $saleOrderItemsLimit = $this->configHelper->getOrderItemsLimit();
+            $collection = $this->orderCollectionFactory->create();
+            $collection->addFieldToFilter('store_id', ['in' => $storeEnable]);
+            if ($saleOrderItemsLimit) {
+                if ($exportDate != "NULL") {
+                    $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+                    $collection->setOrder('updated_at', 'ASC');
+                }
+                $collection->getSelect()->limit($saleOrderItemsLimit);
+                $i = 1;
+                $size = count($collection);
+                /** @var OrderCollection $order */
+                foreach ($collection as $order) {
+                    /** @var Collection $items */
+                    foreach ($order->getAllItems() as $items) {
+                        $orderItems[] = $items->getData();
+                    }
+                    if ($i == $size && $size == $saleOrderItemsLimit) {
+                        $this->dataPersistor->set('lastOrder', $order->getUpdatedAt());
+                    }
+                    $i++;
+                }
+            } else {
+                if ($exportDate != "NULL") {
+                    $collection->addFieldToFilter('updated_at', ['gteq' => $exportDate]);
+                }
+                $orderItems = $collection->getData();
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        return $orderItems;
     }
 }
