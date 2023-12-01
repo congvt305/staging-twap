@@ -96,21 +96,21 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
         $address = $item->getAddress();
         $quote = $item->getQuote();
         $shippingMethod = $address->getShippingMethod();
-        $isAppliedToShipping = (int) $rule->getApplyToShipping();
-        $ruleDiscount = (float) $rule->getDiscountAmount();
+        $isAppliedToShipping = (int)$rule->getApplyToShipping();
+        $ruleDiscount = (float)$rule->getDiscountAmount();
 
         $isMultiShipping = $this->cartFixedDiscountHelper->checkMultiShippingQuote($quote);
         $itemPrice = $this->validator->getItemPrice($item);
         $baseItemPrice = $this->validator->getItemBasePrice($item);
         $itemOriginalPrice = $this->validator->getItemOriginalPrice($item);
         $baseItemOriginalPrice = $this->validator->getItemBaseOriginalPrice($item);
-        $baseItemDiscountAmount = (float) $item->getBaseDiscountAmount();
+        $baseItemDiscountAmount = (float)$item->getBaseDiscountAmount();
 
         $cartRules = $quote->getCartFixedRules();
         if (!isset($cartRules[$rule->getId()])) {
             $cartRules[$rule->getId()] = $rule->getDiscountAmount();
         }
-        $availableDiscountAmount = (float) $cartRules[$rule->getId()];
+        $availableDiscountAmount = (float)$cartRules[$rule->getId()];
         $discountType = self::$discountType . $rule->getId();
 
         if ($availableDiscountAmount > 0) {
@@ -128,8 +128,8 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                 return $discountData;
             }
             $shippingPrice = $this->cartFixedDiscountHelper->applyDiscountOnPricesIncludedTax()
-                ? (float) $address->getShippingInclTax()
-                : (float) $address->getShippingExclTax();
+                ? (float)$address->getShippingInclTax()
+                : (float)$address->getShippingExclTax();
             $baseRuleTotals = $shippingMethod ?
                 $this->cartFixedDiscountHelper
                     ->getBaseRuleTotals(
@@ -189,7 +189,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             if ($isAppliedToShipping &&
                 $isMultiShipping &&
                 $ruleTotals['items_count'] <= 1) {
-                $estimatedShippingAmount = (float) $address->getBaseShippingInclTax();
+                $estimatedShippingAmount = (float)$address->getBaseShippingInclTax();
                 $shippingDiscountAmount = $this->cartFixedDiscountHelper->
                 getShippingDiscountAmount(
                     $rule,
@@ -207,7 +207,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
             }
 
             //Customize here to fix the diffirent discount for last item (do not equal with discount amount)
-            if ($cartRules[$rule->getId()] < 0.0 || ($cartRules[$rule->getId()] <= 0.1 && $cartRules[$rule->getId()] > 0.0 )) {
+            if ($cartRules[$rule->getId()] < 0.0 || ($cartRules[$rule->getId()] <= 0.1 && $cartRules[$rule->getId()] > 0.0)) {
                 $baseDiscountAmount += $cartRules[$rule->getId()];
                 $discountAmount += $cartRules[$rule->getId()];
                 $cartRules[$rule->getId()] = 0;
@@ -215,9 +215,19 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
             if ($rule->getData("enable_exclude_skus")) {
                 $excludeSkus = $this->helper->getExcludeSkusOfRule($rule);
-                if (in_array($item->getProduct()->getSku(), $excludeSkus)) {
-                    $baseDiscountAmount = $discountAmount = 0.0;
+
+                //check exclude with bundle dynamic price
+                if ($item->getParentItem() && $item->getParentItem()->getProductType() == "bundle") {
+                    $bundleSku = $item->getParentItem()->getProduct()->getData("sku");
+                    if (in_array($bundleSku, $excludeSkus)) {
+                        $baseDiscountAmount = $discountAmount = 0.0;
+                    }
+                } else {
+                    if (in_array($item->getProduct()->getData("sku"), $excludeSkus)) {
+                        $baseDiscountAmount = $discountAmount = 0.0;
+                    }
                 }
+
             }
 
             $discountData->setAmount($this->priceCurrency->roundPrice(min($itemPrice * $qty, $discountAmount)));
