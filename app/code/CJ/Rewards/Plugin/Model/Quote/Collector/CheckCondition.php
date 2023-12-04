@@ -87,6 +87,8 @@ class CheckCondition
             if ($this->rewardsData->isEnableShowListOptionRewardPoint()) {
                 $listOptions = $this->rewardsData->getListOptionRewardPoint();
                 if ($spentPoints) {
+                    //some special case will make points wrong from 800 -> 799.999999998
+                    $spentPoints = round($spentPoints);
                     $amountDiscount = $listOptions[$spentPoints] ?? 0;
                     if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
                         //do not throw exception in case apply point first and then apply coupon to get discount > grand total or it will be error
