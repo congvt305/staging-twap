@@ -144,6 +144,8 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
         $isEnableShowListOptionRewardPoint = $this->rewardData->isEnableShowListOptionRewardPoint();
         if ($isEnableShowListOptionRewardPoint) {
             $listOptions = $this->rewardData->getListOptionRewardPoint();
+            //some special case will make points wrong from 800 -> 799.999999998
+            $points = round($points);
             $amountDiscount = $listOptions[$points] ?? 0;
             if ($allCartPrice < $amountDiscount) {
                 $this->messageManager->addErrorMessage(__('Can not use rewards point because reward discount amount is  greater than grand total'));
