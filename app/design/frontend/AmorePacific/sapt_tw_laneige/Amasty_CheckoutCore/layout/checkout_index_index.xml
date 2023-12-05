@@ -20,18 +20,6 @@
                                                             </item>
                                                         </item>
                                                     </item>
-                                                    <item name="shippingAdditional" xsi:type="array">
-                                                        <item name="component" xsi:type="string">uiComponent</item>
-                                                        <item name="displayArea" xsi:type="string">shippingAdditional</item>
-                                                        <item name="children" xsi:type="array">
-                                                            <item name="package_option" xsi:type="array">
-                                                                <item name="component" xsi:type="string">
-                                                                    Amasty_CheckoutCore/js/view/package-option
-                                                                </item>
-                                                                <item name="sortOrder" xsi:type="string">3</item>
-                                                            </item>
-                                                        </item>
-                                                    </item>
                                                 </item>
                                             </item>
                                         </item>
