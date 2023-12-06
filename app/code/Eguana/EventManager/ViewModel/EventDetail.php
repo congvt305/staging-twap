@@ -13,6 +13,7 @@ use Eguana\EventManager\Api\EventManagerRepositoryInterface;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -61,10 +62,10 @@ class EventDetail implements ArgumentInterface
     private $logger;
 
     /**
-     * EventManager constructor.
+     * @param Http $request
      * @param FilterProvider $filterProvider
-     * @param StoreManagerInterface $storeManager
      * @param EventManagerRepositoryInterface $eventManagerRepository
+     * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timezone
      * @param LoggerInterface $logger
      * @param array $data
@@ -131,7 +132,7 @@ class EventDetail implements ArgumentInterface
     public function getStoreId()
     {
         try {
-            return $this->_storeManager->getStore()->getId();
+            return $this->storeManager->getStore()->getId();
         } catch (NoSuchEntityException $exception) {
             $this->logger->debug($exception->getMessage());
         }
