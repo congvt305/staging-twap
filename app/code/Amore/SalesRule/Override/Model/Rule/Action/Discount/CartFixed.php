@@ -223,7 +223,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
                         $baseDiscountAmount = $discountAmount = 0.0;
                     }
                 } else {
-                    if (in_array($item->getProduct()->getData("sku"), $excludeSkus)) {
+                    if (in_array($item->getSku(), $excludeSkus)) {
                         $baseDiscountAmount = $discountAmount = 0.0;
                     }
                 }
