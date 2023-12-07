@@ -1,7 +1,11 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 22/6/20
+ * Time: 6:29 PM
  */
 
 /** @var \Magento\Customer\Block\Form\Login $block */
@@ -16,15 +20,20 @@
             <?= $block->getBlockHtml('formkey') ?>
             <fieldset class="fieldset login">
                 <div class="field email required">
-                    <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                    <label class="label" for="email">
+                        <span><?= $block->escapeHtml(__('Email / Phone number')) ?></span>
+                    </label>
                     <div class="control">
-                        <input placeholder="<?= $block->escapeHtml(__('Email / Phone number')) ?>" name="login[username]" value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()) : ?> autocomplete="off"<?php endif; ?> id="email" type="email" class="input-text" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+                        <input
+                            placeholder="<?= $block->escapeHtml(__('Email / Phone number')) ?>"
+                            name="login[username]"
+                            value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="text" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
                     </div>
                 </div>
                 <div class="field password required">
                     <label for="pass" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
                     <div class="control">
-                        <input placeholder="<?= $block->escapeHtml(__('Password')) ?>" name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()) : ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}">
+                        <input placeholder="<?= $block->escapeHtml(__('Password')) ?>" name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}">
                     </div>
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
@@ -34,8 +43,8 @@
                                 class="action login primary"
                                 name="send"
                                 id="send2"
-                                ClickText="登入"
-                                FormText= "登入"
+                                ClickText="<?= $block->escapeHtml(__('Login')) ?>"
+                                FormText= "<?= $block->escapeHtml(__('Login')) ?>"
                                 ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
                                 ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
                                 ap-click-data="<?= $block->escapeHtmlAttr('General Login') ?>">
@@ -47,8 +56,8 @@
                     <div class="secondary">
                         <a class="action remind"
                            href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"
-                           ap-click-data="<?= $block->escapeHtmlAttr('Forgot password') ?>">
-                            <span><?= $block->escapeHtml(__('Forgot Password')) ?></span>
+                           ap-click-data="<?= $block->escapeHtmlAttr('Forgot Password') ?>">
+                            <span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span>
                         </a>
                         <?= $block->getChildHtml('customer.new') ?>
                     </div>
@@ -57,4 +66,10 @@
         </form>
     </div>
 </div>
-
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "mobileLoginRule": {}
+        }
+    }
+</script>
