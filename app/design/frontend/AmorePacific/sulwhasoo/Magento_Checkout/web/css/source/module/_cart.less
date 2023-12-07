@@ -104,7 +104,6 @@
 
             .col {
                 &.item {
-                    display: block;
                     min-height: 120px;
                     padding: @indent__m 0 @indent__s 120px;
                     position: relative;
@@ -354,6 +353,7 @@
 
             .item {
                 .col.item {
+                    display: block;
                     padding-bottom: 0;
                 }
             }
@@ -494,6 +494,14 @@
         .cart {
             + .cart-products-toolbar {
                 margin-top: @indent__m;
+            }
+        }
+
+        .item {
+            .col {
+                &.item {
+                    max-width: 350px;
+                }
             }
         }
     }
