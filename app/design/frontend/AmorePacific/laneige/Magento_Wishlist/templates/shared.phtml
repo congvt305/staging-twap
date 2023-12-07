@@ -49,7 +49,13 @@
                                             <?php endif ?>
                                         <?php endif; ?>
                                         <div class="actions-secondary">
-                                            <a href="#" data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($item) ?>'  onclick="location.assign(this.href); return false;" class="action towishlist" data-action="add-to-wishlist">
+                                            <a href="#"
+                                               data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($item) ?>'
+                                               onclick="location.assign(this.href); return false;"
+                                               ClickText="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+                                               FormText="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+                                               class="action towishlist"
+                                               data-action="add-to-wishlist">
                                                 <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
                                             </a>
                                         </div>

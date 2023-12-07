@@ -57,11 +57,17 @@ if ($block->getData('disable_addtocart_bundle')) {
         <?= $block->getChildHtml('product.info.price', true) ?>
         <div class="actions">
             <?php if($outOfStock): ?>
-                <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action tocart disabled" id="product-addtocart-button">
+                <button type="submit"
+                        ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                        class="action tocart disabled" id="product-addtocart-button">
                     <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
                 </button>
             <?php else: ?>
                 <button type="submit"
+                        ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                         class="action tocart"
                         id="product-addtocart-button">
@@ -93,6 +99,8 @@ if ($block->getData('disable_addtocart_bundle')) {
                     </a>
                 <?php else :?>
                     <button type="submit"
+                            ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                            FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                             title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                             class="action tocart disabled"
                             id="product-addtocart-button" disabled>

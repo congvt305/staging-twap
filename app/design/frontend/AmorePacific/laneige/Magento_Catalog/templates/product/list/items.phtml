@@ -240,6 +240,8 @@ $_item = null;
                                                             <?php if (!$_item->getTypeInstance()->isPossibleBuyFromList($_item)):?>
                                                                 <button
                                                                     class="action tocart primary"
+                                                                    ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                    FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                     data-mage-init='{"redirectUrl": {"url": "<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
                                                                 <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                                 </button>
@@ -263,11 +265,13 @@ $_item = null;
                                                                         name="<?= /* @noEscape */ ActionInterface::PARAM_NAME_URL_ENCODED?>"
                                                                         value="<?= /* @noEscape */ $value ?>">
                                                                     <?= $block->getBlockHtml('formkey') ?>
-                                                                    <button type="submit"
-                                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                                                        class="action tocart primary">
-                                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                                    </button>
+	                                                                <button type="submit"
+	                                                                        ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+	                                                                        FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+	                                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+	                                                                        class="action tocart primary">
+		                                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+	                                                                </button>
                                                                 </form>
                                                             <?php endif; ?>
                                                             </div>
