@@ -97,10 +97,8 @@
 
         /** Set selected customer shipping address  */
         selectAddress: function () {
-            homeDeliverySelector().getRegionValue();
-            if($('#address-type-1').prop('checked')) {
-                homeDeliverySelector().fillShippingAddressInfo(this.address());
-            }
+            selectShippingAddressAction(this.address());
+            checkoutData.setSelectedShippingAddress(this.address().getKey());
         },
 
         /**
