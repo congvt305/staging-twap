@@ -582,7 +582,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="exclude_skus" formElement="input">
+        <field name="exclude_skus" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">sales_rule</item>

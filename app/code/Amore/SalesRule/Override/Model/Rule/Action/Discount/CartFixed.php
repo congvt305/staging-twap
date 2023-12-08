@@ -215,17 +215,27 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
             if ($rule->getData("enable_exclude_skus")) {
                 $excludeSkus = $this->helper->getExcludeSkusOfRule($rule);
+                switch ($item->getProductType()){
+                    case 'bundle':
+                        $productSku = $item->getProduct()->getData('sku');
+                        break;
+                    case 'simple':
+                        $productSku = $item->getSku();
+                        if ($item->getParentItemId()){
+                            if ($item->getParentItem()->getProduct()->getTypeId() == 'bundle'){
+                                $productSku = $item->getParentItem()->getProduct()->getData('sku');
+                            } else {
+                                $productSku = $item->getProduct()->getSku();
+                            }
+                        }
+                        break;
+                    default:
+                        $productSku = $item->getSku();
+                        break;
+                }
 
-                //check exclude with bundle dynamic price
-                if ($item->getParentItem() && $item->getParentItem()->getProductType() == "bundle") {
-                    $bundleSku = $item->getParentItem()->getProduct()->getData("sku");
-                    if (in_array($bundleSku, $excludeSkus)) {
-                        $baseDiscountAmount = $discountAmount = 0.0;
-                    }
-                } else {
-                    if (in_array($item->getSku(), $excludeSkus)) {
-                        $baseDiscountAmount = $discountAmount = 0.0;
-                    }
+                if (in_array($productSku, $excludeSkus)) {
+                    $baseDiscountAmount = $discountAmount = 0.0;
                 }
 
             }
