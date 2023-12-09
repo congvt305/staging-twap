@@ -16,7 +16,7 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
 <div class="block block-customer-login">
     <?= $block->getChildHtml('page.main.title') ?>
     <div class="block-content" aria-labelledby="block-customer-login-heading">
-        <h4><?= __('Log in as a member now to enjoy online store discounts and shopping privileges') ?></h4>
+        <h4><?= __('Start laneige shop with various benefits') ?></h4>
         <form class="form form-login"
               action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
               method="post"
@@ -38,14 +38,14 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
                     <?php //phpcs:enable ?>
                     <div class="control" id="username-block">
                         <?php //phpcs:disable ?>
-                       <!-- <select id="country-mobile" name="country_mobile_id" style="display: none">
-                            <option value="HK" selected><?php __('852') ?></option>
-                            <option value="MO"><?php __('853') ?></option>
-                            <option value="CN"><?php __('86') ?></option>
-                        </select> -->
+                        <select id="country-mobile" name="country_mobile_id" style="display: none">
+                            <option value="HK" selected><?= __('Hongkong 852') ?></option>
+                            <option value="MO"><?= __('Macao 853') ?></option>
+                            <option value="CN"><?= __('China 86') ?></option>
+                        </select>
                         <?php //phpcs:enable ?>
                         <input
-                            placeholder="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                            placeholder="電郵"
                             <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
                             id="email" type="text" class="input-text"
                             title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
@@ -109,13 +109,20 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
             </fieldset>
         </form>
     </div>
-    <?php
-    echo $this->getLayout()
-        ->createBlock('Magento\Cms\Block\Block')
-        ->setBlockId('tw_laneige_login_benefit')
-        ->toHtml();
-    ?>
+    <?= $block->getChildHtml('hk_sulwhasoo_login_benefit') ?>
 </div>
+
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "mobileLoginRule": {
+                "min":<?= $helper->getMinimumMobileNumberDigits() ?>,
+                "max": <?= $helper->getMaximumMobileNumberDigits() ?>
+           }
+       }
+   }
+
+</script>
 <script type="text/x-magento-init">
    {
        "*": {
