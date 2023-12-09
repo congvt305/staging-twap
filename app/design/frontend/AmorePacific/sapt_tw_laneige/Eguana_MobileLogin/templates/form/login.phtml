@@ -109,6 +109,12 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
             </fieldset>
         </form>
     </div>
+    <?php
+    echo $this->getLayout()
+        ->createBlock('Magento\Cms\Block\Block')
+        ->setBlockId('tw_laneige_login_benefit')
+        ->toHtml();
+    ?>
 </div>
 <script type="text/x-magento-init">
    {
