@@ -16,7 +16,7 @@ require([
     leaveBtn.click(function (e) {
         e.preventDefault();
         let accountLeaveUrl = url.build('pip/account/leave');
-        let line2 = $.mage.__('When you press OK, all your member information in Sulwhasoo ');
+        let line2 = $.mage.__('When you press OK, all your member information in Laneige ');
         let line3 = $.mage.__('(including: membership, accumulated spending and membership points) will be deleted ');
         let line4 = $.mage.__('(details will be deleted simultaneously at the department store and the official website) ');
         let line5 = $.mage.__('Confirm delete → select "OK"; leave → select "Cancel" ');

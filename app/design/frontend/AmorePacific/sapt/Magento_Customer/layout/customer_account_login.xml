@@ -33,17 +33,17 @@
         </referenceBlock>
 
         <referenceBlock name="customer_form_login">
-            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_login_benefit">
+            <block class="Magento\Cms\Block\Block" name="tw_laneige_login_benefit">
                 <arguments>
-                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_login_benefit</argument>
+                    <argument name="block_id" xsi:type="string">tw_laneige_login_benefit</argument>
                 </arguments>
             </block>
         </referenceBlock>
 
         <referenceContainer name="customer.login.container">
-            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_login_coupon">
+            <block class="Magento\Cms\Block\Block" name="tw_laneige_login_coupon">
                 <arguments>
-                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_login_coupon</argument>
+                    <argument name="block_id" xsi:type="string">tw_laneige_login_coupon</argument>
                 </arguments>
             </block>
         </referenceContainer>
