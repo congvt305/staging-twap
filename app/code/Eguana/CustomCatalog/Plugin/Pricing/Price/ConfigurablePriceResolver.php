@@ -57,19 +57,19 @@ class ConfigurablePriceResolver
         SaleableInterface $product
     ) {
         if ($result == null) {
-//            $price = null;
-//            try {
-//                $productId = $product->getId();
-//                $parentProduct = $this->productRepository->getById($productId);
-//            } catch (\Exception $exception) {
-//                $this->logger->error($exception->getMessage());
-//            }
-//            $children = $parentProduct->getTypeInstance()->getUsedProducts($parentProduct);
-//            foreach ($children as $child) {
-//                $productPrice = $child->getPrice();
-//                $price = isset($price) ? min($price, $productPrice) : $productPrice;
-//            }
-//            return (float)$price;
+            $price = null;
+            try {
+                $productId = $product->getId();
+                $parentProduct = $this->productRepository->getById($productId);
+            } catch (\Exception $exception) {
+                $this->logger->error($exception->getMessage());
+            }
+            $children = $parentProduct->getTypeInstance()->getUsedProducts($parentProduct);
+            foreach ($children as $child) {
+                $productPrice = $child->getPrice();
+                $price = isset($price) ? min($price, $productPrice) : $productPrice;
+            }
+            return (float)$price;
         }
         return $result;
     }
