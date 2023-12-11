@@ -162,8 +162,7 @@ define([
                 container = regionList.parents('div.field'),
                 regionsEntries,
                 regionId,
-                regionData,
-                allowRegions = ['H','M'];
+                regionData;
 
             this._clearError();
             this._checkRegionRequired(country);
@@ -178,9 +177,7 @@ define([
                 $.each(regionsEntries, $.proxy(function (key, value) {
                     regionId = value[0];
                     regionData = value[1];
-                    if (regionData && allowRegions.includes(regionData.code)) {
-                        this._renderSelectOption(regionList, regionId, regionData);
-                    }
+                    this._renderSelectOption(regionList, regionId, regionData);
                 }, this));
 
                 if (this.currentRegionOption) {
