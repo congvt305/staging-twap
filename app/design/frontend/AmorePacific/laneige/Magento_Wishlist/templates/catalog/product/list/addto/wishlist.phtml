@@ -28,6 +28,8 @@ if ($productType == 'bundle')
 ?>
 <?php if ($block->getWishlistHelper()->isAllow()) : ?>
     <a href="#"
+       clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+       formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
        class="action towishlist"
        title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
        aria-label="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
