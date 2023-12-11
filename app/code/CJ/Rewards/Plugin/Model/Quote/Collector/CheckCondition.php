@@ -84,8 +84,8 @@ class CheckCondition
             $this->quoteRepository->save($quote);
             return $subject;
         } else {
-            if ($this->rewardsData->isEnableShowListOptionRewardPoint()) {
-                $listOptions = $this->rewardsData->getListOptionRewardPoint();
+            if ($this->rewardsData->isEnableShowListOptionRewardPoint($quote->getStoreId())) {
+                $listOptions = $this->rewardsData->getListOptionRewardPoint($quote->getStoreId());
                 if ($spentPoints) {
                     $amountDiscount = $listOptions[$spentPoints] ?? 0;
                     if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
