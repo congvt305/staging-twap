@@ -31,7 +31,9 @@ if ($block->getData('disable_addtocart_bundle')) {
     <div class="box-tocart">
         <div class="fieldset">
             <div class="field-wrapper-qty">
-                <?= $block->getChildHtml('', true) ?>
+                <div class="product attribute price">
+                    <?php echo $this->getChildHtml('product.price.render.bundle.customization'); ?>
+                </div>
                 <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')): ?>
                     <div class="field-wrapper">
                         <div class="field qty">
@@ -54,50 +56,44 @@ if ($block->getData('disable_addtocart_bundle')) {
                                     <span class="icon"><?= $block->escapeHtml(__('expand')) ?></span>
                                 </button>
                                 <script type="text/javascript">
-                                    require([
-                                        "jquery"
-                                    ],function($) {
-                                        $('input.qty').on('change', function(e){
-                                            console.log($(this).val());
-                                            if ($(this).val() == 1) {
-                                                $('button.qty-decrease').addClass('disable');
-                                            } else {
-                                                $('button.qty-decrease').removeClass('disable');
-                                            }
-                                        })
-                                    })
+									require([
+										"jquery"
+									],function($) {
+										$('input.qty').on('change', function(e){
+											console.log($(this).val());
+											if ($(this).val() == 1) {
+												$('button.qty-decrease').addClass('disable');
+											} else {
+												$('button.qty-decrease').removeClass('disable');
+											}
+										})
+									})
                                 </script>
                             </div>
                         </div>
                     </div>
                 <?php endif; ?>
+                <?php echo $this->getChildHtml('product_options_wrapper'); ?>
             </div>
-            <?php if ($_product->getTypeId() === 'simple'): ?>
-                <?php if($_product->getData('prdvl') && $_product->getAttributeText('vlunt')): ?>
-                <div class="custom-attribute">
-                    <input type="text" disabled=disabled value="<?= $_product->getData('prdvl') . $_product->getAttributeText('vlunt'); ?>" />
-                </div>
-                <?php endif ?>
-            <?php endif ?>
             <div class="actions">
                 <?php if($outOfStock): ?>
-                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action primary tocart disabled" id="product-addtocart-button">
+                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action tocart disabled" id="product-addtocart-button">
                         <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
                     </button>
                 <?php else: ?>
-                    <button type="submit"
-                            ClickText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                            FormText="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                            class="action primary tocart"
-                            id="product-addtocart-button">
-                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
-                    </button>
                     <button type="submit"
                             title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
                             class="action primary tocheckout"
                             id="product-addtocheckout-button" onclick="return setCheckoutURL()">
                         <span><?php /* @escapeNotVerified */ echo __('Buy Now'); ?></span>
+                    </button>
+                    <button type="submit"
+                            clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                            formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action primary tocart"
+                            id="product-addtocart-button">
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
                     </button>
                 <?php endif; ?>
             </div>
@@ -109,13 +105,13 @@ if ($block->getData('disable_addtocart_bundle')) {
             <?php if($_product->getData('offline')):?>
                 <a href="<?= $block->escapeUrl($storeLocatorHelper->getStoreLocatorUrl()) ?>"
                    title="<?= $block->escapeHtml(__('Find a store')) ?>"
-                   class="action primary action-offline">
+                   class="action action-offline">
                     <span><?= $block->escapeHtml(__('Find a store')) ?></span>
                 </a>
             <?php else :?>
                 <button type="submit"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                        class="action primary tocart disabled"
+                        class="action tocart disabled"
                         id="product-addtocart-button" disabled>
                     <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
                 </button>
@@ -132,19 +128,19 @@ if ($block->getData('disable_addtocart_bundle')) {
 </script>
 <?php if (!$block->isRedirectToCartEnabled()) : ?>
     <script type="text/x-magento-init">
-    {
-        "#product_addtocart_form": {
-            "catalogAddToCart": {
-                "bindSubmit": false
+        {
+            "#product_addtocart_form": {
+                "catalogAddToCart": {
+                    "bindSubmit": false
+                }
             }
         }
-    }
-</script>
+    </script>
 <?php endif; ?>
 <script type="text/javascript">
-    function setCheckoutURL()
-    {
-        document.product_addtocart_form.return_url.value = '<?php echo $this->getUrl('checkout/cart');?>';
-        return true;
-    }
+	function setCheckoutURL()
+	{
+		document.product_addtocart_form.return_url.value = '<?php echo $this->getUrl('checkout/cart');?>';
+		return true;
+	}
 </script>

@@ -62,6 +62,8 @@ if ($block->getData('disable_addtocart_bundle')) {
                 </button>
             <?php else: ?>
                 <button type="submit"
+                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                         class="action tocart"
                         id="product-addtocart-button">
