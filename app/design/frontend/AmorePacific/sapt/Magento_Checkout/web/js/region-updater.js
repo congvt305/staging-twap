@@ -104,7 +104,7 @@ define([
 
                 tmplData = {
                     value: key,
-                    title: $.mage.__(value.name),
+                    title: value.name,
                     isSelected: false
                 };
 
