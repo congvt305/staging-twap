@@ -33,8 +33,6 @@ if ($productType == 'bundle')
        aria-label="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
        data-post='<?= /* @noEscape */ $block->getWishlistHelper()->getAddParams($block->getProduct(), $requestData) ?>'
        data-action="add-to-wishlist"
-       ClickText="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
-       FormText="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
        role="button">
         <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
     </a>
