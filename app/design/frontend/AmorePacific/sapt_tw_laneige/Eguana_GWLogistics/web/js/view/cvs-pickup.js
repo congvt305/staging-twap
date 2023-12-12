@@ -271,5 +271,8 @@ define([
                 return 1;
             }
         },
+        showFormPopUp: function (){
+            $(".action.action-show-popup.amcheckout-button.-new-address").trigger("click");
+        },
     });
 });
