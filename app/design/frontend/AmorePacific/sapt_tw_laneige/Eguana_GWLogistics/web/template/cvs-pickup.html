@@ -15,6 +15,16 @@
             <each args="getRegion('shipping-messages')">
                 <div template=" {name: getTemplate()}"></div>
             </each>
+            <ifnot args="isCvsPickupSelected">
+                <each args="getRegion('home-delivery-selector')">
+                    <div template=" {name: getTemplate()}"></div>
+                </each>
+                <button type="button"
+                        data-bind="click: showFormPopUp"
+                        class="action action-show-popup amcheckout-button">
+                    <span data-bind="i18n: 'New Address'"></span>
+                </button>
+            </ifnot>
             <if args="isCvsPickupSelected">
                 <if args="isVisible">
                     <each args="getRegion('cvs-selector')">
