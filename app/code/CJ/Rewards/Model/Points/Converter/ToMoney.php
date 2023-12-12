@@ -43,8 +43,8 @@ class ToMoney extends \Amasty\Rewards\Model\Points\Converter\ToMoney
     {
         $rate = $this->config->getPointsRate($storeId);
         $roundRule = $this->config->getRoundRule($storeId);
-        if($this->rewardData->isEnableShowListOptionRewardPoint()) {
-            $listPoint = $this->rewardData->getListOptionRewardPoint();
+        if($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
+            $listPoint = $this->rewardData->getListOptionRewardPoint($storeId);
             $basePoints = $listPoint[$points]?? 0;
         } else {
             $basePoints = $points / $rate;

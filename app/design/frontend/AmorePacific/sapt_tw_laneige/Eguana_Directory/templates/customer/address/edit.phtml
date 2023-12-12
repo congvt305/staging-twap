@@ -37,23 +37,6 @@ $countryPosCode = $block->getAddress()->getCustomAttribute($attributeCode) ? $bl
                 <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
                 <div class="control">
                     <div>
-                        <?php if ($block->isDefaultBilling()) : ?>
-                            <select  disabled>
-                                <?php foreach($helper->getCountryList() as $key => $value) : ?>
-                                    <option value='<?= $key ?>' <?= $key==$countryPosCode ? 'selected' : '' ?>><?= __($value) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <input type="hidden" name="country_pos_code" value="<?= $countryPosCode ?>"/>
-                        <?php else: ?>
-                            <select name="country_pos_code">
-                                <option value=''><?= __('Please select an area code') ?></option>
-                                <?php foreach($helper->getCountryList() as $key => $value) : ?>
-                                    <option value='<?= $key ?>' <?= $key==$countryPosCode ? 'selected' : '' ?>><?= __($value) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        <?php endif; ?>
-                    </div>
-                    <div>
                     <input type="text" placeholder="<?= $block->escapeHtml(__('Please enter a phone number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"
                         onkeypress='validate(event)'
                     />
