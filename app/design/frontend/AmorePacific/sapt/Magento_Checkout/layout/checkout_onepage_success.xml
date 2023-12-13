@@ -34,13 +34,6 @@
                 <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
-        <referenceContainer name="content">
-            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_ordersuccess_favorites" after="-">
-                <arguments>
-                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_ordersuccess_favorites</argument>
-                </arguments>
-            </block>
-        </referenceContainer>
         <referenceBlock name="checkout.success.print.button" remove="true"/>
     </body>
 </page>
