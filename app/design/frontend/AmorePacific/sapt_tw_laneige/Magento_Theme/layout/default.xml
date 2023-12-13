@@ -46,5 +46,6 @@
                 <argument name="text" xsi:type="string"><![CDATA[<div class="box_totop"><div class="back-top"><span>back</span></div></div>]]></argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/> 
     </body>
 </page>
