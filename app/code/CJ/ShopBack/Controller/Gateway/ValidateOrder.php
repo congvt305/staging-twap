@@ -207,10 +207,9 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
             if ($coupons)
                 $order_data['voucherCode'] = $coupons;
 
-            $shipping_method = $quote->getShippingMethod();
-            if ($shipping_method)
-                switch($shipping_method)
-                {
+            $shipping_method = $quote->getShippingAddress()->getShippingMethod();
+            if ($shipping_method) {
+                switch ($shipping_method) {
                     case 'freeshipping_freeshipping':
                         $order_data['orderType'] = 'ONLINE';
                         $order_data['shippingMethod'] = 'FREE';
@@ -230,15 +229,6 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
                     //    );
                     //    break;
                 }
-            else {
-                //work around to avoid missing shipping method
-                $result = array(
-                    'success' => false,
-                    'message' => 'Shipping method is missing. Please choose the shipping method again.'
-                );
-                $jsonf = $this->resultJsonFactory->create();
-                $jsonf->setHttpResponseCode(400);
-                return $jsonf->setData($result);
             }
             //$originalAmount = 0;
             //$totalAmount = 0;
