@@ -34,6 +34,11 @@
                 <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="sales.order.items.renderers.bundle">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="checkout.success.print.button" remove="true"/>
     </body>
 </page>
