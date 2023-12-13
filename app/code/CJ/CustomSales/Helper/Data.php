@@ -75,6 +75,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if ($rule->getData("exclude_skus")) {
             $exludeSkus = explode(",", $rule->getData("exclude_skus"));
         }
+        $exludeSkus = array_map('trim', $exludeSkus);
         return $exludeSkus;
     }
 }
