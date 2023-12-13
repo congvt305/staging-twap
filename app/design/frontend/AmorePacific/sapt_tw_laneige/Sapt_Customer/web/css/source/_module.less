@@ -14,7 +14,7 @@
     box-sizing: border-box;
 }
 .membership_section {
-    background: #C9E1FF;
+    background: #F6FAFF;
     padding: 48px 0 53px;
     margin-bottom: 80px;
 }
@@ -23,14 +23,14 @@
     padding-right: 20px;
 }
 .member_info {
-    width: 40%;
-    border-right: 1px solid #d9d5cc;
+    width: 50%;
+    border-right: 0px solid #d9d5cc;
     padding: 0 30px;
     h3 {
         font-size: 24px;
         line-height: 32px;
         font-weight: 700;
-        margin-bottom: 24px;
+        // margin-bottom: 24px;
         text-transform: capitalize;
     }
     p {
@@ -70,7 +70,7 @@
 .member_point, .member_coupon, .member_review {
     width: 30%;
     padding: 0 40px;
-    border-right: 1px solid #d9d5cc;
+    border-right: 0px solid #d9d5cc;
     .label {
         font-size: 14px;
         color: #222222;
@@ -82,9 +82,9 @@
         display: inline-block;
     }
     .count {
-        text-align: right;
-        margin: 36px 0 0;
-        font-size: 40px;
+        text-align: left;
+        margin: 0px 0 0;
+        font-size: 20px;
         line-height: 40px;
         color: #222222;
         font-weight: 500;
@@ -118,7 +118,8 @@
     }
 }
 .member_review .label {
-    background-image: url(../images/icon_review.png);
+    // background-image: url(../images/icon_review.png);
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAClSURBVHgB5ZLRDcIwDETrwgDNBk4maCcAJgEmoSt0A5gANgAWSRiBDcJdlF+K+a6lk+0oT/fhk8ZYqrpFo84vlBihk4gcMD6hTc55tzJCI3RLKR2dcwOeu9biBIcB6kMIVzpC71nIe5/Qte499gx4/AdS7kuDSgD4iZ2HLY8id+gSY/wKrhklALzLRKCCsxCr5YEhznuowzz9gopjdWMGGalHY6wPJjxZvYNNC3cAAAAASUVORK5CYII=");
     background-position: center left;
 }
 .customercoupon-coupon-index {
@@ -1304,5 +1305,81 @@
         &:not(.confirm):not(.agreements-modal) .modal-header{
             padding-bottom:12px;
         }
+    }
+    .member_point, .member_review{
+        width: calc(100% / 2) !important;
+        background-color: #f6faff !important;
+        padding: 20px !important;
+        text-align: left !important;
+        border: none;
+        position: relative;
+    }
+    .member_info {
+        width: 50% !important;
+        border: none;
+        padding: 20px !important;
+    }
+    .box_member .member_review .label {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAClSURBVHgB5ZLRDcIwDETrwgDNBk4maCcAJgEmoSt0A5gANgAWSRiBDcJdlF+K+a6lk+0oT/fhk8ZYqrpFo84vlBihk4gcMD6hTc55tzJCI3RLKR2dcwOeu9biBIcB6kMIVzpC71nIe5/Qte499gx4/AdS7kuDSgD4iZ2HLY8id+gSY/wKrhklALzLRKCCsxCr5YEhznuowzz9gopjdWMGGalHY6wPJjxZvYNNC3cAAAAASUVORK5CYII=") !important;
+        background-position: center left !important;        
+    }
+    .box_member .member_info h3 {
+        margin-bottom: 5px !important;
+    }
+    .box_member .member_info p {
+        margin-bottom: 5px !important;
+    }
+    .box_member .member_point .count{
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+    }
+    .box_member .member_point p {
+        margin-bottom: 5px !important;
+    }
+    .box_member .member_review .count {
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+    }
+    .member_review .title, .member_point .title {
+        margin-bottom: 5px !important;
+    }
+}
+.member_review, .member_point{
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    justify-content: flex-end;
+    .point{
+        font-size: 13px !important;
+        background-size: 14px !important;
+    }
+    .count{
+        font-size: 20px !important;
+        text-align: left !important;
+        font-weight: bold !important;
+    }
+    .label{
+        padding: 0px 0 0 20px !important;
+    }
+    .title{
+        font-size: 12px;
+    }
+    .date{
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+    .link{
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .link::after{
+        width: 17px;
+        height: 17px;
+        display: inline-block;
+        content: '';
+        background-image: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IjIwcHhfQ2F0ZWdvcnlfJmd0OyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBkYXRhLW5hbWU9IlBhdGggODQ1MjU3IiBkPSJNNiAwIDAgNmw2IDYiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA2Ljc1IDguMjUpIiBzdHlsZT0ic3Ryb2tlOiMyMjI7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLXdpZHRoOjEuNXB4O2ZpbGw6bm9uZTtzdHJva2UtbWl0ZXJsaW1pdDoxMCIvPgo8L3N2Zz4K);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        vertical-align: text-bottom;
     }
 }

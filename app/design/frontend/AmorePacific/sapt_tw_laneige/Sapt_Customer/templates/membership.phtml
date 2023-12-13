@@ -10,9 +10,11 @@ $pointSearchResult = $block->getPointsSearchResult();
     <div class="container">
         <div class="box_member">
             <div class="member_info">
-                <h3><?= $customer->getName() ?></h3>
-                <p>
-                    <?= $block->escapeHtml(__('Membership')) ?>
+            <p class="hi">Hi,</p>
+            <h3><?= $customer->getName() ?></h3>
+                <p><?= $block->escapeHtml(__('Member No.')) ?> <span></span></p>
+                <!-- <p>
+                    <?= $block->escapeHtml(__('Memberships')) ?>
                     <?php if (isset($pointSearchResult['memberExpreDate']) && !empty($pointSearchResult['memberExpreDate'])): ?>
                         <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['memberExpreDate']))) ?>
                     <?php endif; ?>
@@ -20,20 +22,40 @@ $pointSearchResult = $block->getPointsSearchResult();
                 <div class="rank">
                     <h2><?php // $groupName ?></h2>
                     <a class="view_all" href="<?= $block->getUrl('membership/member.html') ?>"><?= $block->escapeHtml(__('View all benefits')) ?></a>
-                </div>
+                </div> -->
             </div>
             <div class="member_point">
-                <p class="label point">
+                <!-- <p class="label point">
                     <?= $block->escapeHtml(__('Point')) ?>
                     <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
                         <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['expireDate']))) ?>
                     <?php endif; ?>
-                </p>
-                <p class="count"><?=number_format($block->getPoint());?><span><?= __('p') ?></span></p>
+                </p> -->
+                <!-- <p class="count"><?=number_format($block->getPoint());?><span><?= __('p') ?></span></p> -->
+                <a href="#" class="link"><?= __('All benefits') ?> ></a>
+                <p class="count">Snow Water</p>
+                <p class="title"><?= __('Membership') ?></p> 
+            </div>
+            <div class="member_point">
+                <a href="#" class="link"><?= __('Point History') ?> ></a>
+                <p class="date"><?= __('Expiry') ?>: <span>
+                    <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
+                        <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['expireDate']))) ?>
+                    <?php endif; ?>
+                </span></p>
+                <!-- <p class="label point">
+                    <?= $block->escapeHtml(__('Point History')) ?>
+                    <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
+                        <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['expireDate']))) ?>
+                    <?php endif; ?>
+                </p> -->
+                <p class="count"><?=number_format($block->getPoint());?><span><?= __('Points') ?></span></p>
+                <p class="title"><?= __('Points') ?></p> 
             </div>
             <div class="member_review">
                 <p class="label point"><?= $block->escapeHtml(__('Review')) ?></p>
                 <p class="count"><?=number_format($block->getCountOrderReviewed())?> / <?=number_format($block->getCountOrderReviewAvailable())?></p>
+                <p class="title"><?= __('Reviews') ?></p>
             </div>
         </div>
     </div>
