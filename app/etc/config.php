@@ -941,7 +941,7 @@ return [
         'Sapt_Megamenu' => 1,
         'Sapt_Newsletter' => 0,
         'Sapt_Review' => 1,
-        'Sapt_Sales' => 0,
+        'Sapt_Sales' => 1,
         'Sapt_SearchTerms' => 0,
         'Sapt_Share' => 0,
         'Temando_ShippingRemover' => 1

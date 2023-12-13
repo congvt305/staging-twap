@@ -29,6 +29,11 @@
                 <argument translate="true" name="title" xsi:type="string">Your order is Complete</argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="sales.order.items.renderers.default">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
         <referenceContainer name="content">
             <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_ordersuccess_favorites" after="-">
                 <arguments>
