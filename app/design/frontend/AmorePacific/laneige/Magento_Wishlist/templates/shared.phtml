@@ -41,6 +41,8 @@
                                         <?php if ($product->isSaleable()) : ?>
                                             <?php if ($isVisibleProduct) : ?>
                                                 <button type="button"
+                                                        clicktext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
+                                                        formtext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
                                                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
                                                         data-post='<?= /* @noEscape */ $block->getSharedItemAddToCartUrl($item) ?>'
                                                         class="action tocart">
