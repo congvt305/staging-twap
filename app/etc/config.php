@@ -800,7 +800,7 @@ return [
         'Amasty_ShopByQuickConfig' => 0,
         'Amasty_Shopby' => 0,
         'Amasty_ShopbyBrand' => 0,
-        'Amasty_CPS' => 1,
+        'Amasty_CPS' => 0,
         'Amasty_ShopbyFilterAnalytics' => 0,
         'Amasty_ShopbyPage' => 0,
         'Amasty_ShopbyPremium' => 0,
