@@ -112,4 +112,12 @@ class Membership extends \CJ\Review\Block\Top\Info
     {
         return $this->getUrl('pointsintegration/points');
     }
+
+    /**
+     * @return string
+     */
+    public function getReviewUrl()
+    {
+        return $this->getUrl('review/customer');
+    }
 }
