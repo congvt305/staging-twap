@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebd42e0ca03158472d6854ea6dfc4d95",
+    "content-hash": "6b44acd92a3874d755376a516d96e3ce",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -1073,6 +1073,34 @@
                 "proprietary"
             ],
             "description": "Lib Swiper Js by Amasty",
+            "homepage": "https://amasty.com/"
+        },
+        {
+            "name": "amasty/module-mage-2.4.5-fix",
+            "version": "1.0.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-mage-2.4.5-fix-1.0.2.zip"
+            },
+            "require": {
+                "amasty/base": ">=1.14.5",
+                "magento/framework": ">=103.0.5",
+                "magento/module-catalog-inventory": ">=100.4.5",
+                "php": ">=7.3"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Amasty\\Mage245Fix\\": ""
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "description": "Mage 2.4.5 fix by Amasty",
             "homepage": "https://amasty.com/"
         },
         {
@@ -30220,5 +30248,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

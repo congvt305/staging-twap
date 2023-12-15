@@ -51,6 +51,7 @@
         "amasty/module-google-rich-snippets": "^1.8",
         "amasty/module-improved-layered-navigation-page": "^2.8",
         "amasty/module-legacy-templates": "^1.0",
+        "amasty/module-mage-2.4.5-fix": "^1.0",
         "amasty/module-mage24fix": "^1.0",
         "amasty/module-one-step-checkout-premium-package": "^2.0",
         "amasty/module-page-speed-optimizer": "2.2.2",
@@ -71,9 +72,9 @@
         "amasty/special-occasion-coupons": "^1.0",
         "magento/composer-root-update-plugin": "^2.0.2",
         "magento/magento-cloud-metapackage": "2.4.5",
-        "magento/product-enterprise-edition": "2.4.5-p2",
         "magento/module-page-builder-product-recommendations": "^1.1",
         "magento/module-visual-product-recommendations": "^1.1",
+        "magento/product-enterprise-edition": "2.4.5-p2",
         "magento/product-recommendations": "^3.1",
         "phpoffice/phpspreadsheet": "^1.19"
     },
