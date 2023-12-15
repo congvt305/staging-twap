@@ -208,7 +208,7 @@ return [
                 ],
                 'js' => [
                     'merge_files' => '0',
-                    'minify_files' => '0',
+                    'minify_files' => '1',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -848,6 +848,7 @@ return [
         'CJ_AmastyBirth' => 1,
         'CJ_AmastyCheckoutCore' => 1,
         'CJ_AmastyPromo' => 1,
+        'CJ_AmastyReview' => 1,
         'CJ_AmastyShopby' => 1,
         'CJ_Base' => 1,
         'CJ_Catalog' => 1,
@@ -870,7 +871,6 @@ return [
         'CJ_HoverImage' => 1,
         'CJ_ImportExport' => 1,
         'CJ_InventoryShipping' => 1,
-        'CJ_Invoice' => 1,
         'Ipay88_Payment' => 1,
         'CJ_LineShopping' => 1,
         'CJ_Middleware' => 1,
