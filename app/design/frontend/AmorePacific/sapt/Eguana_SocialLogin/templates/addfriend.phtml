@@ -14,7 +14,7 @@ $viewModel = $block->getData('add_friend_view_model');
 <?php if (($viewModel->getEnabledInFrontend()) && ($viewModel->getStoreId() != '8')):?>
     <?php if ($viewModel->getEnabledLine()):?>
         <div class="line-add-friend">
-            <img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"/>
+            <img src="<?= $this->getViewFileUrl('Eguana_SocialLogin::images/line-qr.png'); ?>" />
             <p class="note">
             Get First-Hand Beauty with Laneige Line Official
                 <!-- <?= $block->escapeHtml(__('Join the LINE official account. You can enquire about your point information!')) ?> -->

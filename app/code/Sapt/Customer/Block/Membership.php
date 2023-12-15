@@ -182,4 +182,12 @@ class Membership extends Template
     {
         return $this->getUrl('pointsintegration/points');
     }
+
+    /**
+     * @return string
+     */
+    public function getReviewUrl()
+    {
+        return $this->getUrl('review/customer');
+    }
 }
