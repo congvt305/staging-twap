@@ -44,7 +44,7 @@
         </referenceBlock>
 
         <referenceContainer name="content">
-            <block class="Sapt\Sales\Block\Returns\SearchHistory" name="rma.order.history.search" template="Sapt_Sales::return/history/search.phtml" before="rma.returns.history"/>
+            <block class="Magento\Framework\View\Element\Template" name="rma.order.history.search" template="Sapt_Sales::return/history/search.phtml" before="rma.returns.history"/>
         </referenceContainer>
 
         <referenceBlock name="rma.returns.history">
