@@ -46,7 +46,7 @@
         <move element="page.main.title" destination="content" before="-"/>
 
         <referenceContainer name="content">
-            <block class="Sapt\Sales\Block\Order\SearchHistory" name="sales.order.history.search" template="Sapt_Sales::order/history/search.phtml" before="sales.order.history"/>
+            <block class="Magento\Framework\View\Element\Template" name="sales.order.history.search" template="Sapt_Sales::order/history/search.phtml" before="sales.order.history"/>
         </referenceContainer>
 
         <referenceBlock name="sales.order.history">
