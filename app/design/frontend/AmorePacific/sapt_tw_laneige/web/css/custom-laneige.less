@@ -606,7 +606,147 @@ body.catalogsearch-result-index #amasty-shopby-product-list #on-sale-box {
         }
 
         .field[name="shippingAddress.telephone"] {
-            width: 100-%;
+            width: 100%;
         }
     }
+}
+@media (min-width: 769px){
+    .checkout-payment-method .payment-option {
+        max-width: none !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .checkout-payment-method .actions-toolbar > .primary {
+        float: right !important;
+    }
+    .checkout-payment-method ._active .-minus{
+        display: block !important;
+    }
+    .checkout-payment-method .discount-code .-minus{
+        display: none;
+    }
+    .checkout-payment-method ._active .-plus{
+        display: none;
+    }
+}
+.checkout-index-index .amcheckout-main-container .amcheckout-title {
+    padding: 20px 0 15px;
+    border-bottom: 1px solid #c7c7c7 !important;
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 500;
+    margin-bottom: 20px;
+    background-color: inherit;
+}
+
+.amrewards-discount-form .payment-option-inner{
+    width: 100% !important;
+    display: flex !important;
+    .field{
+        width: 90%;
+    }
+    .action-apply{
+        float: right;
+        background: #fff;
+        width: 100%;
+        font-size: 16px;
+        line-height: 1.5;
+        padding: 6px 0;
+        color: #222;
+        border: 1px solid #222 !important;
+        text-transform: uppercase;
+        border-radius: 0;
+        border-radius: 30px;
+        padding: 6px;
+    }
+    .primary{
+        width: 83%;
+    }
+}
+.amrewards-discount-form .amrewards-actions {
+    margin-top: 0px !important;
+    width: 50%;
+    float: right;
+    background: none;
+    background-color: white;
+}
+.referral-main-container{
+    display: flex;
+    .payment-option-inner{
+        width: 47%;
+    }
+    .field{
+        width: 100% !important;
+    }
+    .actions-toolbar{
+        width: 25%;
+        margin-left: 20px;
+    }
+    .action-apply{
+        float: right;
+        background: #fff;
+        width: 100%;
+        font-size: 16px;
+        line-height: 1.5;
+        padding: 6px 0;
+        color: #222;
+        border: 1px solid #222 !important;
+        text-transform: uppercase;
+        border-radius: 0;
+        border-radius: 30px !important;
+        padding: 6px;
+    }
+}
+@media only screen and (max-width: 768px){
+.checkout-payment-method .payment-option .payment-option-content {
+    padding: 0 !important;
+}
+.referral-main-container{
+    .payment-option-inner{
+        width: 100%;
+        display: block;
+    }
+    .field{
+        width: 100%;
+    }
+    .amrewards-actions{
+        width: 100%;
+        float: right;
+        background: none;
+        font-size: 7px;
+        background-color: white;
+        margin-top: 10px;
+    }
+}
+.amrewards-discount-form .payment-option-inner {
+    width: 100% !important;
+    display: block !important;
+}
+.amrewards-discount-form .amrewards-actions {
+    margin-top: 10px !important;
+    width: 100%;
+    float: left;
+    background: none;
+    background-color: white;
+    margin-left: 15px;
+}
+.referral-main-container {
+    display: block !important;
+}
+.checkout-index-index #checkout-step-referral .payment-option-inner {
+    display: flex;
+    margin-bottom: 0px !important;
+}
+.checkout-payment-method ._active .-minus{
+    display: block !important;
+}
+.checkout-payment-method .discount-code .-minus{
+    display: none;
+}
+.checkout-payment-method ._active .-plus{
+    display: none;
+}
+}
+.amrewards-points-rate {
+    margin-bottom: 10px !important;
 }
