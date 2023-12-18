@@ -83,6 +83,8 @@ $helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
                                 class="action login primary"
                                 name="send"
                                 id="send2"
+                                clicktext="<?= $block->escapeHtml(__('Sign In')) ?>"
+                                formtext= "<?= $block->escapeHtml(__('Sign In')) ?>"
                                 ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
                                 ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
                                 ap-click-data="<?= $block->escapeHtmlAttr('General Login') ?>">

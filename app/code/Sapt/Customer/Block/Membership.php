@@ -12,6 +12,7 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use CJ\CouponCustomer\Helper\Data as CouponHelper;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
+use Amore\PointsIntegration\Block\Points\Index as PointsIndex;
 
 class Membership extends \CJ\Review\Block\Top\Info
 {
@@ -30,7 +31,10 @@ class Membership extends \CJ\Review\Block\Top\Info
      */
     private $customerPointsSearch;
 
-
+    /**
+     * @var PointsIndex
+     */
+    private $pointsIndex;
     public function __construct(
         Template\Context $context,
         Session $customerSession,
@@ -39,6 +43,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         CouponHelper      $couponHelper,
         Json              $json,
         CustomerPointsSearch $customerPointsSearch,
+        PointsIndex $pointsIndex,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
@@ -47,7 +52,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         $this->couponHelper = $couponHelper;
         $this->json = $json;
         $this->customerPointsSearch = $customerPointsSearch;
-
+        $this->pointsIndex = $pointsIndex;
         parent::__construct(
             $context,
             $orderCollectionFactory,
@@ -81,5 +86,30 @@ class Membership extends \CJ\Review\Block\Top\Info
         return $this->_orderCollectionFactory->create()
             ->addAttributeToSelect('status')
             ->addFieldToFilter('customer_id', $this->getCustomer()->getId());
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getPointsSearchResult()
+    {
+        return $this->pointsIndex->getPointsSearchResult();
+    }
+
+    /**
+     * @param $date
+     * @return string
+     */
+    public function dateFormat($date)
+    {
+        return $this->pointsIndex->dateFormat($date);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPointsUrl()
+    {
+        return $this->getUrl('pointsintegration/points');
     }
 }
