@@ -24,13 +24,7 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
             <label for="mobile_number_info" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
             <div class="control">
                 <?php //phpcs:disable ?>
-                <select disabled style="width: 20%;">
-                    <?php foreach($helper->getCountryList() as $key => $value) : ?>
-                        <option value='<?= $key ?>' <?= $key==$countryPoscode ? 'selected' : '' ?>><?= $value ?></option>
-                    <?php endforeach; ?>
-                </select>
                 <input type="hidden" name="country_pos_code" value="<?= $countryPoscode ?>">
-                <input type="text" name="mobile_number_info" value="<?= $mobileNumber ?>" disabled>
                 <?php //phpcs:enable ?>
             </div>
             <span class="note code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
