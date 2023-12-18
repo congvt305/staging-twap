@@ -29,20 +29,6 @@ try {
                             </a>
                         </li>
                     <?php endif;?>
-                    <?php if($helper->getInstagramEnable()):?>
-                        <li class="shares">
-                            <a class="link icon instagram" href="<?php echo $helper->getInstagramUrl().$url;?>" target="_blank" title="<?= __('Opens new window');?>">
-                                <span><?= __('Instagram')?></span>
-                            </a>
-                        </li>
-                    <?php endif;?>
-                    <?php if($helper->getWhatappEnable()):?>
-                        <li class="shares">
-                            <a class="link icon whatapp" href="<?php echo $helper->getWhatappUrl().$url;?>" title="<?= __('Opens new window');?>" data-action="share/whatsapp/share"  target="_blank">
-                                <span><?= __('Facebook')?></span>
-                            </a>
-                        </li>
-                    <?php endif;?>
                 </ul>
             </div>
         </div>
