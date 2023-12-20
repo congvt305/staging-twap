@@ -47,8 +47,8 @@ define([
             isAvailable: false,
             isCvsPickupSelected: false,
             rate: {
-                'carrier_code': 'gwlogistics',
-                'method_code': 'CVS'
+                'carrier_code': 'blackcat',
+                'method_code': 'homedelivery'
             },
             defaultCountry: window.checkoutConfig.defaultCountryId,
             rates: shippingService.getShippingRates(),
