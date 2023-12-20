@@ -78,11 +78,11 @@
             </image>
             <image id="product_page_image_large" type="image">
                 <width>600</width>
-                <height>600</height>
+                <height>610</height>
             </image>
             <image id="product_page_image_medium" type="image">
                 <width>600</width>
-                <height>600</height>
+                <height>620</height>
                 <frame>false</frame>
             </image>
             <image id="product_page_image_small" type="thumbnail">
@@ -100,11 +100,11 @@
             </image>
             <image id="product_page_main_image" type="image">
                 <width>600</width>
-                <height>600</height>
+                <height>630</height>
             </image>
             <image id="product_page_main_image_default" type="image">
                 <width>600</width>
-                <height>600</height>
+                <height>640</height>
             </image>
             <image id="product_page_more_views" type="thumbnail">
                 <width>72</width>
