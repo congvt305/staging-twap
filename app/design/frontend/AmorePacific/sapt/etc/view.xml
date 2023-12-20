@@ -11,235 +11,192 @@
             <image id="bundled_product_customization_page" type="thumbnail">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="cart_cross_sell_products" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="cart_page_product_thumbnail" type="small_image">
                 <width>120</width>
                 <height>120</height>
-                <transparency>false</transparency>
             </image>
             <image id="category_page_grid" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_freebies" type="small_image">
                 <width>62</width>
                 <height>62</height>
-                <transparency>false</transparency>
             </image>
             <image id="category_page_list" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="customer_account_my_tags_tag_view" type="small_image">
                 <width>100</width>
                 <height>100</height>
-                <transparency>false</transparency>
             </image>
             <image id="customer_account_product_review_page" type="image">
                 <width>290</width>
                 <height>290</height>
-                <transparency>false</transparency>
             </image>
             <image id="customer_shared_wishlist" type="small_image">
                 <width>113</width>
                 <height>113</height>
-                <transparency>false</transparency>
             </image>
             <image id="gift_messages_checkout_small_image" type="small_image">
                 <width>75</width>
                 <height>75</height>
-                <transparency>false</transparency>
             </image>
             <image id="gift_messages_checkout_thumbnail" type="thumbnail">
                 <width>100</width>
                 <height>100</height>
-                <transparency>false</transparency>
             </image>
             <image id="mini_cart_product_thumbnail" type="thumbnail">
                 <width>80</width>
                 <height>80</height>
-                <transparency>false</transparency>
             </image>
             <image id="new_products_content_widget_grid" type="small_image">
-                <width>435</width>
-                <height>435</height>
-                <transparency>false</transparency>
+                <width>330</width>
+                <height>330</height>
             </image>
             <image id="new_products_content_widget_list" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="new_products_images_only_widget" type="small_image">
                 <width>78</width>
                 <height>78</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_base_image" type="image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_comparison_list" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
-            <image id="product_page_image_large" type="image"/>
+            <image id="product_page_image_large" type="image">
+                <width>600</width>
+                <height>610</height>
+            </image>
             <image id="product_page_image_medium" type="image">
                 <width>600</width>
-                <height>650</height>
+                <height>620</height>
                 <frame>false</frame>
-                <transparency>false</transparency>
             </image>
             <image id="product_page_image_small" type="thumbnail">
                 <width>72</width>
                 <height>72</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_swatch_image_large" type="image"/>
             <image id="product_swatch_image_medium" type="image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_swatch_image_small" type="thumbnail">
                 <width>88</width>
                 <height>110</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_page_main_image" type="image">
-                <width>580</width>
-                <height>580</height>
-                <transparency>false</transparency>
+                <width>600</width>
+                <height>630</height>
             </image>
             <image id="product_page_main_image_default" type="image">
-                <width>580</width>
-                <height>580</height>
-                <transparency>false</transparency>
+                <width>600</width>
+                <height>640</height>
             </image>
             <image id="product_page_more_views" type="thumbnail">
                 <width>72</width>
                 <height>72</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_stock_alert_email_product_image" type="small_image">
                 <width>76</width>
                 <height>76</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_small_image" type="small_image">
                 <width>135</width>
                 <height>135</height>
-                <transparency>false</transparency>
             </image>
             <image id="product_thumbnail_image" type="thumbnail">
                 <width>72</width>
                 <height>72</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_compared_products_grid_content_widget" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_compared_products_images_names_widget" type="thumbnail">
                 <width>75</width>
                 <height>90</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_compared_products_images_only_widget" type="thumbnail">
                 <width>76</width>
                 <height>76</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_compared_products_list_content_widget" type="small_image">
                 <width>270</width>
                 <height>207</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_viewed_products_grid_content_widget" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_viewed_products_images_names_widget" type="small_image">
                 <width>75</width>
                 <height>90</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_viewed_products_images_only_widget" type="small_image">
                 <width>76</width>
                 <height>76</height>
-                <transparency>false</transparency>
             </image>
             <image id="recently_viewed_products_list_content_widget" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="related_products_list" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="review_page_product_image" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="rss_thumbnail" type="thumbnail">
                 <width>75</width>
                 <height>75</height>
-                <transparency>false</transparency>
             </image>
             <image id="sendfriend_small_image" type="small_image">
                 <width>75</width>
                 <height>75</height>
-                <transparency>false</transparency>
             </image>
             <image id="shared_wishlist_email" type="small_image">
                 <width>135</width>
                 <height>135</height>
-                <transparency>false</transparency>
             </image>
             <image id="side_column_widget_product_thumbnail" type="thumbnail">
                 <width>75</width>
                 <height>90</height>
-                <transparency>false</transparency>
             </image>
             <image id="upsell_products_list" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="wishlist_sidebar_block" type="thumbnail">
                 <width>75</width>
                 <height>90</height>
-                <transparency>false</transparency>
             </image>
             <image id="wishlist_small_image" type="small_image">
                 <width>113</width>
                 <height>113</height>
-                <transparency>false</transparency>
             </image>
             <image id="wishlist_thumbnail" type="small_image">
                 <width>330</width>
                 <height>330</height>
-                <transparency>false</transparency>
             </image>
             <image id="category_products_content_widget_grid" type="small_image">
                 <width>420</width>
                 <height>420</height>
-                <transparency>false</transparency>
             </image>
         </images>
     </media>
