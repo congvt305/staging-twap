@@ -8,13 +8,16 @@
 
 /** @var \Magento\Review\Block\Form $block */
 $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
+$orderItemId = $block->getOrderItemId();
+/** @var \Amasty\AdvancedReview\Helper\Config $advancedReviewHelper */
+$advancedReviewHelper = $this->helper(Amasty\AdvancedReview\Helper\Config::class);
 ?>
 <div class="block review-add amreview-submit-form review-product-<?= $block->getOrderItemId() ?> " style="display:none">
     <div class="block-title"><strong><?= $block->escapeHtml(__('Write Your Own Review')) ?></strong></div>
     <div class="block-content">
         <?php if ($block->getAllowWriteReviewFlag()): ?>
-            <form action="<?= $block->escapeUrl($block->getAction()) ?>" class="review-form form-default" method="post" id="review-form" data-role="product-review-form" data-bind="scope: 'review-form'"
-                data-product-name="<?= $block->escapeHtml($block->getProductInfo()->getName()) ?>">
+            <form action="<?= $block->escapeUrl($block->getAction()) ?>" class="review-form form-default" method="post" id="review-form" data-role="product-review-form" <?= $advancedReviewHelper->isAllowImages() ? ' enctype="multipart/form-data" ' : ''?> data-bind="scope: 'review-form'"
+                  data-product-name="<?= $block->escapeHtml($block->getProductInfo()->getName()) ?>">
                 <?= $block->getBlockHtml('formkey') ?>
                 <?= $block->getChildHtml('form_fields_before') ?>
                 <fieldset class="fieldset review-fieldset" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
@@ -43,7 +46,7 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
                                                     <input
                                                         type="radio"
                                                         name="ratings[<?= $block->escapeHtmlAttr($_rating->getId()) ?>]"
-                                                        id="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>"
+                                                        id="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>_<?= $block->escapeHtmlAttr($block->getOrderItemId()) ?>"
                                                         value="<?= $block->escapeHtmlAttr($_option->getId()) ?>"
                                                         class="radio"
                                                         data-star-value="<?= $block->escapeHtmlAttr($iterator) ?>"
@@ -51,7 +54,7 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
                                                         aria-labelledby="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_rating_label <?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>_label" />
                                                     <label
                                                         class="rating-<?= $block->escapeHtmlAttr($iterator) ?>"
-                                                        for="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>"
+                                                        for="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>_<?= $block->escapeHtmlAttr($block->getOrderItemId()) ?>"
                                                         title="<?= $block->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? __('stars') : __('star'))) ?>"
                                                         id="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>_label">
                                                         <span><?= $block->escapeHtml(__('%1 %2', $iterator, $iterator > 1 ? __('stars') : __('star'))) ?></span>
@@ -84,6 +87,15 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
                             <textarea name="detail" placeholder="<?= __('Please enter a message') ?>" id="review_field" cols="5" rows="3" data-validate="{required:true}" data-bind="value: review().detail"></textarea>
                         </div>
                     </div>
+                    <?php if ($advancedReviewHelper->isAllowImages()): ?>
+                        <div class="field review-field-image ">
+                            <label class="label"><?= __('Add your photo') ?></label><div class="control">
+                                <label id="am_upload_image_button_<?= $orderItemId ?>" class="cj_am_upload_image_button"><?= __("Select upload file") ?></label>
+                                <label id="am_upload_image_label_<?= $orderItemId ?>" class="label" style="margin-left: 20px"><?= __("No file uploaded") ?></label>
+                                <input id="am_upload_image_<?= $orderItemId ?>" class="amrev-input" name="review_images[]" accept="image/*" multiple="" type="file" title="<?= __('Add your photo') ?>" hidden="hidden" placeholder="<?= __('Add your photo') ?>">
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </fieldset>
                 <div class="field required amreview-gdpr-wrap">
                     <input type="checkbox" name="gdpr" class="amreview-checkbox" id="amreview-gdpr-field" title="<?= __('GDPR') ?>" data-validate="{required:true}">
@@ -98,17 +110,17 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
                 </div>
             </form>
             <script type="text/x-magento-init">
-{
-    "[data-role=product-review-form]": {
-        "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
-    },
-    "#review-form": {
-        "Magento_Review/js/error-placement-mypage": {},
-        "Magento_Review/js/validate-review": {},
-        "Magento_Review/js/submit-review-mypage": {}
-    }
-}
-</script>
+                {
+                    "[data-role=product-review-form]": {
+                        "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+                },
+                "#review-form": {
+                    "Magento_Review/js/error-placement-mypage": {},
+                    "Magento_Review/js/validate-review": {},
+                    "Magento_Review/js/submit-review-mypage": {}
+                }
+            }
+            </script>
         <?php else: ?>
             <div class="message info notlogged" id="review-form" style="display:none">
                 <div>
@@ -118,3 +130,27 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
         <?php endif ?>
     </div>
 </div>
+
+<script>
+    require(["jquery"], function($){
+        var imageElement = $("#am_upload_image_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>");
+        document.getElementById("am_upload_image_button_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").onclick = function() {showImageUpload()};
+        document.getElementById("am_upload_image_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").onchange = function() {changeImageText()};
+
+        function showImageUpload (){
+            imageElement.trigger("click");
+        }
+        function changeImageText(){
+            var fileName;
+            if (imageElement[0].files.length > 1){
+                fileName = imageElement[0].files.length + " files";
+            } else {
+                fileName = imageElement[0].files[0].name;
+                if (fileName.length > 30) {
+                    fileName = fileName.substring(0, 10) + "...";
+                }
+            }
+            $("#am_upload_image_label_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").text(fileName)
+        }
+    });
+</script>
