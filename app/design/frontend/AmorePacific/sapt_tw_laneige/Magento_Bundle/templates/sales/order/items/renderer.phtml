@@ -86,8 +86,8 @@ if ($layoutHander == "sales_order_history") {
                 <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                 <?= $block->getBlockHtml('formkey') ?>
                 <button type="submit"
-                        clicktext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
-                        formtext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
+                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
                         class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
