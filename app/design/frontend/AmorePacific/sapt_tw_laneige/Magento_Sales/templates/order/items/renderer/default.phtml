@@ -11,6 +11,8 @@ use Magento\Framework\App\Action\Action;
 $_item = $block->getItem();
 $shippingMethod = $_item->getOrder()->getShippingDescription();
 $product = $_item->getProduct();
+$_order = $_item->getOrder();
+$layoutHander = $block->getRequest()->getFullActionName();
 $viewModel = $block->getData('view_model');
 ?>
 <tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info">
@@ -23,8 +25,8 @@ $viewModel = $block->getData('view_model');
         </a>
         <div class="product-item-details">
             <div class="shipping">
-                <?php if ((int)$_item->getQtyShipped() > 0): ?>
-                    <span class="in-delivery"><?= __('In Delivery') ?></span>
+                <?php if ($layoutHander == 'sales_order_history'): ?>
+                    <span class="in-delivery"><?= $block->escapeHtml(__($_order->getStatusLabel())) ?></span>
                 <?php endif; ?>
                 <span class="method"><?= $shippingMethod ?></span>
             </div>
