@@ -117,8 +117,8 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                                 <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                                                 <?= $block->getBlockHtml('formkey') ?>
                                                                 <button type="submit"
-                                                                        clicktext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
-                                                                        formtext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
+                                                                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
                                                                         class="action tocart primary">
                                                                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
@@ -126,8 +126,8 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                             </form>
                                                         <?php else: ?>
                                                             <button class="action tocart primary disabled"
-                                                                    clicktext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
-                                                                    formtext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
+                                                                    clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                    formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                     type="button" disabled
                                                                     title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
                                                                 <span><?= $block->escapeHtml(__('Sold out')) ?></span>
@@ -159,8 +159,8 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                                     <!-- /ko -->
                                                                 <?php else:?>
                                                                     <a href="#"
-                                                                       clicktext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
-                                                                       formtext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
+                                                                       clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+                                                                       formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
                                                                        data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
                                                                         <span><?= $block->escapeHtml(__('Add to Wishlist')) ?></span>
                                                                     </a>

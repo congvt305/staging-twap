@@ -20,8 +20,8 @@ $viewModel = $block->getData('moduleStatusViewModel');
         <!-- ko scope: 'ajaxwishlist' -->
         <a
             class="action towishlist use-ajax action-towishlist"
-            clicktext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
-            formtext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
+            clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+            formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
             data-bind="css:{wishlisticon : wishlistitem().all_wishlist_items
          ?typeof wishlistitem().all_wishlist_items[<?= /* @noEscape */ $product->getId() ?>]!='undefined':false}"
             title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
@@ -38,8 +38,8 @@ $viewModel = $block->getData('moduleStatusViewModel');
 
     <?php if ($block->isAllowInCart() && $block->isProductVisibleInSiteVisibility()) : ?>
         <a href="#"
-           clicktext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
-           formtext="<?= $block->escapeHtml(__('Add to Wishlist')) ?>"
+           clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+           formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
            data-post='<?= /* @noEscape */ $block->getMoveFromCartParams() ?>'
            class="use-ajax action towishlist action-towishlist">
             <span><?= $block->escapeHtml(__('Move to Wishlist')) ?></span>

@@ -30,8 +30,8 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
     <?php endif; ?>
     <?php if ($product->isSaleable()) : ?>
                 <button type="button"
-                        clicktext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
-                        formtext="<?= $block->escapeHtml(__('attribute:Add to Cart')) ?>"
+                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         data-role="tocart" data-post='<?= /* @noEscape */ $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>" data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                 </button>
