@@ -10,29 +10,8 @@ use Magento\Framework\App\Action\Action;
 /** @var \Magento\Framework\Pricing\Helper\Data $priceHelper */
 $_item = $block->getItem();
 $shippingMethod = $_item->getOrder()->getShippingDescription();
-if (str_contains($shippingMethod, 'In-Store Pickup Delivery')) {
-    $shippingMethod = '店鋪自取 - 店舖';
-}
-$viewModel = $block->getData('view_model');
-$_order = $_item->getOrder();
-$orderItems = $_order->getAllVisibleItems();
-$productItemsCount = 0;
-foreach($orderItems as $orderItem) {
-    if ($orderItem->getRowTotal() == $orderItem->getDiscountAmount()) {
-        continue;
-    }
-    $productItemsCount++;
-}
-if ($_item->getRowTotal() == $_item->getDiscountAmount()){
-    foreach ($orderItems as $orderItem){
-        if ($orderItem->getRowTotal() == $orderItem->getDiscountAmount()) continue;
-        $_item = $orderItem;
-        $block->setItem($_item);
-        break;
-    }
-}
 $product = $_item->getProduct();
-$orderGrandTotal = $_order->getGrandTotal();
+$viewModel = $block->getData('view_model');
 ?>
 <tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info">
     <td class="col item" data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
@@ -44,8 +23,10 @@ $orderGrandTotal = $_order->getGrandTotal();
         </a>
         <div class="product-item-details">
             <div class="shipping">
-                <span class="in-delivery"><?= $escaper->escapeHtml(__($_order->getStatusLabel())) ?></span>
-                <span class="method"><?= $escaper->escapeHtml(__($shippingMethod)) ?></span>
+                <?php if ((int)$_item->getQtyShipped() > 0): ?>
+                    <span class="in-delivery"><?= __('In Delivery') ?></span>
+                <?php endif; ?>
+                <span class="method"><?= $shippingMethod ?></span>
             </div>
             <strong class="product-item-name">
                 <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
@@ -71,18 +52,16 @@ $orderGrandTotal = $_order->getGrandTotal();
                     </dl>
                 <?php endif;?>
             <?php } ?>
-            <?php if ($productItemsCount > 1): ?>
-                <div class="total-items"><?= __("Total %1 items", $productItemsCount) ?></div>
-            <?php endif; ?>
-
-            <div class="order-grandtotal">
+            <?php if ($_item->getRowTotal() == $_item->getDiscountAmount()): ?>
                 <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
-                <?= $priceHelper->currency($orderGrandTotal) ?>
-            </div>
+                <?= $priceHelper->currency(0) ?>
+            <?php else: ?>
+                <?= $block->getItemPriceHtml() ?>
+            <?php endif; ?>
         </div>
     </td>
     <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
-        <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block) && ($_item->getRowTotal() != $_item->getDiscountAmount())) : ?>
+        <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
             <a href="#" class="btn secondary review" data-order-item-id="<?= $_item->getId() ?>"><?= __('Review') ?></a>
             <?php $postParams = $viewModel->getPostData($product, $block); ?>
             <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($product->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">

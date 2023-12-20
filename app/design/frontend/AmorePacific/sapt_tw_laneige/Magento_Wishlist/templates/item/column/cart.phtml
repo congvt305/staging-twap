@@ -33,6 +33,8 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
                 <div class="product-item-actions">
                     <div class="actions-primary">
                         <button type="button"
+                                clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                 title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
                                 data-post="<?= $block->escapeHtml($addToCartFormViewModel->getAddToCartPostParams($product)) ?>"
                                 class="action wishlist-item tocart primary">
