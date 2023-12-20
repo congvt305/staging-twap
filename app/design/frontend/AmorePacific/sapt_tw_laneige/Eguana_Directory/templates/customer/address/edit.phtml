@@ -94,6 +94,19 @@ $countryPosCode = $block->getAddress()->getCustomAttribute($attributeCode) ? $bl
                 <input type="text" id="region" name="region" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"  title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>" class="input-text <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region') ?>"<?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
             </div>
         </div>
+        <div class="field zip required">
+            <label class="label" for="zip"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span></label>
+            <div class="control">
+                <?php if ($autofilledFlag): ?>
+                    <input type="text" placeholder="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" readonly name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
+                <?php else: ?>
+                    <input type="text" placeholder="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" name="postcode" value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>" title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>" id="zip" class="input-text validate-zip-international <?= /* @noEscape */ $this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('postcode') ?>"/>
+                <?php endif; ?>
+                <div role="alert" class="message warning" style="display:none">
+                    <span></span>
+                </div>
+            </div>
+        </div>
         <div class="field country required">
             <label class="label" for="country"><span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span></label>
             <div class="control">
