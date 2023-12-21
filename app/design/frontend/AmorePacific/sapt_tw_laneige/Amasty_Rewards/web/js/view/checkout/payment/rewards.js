@@ -14,6 +14,7 @@ define([
             template: 'Amasty_Rewards/checkout/payment/rewards',
             isApplied: false,
             pointsUsed: 0,
+            amountUsed:0,
             pointsLeft: 0,
             noticeMessage: '',
             minimumPointsValue: 0,
@@ -67,6 +68,7 @@ define([
          * Coupon code application procedure
          */
         apply: function () {
+            this.pointsUsed(this.amountUsed * this.getRateForCurrency());
             if (this.validate()) {
                 setRewardPointAction(this.pointsUsed, this.isApplied, this.pointsLeft, this.rateForCurrency, this.noticeMessage);
             }
