@@ -40,7 +40,7 @@ class History extends AbstractProduct
     /**
      * @var Viewed
      */
-    protected $reportProductViewed;
+    protected $recentlyViewed;
     /**
      * @var Synchronizer
      */
@@ -53,6 +53,7 @@ class History extends AbstractProduct
         ProductVisibility $catalogProductVisibility,
         CollectionFactory $collectionFactory,
         Synchronizer $synchronizer,
+        Viewed $recentlyViewed,
         array $data = []
     ) {
         $this->resource = $resourceConnection;
@@ -60,6 +61,7 @@ class History extends AbstractProduct
         $this->_catalogProductVisibility = $catalogProductVisibility;
         $this->collectionFactory = $collectionFactory;
         $this->synchronizer = $synchronizer;
+        $this->recentlyViewed = $recentlyViewed;
         parent::__construct($context, $data);
     }
 
@@ -94,15 +96,7 @@ class History extends AbstractProduct
      */
     protected function getProductIds()
     {
-        $actions = $this->synchronizer->getActionsByType('recently_viewed_product');
-        $ids = [];
-        /** @var ProductFrontendAction $action */
-        foreach ($actions as $action) {
-            if (!in_array($action->getProductId(), $ids)) {
-                $ids[] = $action->getProductId();
-            }
-        }
-        return $ids;
+        return $this->recentlyViewed->getItemsCollection()->getAllIds();
     }
 
     /**
