@@ -222,31 +222,48 @@ $_item = null;
                                             <?php endif; ?>
 
                                             <div class="product-item-inner">
-                                                <div class="product actions product-item-actions">
+	                                            <div class="product actions product-item-actions">
                                                     <?php if ($showAddTo || $showCart): ?>
-                                                        <div class="actions-primary">
+			                                            <div class="actions-primary">
                                                             <?php if ($_item->isSaleable()): ?>
-                                                                <?php if (!$_item->getTypeInstance()->isPossibleBuyFromList($_item)):?>
-                                                                    <button class="action tocart primary" data-mage-init='{"redirectUrl": {"url": "<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
-                                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                                    </button>
+                                                                <?php if ($_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
+						                                            <button type="button"
+						                                                    title="<?= $block->escapeHtmlAttr($_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+						                                                    class="action coming-soon"
+						                                                    id="product-comming-soon-button">
+							                                            <span><?= $_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT) ?></span>
+						                                            </button>
                                                                 <?php else: ?>
-                                                                    <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                                    $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId()])
-                                                                    ?>
-                                                                    <button class="action tocart primary"
-                                                                            data-post='<?= /* @escapeNotVerified */ $postData ?>'
-                                                                            type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
-                                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                                    </button>
+                                                                    <?php if (!$_item->getTypeInstance()->isPossibleBuyFromList($_item)): ?>
+							                                            <button class="action tocart primary"
+							                                                    data-mage-init='{"redirectUrl": {"url": "<?= $block->escapeUrl($block->getAddToCartUrl($_item)) ?>"}}'
+							                                                    type="button"
+							                                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+								                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+							                                            </button>
+                                                                    <?php else: ?>
+                                                                        <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                                                        $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)),
+                                                                            ['product' => $_item->getEntityId()])
+                                                                        ?>
+							                                            <button class="action tocart primary"
+							                                                    data-post='<?= /* @escapeNotVerified */
+                                                                                $postData ?>'
+							                                                    type="button"
+							                                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+								                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+							                                            </button>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
-                                                        </div>
-                                                        <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
-                                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
-                                                                <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
-                                                            <?php endif; ?>
-                                                        </div>
+			                                            </div>
+	                                                    <?php if (!$_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
+	                                                        <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
+	                                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+	                                                                <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
+	                                                            <?php endif; ?>
+	                                                        </div>
+	                                                    <?php endif; ?>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
