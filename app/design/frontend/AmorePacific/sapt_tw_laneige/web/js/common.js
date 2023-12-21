@@ -531,4 +531,14 @@ require([
             alignHeight('.bestseller-contents-slider:nth-child(3) .product-items .product-item .product_tags');
         }, 500)
     });
+    $(window).resize(function(){
+        $('.product-image-wrapper').each(function() {
+            $(this).children('img').height($(this).innerHeight());
+            $(this).children('img').width($(this).innerWidth());
+        });
+        $('.product-image-wrapper').each(function() {
+            $(this).children('img').height($(this).innerHeight());
+            $(this).children('img').width($(this).innerWidth());
+        });
+    });
 });
