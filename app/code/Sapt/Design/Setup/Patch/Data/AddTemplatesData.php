@@ -25,8 +25,8 @@ class AddTemplatesData implements DataPatchInterface
      {
           $sampleData = [
                [
-                    'name' => 'hk-laneige-main-hero-banner-slider-staging',
-                    'preview_image' => '.template-managerhklaneigemainherobannersliderstaging657fe611c4657.jpg',
+                    'name' => 'hk-laneige-main-hero-banner-slider-production',
+                    'preview_image' => '.template-managerhklaneigemainherobannersliderproduction657fe611c4657.jpg',
                     'template' => '<style>#html-body [data-pb-style=D80ENNL]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;margin-bottom:80px}#html-body [data-pb-style=NW91V2S]{margin:0;padding:0}#html-body [data-pb-style=HHPW10N]{border-style:none;border-radius:0;margin:0;padding:0}#html-body [data-pb-style=MSEYPUP]{border-radius:0;margin:0;padding:0}#html-body [data-pb-style=MFSGM5K]{text-align:left;min-height:540px;border-style:none;border-radius:0;margin:10px 0 0;padding:0}#html-body [data-pb-style=C1VT5AH]{margin:0}#html-body [data-pb-style=G6TNHRI]{background-position:center center;background-size:cover;background-repeat:no-repeat;border-style:none;border-radius:0;min-height:540px}#html-body [data-pb-style=YQPXW2S]{min-height:540px;padding:0;background-color:transparent}#html-body [data-pb-style=RQB0S0Y]{opacity:1;visibility:visible}#html-body [data-pb-style=VBOIP4H]{margin:0}#html-body [data-pb-style=IAH3O3A]{background-position:center center;background-size:cover;background-repeat:no-repeat;border-style:none;border-radius:0;min-height:540px}#html-body [data-pb-style=X9UPB7X]{min-height:540px;padding:0;background-color:transparent}#html-body [data-pb-style=TYDBUE2]{opacity:1;visibility:visible}#html-body [data-pb-style=APNL5YN]{margin:0}#html-body [data-pb-style=KMXF3LB]{background-position:center center;background-size:cover;background-repeat:no-repeat;border-style:none;border-radius:0;min-height:540px}#html-body [data-pb-style=REII6W3]{min-height:540px;padding:0;background-color:transparent}#html-body [data-pb-style=M0NI1DI]{opacity:1;visibility:visible}</style><div class="main-hero-slider" data-content-type="row" data-appearance="full-bleed" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="main" data-pb-style="D80ENNL"><div data-content-type="html" data-appearance="default" data-element="main" data-pb-style="NW91V2S"><script type="text/javascript" xml="space">
     require([\'jquery\', \'matchMedia\', \'domReady!\'], function($, mediaCheck) {
 
@@ -464,8 +464,8 @@ margin-top:10px;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'new_arrivals_hk_laneige-staging',
-                    'preview_image' => '.template-managernewarrivalshklaneigestaging657fe71782f87.jpg',
+                    'name' => 'new_arrivals_hk_laneige-prod',
+                    'preview_image' => '.template-managernewarrivalshklaneigeproduction657fe71782f87.jpg',
                     'template' => '<style>#html-body [data-pb-style=DOGVI81]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=KAUGCTC]{text-align:center}#html-body [data-pb-style=KJFMA59]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=MIYW3UD]{display:flex;width:100%}#html-body [data-pb-style=CDCNL1G]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:50%;padding-right:10px;align-self:stretch}#html-body [data-pb-style=V2F7RYG]{text-align:left}#html-body [data-pb-style=UWRQFN9]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:50%;padding-left:10px;align-self:stretch}#html-body [data-pb-style=H0ML0CN]{border-style:none}#html-body [data-pb-style=KDJAJLG],#html-body [data-pb-style=NYJWHYT]{max-width:100%;height:auto}@media only screen and (max-width: 768px) { #html-body [data-pb-style=H0ML0CN]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="new_arrivals_section margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="DOGVI81"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="KAUGCTC">最新推薦</h2><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="KJFMA59"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="MIYW3UD"><div class="pagebuilder-column banner-newarrivals" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="CDCNL1G"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="H0ML0CN"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-2_B_1080px_788px_1.png}}" alt="禦時緊顏參養煥白系列" title="" data-element="desktop_image" data-pb-style="NYJWHYT"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-2_B_640px_1.jpg}}" alt="禦時緊顏參養煥白系列" title="" data-element="mobile_image" data-pb-style="KDJAJLG"></figure><div data-content-type="html" data-appearance="default" data-element="main" data-pb-style="V2F7RYG"><div class="banner-posstion-left new-product-session">
 <!--<h2>禦時緊顏參養<br/>煥白系列</h2>
 <p>突破性專利煥白技術 緊緻透亮三層肌</p>
@@ -586,8 +586,8 @@ padding-left: 0!important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-laneige-main-bestseller-slider-staging',
-                    'preview_image' => '.template-managerhklaneigemainbestsellersliderstaging657fe7aced524.jpg',
+                    'name' => 'hk-laneige-main-bestseller-slider-production',
+                    'preview_image' => '.template-managerhklaneigemainbestsellersliderproduction657fe7aced524.jpg',
                     'template' => '<style>#html-body [data-pb-style=MU59HR0]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=X92G1QE]{text-align:center}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="MU59HR0"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="X92G1QE">暢銷產品</h2><div data-content-type="html" data-appearance="default" data-element="main"><div class="bestseller_home_content">
                     <div class="bestseller_tab main-recommendation-slider">
                       <div class="product data items" data-mage-init=\'{"tabs":{"openedState":"active"}}\'>
@@ -784,8 +784,8 @@ padding-left: 0!important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-laneige-banner_hasellus-staging',
-                    'preview_image' => '.template-managerhklaneigebannerhasellusstaging657fe7d9a3e9a.jpg',
+                    'name' => 'hk-laneige-banner_hasellus-production',
+                    'preview_image' => '.template-managerhklaneigebannerhasellusproduction657fe7d9a3e9a.jpg',
                     'template' => '<style>#html-body [data-pb-style=KEU3CL3]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=G1D9C0T]{border-style:none}#html-body [data-pb-style=EVPD7IU],#html-body [data-pb-style=KSLRDIQ]{max-width:100%;height:auto}@media only screen and (max-width: 768px) { #html-body [data-pb-style=G1D9C0T]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="banner-newarrivals banner_hasellus margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="KEU3CL3"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="G1D9C0T"><a href="/value-set.html" target="" data-link-type="default" title="hasellus" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-1-4_2010x518__1.png}}" alt="hasellus" title="hasellus" data-element="desktop_image" data-pb-style="EVPD7IU"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-1-4_720x360_.png}}" alt="hasellus" title="hasellus" data-element="mobile_image" data-pb-style="KSLRDIQ"></a></figure><div data-content-type="html" data-appearance="default" data-element="main"><div class="banner-posstion-left">
                     <h3>早C晚A每日B 透亮細緻水潤肌</h3>
                     <!--<p>多款皇牌養肌套裝，為你新年煥新肌。</p>-->
@@ -826,8 +826,8 @@ padding-left: 0!important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-laneige-main-giftset-slider-staging',
-                    'preview_image' => '.template-managerhklaneigemaingiftsetsliderstaging657fe80c1e3d4.jpg',
+                    'name' => 'hk-laneige-main-giftset-slider-production',
+                    'preview_image' => '.template-managerhklaneigemaingiftsetsliderproduction657fe80c1e3d4.jpg',
                     'template' => '<style>#html-body [data-pb-style=RQXQW6U]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=UHW5W0J]{text-align:center}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="RQXQW6U"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="UHW5W0J">限時組合</h2><div data-content-type="html" data-appearance="default" data-element="main"><div class="giftset_home_content giftset_tab_content">
                     <div class="giftset_tab main-recommendation-slider">
                         <div class="product data items" data-mage-init=\'{"tabs":{"openedState":"active"}}\'>
@@ -974,8 +974,8 @@ padding-left: 0!important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk_laneige_recommended_categories-staging',
-                    'preview_image' => '.template-managerhklaneigerecommendedcategoriesstaging657fe8672f732.jpg',
+                    'name' => 'hk_laneige_recommended_categories-production',
+                    'preview_image' => '.template-managerhklaneigerecommendedcategoriesproduction657fe8672f732.jpg',
                     'template' => '<style>#html-body [data-pb-style=UMOWVU0]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;margin-left:-15px;margin-right:-15px}#html-body [data-pb-style=O239KQM]{text-align:center}#html-body [data-pb-style=KFSBN7F]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=Y8D9QBV]{display:flex;width:100%}#html-body [data-pb-style=LFJ4Y4L]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:33.3333%;padding-left:15px;padding-right:15px;align-self:stretch}#html-body [data-pb-style=RVJWJD0]{text-align:center}#html-body [data-pb-style=R4DIJ0S]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:33.3333%;padding-left:15px;padding-right:15px;align-self:stretch}#html-body [data-pb-style=QC7CMKC]{text-align:center}#html-body [data-pb-style=Q5D8W9J]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:33.3333%;padding-left:15px;padding-right:15px;align-self:stretch}#html-body [data-pb-style=PYA8VO3]{text-align:center}#html-body [data-pb-style=P8AT0N5]{border-style:none}#html-body [data-pb-style=EC2CHQT],#html-body [data-pb-style=HS55JDP]{max-width:100%;height:auto}#html-body [data-pb-style=JO10OE5]{border-style:none}#html-body [data-pb-style=DT1KWQL],#html-body [data-pb-style=V1C0BPM]{max-width:100%;height:auto}#html-body [data-pb-style=T98478G]{border-style:none}#html-body [data-pb-style=MWDY5QM],#html-body [data-pb-style=NO71CS1]{max-width:100%;height:auto}@media only screen and (max-width: 768px) { #html-body [data-pb-style=JO10OE5],#html-body [data-pb-style=P8AT0N5],#html-body [data-pb-style=T98478G]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="recommended_categories margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="UMOWVU0"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="O239KQM">推薦系列</h2><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="KFSBN7F"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="Y8D9QBV"><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="LFJ4Y4L"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="P8AT0N5"><a href="/skincare.html" target="" data-link-type="default" title="護膚" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-5-8_A_990__1.jpg}}" alt="護膚" title="護膚" data-element="desktop_image" data-pb-style="HS55JDP"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-5-8_A_990__2.jpg}}" alt="護膚" title="護膚" data-element="mobile_image" data-pb-style="EC2CHQT"></a></figure><h3 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="RVJWJD0">完美新生三效系列</h3></div><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="R4DIJ0S"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="JO10OE5"><a href="/value-set.html" target="" data-link-type="default" title="禮品套裝" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-5-8_B_990__2.jpg}}" alt="禮品套裝" title="禮品套裝" data-element="desktop_image" data-pb-style="V1C0BPM"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-5-8_B_990__1.jpg}}" alt="禮品套裝" title="禮品套裝" data-element="mobile_image" data-pb-style="DT1KWQL"></a></figure><h3 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="QC7CMKC">水酷修護保濕系列</h3></div><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="Q5D8W9J"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="T98478G"><a href="{{widget type=\'Magento\Catalog\Block\Category\Widget\Link\' id_path=\'category/1031\' template=\'Magento_PageBuilder::widget/link_href.phtml\' type_name=\'Catalog Category Link\' }}" target="" data-link-type="category" title="人參系列" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-5-8_C_990__1.jpg}}" alt="人參系列" title="人參系列" data-element="desktop_image" data-pb-style="NO71CS1"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-5-8_C_990__2.jpg}}" alt="人參系列" title="人參系列" data-element="mobile_image" data-pb-style="MWDY5QM"></a></figure><h3 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="PYA8VO3">NEO型塑系列</h3></div></div></div><div data-content-type="html" data-appearance="default" data-element="main"><script type="text/javascript" xml="space">
     require([\'jquery\',\'swiper\'],function($,Swiper){
         $(document).ready(function() {
@@ -1014,8 +1014,8 @@ padding-left: 0!important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-laneige-main-post-staging',
-                    'preview_image' => '.template-managerhklaneigemainpoststaging657fe8a95e59a.jpg',
+                    'name' => 'hk-laneige-main-post-production',
+                    'preview_image' => '.template-managerhklaneigemainpostproduction657fe8a95e59a.jpg',
                     'template' => '<style>#html-body [data-pb-style=YPVRMDA]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;margin:0;padding:0 0 70px}#html-body [data-pb-style=WFUA044]{justify-content:flex-start;display:flex;flex-direction:column;margin:0;padding:0 0 100px}#html-body [data-pb-style=AD5P78Y],#html-body [data-pb-style=RRSKXCJ],#html-body [data-pb-style=WFUA044],#html-body [data-pb-style=X26XL29]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=AD5P78Y]{justify-content:flex-start;display:flex;flex-direction:column}#html-body [data-pb-style=RRSKXCJ],#html-body [data-pb-style=X26XL29]{align-self:stretch}#html-body [data-pb-style=NBNEIN9],#html-body [data-pb-style=RN4A5HB]{display:flex;width:100%}#html-body [data-pb-style=ANUHV62]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;text-align:right;width:50%;margin:0;padding:0;align-self:center}#html-body [data-pb-style=DMSMVY2]{text-align:center}#html-body [data-pb-style=MJ7FU4D],#html-body [data-pb-style=N21GQUB],#html-body [data-pb-style=SG7IJ3E]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:50%;margin:0;padding:0;align-self:center}#html-body [data-pb-style=N21GQUB],#html-body [data-pb-style=SG7IJ3E]{text-align:left}#html-body [data-pb-style=WRDEQ8N]{text-align:center}#html-body [data-pb-style=T92CJYC]{text-align:center;margin-top:50px}#html-body [data-pb-style=C6LJDI3],#html-body [data-pb-style=NHUTY86],#html-body [data-pb-style=RM3H2N5],#html-body [data-pb-style=VP9T7X9]{text-align:center}#html-body [data-pb-style=TN74K19]{text-align:right;border-style:none}#html-body [data-pb-style=AISC3YR],#html-body [data-pb-style=DARVLA5]{max-width:100%;height:auto}#html-body [data-pb-style=CU8XF51]{text-align:right;border-style:none}#html-body [data-pb-style=WY7TCOL],#html-body [data-pb-style=YVLUEB5]{max-width:100%;height:auto}#html-body [data-pb-style=V461YVT]{text-align:center;margin-top:50px}#html-body [data-pb-style=BKR8W4H]{text-align:center;display:none;margin-top:50px}#html-body [data-pb-style=SOV8PAF]{display:inline-block}#html-body [data-pb-style=QGKX7NF]{text-align:center;margin-bottom:0;padding-left:36px;padding-right:36px}#html-body [data-pb-style=WVLPTL9]{display:inline-block}#html-body [data-pb-style=BVROWBO]{text-align:center;margin-bottom:0;padding-left:36px;padding-right:36px}@media only screen and (max-width: 768px) { #html-body [data-pb-style=CU8XF51],#html-body [data-pb-style=TN74K19]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="lounge-row" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="YPVRMDA"><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="X26XL29"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="RN4A5HB"><div class="pagebuilder-column lounge-text" data-content-type="column" data-appearance="align-center" data-background-images="{}" data-element="main" data-pb-style="ANUHV62"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="NHUTY86">完美新生三效賦活精華</h2><h4 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="RM3H2N5">三管精華 三管精準抗老</h4><div class="block-content-recom" data-content-type="text" data-appearance="default" data-element="main"><p style="text-align: center;"><span style="font-size: 18px;">3種精華集成一瓶，快速、準確、強效</span></p></div><div data-content-type="html" data-appearance="default" data-element="main" data-pb-style="DMSMVY2"><div class="product_tags block-content-recom">精準狙擊肌膚老化困擾，有效提升肌膚光彩、
 肌底彈性、撫平皺紋</div></div><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main" data-pb-style="V461YVT"><div data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="SOV8PAF"><a class="pagebuilder-button-secondary" href="concentrated-ginseng-renewing-serum-ex.html" target="" data-link-type="default" data-element="link" data-pb-style="QGKX7NF"><span data-element="link_text">了解更多</span></a></div></div></div><div class="pagebuilder-column image-odd" data-content-type="column" data-appearance="align-center" data-background-images="{}" data-element="main" data-pb-style="MJ7FU4D"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="TN74K19"><a href="/experience/archive/etc_concentrated_ginseng_renewing_serum_2022" target="" data-link-type="default" title="皇牌人參安瓶" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-5-8_D_990px__1.jpg}}" alt="皇牌人參安瓶" title="皇牌人參安瓶" data-element="desktop_image" data-pb-style="AISC3YR"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-5-8_D_990px__2.jpg}}" alt="皇牌人參安瓶" title="皇牌人參安瓶" data-element="mobile_image" data-pb-style="DARVLA5"></a></figure></div></div></div></div></div><div data-content-type="row" data-appearance="contained" data-element="main"><div class="lounge-row" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="WFUA044"><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="RRSKXCJ"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="NBNEIN9"><div class="pagebuilder-column image-odd" data-content-type="column" data-appearance="align-center" data-background-images="{}" data-element="main" data-pb-style="SG7IJ3E"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="CU8XF51"><a href="/brand-belief.html" target="" data-link-type="default" title=" skin recovery" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-5-8_E_990px__1.jpg}}" alt=" skin recovery" title=" skin recovery" data-element="desktop_image" data-pb-style="WY7TCOL"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-5-8_E_990px__2.jpg}}" alt=" skin recovery" title=" skin recovery" data-element="mobile_image" data-pb-style="YVLUEB5"></a></figure></div><div class="pagebuilder-column lounge-text" data-content-type="column" data-appearance="align-center" data-background-images="{}" data-element="main" data-pb-style="N21GQUB"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="C6LJDI3">品牌故事</h2><h4 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="VP9T7X9">我耀我的光</h4><div class="block-content-recom" data-content-type="text" data-appearance="default" data-element="main"><p style="text-align: center;"><span style="font-size: 18px;">from skin to my life. 「LANEIGE」，法文中的「雪」， 意指美的永恆定義－如雪般飽水淨透的無瑕肌膚。</span></p></div><div data-content-type="html" data-appearance="default" data-element="main" data-pb-style="WRDEQ8N"><div class="product_tags block-content-recom">自1994年創立，28年來蘭芝精研肌膚科學，
 時間的腳步從未停止，肌膚的狀態也細微的不停地改變著。
@@ -1090,8 +1090,8 @@ padding-right: 60px;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk_laneige_spa_main-staging',
-                    'preview_image' => '.template-managerhklaneigespamainstaging657fe941e4d57.jpg',
+                    'name' => 'hk_laneige_spa_main-production',
+                    'preview_image' => '.template-managerhklaneigespamainproduction657fe941e4d57.jpg',
                     'template' => '<style>#html-body [data-pb-style=H6M5PXG]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=RYX268H],#html-body [data-pb-style=X7RQXYB]{text-align:center}#html-body [data-pb-style=CFN7AMR]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=P68X444]{display:flex;width:100%}#html-body [data-pb-style=D1CQTLS],#html-body [data-pb-style=DIDPH65],#html-body [data-pb-style=G7D40SA]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:33.3333%;align-self:stretch}#html-body [data-pb-style=CMHDWAU]{border-style:none}#html-body [data-pb-style=RO7H4RS],#html-body [data-pb-style=TRVWG24]{max-width:100%;height:auto}#html-body [data-pb-style=S45F207]{border-style:none}#html-body [data-pb-style=F9Q0EPK],#html-body [data-pb-style=MPK05S5]{max-width:100%;height:auto}#html-body [data-pb-style=OMQ0B52]{border-style:none}#html-body [data-pb-style=AH6ER1T],#html-body [data-pb-style=R1KKJKW]{max-width:100%;height:auto}@media only screen and (max-width: 768px) { #html-body [data-pb-style=CMHDWAU],#html-body [data-pb-style=OMQ0B52],#html-body [data-pb-style=S45F207]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="margin140 home-spa" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="H6M5PXG"><h2 data-content-type="heading" data-appearance="default" data-element="main" data-pb-style="RYX268H">《I\'m LANEIGE》雜誌</h2><div class="sub-title" data-content-type="text" data-appearance="default" data-element="main" data-pb-style="X7RQXYB"><p style="text-align: center;"><span style="font-size: 18px;">韓系皮膚管理，保養美妝秘笈</span></p></div><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="CFN7AMR"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="P68X444"><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="D1CQTLS"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="CMHDWAU"><a href="/spa/introduction.html" target="" data-link-type="default" title="spa" data-element="link"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D003-9-A_660x396_1.jpg}}" alt="spa" title="spa" data-element="desktop_image" data-pb-style="TRVWG24"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D003-9-A_660x396_2.jpg}}" alt="spa" title="spa" data-element="mobile_image" data-pb-style="RO7H4RS"></a></figure><div data-content-type="html" data-appearance="default" data-element="main"><div class="home-spa-detail">
 <p>抗老保養過程中，4個不能小看的老化原因！想要立即擁有完美新生這樣做</p>
 <a href="https://tw.laneige.com/brand/new-magazine/aging.html" class="btn-viewmore">了解更多</a>
@@ -1142,8 +1142,8 @@ padding-right: 60px;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk_laneige_membership_only_home-staging',
-                    'preview_image' => '.template-managerhklaneigemembershiponlyhomestaging657fe9a3c0717.jpg',
+                    'name' => 'hk_laneige_membership_only_home-production',
+                    'preview_image' => '.template-managerhklaneigemembershiponlyhomeproduction657fe9a3c0717.jpg',
                     'template' => '<style>#html-body [data-pb-style=P4U69FH],#html-body [data-pb-style=WOTVEFN]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=WOTVEFN]{justify-content:flex-start;display:flex;flex-direction:column;background-color:#ddd7cc;margin-top:140px;padding-top:80px;padding-bottom:80px}#html-body [data-pb-style=P4U69FH]{align-self:stretch}#html-body [data-pb-style=EPY4I8C]{display:flex;width:100%}#html-body [data-pb-style=ACRB9HG],#html-body [data-pb-style=OJPDXW1]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=OJPDXW1]{width:41.6667%;padding-left:80px}#html-body [data-pb-style=ACRB9HG]{width:58.3333%}#html-body [data-pb-style=U8HSU72]{display:none}#html-body [data-pb-style=LR3JIS9]{display:inline-block}#html-body [data-pb-style=MAILVA2]{text-align:center;margin-top:40px}</style><div class="home-membership" data-content-type="row" data-appearance="full-width" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="main" data-pb-style="WOTVEFN"><div class="row-full-width-inner" data-element="inner"><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="P4U69FH"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="EPY4I8C"><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="OJPDXW1"><h2 data-content-type="heading" data-appearance="default" data-element="main">會員獨享 </h2><div data-content-type="text" data-appearance="default" data-element="main"><p><span style="font-size: 18px;">成為台灣蘭芝會員，優先獲取品牌最新消息，並享有會員禮遇。</span></p></div><div data-content-type="html" data-appearance="default" data-element="main"><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main"><div class="btn-view" data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="KDMPHYE"><a class="membership-link pagebuilder-button-secondary" href="https://tw.laneige.com/special-offers/membership.html" target="" data-link-type="default" data-element="link" data-pb-style="K5BE2Y6"><span data-element="link_text">了解更多</span></a></div></div></div><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main" data-pb-style="U8HSU72"><div class="btn-view" data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="LR3JIS9"><a class="pagebuilder-button-secondary" href="membership/online-shop-exclusive-privileges.html" target="" data-link-type="default" data-element="link" data-pb-style="MAILVA2"><span data-element="link_text">了解更多</span></a></div></div></div><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="ACRB9HG"><div data-content-type="html" data-appearance="default" data-element="main"><div class="membership-items">
     <div class="membership-item">
         <img src="{{media url=wysiwyg/laneige/80px_Welcome_gift.png}}" alt="Welcome Gift" />
@@ -1182,8 +1182,8 @@ text-align: center;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_footer_content-staging',
-                    'preview_image' => '.template-managertwlaneigefootercontentstaging65801ee851706.jpg',
+                    'name' => 'tw_laneige_footer_content-production',
+                    'preview_image' => '.template-managertwlaneigefootercontentproduction65801ee851706.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .jcb-icon{
                       width: 35px;
@@ -1312,8 +1312,8 @@ text-align: center;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw-laneige-footer-social-links-staging',
-                    'preview_image' => '.template-managertwlaneigefootersociallinksstaging65801f2357e79.jpg',
+                    'name' => 'tw-laneige-footer-social-links-production',
+                    'preview_image' => '.template-managertwlaneigefootersociallinksproduction65801f2357e79.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .footer-store-info p {color: #767676; font-size: 11px;}
                     @media (max-width: 767px) {
@@ -1323,8 +1323,8 @@ text-align: center;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_cookie_policy_content-staging',
-                    'preview_image' => '.template-managertwlaneigecookiepolicycontentstaging65801fb4e4610.jpg',
+                    'name' => 'tw_laneige_cookie_policy_content-production',
+                    'preview_image' => '.template-managertwlaneigecookiepolicycontentproduction65801fb4e4610.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><div class="content_policy">
                     <p style="text-align:center;">我們使用 cookie 來改善您的網站體驗。 <br />
                     繼續瀏覽我們的網站，即表示您同意使用 cookie。
@@ -1334,8 +1334,8 @@ text-align: center;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_popup_cookie_content-staging',
-                    'preview_image' => '.template-managertwlaneigepopupcookiecontentstaging6580207c946e7.jpg',
+                    'name' => 'tw_laneige_popup_cookie_content-production',
+                    'preview_image' => '.template-managertwlaneigepopupcookiecontentproduction6580207c946e7.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><div class="content_cookie">
                     <div class="bg_popup">
                 <img src="{{media url=wysiwyg/wysiwyg/20231212-_BN_720x960_.jpg}}" alt="" />
@@ -1408,8 +1408,8 @@ text-align: center;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_block_menu_mobile-staging',
-                    'preview_image' => '.template-managertwblockmenumobilestaging658020d78b953.jpg',
+                    'name' => 'tw_block_menu_mobile-production',
+                    'preview_image' => '.template-managertwblockmenumobileproduction658020d78b953.jpg',
                     'template' => '<style>#html-body [data-pb-style=AI07GM1],#html-body [data-pb-style=OM3QUPJ]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=A96UXF8],#html-body [data-pb-style=DXW1CQR]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=BUXVOR0],#html-body [data-pb-style=I4A2DOI]{display:flex;width:100%}#html-body [data-pb-style=A7SEVD3],#html-body [data-pb-style=DOUMS1G],#html-body [data-pb-style=OYPMJB8],#html-body [data-pb-style=XBLSLDE]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:50%;align-self:stretch}#html-body [data-pb-style=QSB57UC]{border-style:none}#html-body [data-pb-style=VFNEX43],#html-body [data-pb-style=XR92L64]{max-width:100%;height:auto}#html-body [data-pb-style=SBPPAIS]{border-style:none}#html-body [data-pb-style=DQ0RNBV],#html-body [data-pb-style=RKRJMUB]{max-width:100%;height:auto}#html-body [data-pb-style=CPGVD08],#html-body [data-pb-style=DFB7KXI],#html-body [data-pb-style=NVLI01I],#html-body [data-pb-style=RS6NNJ7]{display:none}#html-body [data-pb-style=H0NF6AY]{display:inline-block}#html-body [data-pb-style=UURIX4D]{text-align:center}#html-body [data-pb-style=HL486P7]{display:inline-block}#html-body [data-pb-style=Y7TXPNK]{text-align:center}@media only screen and (max-width: 768px) { #html-body [data-pb-style=QSB57UC],#html-body [data-pb-style=SBPPAIS]{border-style:none} }</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="blog-menu-mobile" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="AI07GM1"><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="DXW1CQR"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="BUXVOR0"><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="OYPMJB8"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="QSB57UC"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D004_A_1.jpg}}" alt="" title="" data-element="desktop_image" data-pb-style="VFNEX43"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D004_A_1.jpg}}" alt="" title="" data-element="mobile_image" data-pb-style="XR92L64"></figure></div><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="A7SEVD3"><h4 data-content-type="heading" data-appearance="default" data-element="main">完美新生三效賦活精華</h4><div data-content-type="text" data-appearance="default" data-element="main" data-pb-style="RS6NNJ7"><p id="HOE2D9W">3種精華集成一瓶，快速、準確、強效</p></div><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main" data-pb-style="CPGVD08"><div data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="H0NF6AY"><div class="pagebuilder-button-primary" data-element="empty_link" data-pb-style="UURIX4D"><span data-element="link_text">了解更多</span></div></div></div><div data-content-type="html" data-appearance="default" data-element="main"><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main"><div class="btn-viewmore" data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="TXW3EEA"><a class="pagebuilder-button-secondary" href="water-bank-blue-hyaluronic-cream-50ml-for-dry-skin.html" target="" data-link-type="default" data-element="link" data-pb-style="E5UVN1P"><span data-element="link_text">了解更多</span></a></div></div></div></div></div></div></div></div><div data-content-type="row" data-appearance="contained" data-element="main"><div class="blog-menu-mobile" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="OM3QUPJ"><div class="pagebuilder-column-group" data-background-images="{}" data-content-type="column-group" data-appearance="default" data-grid-size="12" data-element="main" data-pb-style="A96UXF8"><div class="pagebuilder-column-line" data-content-type="column-line" data-element="main" data-pb-style="I4A2DOI"><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="XBLSLDE"><figure data-content-type="image" data-appearance="full-width" data-element="main" data-pb-style="SBPPAIS"><img class="pagebuilder-mobile-hidden" src="{{media url=wysiwyg/AP-TW-D004_B_1.jpg}}" alt="" title="" data-element="desktop_image" data-pb-style="DQ0RNBV"><img class="pagebuilder-mobile-only" src="{{media url=wysiwyg/AP-TW-D004_B_1.jpg}}" alt="" title="" data-element="mobile_image" data-pb-style="RKRJMUB"></figure></div><div class="pagebuilder-column" data-content-type="column" data-appearance="full-height" data-background-images="{}" data-element="main" data-pb-style="DOUMS1G"><h4 data-content-type="heading" data-appearance="default" data-element="main">水酷修護保濕精華</h4><div data-content-type="text" data-appearance="default" data-element="main" data-pb-style="NVLI01I"><p id="BMDT223">立即提升肌膚六倍保水力！速效補水，一整天水潤有感。</p></div><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main" data-pb-style="DFB7KXI"><div data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="HL486P7"><div class="pagebuilder-button-primary" data-element="empty_link" data-pb-style="Y7TXPNK"><span data-element="link_text">了解更多</span></div></div></div><div data-content-type="html" data-appearance="default" data-element="main"><div data-content-type="buttons" data-appearance="inline" data-same-width="false" data-element="main"><div class="btn-viewmore" data-content-type="button-item" data-appearance="default" data-element="main" data-pb-style="TXW3EEA"><a class="pagebuilder-button-secondary" href="water-bank-blue-hyaluronic-cream-50ml-for-dry-skin.html" target="" data-link-type="default" data-element="link" data-pb-style="E5UVN1P"><span data-element="link_text">了解更多</span></a></div></div></div></div></div></div></div></div><div data-content-type="html" data-appearance="default" data-element="main"><style>
 .satp-megamenu.navigation > ul > li.ui-menu-item>.open-children-toggle {
     top: 14px;
@@ -1459,8 +1459,8 @@ padding-left: 0px !important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_cart_product_bottom-Staging',
-                    'preview_image' => '.template-managertwcartproductbottomstaging6580216bf32d5.jpg',
+                    'name' => 'tw_cart_product_bottom-production',
+                    'preview_image' => '.template-managertwcartproductbottomproduction6580216bf32d5.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .cart-discount .product-item-info{
                     display: flex;
@@ -1678,8 +1678,8 @@ padding-left: 0px !important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_login_coupon-staging',
-                    'preview_image' => '.template-managertwlaneigelogincouponstaging658022154aede.jpg',
+                    'name' => 'tw_laneige_login_coupon-production',
+                    'preview_image' => '.template-managertwlaneigelogincouponproduction658022154aede.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .login-container .block-static-block{
                     width: calc(50% - 10px);
@@ -1703,15 +1703,15 @@ padding-left: 0px !important;
                     }
                     }
                     </style></div><div data-content-type="html" data-appearance="default" data-element="main"><div class="image-coupon">
-                        <a href="https://mcstaging.tw.laneige.com/member-benefits.html">
+                        <a href="https://mcproduction.tw.laneige.com/member-benefits.html">
                              <img src="{{media url=wysiwyg/Tw/AP-TW-D002-D.jpg}}" alt="" />
                         </a>
                     </div></div>',
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_login_benefit-staging',
-                    'preview_image' => '.template-managertwlaneigeloginbenefitstaging6580228485362.jpg',
+                    'name' => 'tw_laneige_login_benefit-production',
+                    'preview_image' => '.template-managertwlaneigeloginbenefitproduction6580228485362.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .block-customer-login{
                     padding-top: 9px !important;
@@ -1774,8 +1774,8 @@ padding-left: 0px !important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_laneige_categories_mobile_block-staging',
-                    'preview_image' => '.template-managertwlaneigecategoriesmobileblockstaging6580230ded8b3.jpg',
+                    'name' => 'tw_laneige_categories_mobile_block-production',
+                    'preview_image' => '.template-managertwlaneigecategoriesmobileblockproduction6580230ded8b3.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><div class="categories_slide_wrapprer">
                     <div id="categories_slide">
                         <div class="categories_item"><a href="{{store direct_url=\'get-to-know-laneige.html\'}}">了解蘭芝</a></div>
@@ -1831,8 +1831,8 @@ padding-left: 0px !important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'sign_up_laneige_shop_benefits-staging',
-                    'preview_image' => '.template-managersignuplaneigeshopbenefitsstaging658023898416b.jpg',
+                    'name' => 'sign_up_laneige_shop_benefits-production',
+                    'preview_image' => '.template-managersignuplaneigeshopbenefitsproduction658023898416b.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><div class="benefits-box">
                     <div class="benefits-title">
                     <h3>優惠不錯過</h3>
@@ -1856,8 +1856,8 @@ padding-left: 0px !important;
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-top-banner-runner-staging',
-                    'preview_image' => '.template-managerhktopbannerrunnerstaging6580245f7cc17.jpg',
+                    'name' => 'hk-top-banner-runner-production',
+                    'preview_image' => '.template-managerhktopbannerrunnerproduction6580245f7cc17.jpg',
                     'template' => '<style>#html-body [data-pb-style=KMQKEWT],#html-body [data-pb-style=W8W0HS2]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}#html-body [data-pb-style=KMQKEWT]{border-style:none;border-width:1px;border-radius:0;margin:0;padding:10px}#html-body [data-pb-style=D8QJ8AH]{border-style:none;border-width:1px;border-radius:0;margin:0;padding:0}#html-body [data-pb-style=AQU7T89]{background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;align-self:stretch}#html-body [data-pb-style=LB5SL3G]{display:flex;width:100%}#html-body [data-pb-style=LNHATOB]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll;width:100%;align-self:stretch}#html-body [data-pb-style=T2OHX1S]{text-align:center}#html-body [data-pb-style=O1I7U7N]{text-align:center;border-style:none;border-width:1px;border-radius:0;margin:0;padding:0}#html-body [data-pb-style=G6A4D70]{margin:0}#html-body [data-pb-style=DNYV1TU]{background-position:left top;background-size:cover;background-repeat:no-repeat;border-style:none;border-width:1px;border-radius:0}#html-body [data-pb-style=FD1PCGB]{padding:0;background-color:transparent}#html-body [data-pb-style=QDAAQFO]{margin:0}#html-body [data-pb-style=MB2I5XQ]{background-position:left top;background-size:cover;background-repeat:no-repeat;border-style:none;border-width:1px;border-radius:0}#html-body [data-pb-style=RI1B4I5]{padding:0;background-color:transparent}</style><div class="laneige-top-banner hideslide hideslide-display-none" data-content-type="row" data-appearance="full-bleed" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="main" data-pb-style="KMQKEWT"><div data-content-type="html" data-appearance="default" data-element="main" data-pb-style="D8QJ8AH"><style>
 .page-header {
   position: relative;
@@ -1945,8 +1945,8 @@ require([
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk-laneige-new-latest-recommendations-staging',
-                    'preview_image' => '.template-managerhklaneigenewlatestrecommendationsstaging6580278f037f5.jpg',
+                    'name' => 'hk-laneige-new-latest-recommendations-production',
+                    'preview_image' => '.template-managerhklaneigenewlatestrecommendationsproduction6580278f037f5.jpg',
                     'template' => '<style>#html-body [data-pb-style=I66XTHD]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="margin140" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="I66XTHD"><div data-content-type="html" data-appearance="default" data-element="main"><div class="bestseller_content">
                     <div class="container">
                         <div class="cms_title">
@@ -2191,8 +2191,8 @@ require([
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'laneige-best-product-staging',
-                    'preview_image' => '.template-managerlaneigebestproductstaging658027cbd63cf.jpg',
+                    'name' => 'laneige-best-product-production',
+                    'preview_image' => '.template-managerlaneigebestproductproduction658027cbd63cf.jpg',
                     'template' => '<style>#html-body [data-pb-style=PGPGFWH]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="PGPGFWH"><div data-content-type="html" data-appearance="default" data-element="main"><div class="bestseller_content">
                     <div class="container">
                         <div class="cms_title">
@@ -2426,8 +2426,8 @@ require([
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'tw_account_dashboard_banner-staging',
-                    'preview_image' => '.template-managertwaccountdashboardbannerstaging65811c22331aa.jpg',
+                    'name' => 'tw_account_dashboard_banner-production',
+                    'preview_image' => '.template-managertwaccountdashboardbannerproduction65811c22331aa.jpg',
                     'template' => '<div data-content-type="html" data-appearance="default" data-element="main"><style>
                     .line-add-friend-bottom{
                     display: none;
@@ -2482,8 +2482,8 @@ require([
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk_laneize_banner_b_type-staging',
-                    'preview_image' => '.template-managerhklaneizebannerbtypestaging65811f4b13f16.jpg',
+                    'name' => 'hk_laneize_banner_b_type-production',
+                    'preview_image' => '.template-managerhklaneizebannerbtypeproduction65811f4b13f16.jpg',
                     'template' => '<style>#html-body [data-pb-style=NFNUJ31]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="NFNUJ31"><div data-content-type="html" data-appearance="default" data-element="main"><div class="banner_category">
                     <img src="{{media url=wysiwyg/Tw/AP-TW-D009_B_PC_2880x510_.jpg}}" class="hidden-pc" alt="護膚"  />
                     <img src="{{media url=wysiwyg/Tw/AP-TW-D009_B_MO_720x360_.jpg}}"  class="hidden-mo" alt="護膚" />
@@ -2587,8 +2587,8 @@ require([
                     'created_for' => 'any'
                ],
                [
-                    'name' => 'hk_laneize_banner_b_type_style-staging',
-                    'preview_image' => '.template-managerhklaneizebannerbtypestylestaging65811f99cbefc.jpg',
+                    'name' => 'hk_laneize_banner_b_type_style-production',
+                    'preview_image' => '.template-managerhklaneizebannerbtypestyleproduction65811f99cbefc.jpg',
                     'template' => '<style>#html-body [data-pb-style=VPOK1CX]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="VPOK1CX"><div data-content-type="html" data-appearance="default" data-element="main"><div class="banner_category">
                     <img src="{{media url=wysiwyg/wysiwyg/AP-TW-D009_A_PC_2880x510_.jpg}}" class="hidden-pc" alt="保養" />
                     <img src="{{media url=wysiwyg/wysiwyg/AP-TW-D009_A_MO_720x360_.jpg}}" class="hidden-mo" alt="保養" />
@@ -2693,8 +2693,8 @@ require([
                     'created_for' => 'any'
                   ],
                   [
-                    'name' => 'tw_laneige_ordersuccess_favorites-staging',
-                    'preview_image' => '.template-managertwlaneigeordersuccessfavoritesstaging658283253f266.jpg',
+                    'name' => 'tw_laneige_ordersuccess_favorites-production',
+                    'preview_image' => '.template-managertwlaneigeordersuccessfavoritesproduction658283253f266.jpg',
                     'template' => '<style>#html-body [data-pb-style=Y6T5CX8]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div class="customer_favories" data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="Y6T5CX8"><div data-content-type="html" data-appearance="default" data-element="main"><div class="block_title">
                     <h2>Customer Favorites</h2>
                     <p>Perfect combination with</p>
@@ -2740,8 +2740,8 @@ require([
                     'created_for' => 'any'
                   ],
                   [
-                    'name' => 'tw_laneige_order_failed_content-staging',
-                    'preview_image' => '.template-managertwlaneigeorderfailedcontentstaging658283c4e9996.jpg',
+                    'name' => 'tw_laneige_order_failed_content-production',
+                    'preview_image' => '.template-managertwlaneigeorderfailedcontentproduction658283c4e9996.jpg',
                     'template' => '<style>#html-body [data-pb-style=PREXSDC],#html-body [data-pb-style=V5LX3JP]{justify-content:flex-start;display:flex;flex-direction:column;background-position:left top;background-size:cover;background-repeat:no-repeat;background-attachment:scroll}</style><div data-content-type="row" data-appearance="contained" data-element="main"><div data-enable-parallax="0" data-parallax-speed="0.5" data-background-images="{}" data-background-type="image" data-video-loop="true" data-video-play-only-visible="true" data-video-lazy-load="true" data-video-fallback-src="" data-element="inner" data-pb-style="PREXSDC"><div data-content-type="html" data-appearance="default" data-element="main"><div class="service_center">
                     <h2 class="title">Service Center</h2>
                     <p><strong>Call</strong> <a href="tel:+852 2895 6008">+852 2895 6008</a> (Ofiice hour : 10:00 ~ 19:00)</p>
