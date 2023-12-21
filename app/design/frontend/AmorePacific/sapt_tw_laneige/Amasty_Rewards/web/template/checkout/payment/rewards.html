@@ -18,13 +18,15 @@
         </div>
         <!-- /ko -->
         <div class="pointsLeft" data-role="title">
-            <!-- ko i18n: '你有'--><!-- /ko -->
+            <!-- ko i18n: '共有點數'--><!-- /ko -->
             <strong data-bind="text: getRewardsCount()"></strong>
-            <!-- ko i18n: ' 剩余点数 '--><!-- /ko -->
+            <!-- ko i18n: ' 點，可折抵 '--><!-- /ko -->
+            <strong data-bind="text: getAmount()"></strong>
+            <!-- ko i18n: ' 元'--><!-- /ko -->
         </div>
         <div class="amrewards-points-rate" data-role="title">
             <span data-bind="text: getRateForCurrency()"></span>
-            <!-- ko i18n: ' 对于每一个'--><!-- /ko -->
+            <!-- ko i18n: ' 點數 = '--><!-- /ko -->
             <span data-bind="text: getPointsRate()"></span>
             <span data-bind="text: getCurrentCurrency()"></span>
             <!-- ko if: isRewardsTooltipEnabled -->
