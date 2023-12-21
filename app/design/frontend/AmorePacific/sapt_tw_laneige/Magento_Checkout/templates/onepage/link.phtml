@@ -14,8 +14,8 @@ use Magento\Framework\Escaper;
 ?>
 <?php if ($block->isPossibleOnepageCheckout()): ?>
     <button type="button"
-            clicktext="<?= __('Order Now') ?>"
-            formtext="<?= __('Order Now') ?>"
+            clicktext="<?= $escaper->escapeHtml(__('Proceed to Checkout')) ?>"
+            formtext="<?= $escaper->escapeHtml(__('Proceed to Checkout')) ?>"
             data-role="proceed-to-checkout"
             title="<?= $escaper->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
             data-mage-init='{
