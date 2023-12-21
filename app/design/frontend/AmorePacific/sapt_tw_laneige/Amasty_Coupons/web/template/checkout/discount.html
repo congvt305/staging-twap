@@ -1,0 +1,82 @@
+<div class="payment-option _collapsible opc-payment-additional discount-code">
+    <div class="amcheckout-title" data-amcheckout-js="step-title" data-bind="i18n: 'DISCOUNT INFORMATION'">
+    </div>
+    <div id="checkout-step-discount" class="step-content amcheckout-content"
+         data-amcheckout-js="step-content" data-role="content" data-bind="mageInit: {'checkoutCollapsibleSteps': {}}"
+         role="tabpanel" aria-hidden="false">
+        <!--ko if: isLoggedIn() && hasCouponWallet() && isEnableMultiCoupons() -->
+        <div class="amcoupon-wallet">
+        <span class="action amcp-title" id="wallet-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Select your coupon'--><!-- /ko -->
+        </span>
+            <select name="multi-coupon-wallet"
+                    class="select select-coupon"
+                    id="multi-coupon-wallet"
+                    data-validate='{"required": true}'
+                    data-bind="
+                options: getCouponOptions(),
+                optionsValue: 'value',
+                optionsText: 'name',
+                value: selectedCoupon" >
+            </select>
+        </div>
+        <!--/ko-->
+
+        <div class="amcoupon-form">
+            <div class="payment-option-title field choice" data-role="title">
+        <span class="action amcp-title" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Enter Discount Code'--><!-- /ko -->
+        </span>
+            </div>
+            <div class="amcoupons-main-container payment-option-content"  aria-labelledby="block-discount-heading">
+                <form class="form form-discount" id="discount-form" data-bind="blockLoader: isLoading">
+
+
+                    <!-- ko foreach: getRegion('messages') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+
+                    <div class="payment-option-inner">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input-text"
+                                       type="text"
+                                       id="discount-code"
+                                       name="discount_code"
+                                       data-validate="{'required-entry':true}"
+                                       data-bind="value: inputCode, attr:{placeholder: $t('Enter discount code')}" />
+                            </div>
+                        </div>
+                        <div class="actions-toolbar">
+                            <button class="amcoupons-apply action primary"
+                                    type="submit"
+                                    data-bind="'value': $t('Apply'), click: apply">
+                                <!-- ko i18n: 'Apply'--><!-- /ko -->
+                            </button>
+                        </div>
+                    </div>
+                    <div class="amcoupons-applied-wrapper">
+                        <!-- ko foreach: { data: couponsArray, as: 'code', beforeRemove: onCouponRemove, afterAdd: onCouponAdd } -->
+                        <div class="amcoupons-applied-coupon">
+                            <span class="code">
+                                    <!--ko text: code--><!--/ko-->
+                                </span>
+                            <a href="#"
+                               class="amcoupons-remove"
+                               data-bind="
+                       click: $parent.removeSelected.bind($parent),
+                       attr: { title: $t('Remove'), 'aria-label': $t('Remove coupon') }"
+                               data-amcoupons-js="remove-applied-coupon">
+                            </a>
+                            <span class="amcoupons-message" data-amcoupons-js="message"></span>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- ko foreach: getRegion('captcha') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (http://www.amasty.com)
+ * @package Amasty_Scroll
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amasty_scroll>
+            <general>
+                <loading><![CDATA[auto]]></loading>
+                <num_pages_before_button>3</num_pages_before_button>
+                <num_pages_before_auto>0</num_pages_before_auto>
+                <page_numbers>1</page_numbers>
+                <page_number_style><![CDATA[button]]></page_number_style>
+                <loader><![CDATA[Amasty_Scroll::images/loader.svg]]></loader>
+            </general>
+            <button>
+                <label_before><![CDATA[Load previous]]></label_before>
+                <label_after><![CDATA[Load next]]></label_after>
+                <color>#4776F0</color>
+                <color_pressed>#1846BE</color_pressed>
+            </button>
+            <info>
+                <enabled><![CDATA[1]]></enabled>
+                <style_desktop><![CDATA[text]]></style_desktop>
+                <style_mobile><![CDATA[arrow]]></style_mobile>
+                <color>#4776F0</color>
+            </info>
+            <advanced>
+                <product_container_group>.products.products-grid, .products.products-list, .products-grid.grid</product_container_group>
+                <product_link>.product-item-link</product_link>
+                <footer_selector>.page-footer</footer_selector>
+            </advanced>
+        </amasty_scroll>
+    </default>
+</config>

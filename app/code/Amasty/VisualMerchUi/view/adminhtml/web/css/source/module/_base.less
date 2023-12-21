@@ -1,0 +1,159 @@
+//
+//  Base Styles
+//  ____________________________________________
+
+//
+//  Common
+//  --------------------------------------------
+
+& when (@media-common = true) {
+    .ammerchui-products-list {
+        & {
+            color: #333;
+        }
+
+        .ammerchui-icon {
+            & {
+                .am-flex(center, center);
+
+                position: relative;
+                width: @ammerchui__indent__xxl;
+                height: @ammerchui__indent__xxl;
+                border: 1px solid transparent;
+                border-radius: 50%;
+                background-color: #fff;
+                background-repeat: no-repeat;
+                box-shadow: 1px 2px 6px rgba(34, 103, 157, .3), 0 1px 1px rgba(38, 79, 111, .1);
+                cursor: pointer;
+            }
+
+            &:before {
+                background-position: center;
+                background-repeat: no-repeat;
+                content: '';
+            }
+
+            &:hover {
+                & {
+                    background: @ammerchui__hover__color;
+                }
+
+                &:before {
+                    filter: brightness(5);
+                }
+            }
+        }
+    }
+
+    .ammerchui-move-top:before {
+        width: 100%;
+        height: 100%;
+        background-image: @ammerchui-chevron__background;
+    }
+
+    .ammerchui-switch-button {
+        &:before {
+            position: absolute;
+            width: @ammerchui__indent;
+            height: @ammerchui__indent__l;
+            background: @ammerchui-pin__background no-repeat;
+        }
+
+        &.-pressed {
+            box-shadow: none;
+            transform: translateY(1px);
+        }
+
+        .ammerchui-mode {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+    }
+
+    .manage-rules-sorting .admin__field > .admin__field-label {
+        margin-right: .5rem;
+        text-align: left;
+    }
+
+    .amerchui-tabs {
+        & {
+            padding: 0;
+        }
+
+        .ammerchui-tab {
+            clear: both;
+            border-top: 0;
+        }
+    }
+
+    .ammerchui-condition-wrap {
+        & {
+            display: inline-block;
+            margin-bottom: @ammerchui__indent__l;
+            padding-right: @ammerchui__indent / 2;
+            width: 30%;
+            vertical-align: top;
+        }
+
+        &:first-child {
+            margin-right: 3%;
+            width: 60%;
+        }
+
+        // Styling magento elements
+        .action-default {
+            margin-top: @ammerchui__indent__l;
+        }
+
+        .admin__field-label {
+            margin-right: @ammerchui__indent__l;
+        }
+        // end Styling magento elements
+    }
+
+    // Styling magento elements
+    .admin__collapsible-block-wrapper .am-condition-wrap .fieldset-wrapper-title {
+        padding-bottom: @ammerchui__indent__l;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .landing-page-link {
+        display: none;
+    }
+    // end Styling magento elements
+
+    .ammerchui-message {
+        &.-hidden {
+            display: none;
+        }
+
+        &.-success {
+            color: @ammerchui__active__color;
+        }
+    }
+
+    .ammerchui-comments-block {
+        .rule-tree & {
+            margin-bottom: 1rem;
+            background-color: @ammerchui-comment__background-color;
+            list-style: inside;
+            font-size: 1.2rem;
+        }
+
+        > .ammerchui-item {
+            & {
+                padding: 1rem;
+            }
+
+            &:last-child {
+                padding-top: 0;
+            }
+        }
+    }
+}

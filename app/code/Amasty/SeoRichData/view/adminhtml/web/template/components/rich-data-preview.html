@@ -1,0 +1,31 @@
+<div class="amseorichdata-preview-component"
+     if="componentEnabled()"
+     data-bind="
+        hasFocus: focused,
+        visible: visible,
+        attr: {
+            name: inputName,
+            'aria-describedby': noticeId,
+            placeholder: placeholder,
+            id: uid,
+            disabled: disabled
+        }">
+    <div class="amseorichdata-item amseorichdata-link" data-bind="html: previewLink()"></div>
+    <div class="amseorichdata-item amseorichdata-title" data-bind="text: previewTitle()"></div>
+
+    <div class="amseorichdata-item amseorichdata-description"
+         if="$data[data.description_mode]()"
+         data-bind="text: getDescription()"></div>
+
+    <div class="amseorichdata-item amseorichdata-footer">
+        <!-- ko template: { name: $data.templates.rating } --><!-- /ko -->
+
+        <div class="amseorichdata-item amseorichdata-price">
+            <span if="isPriceUpdateLive()" data-bind="html: previewCurrency()"></span>
+            <span data-bind="html: getPreviewPrice()"></span>
+        </div>
+        <div class="amseorichdata-item amseorichdata-stock"
+             if="stockStatus()"
+             data-bind="i18n: getStockMessage()"></div>
+    </div>
+</div>

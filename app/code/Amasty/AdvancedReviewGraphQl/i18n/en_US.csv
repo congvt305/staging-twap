@@ -1,0 +1,5 @@
+"Review ID must be greater than 0.","Review ID must be greater than 0."
+"Vote type must be plus or minus.","Vote type must be plus or minus."
+"Wrong parameter storeId.","Wrong parameter storeId."
+"Wrong post id.","Wrong post id."
+"Base64Decode File Error","Base64Decode File Error"
