@@ -6,21 +6,15 @@
 ?>
 <div class="order-info">
     <div class="order-date">
-        <?= $block->escapeHtml(
-            __(
-                '<span class="label">Order Date</span> %1',
-                '<span>' . $block->formatDate($block->getOrder()->getCreatedAt(), \IntlDateFormatter::LONG) . '</span>'
-            ),
-            ['span']
-        )?>
+        <span class="label"><?= $block->escapeHtml(__('Order Date')) ?></span>
+        <span class="value"><?= $block->escapeHtml($block->formatDate($block->getOrder()->getCreatedAt(), \IntlDateFormatter::LONG)) ?></span>
     </div>
     <div class="order-number">
-        <?= $block->escapeHtml(
-            __(
-                '<span class="label">Order Number</span> %1',
-                '<span>' . $block->getOrder()->getIncrementId() . '</span>'
-            ),
-            ['span']
-        )?>
+        <span class="label"><?= $block->escapeHtml(__('Order Number')) ?></span>
+        <span class="value"><?= $block->escapeHtml($block->getOrder()->getIncrementId()) ?></span>
+    </div>
+    <div class="order-status">
+        <span class="label"><?= $block->escapeHtml(__('Order Status')) ?></span>
+        <span class="value"><?= $block->escapeHtml(__($block->getOrder()->getStatusLabel())) ?></span>
     </div>
 </div>
