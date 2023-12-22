@@ -23,4 +23,12 @@
             ['span']
         )?>
     </div>
+    <div class="order-status">
+        <?= $block->escapeHtml(
+            __(
+                '<span>' . $block->escapeHtml(__($block->getOrder()->getStatusLabel())) . '</span>'
+            ),
+            ['span']
+        )?>
+    </div>
 </div>

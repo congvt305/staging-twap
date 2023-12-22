@@ -40,10 +40,6 @@ if ($layoutHander == "sales_order_history") {
             <?= $viewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?>
         </a>
         <div class="product-item-details">
-            <div class="shipping">
-                <span class="in-delivery"><?= $escaper->escapeHtml(__($_order->getStatusLabel())) ?></span>
-                <span class="method"><?= $escaper->escapeHtml(__($shippingMethod)) ?></span>
-            </div>
             <strong class="product-item-name">
                 <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
             </strong>
