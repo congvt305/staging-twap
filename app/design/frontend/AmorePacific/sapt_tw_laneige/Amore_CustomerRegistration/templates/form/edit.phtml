@@ -137,11 +137,6 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
         </div>
     </fieldset>
 
-    <?php $beautyProfileStatus = $block->getLayout()->createBlock(\Sapt\Customer\Block\Widget\BeautyProfile::class, 'beauty_profile', ['data'=>['attribute_code'=>'beauty_profile', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'beauty_profile'))]]) ?>
-    <?php if ($beautyProfileStatus->isEnabled()) : ?>
-        <?= $beautyProfileStatus->toHtml() ?>
-    <?php endif ?>
-
     <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Subscription::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))]]) ?>
     <?php if ($callSubscriptionStatus->isEnabled()) : ?>
         <?= $callSubscriptionStatus->setCallSubscriptionStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))->toHtml() ?>
