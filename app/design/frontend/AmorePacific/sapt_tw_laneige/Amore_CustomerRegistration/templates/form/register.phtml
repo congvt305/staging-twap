@@ -281,7 +281,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
 
             <?php if ($callSubscriptionStatus->isEnabled() || $_dmSubscriptionStatus->isEnabled()) : ?>
                 <div class="checkbox-wrapper choice field" style="display: block;">
-                    <input type="checkbox" name="" class="select_deselect_all_terms" id="select_deselect_all_terms">
+                    <input type="checkbox" name="" class="select_deselect_all_terms" id="select_deselect_all_terms" checked>
                     <label class="label" for="select_deselect_all_terms"><span class="marketing-title"><?= $block->escapeHtml(__('Marketing Consent')) ?></span></label>
                 </div>
             <?php endif ?>
@@ -300,7 +300,7 @@ $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCode
 
             <?php if ($block->isNewsletterEnabled()) : ?>
                 <div class="field choice newsletter">
-                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox select_unselect_terms">
+                    <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed" checked class="checkbox select_unselect_terms">
                     <label for="is_subscribed" class="label news-letter-policy-label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
                 </div>
                 <?php /* Extensions placeholder */ ?>
