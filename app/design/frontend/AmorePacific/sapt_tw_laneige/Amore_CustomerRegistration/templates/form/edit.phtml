@@ -20,7 +20,10 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
         <legend class="legend"><span><?= $block->escapeHtml(__('Account Information')) ?></span></legend><br>
         <?= $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
         <div class="field mobile required">
-            <label for="mobile_number_info" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <label for="mobile_number" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <input type="text" name="mobile_number" value="<?= $mobileNumber ?>" disabled>
+            </div>
             <span class="note code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
         </div>
         <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class)  ?>
