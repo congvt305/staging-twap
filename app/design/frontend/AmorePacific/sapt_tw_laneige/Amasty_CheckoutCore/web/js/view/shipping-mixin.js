@@ -707,7 +707,7 @@ define(
                     let address = quote.shippingAddress();
                     $('[name="firstname"]').val(address.firstname);
                     $('[name="lastname"]').val(address.lastname);
-                    $('[name="telephone"]').val(address.telephone);
+                    $('[name="telephone"]').val(address.telephone).trigger("change");
                     _.each(address.customAttributes, function (value, key) {
                         if (value.attribute_code == 'country_pos_code') {
                             if (typeof value.value == 'string') {
