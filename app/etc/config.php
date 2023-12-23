@@ -239,6 +239,13 @@ return [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
                 ]
             ],
             'tw_lageige_website' => [
@@ -253,6 +260,13 @@ return [
                     'locale' => [
                         'code' => 'vi_VN'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
                 ]
             ],
             'vn_sulwhasoo_website' => [
@@ -266,6 +280,13 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
+                    ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
                     ]
                 ]
             ],
