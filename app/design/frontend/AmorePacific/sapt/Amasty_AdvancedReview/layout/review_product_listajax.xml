@@ -5,7 +5,6 @@
         <referenceBlock name="amasty.product.info.product_additional_data">
             <block class="Magento\Review\Block\Form"
                    name="modal.product.review.form"
-                   cacheable="false"
                    template="Magento_Review::form.phtml">
                 <arguments>
                     <argument name="jsLayout" xsi:type="array">
