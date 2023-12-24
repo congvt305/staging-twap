@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace Eguana\RedInvoice\Plugin\Checkout\Model;
 
 use Amasty\CheckoutCore\Model\Config;
-use Eguana\RedInvoice\Model\RedInvoiceConfig\RedInvoiceConfig;
 use Eguana\RedInvoice\Model\RedInvoiceLogger;
 use Magento\Checkout\Model\Session;
-use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class AddDataRedInvoice
@@ -33,33 +31,17 @@ class AddDataRedInvoice
     private $logger;
 
     /**
-     * @var RedInvoiceConfig
-     */
-    private $redInvoiceConfig;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManage;
-
-    /**
-     * @param StoreManagerInterface $storeManage
-     * @param RedInvoiceConfig $redInvoiceConfig
      * @param Config $amastyConfig
      * @param Session $checkoutSession
      * @param LoggerInterface $logger
      * @param RedInvoiceLogger $redInvoiceLogger
      */
     public function __construct(
-        StoreManagerInterface $storeManage,
-        RedInvoiceConfig $redInvoiceConfig,
         Config $amastyConfig,
         Session $checkoutSession,
         LoggerInterface $logger,
         RedInvoiceLogger $redInvoiceLogger
     ) {
-        $this->storeManage = $storeManage;
-        $this->redInvoiceConfig = $redInvoiceConfig;
         $this->amastyConfig = $amastyConfig;
         $this->checkoutSession = $checkoutSession;
         $this->logger = $logger;
@@ -81,20 +63,17 @@ class AddDataRedInvoice
         \Magento\Quote\Api\Data\PaymentInterface $paymentMethod,
         \Magento\Quote\Api\Data\AddressInterface $billingAddress = null
     ) {
-        $websiteId = $this->storeManage->getWebsite()->getId();
-        $isModuleEnabled = $this->redInvoiceConfig->getEnableValue($websiteId);
-        if ($this->amastyConfig->isEnabled() && $isModuleEnabled) {
+        if ($this->amastyConfig->isEnabled()) {
+            $extAttributes = $billingAddress->getData('extension_attributes');
+            $isApply = $extAttributes->getIsApply();
+            $companyName = $extAttributes->getCompanyName();
+            $taxCode = $extAttributes->getTaxCode();
+            $email = $extAttributes->getEmail();
+            $state = $extAttributes->getState();
+            $city = $extAttributes->getCity();
+            $ward = $extAttributes->getWard();
+            $roadName = $extAttributes->getRoadName();
             try {
-                $extAttributes = $billingAddress->getData('extension_attributes');
-                $isApply = $extAttributes->getIsApply();
-                $companyName = $extAttributes->getCompanyName();
-                $taxCode = $extAttributes->getTaxCode();
-                $email = $extAttributes->getEmail();
-                $state = $extAttributes->getState();
-                $city = $extAttributes->getCity();
-                $ward = $extAttributes->getWard();
-                $roadName = $extAttributes->getRoadName();
-
                 $this->checkoutSession->setIsApply($isApply);
                 $this->checkoutSession->setCompanyName($companyName);
                 $this->checkoutSession->setTaxCode($taxCode);

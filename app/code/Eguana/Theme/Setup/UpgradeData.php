@@ -46,14 +46,14 @@ class UpgradeData implements UpgradeDataInterface
             $attributeSetId = $categorySetup->getDefaultAttributeSetId($entityTypeId);
 
             $menu_attributes = [
-                'sapt_menu_block_external_url' => [
+                'satp_menu_block_external_url' => [
                     'type' => 'text',
                     'label' => 'External Url',
                     'input' => 'text',
                     'required' => false,
                     'sort_order' => 150,
                     'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                    'group' => 'Sapt Menu'
+                    'group' => 'Satp Menu'
                 ]
             ];
 
@@ -61,7 +61,7 @@ class UpgradeData implements UpgradeDataInterface
                 $categorySetup->addAttribute(\Magento\Catalog\Model\Category::ENTITY, $item, $data);
             }
 
-            $idg =  $categorySetup->getAttributeGroupId($entityTypeId, $attributeSetId, 'Sapt Menu');
+            $idg =  $categorySetup->getAttributeGroupId($entityTypeId, $attributeSetId, 'Satp Menu');
 
             foreach($menu_attributes as $item => $data) {
                 $categorySetup->addAttributeToGroup(

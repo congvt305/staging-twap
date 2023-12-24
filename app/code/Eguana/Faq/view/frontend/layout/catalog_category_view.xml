@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- <referenceBlock name="content">
+        <referenceBlock name="content">
             <block class="Eguana\Faq\Block\Faq" name="faq_list" template="Eguana_Faq::catalog/faq_list.phtml" after="category.products">
                 <arguments>
                     <argument name="faq_view_model" xsi:type="object">Eguana\Faq\ViewModel\Faq</argument>
                 </arguments>
             </block>
-        </referenceBlock> -->
+        </referenceBlock>
     </body>
 </page>

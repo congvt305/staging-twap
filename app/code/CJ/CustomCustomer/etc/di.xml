@@ -3,7 +3,6 @@
     <preference for="CJ\CustomCustomer\Api\CustomerGroupManagementInterface" type="CJ\CustomCustomer\Model\CustomerGroup\CustomerGroupManagement"/>
     <preference for="CJ\CustomCustomer\Api\Data\CustomerDataInterface" type="CJ\CustomCustomer\Model\CustomerGroup\CustomerData"/>
     <preference for="CJ\CustomCustomer\Api\Data\SyncGradeResponseInterface" type="CJ\CustomCustomer\Model\CustomerGroup\SyncGradeResponse"/>
-    <preference for="Magento\Customer\Controller\Account\CreatePost" type="CJ\CustomCustomer\Controller\Account\CreatePost"/>
 
     <type name="Magento\Framework\Console\CommandListInterface">
         <arguments>

@@ -5051,7 +5051,7 @@ new products will be created. Use this step to customize images and price for yo
 "It's a default shipping address.","這是默認的送貨地址。",module,Magento_Customer
 "Use as my default shipping address","設定為「我的送貨地址」",module,Magento_Customer
 "Save Address","保存地址",module,Magento_Customer
-"Go back","返回",module,Magento_Customer
+"Go back","回去",module,Magento_Customer
 "Please enter your email below and we will send you the confirmation link.","Please enter your email below and we will send you the confirmation link.",module,Magento_Customer
 "Email","電子郵件",module,Magento_Customer
 "Send confirmation link","Send confirmation link",module,Magento_Customer
@@ -5540,7 +5540,7 @@ Email template chosen based on theme fallback when ""Default"" option is selecte
 "This is your default shipping address.","已設定為「我的送貨地址」",module,Magento_CustomerCustomAttributes
 "Use as my default shipping address","設定為「我的送貨地址」",module,Magento_CustomerCustomAttributes
 "Save Address","保存地址",module,Magento_CustomerCustomAttributes
-"Go back","返回",module,Magento_CustomerCustomAttributes
+"Go back","回去",module,Magento_CustomerCustomAttributes
 "Account Information","個人資訊",module,Magento_CustomerCustomAttributes
 "Change Email","更改電子郵件",module,Magento_CustomerCustomAttributes
 "Change Password","更改密碼",module,Magento_CustomerCustomAttributes
