@@ -1,15 +1,21 @@
+Subject: [PATCH] Create path fix preg_match
+---
+Index: vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
 diff --git a/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php b/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php
-index 5f138659c..732359366 100644
---- a/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php
-+++ b/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php
-@@ -1473,7 +1473,12 @@ class MobileDetect
-             return false;
-         }
-
+--- a/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php	(revision 725299f9b1ce197a157f41c5da8ff9bf251125b9)
++++ b/vendor/amasty/module-page-speed-tools/Lib/MobileDetect.php	(date 1683278050866)
+@@ -1264,7 +1264,12 @@
+      */
+     public function match($regex, $userAgent = null)
+     {
 -        $match = (bool) preg_match(sprintf('#%s#is', $regex), (false === empty($userAgent) ? $userAgent : $this->userAgent), $matches);
 +        $agent = $this->userAgent;
 +        if (false === empty($userAgent)) {
-+        $agent = $userAgent;
++            $agent = $userAgent;
 +        }
 +
 +        $match = (bool) preg_match(sprintf('#%s#is', $regex), ($agent ? $agent : ''), $matches);
