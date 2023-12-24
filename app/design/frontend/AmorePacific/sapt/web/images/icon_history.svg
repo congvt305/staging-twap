@@ -1,0 +1,12 @@
+<svg data-name="24px_history" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g data-name="Group 468769">
+        <g data-name="Ellipse 8376" transform="translate(2 2)" style="stroke:#222;stroke-miterlimit:10;stroke-width:1.5px;fill:none">
+            <circle cx="10" cy="10" r="10" style="stroke:none"/>
+            <circle cx="10" cy="10" r="9.25" style="fill:none"/>
+        </g>
+        <g data-name="Group 468768">
+            <path data-name="Rectangle 348824" transform="translate(11 7)" style="fill:#222" d="M0 0h1.5v6H0z"/>
+            <path data-name="Rectangle 348825" transform="rotate(90 2.5 14.5)" style="fill:#222" d="M0 0h1.5v6H0z"/>
+        </g>
+    </g>
+</svg>
