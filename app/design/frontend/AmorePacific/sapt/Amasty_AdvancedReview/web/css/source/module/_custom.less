@@ -1,0 +1,38 @@
+.amreview-submit-form .field {
+  > .label {
+    display: block !important;
+    width: auto;
+  }
+  label {
+    float: left;
+  }
+}
+
+.amreview-submit-form {
+  .review-control-vote.control {
+    & {
+      display: flex !important;
+    }
+    &:hover:before {
+      color: inherit!important;
+    }
+  }
+
+  .review-control-vote label{
+    cursor: pointer;
+    display: block !important;
+    position: absolute !important;
+    top: 2px;
+  }
+}
+div#product-review-container {
+  .amrev-toolbar-container {
+    ul.amrev-filters {
+      input[type="checkbox"] {
+        &:checked {
+          display: none
+        }
+      }
+    }
+  }
+}

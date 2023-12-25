@@ -1,0 +1,416 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .ticket-notification {
+        text-align: center;
+        background: #f0efe4;
+    }
+
+    .note-panel .note-message {
+        display: none;
+    }
+
+    .block-ticket-history {
+        .block-title {
+            overflow: hidden;
+
+            strong {
+                float: left;
+                margin-right: @indent__base;
+            }
+        }
+
+        .table.history {
+            margin-top: -@indent__base;
+        }
+
+        .note {
+            .lib-font-size(14);
+            float: left;
+            line-height: 28px;
+
+            a {
+                .lib-link(
+                    @_link-color: @theme__color__primary-alt,
+                    @_link-text-decoration: none,
+                    @_link-color-visited: @theme__color__primary-alt,
+                    @_link-text-decoration-visited: none,
+                    @_link-color-hover: @theme__color__primary-alt,
+                    @_link-text-decoration-hover: none,
+                    @_link-color-active: @theme__color__primary-alt,
+                    @_link-text-decoration-active: none
+                ) !important;
+            }
+        }
+    }
+
+    .new-ticket-button {
+        margin-top: 50px;
+
+        .action {
+            .lib-button();
+            .lib-link-as-button();
+        }
+    }
+
+    .btn-row {
+        a.custom-tkt-btn {
+            margin: 0 !important;
+            text-transform: capitalize;
+            line-height: 38px !important;
+            padding: 0 24px;
+        }
+    }
+
+    .chat-container {
+        overflow: hidden;
+
+        & + .actions-toolbar {
+            padding-top: @indent__base;
+            text-align: right;
+            width: 100% !important;
+
+            .action {
+                &:extend(.abs-button-l all);
+            }
+        }
+
+        .left-container,
+        .right-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .info-box {
+            float: right;
+        }
+
+        .message-attachment-box {
+            display: inline-block;
+
+            p {
+                margin-bottom: 0;
+                word-break: break-all;
+            }
+
+            &.attachment-list {
+                display: block;
+            }
+        }
+
+        .left-container {
+            background-color: @secondary__color__light;
+            border-color: @secondary__color__light;
+            float: left;
+        }
+
+        .right-container {
+            background-color: @theme__color__secondary;
+            border-color: @theme__color__secondary;
+            color: @color-white;
+            float: right;
+        }
+
+        .chat-box {
+            border-radius: @indent__xs;
+            border-style: solid;
+            border-width: 1px;
+            margin: @indent__s 0;
+            padding: @indent__s;
+
+            &.right-container {
+                a {
+                    color: @color-white !important;
+                }
+            }
+
+            ul {
+                list-style: none;
+                margin-top: @indent__xs;
+                margin-bottom: 0;
+                padding-left: 0;
+
+                li {
+                    display: inline-block;
+
+                    a {
+                        color: @theme__color__primary;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    .note-panel {
+        display: none;
+        background-color: @color-white;
+        margin-top: @indent__base;
+        margin-bottom: 10px;
+        clear: both;
+        border: 1px solid @border-color__base;
+
+        .panel-body {
+            padding: @indent__s;
+
+            textarea{
+                height: 60px;
+                min-height: 60px;
+            }
+        }
+
+        form .field-attachment,
+        form .attachments-list {
+            padding-left: @indent__s;
+        }
+
+        .panel-footer {
+            border-top: 1px solid @border-color__base;
+            margin-top: @indent__s;
+            padding: @indent__s;
+
+            .btn-group {
+                text-align: right;
+            }
+
+            .action-cancel {
+                .lib-button();
+                .lib-link-as-button();
+            }
+        }
+    }
+
+    .note-error {
+        .lib-font-size(13);
+        color: @error__color;
+    }
+
+    .cb-ticket-list {
+        margin-top: @indent__xs;
+    }
+
+    .create-ticket-form {
+        .fieldset {
+            margin-bottom: 50px !important;
+        }
+
+        .actions-toolbar .action {
+            &:extend(.abs-button-l all);
+        }
+    }
+
+    .block-ticket-info {
+        margin-bottom: 0 !important;
+
+        .chat-container {
+            .chat-box:first-child {
+                margin-top: 0;
+            }
+        }
+
+        .ticket-info {
+            color: @primary__color;
+            margin-bottom: @indent__xl;
+
+            .actions-toolbar {
+                display: inline-block;
+                float: right;
+                line-height: 26px;
+
+                a {
+                    .lib-link(
+                        @_link-color: @theme__color__primary-alt,
+                        @_link-text-decoration: none,
+                        @_link-color-visited: @theme__color__primary-alt,
+                        @_link-text-decoration-visited: none,
+                        @_link-color-hover: @theme__color__primary-alt,
+                        @_link-text-decoration-hover: none,
+                        @_link-color-active: @theme__color__primary-alt,
+                        @_link-text-decoration-active: none
+                    );
+                }
+            }
+
+        }
+
+        .ticket-status {
+            &:extend(.abs-status all);
+        }
+
+        .ticket-type {
+            display: inline-block;
+            margin-right: 78px;
+        }
+
+        .ticket-date {
+            display: inline-block;
+            line-height: 26px;
+            margin-right: 78px;
+        }
+
+        .ticket-requester {
+            display: inline-block;
+            line-height: 26px;
+        }
+    }
+
+    .ticket-index-createticket,
+    .ticket-index-detail {
+        .column.main {
+            .field-attachment input {
+                display: none;
+            }
+
+            .attachments-list {
+                .attachments-item {
+                    padding-top: @indent__xs;
+                    padding-right: @indent__s;
+                    display: inline-block;
+
+                    .action-delete {
+                        &:extend(.abs-action-button-as-link all);
+                        .lib-icon-font(
+                                @icon-remove,
+                            @_icon-font-size: 14px,
+                            @_icon-font-line-height: @indent__base,
+                            @_icon-font-text-hide: true,
+                            @_icon-font-color: @primary__color__lighter,
+                            @_icon-font-color-hover: @primary__color__lighter,
+                            @_icon-font-color-active: @primary__color__lighter
+                        );
+                    }
+                }
+            }
+
+            .fieldset .file-label-txt {
+                display: block;
+                height: auto;
+                margin-bottom: @indent__s;
+                text-align: left;
+                width: auto;
+            }
+
+            .field-attachment {
+                input {
+                    display: none;
+                }
+
+                label {
+                    color: @color-blue1;
+                    cursor: pointer;
+                    padding: 0;
+
+                    &:before {
+                        display: none !important;
+                    }
+                }
+
+                &.loading {
+                    label {
+                        color: inherit;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .block-ticket-history {
+        .note {
+            margin-top: @indent__xs;
+        }
+    }
+
+    .ticket-info {
+        margin-bottom: 50px;
+        overflow: hidden;
+
+        .ticket-type {
+            display: block;
+            margin: 0;
+        }
+    }
+
+    .chat-container {
+        & + .actions-toolbar {
+            .action {
+                width: 100%
+            }
+        }
+
+        .chat-box {
+            width: 90%;
+        }
+    }
+
+    .note-panel .panel-footer {
+        .btn-group {
+            .lib-vendor-prefix-display(flex);
+            margin-left: -@indent__xs;
+            margin-right: -@indent__xs;
+            text-align: center;
+
+            >.action {
+                margin: 0 @indent__xs;
+                text-align: center;
+                width: 50%;
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .ticket-index-detail {
+        .btn-row {
+            text-align: right;
+        }
+    }
+
+    .create-ticket-form {
+        .actions-toolbar .action {
+            width: 280px;
+        }
+    }
+
+    .chat-container {
+        & + .actions-toolbar {
+            .action {
+                float: none !important;
+                width: 280px;
+            }
+        }
+    }
+
+    .new-ticket-button {
+        div.primary {
+            width: 180px;
+        }
+
+        .action {
+            width: 100% !important;
+        }
+    }
+}
+
+
