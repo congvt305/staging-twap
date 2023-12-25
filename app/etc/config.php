@@ -193,6 +193,7 @@ return [
             'advanced' => [
                 'modules_disable_output' => [
                     'Magento_Banner' => '1',
+                    'Amasty_Xsearch' => '1',
                     'Amasty_Geoip' => '1'
                 ]
             ],
@@ -239,13 +240,6 @@ return [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
                     ]
-                ],
-                'advanced' => [
-                    'modules_disable_output' => [
-                        'Magento_Banner' => '1',
-                        'Amasty_Geoip' => '1',
-                        'Amasty_Xsearch' => 1
-                    ]
                 ]
             ],
             'tw_lageige_website' => [
@@ -260,13 +254,6 @@ return [
                     'locale' => [
                         'code' => 'vi_VN'
                     ]
-                ],
-                'advanced' => [
-                    'modules_disable_output' => [
-                        'Magento_Banner' => '1',
-                        'Amasty_Geoip' => '1',
-                        'Amasty_Xsearch' => 1
-                    ]
                 ]
             ],
             'vn_sulwhasoo_website' => [
@@ -280,13 +267,6 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
-                    ]
-                ],
-                'advanced' => [
-                    'modules_disable_output' => [
-                        'Magento_Banner' => '1',
-                        'Amasty_Geoip' => '1',
-                        'Amasty_Xsearch' => 1
                     ]
                 ]
             ],
@@ -871,6 +851,7 @@ return [
         'CJ_HoverImage' => 1,
         'CJ_ImportExport' => 1,
         'CJ_InventoryShipping' => 1,
+        'CJ_Invoice' => 1,
         'Ipay88_Payment' => 1,
         'CJ_LineShopping' => 1,
         'CJ_Middleware' => 1,
