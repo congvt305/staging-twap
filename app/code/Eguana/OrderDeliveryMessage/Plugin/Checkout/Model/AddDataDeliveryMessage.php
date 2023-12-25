@@ -60,7 +60,7 @@ class AddDataDeliveryMessage
             if (!isset($extAttributes)) {
                 return;
             }
-            $deliveryMessage = $extAttributes->getDeliveryMessage();
+            $deliveryMessage = $extAttributes->getDeliveryMessage() ?? '';
             /**
              * By Abbas I am using strip_tags because I did not get any related function in Magento 2
              * In core files they are also using it. For example at

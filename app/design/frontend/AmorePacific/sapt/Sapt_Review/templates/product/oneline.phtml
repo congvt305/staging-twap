@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Sapt\Review\Block\Product\OneLIne;
+
+/**
+ * @var OneLIne $block
+ * @var SecureHtmlRenderer $secureRenderer
+ * @var Escaper $escaper
+ */
+
+$_items = $block->getReviewsCollection()->getItems();
+$format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+?>
+<?php if (count($_items)): ?>
+    <?php foreach ($_items as $_review): ?>
+        <?php
+        //Skip if review rating < 5 stars
+        $continue = false;
+        if (count($_review->getRatingVotes())) {
+            foreach ($_review->getRatingVotes() as $_vote) {
+                if($_vote->getPercent() < 100) {
+                    $continue = true;
+                }
+            }
+        }
+        if($continue) continue;
+        ?>
+        <div class="product oneline-review">
+            <div class="review-rating-wrapper">
+            <?php if (count($_review->getRatingVotes())): ?>
+                <a href="#reviews">
+                    <?php foreach ($_review->getRatingVotes() as $_vote): ?>
+                        <div class="rating-summary item">
+                            <div class="rating-result"
+                                    title="<?= $escaper->escapeHtmlAttr($_vote->getPercent()) ?>%">
+                                <span>
+                                    <span>
+                                        <?= $escaper->escapeHtml($_vote->getPercent()) ?>%
+                                    </span>
+                                </span>
+                            </div>
+                            <?= /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                                'width:' . $_vote->getPercent() . '%',
+                                '.oneline-review .rating-result span'
+                            ) ?>
+                        </div>
+                    <?php endforeach; ?>
+                    <div class="review-count">
+                        (<?= $escaper->escapeHtml(count($_items)) ?>)
+                    </div>
+                </a>
+            <?php endif; ?>
+            </div>
+            <div class="review-content-container">
+                <div class="review-title">
+                    <?= __('" %1 "', $escaper->escapeHtml($_review->getTitle())) ?>
+                </div>
+                <div class="review-author">
+                    <?php
+                        $name = $block->escapeHtml($_review->getNickname());
+                        $nameMasked = mb_substr($name, 0, 3);
+                        $nameMasked = $nameMasked . "******";
+                    ?>
+                    - <?= $escaper->escapeHtml($nameMasked) ?>
+                </div>
+            </div>
+        </div>
+        <?php
+            //Render only first review match condition
+            break;
+        ?>
+    <?php endforeach; ?>
+<?php endif; ?>

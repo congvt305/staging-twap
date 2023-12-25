@@ -113,7 +113,7 @@ class CronSchedule extends \Magento\ImportExport\Model\Export\AbstractEntity
             'eguana_bizconnect_log_delete',
             'hoolah_extsettings_cronjob',
             'hoolah_orders_cronjob',
-            'satp_search_terms_rank',
+            'sapt_search_terms_rank',
             'line_shopping_export_full_product',
             'line_shopping_export_partial_product',
             'line_shopping_export_full_category',

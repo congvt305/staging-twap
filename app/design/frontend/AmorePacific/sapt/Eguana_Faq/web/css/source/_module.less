@@ -1,0 +1,220 @@
+///**
+// * @author Eguana Team
+// * @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+// * Created by PhpStorm
+// * User: arslan
+// * Date: 17/6/20
+// * Time: 08:00 PM
+// */
+
+//
+//  Variables
+//  _____________________________________________
+@faq__border: 1px solid #c7c7c7;
+@regular-font-weight: 500;
+@medium-font-weight: 700;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .faqs {
+        &.pagebuilder-column h1 {
+            margin-bottom: 5px;
+        }
+
+        .block {
+            .item {
+                &.title {
+                    font-size: 20px;
+                    margin-bottom: 15px;
+                }
+            }
+
+            .faq-actions {
+                text-align: right;
+                padding: 4px 0 25px;
+                .open-all {
+                    font-size: 14px;
+                    font-weight: @medium-font-weight;
+                    line-height: 1.36;
+                    .open-all-label {
+                        display: inline-block;
+                    }
+                    .close-all-label {
+                        display: none;
+                    }
+                    &:after {
+                        background: url('../images/12px_cart_dropdown_Close.svg') 50% 50% no-repeat transparent;
+                        background-size: contain;
+                        content: "";
+                        width: 12px;
+                        height: 10px;
+                        margin-left: 8px;
+                        display: inline-block;
+                    }
+                    &.active {
+                        &::after {
+                            transform: rotateX(180deg);
+                        }
+                        .open-all-label {
+                            display: none;
+                        }
+                        .close-all-label {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+
+            .list {
+                &:first-child {
+                    .title {
+                        .lib-css(border-top, @faq__border);
+                    }
+                }
+                .allow._active .title {
+                    border-bottom: 0;
+                }
+
+                .title {
+                    .lib-css(border-bottom, @faq__border);
+                    .lib-icon-font(
+                        @icon-down,
+                        @_icon-font-size: 14px,
+                        @_icon-font-line-height: 20px,
+                        @_icon-font-color: #222,
+                        @_icon-font-vertical-align: top,
+                        @_icon-font-display: block,
+                        @_icon-font-position: after
+                    );
+                    color: #222;
+                    cursor: pointer;
+                    font-size: 18px;
+                    padding: 15px 0;
+                    margin-bottom: 0;
+                    position: relative;
+
+                    span {
+                        display: inline-block;
+                        font-size: 18px;
+                        line-height: 2;
+                        font-weight: @medium-font-weight;
+                        width: 100%;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        width: 16px;
+                        height: 16px;
+                        top: 24px;
+                        right: 24px;
+                        background: url('../images/16px_Accordion_plus.svg') 50% 50% no-repeat transparent;
+                        background-size: contain;
+                    }
+
+                    &[aria-expanded="true"]:after {
+                        background: url('../images/16px_Accordion_minus.svg') 50% 50% no-repeat transparent;
+                    }
+                }
+
+                .content {
+                    color: #222;
+                    font-size: 16px;
+                    padding: 20px 0;
+                    border-bottom: 1px solid #c7c7c7;
+
+                    > div {
+                        display: block;
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//  Mobile
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body[class^=faq] {
+        .page-main {
+            padding: 0;
+        }
+
+        .column.main {
+            padding: 0 20px;
+        }
+
+        .page-title-wrapper {
+            border: @indent__base solid @border-color__base;
+            border-bottom: none;
+            padding: 17% 0 0 0;
+        }
+
+        .columns {
+            border: @indent__base solid @border-color__base;
+            border-top: none;
+            padding: 0 0 17% 0;
+        }
+
+        .faqs.pagebuilder-column h1 {
+            margin-bottom: 35px;
+        }
+
+        .faqs .block {
+            .faq-actions {
+                padding: 4px 0 14px;
+                .open-all {
+                    font-size: 13px;
+                    line-height: 19.5px;
+                    &:after {
+                        margin-left: 4px;
+                    }
+                }
+            }
+
+            .lists {
+                margin-bottom: 70px;
+            }
+
+            .list {
+                .title {
+                    padding: 12px 30px 8px 0;
+
+                    span {
+                        font-size: 14px;
+                    }
+
+                    &:after {
+                        top: 17px;
+                        right: 4px;
+                    }
+                }
+
+                .content {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .faqs {
+        .block {
+            .list {
+                .title {
+                    padding: 13px 0;
+                }
+            }
+        }
+    }
+}
