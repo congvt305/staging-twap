@@ -3,6 +3,7 @@
 namespace Amore\CustomerRegistration\Observer\Customer;
 
 use Amore\CustomerRegistration\Model\POSLogger;
+use Amore\CustomerRegistration\Plugin\CreateCustomer;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSyncAPI;
 use Magento\Framework\App\RequestInterface;

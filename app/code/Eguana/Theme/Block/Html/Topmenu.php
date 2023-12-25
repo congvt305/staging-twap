@@ -171,7 +171,7 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             } catch (NoSuchEntityException $e) {
                 $storeId = 0;
             }
-            $externalUrl = $this->getDefaultStoreCategory($child->getId(), $storeId)->getData('sapt_menu_block_external_url');
+            $externalUrl = $this->getDefaultStoreCategory($child->getId(), $storeId)->getData('satp_menu_block_external_url');
 
             if ($externalUrl) {
                 $html .= '<a href="' . $externalUrl . '" ' . $outermostClassCode
