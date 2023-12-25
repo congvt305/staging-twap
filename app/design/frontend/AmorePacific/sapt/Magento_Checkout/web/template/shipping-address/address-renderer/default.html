@@ -1,0 +1,64 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div style="color: black;" class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()" data-bind="visible: checkIsVnWebsite()">
+    <strong style="color: black;"><text args="address().prefix"></text> <text args="address().lastname"></text>
+        <text args="address().firstname"></text> <text args="address().telephone"></text>
+    </strong><br/>
+    <text args="address().postcode"></text>
+    <span text="address().region"></span>
+    <text args="address().city "></text>
+    <text args="_.values(address().street).join(', ')"></text><br/>
+
+    <each args="data: address().customAttributes, as: 'element'">
+        <text args="$parent.getCustomAttributeLabel(element)"></text>
+        <br/>
+    </each>
+
+    <button visible="address().isEditable()" type="button"
+            class="action edit-address-link"
+            click="editAddress">
+        <span translate="'Edit'"></span>
+    </button>
+    <!-- ko if: (!isSelected()) -->
+    <button type="button" click="selectAddress" class="action action-select-shipping-item">
+        <span translate="'Ship Here'"></span>
+    </button>
+    <!-- /ko -->
+</div>
+
+<div class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()" data-bind="visible: !checkIsVnWebsite()">
+    <strong><text args="address().prefix"></text> <text args="address().lastname"></text>
+        <text args="address().firstname"></text> <text args="address().telephone"></text>
+    </strong><br/>
+    <text args="address().postcode"></text>
+    <span text="address().region"></span>
+    <text args="address().city "></text>
+    <text args="_.values(address().street).join(', ')"></text><br/>
+
+    <each args="data: address().customAttributes, as: 'element'">
+        <text args="$parent.getCustomAttributeLabel(element)"></text>
+        <br/>
+    </each>
+
+    <button visible="address().isEditable()" type="button"
+            class="action edit-address-link"
+            click="editAddress">
+        <span translate="'Edit'"></span>
+    </button>
+    <!-- ko if: (!isSelected() && address().countryId != 'CN' && address().region != 'China') -->
+    <!-- ko if: isPickupMethod() -->
+    <button type="button" click="selectAddress" class="action action-select-shipping-item" disabled>
+        <span translate="'Ship Here'"></span>
+    </button>
+    <!-- /ko -->
+    <!-- ko if: !isPickupMethod() -->
+    <button type="button" click="selectAddress" class="action action-select-shipping-item">
+        <span translate="'Ship Here'"></span>
+    </button>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

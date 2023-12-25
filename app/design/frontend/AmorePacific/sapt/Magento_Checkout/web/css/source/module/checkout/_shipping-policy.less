@@ -1,0 +1,76 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-shipping-policy-tooltip__width: 420px;
+@checkout-shipping-policy-tooltip-mobile__width: 300px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .checkout-shipping-method {
+        position: relative;
+    }
+
+    .shipping-policy-block {
+        &.field-tooltip {
+            top: 3px;
+
+            .field-tooltip-action {
+                cursor: pointer;
+                font-family: 'buri', @font-family__sans-serif;
+                .lib-link();
+
+                &:before {
+                    display: none;
+                }
+
+                span {
+                    &:extend(.abs-visually-hidden-reset all);
+                }
+            }
+
+            .field-tooltip-content {
+                &:extend(.abs-add-box-sizing all);
+                &:extend(.abs-checkout-tooltip-content-position-top all);
+                .lib-css(width, @checkout-shipping-policy-tooltip__width);
+                top: @indent__l;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .shipping-policy-block {
+        &.field-tooltip {
+            top: 0;
+
+            .field-tooltip-action {
+                .lib-icon-font(
+                    @checkout-tooltip-icon__content,
+                    @_icon-font-size: 20px,
+                    @_icon-font-text-hide: true,
+                    @_icon-font-color: @checkout-tooltip-icon__color,
+                    @_icon-font-color-hover: @checkout-tooltip-icon__hover__color,
+                    @_icon-font-color-active: false
+                );
+            }
+
+            .field-tooltip-content {
+                .lib-css(width, @checkout-shipping-policy-tooltip-mobile__width);
+                top: 38px;
+            }
+        }
+    }
+}

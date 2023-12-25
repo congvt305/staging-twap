@@ -1,0 +1,148 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+/** @var $helper \Eguana\Share\Helper\Data */
+$helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
+
+/** @var $storeLocatorHelper \Eguana\StoreLocator\Helper\ConfigData */
+$storeLocatorHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php
+$outOfStock = false;
+if ($_product->getTypeId() === 'simple') {
+    $stockHelper = $this->helper('Eguana\CustomCatalog\Helper\Data');
+    $outOfStock = !$stockHelper->getSimpleProductStockStatus($_product);
+}
+/** @var $viewModel \Eguana\CustomCatalog\ViewModel\DisableAddToCart */
+if ($block->getData('disable_addtocart_bundle')) {
+    $viewModel = $block->getData('disable_addtocart_bundle');
+    $outOfStock = $viewModel->getBundleItemsStockStatus($_product);
+}
+?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <div class="field-wrapper-qty">
+                <?= $block->getChildHtml('', true) ?>
+                <?php if ($block->shouldRenderQuantity() && !$_product->getData('offline')): ?>
+                    <div class="field-wrapper">
+                        <div class="field qty">
+                            <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                            <div class="control">
+                                <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty ) &amp;&amp; qty > 1 ) qty_el.value--; return false;" class="qty-decrease qty-selector disable" >
+                                    <span class="icon"><?= $block->escapeHtml(__('collapse')) ?></span>
+                                </button>
+                                <input type="number"
+                                       name="qty"
+                                       id="qty"
+                                       min="0"
+                                       value="<?= $block->getProductDefaultQty() * 1 ?>"
+                                       title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                                       class="input-text qty"
+                                       readonly
+                                       data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                                />
+                                <button onclick="var qty_el = document.getElementById('qty'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" class="qty-increase qty-selector">
+                                    <span class="icon"><?= $block->escapeHtml(__('expand')) ?></span>
+                                </button>
+                                <script type="text/javascript">
+                                    require([
+                                        "jquery"
+                                    ],function($) {
+                                        $('input.qty').on('change', function(e){
+                                            console.log($(this).val());
+                                            if ($(this).val() == 1) {
+                                                $('button.qty-decrease').addClass('disable');
+                                            } else {
+                                                $('button.qty-decrease').removeClass('disable');
+                                            }
+                                        })
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php if ($_product->getTypeId() === 'simple'): ?>
+                <?php if($_product->getData('prdvl') && $_product->getAttributeText('vlunt')): ?>
+                <div class="custom-attribute">
+                    <input type="text" disabled=disabled value="<?= $_product->getData('prdvl') . $_product->getAttributeText('vlunt'); ?>" />
+                </div>
+                <?php endif ?>
+            <?php endif ?>
+            <div class="actions">
+                <?php if($outOfStock): ?>
+                    <button type="submit" title="<?= $block->escapeHtmlAttr($buttonTitle) ?>" class="action primary tocart disabled" id="product-addtocart-button">
+                        <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
+                    </button>
+                <?php else: ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action primary tocart"
+                            id="product-addtocart-button">
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <button type="submit"
+                            title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                            class="action primary tocheckout"
+                            id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+                        <span><?php /* @escapeNotVerified */ echo __('Buy Now'); ?></span>
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+<?php else :?>
+    <?php if($helper->getECommerceStatus()) :?>
+        <div class="actions">
+            <?php if($_product->getData('offline')):?>
+                <a href="<?= $block->escapeUrl($storeLocatorHelper->getStoreLocatorUrl()) ?>"
+                   title="<?= $block->escapeHtml(__('Find a store')) ?>"
+                   class="action primary action-offline">
+                    <span><?= $block->escapeHtml(__('Find a store')) ?></span>
+                </a>
+            <?php else :?>
+                <button type="submit"
+                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                        class="action primary tocart disabled"
+                        id="product-addtocart-button" disabled>
+                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                </button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+<script type="text/javascript">
+    function setCheckoutURL()
+    {
+        document.product_addtocart_form.return_url.value = '<?php echo $this->getUrl('checkout/cart');?>';
+        return true;
+    }
+</script>

@@ -1,0 +1,1 @@
+# Sapt Catalog Search extensions
