@@ -11,27 +11,40 @@ $viewModel = $block->getData('view_model');
 $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $notAllowedChar = $viewModel->getNotAllowedCharList();
+$mobileNumber = $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number');
+$countryPoscode = $viewModel->getCustomAttributeValue($block->getCustomer(), 'country_pos_code');
+$helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" autocomplete="off">
     <fieldset class="fieldset info">
         <?= $block->getBlockHtml('formkey') ?>
         <legend class="legend"><span><?= $block->escapeHtml(__('Account Information')) ?></span></legend><br>
         <?= $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
+        <div class="field mobile required">
+            <label for="mobile_number_info" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <?php //phpcs:disable ?>
+                <input type="text" name="mobile_number_info" value="<?= $mobileNumber ?>" disabled>
+                <?php //phpcs:enable ?>
+            </div>
+            <span class="note code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
+        </div>
         <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class)  ?>
         <?php if ($_dob->isEnabled() && $block->getCustomer()->getDob()) : ?>
-        <div class="field dob">
-            <label class="label show-dob-title"><span><?= $block->escapeHtml(__('Date of Birth')); ?></span></label>
-            <div class="control customer-dob">
-                <span><?= $block->escapeHtml($block->getCustomer()->getDob()); ?></span>
+            <div class="field dob">
+                <label class="label show-dob-title"><span><?= $block->escapeHtml(__('Date of Birth')); ?></span></label>
+                <div class="control customer-dob">
+                    <span><?= $block->escapeHtml($block->getCustomer()->getDob()); ?></span>
+                </div>
             </div>
-        </div>
             <input type="text" hidden name="dob" id="dob" value="<?= $viewModel->changeDateFormat($block->escapeHtml($block->getCustomer()->getDob())); ?>">
         <?php endif ?>
-
         <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
         <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
         <?php if ($_dob->isEnabled() && !$block->getCustomer()->getDob()) : ?>
-            <?= $_dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
+            <?= $_dob->setDate($block->getCustomer()->getDob())
+                ->setTemplate('Magento_Customer::form/dob.phtml')
+                ->toHtml() ?>
         <?php endif ?>
         <?php if ($_taxvat->isEnabled()) : ?>
             <?= $_taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
@@ -49,10 +62,6 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
             <input type="checkbox" name="change_password" id="change-password" data-role="change-password" value="1" title="<?= $block->escapeHtmlAttr(__('Change Password')) ?>"<?php if ($block->getChangePassword()) : ?> checked="checked"<?php endif; ?> class="checkbox" />
             <label class="label" for="change-password"><span><?= $block->escapeHtml(__('Change Password')) ?></span></label>
         </div>
-        <?php $mobileNumberStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'mobile_number', ['data'=>['attribute_code'=>'mobile_number', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'))]]) ?>
-        <?php if ($mobileNumberStatus->isEnabled()) : ?>
-            <?= $mobileNumberStatus->setMobileNumberStatus($viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number'))->toHtml() ?>
-        <?php endif ?>
 
         <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\CheckBox::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))]]) ?>
         <?php if ($callSubscriptionStatus->isEnabled()) : ?>
@@ -147,6 +156,11 @@ $notAllowedChar = $viewModel->getNotAllowedCharList();
             </div>
         </div>
     </fieldset>
+
+    <?php $beautyProfileStatus = $block->getLayout()->createBlock(\Sapt\Customer\Block\Widget\BeautyProfile::class, 'beauty_profile', ['data'=>['attribute_code'=>'beauty_profile', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'beauty_profile'))]]) ?>
+    <?php if ($beautyProfileStatus->isEnabled()) : ?>
+        <?= $beautyProfileStatus->toHtml() ?>
+    <?php endif ?>
 
     <?= $block->getChildHtml('form_additional_info') ?>
     <div class="actions-toolbar">
