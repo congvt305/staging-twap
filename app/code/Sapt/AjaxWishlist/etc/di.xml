@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Wishlist\CustomerData\Wishlist" type="Sapt\AjaxWishlist\CustomerData\Wishlist"/>
+    <preference for="Sapt\AjaxWishlist\Api\AjaxWishlistInterface" type="Sapt\AjaxWishlist\Model\Api\AjaxWishlist"/>
+    <type name="Magento\CatalogWidget\Block\Product\ProductsList">
+        <plugin name="Sapt_AjaxWistlist::widget_view_model" type="Sapt\AjaxWishlist\Plugin\CatalogWidgetProductList"/>
+    </type>
+
+    <type name="Magento\Wishlist\Model\Wishlist">
+        <plugin name="Sapt_AjaxWistlist::enable_social_shared" type="Sapt\AjaxWishlist\Plugin\Model\Wishlist"/>
+    </type>
+</config>

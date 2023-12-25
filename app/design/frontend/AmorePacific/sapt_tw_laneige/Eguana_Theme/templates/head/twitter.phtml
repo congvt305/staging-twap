@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var \Eguana\Theme\Block\Html\Metatag $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<meta property="twitter:card" content="website" />
+<meta property="twitter:title"
+      content="<?= $block->getMetaTitle() ?>" />
+<meta property="twitter:image"
+      content="<?= $escaper->escapeUrl($block->getViewFileUrl('Eguana_Theme::images/og.png')) ?>" />
+<meta property="twitter:description"
+      content="<?= $block->getDescription() ?>" />
+<meta property="twitter:url" content="<?= $escaper->escapeUrl($block->getCurrentUrl()) ?>" />

@@ -1,0 +1,170 @@
+<?php
+/**
+ * @author Eguana Team
+ * @copyright Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+ * Created by PhpStorm
+ * User: umer
+ * Date: 22/6/20
+ * Time: 6:29 PM
+ */
+
+/** @var \Magento\Customer\Block\Form\Login $block */
+
+/** @var \Eguana\MobileLogin\Helper\Data $helper */
+$helper = $this->helper(Eguana\MobileLogin\Helper\Data::class);
+?>
+<div class="block block-customer-login">
+    <?= $block->getChildHtml('page.main.title') ?>
+    <div class="block-content" aria-labelledby="block-customer-login-heading">
+        <h4><?= __('Start laneige shop with various benefits') ?></h4>
+        <form class="form form-login"
+              action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
+              method="post"
+              id="login-form"
+              data-mage-init='{"validation":{}}'>
+            <?= $block->getBlockHtml('formkey') ?>
+            <fieldset class="fieldset login">
+                <div class="login-options">
+                    <div class="login-by-email login-option">
+                        <input id="email-option" name="login_option" value="1" type="radio" checked/>
+                        <span><?= __('Email') ?></span>
+                    </div>
+                    <div class="login-by-phone login-option">
+                        <input id="phone-option" name="login_option" value="2" type="radio" />
+                        <span><?= __('Phone number') ?></span>
+                    </div>
+                </div>
+                <div class="field email required">
+                    <?php //phpcs:enable ?>
+                    <div class="control" id="username-block">
+                        <?php //phpcs:disable ?>
+                        <select id="country-mobile" name="country_mobile_id" style="display: none">
+                            <option value="HK" selected><?= __('Hongkong 852') ?></option>
+                            <option value="MO"><?= __('Macao 853') ?></option>
+                            <option value="CN"><?= __('China 86') ?></option>
+                        </select>
+                        <?php //phpcs:enable ?>
+                        <input
+                            placeholder="電子郵件"
+                            <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                            id="email" type="text" class="input-text"
+                            title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                            data-mage-init='{"mage/trim-input":{}}'
+                            data-validate="{required:true, 'validate-email':true}">
+                        <input
+                            style="display: none" class="validate-number"
+                            placeholder="<?= $block->escapeHtml(__('Phone number')) ?>"
+                            <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                            id="phone" type="text" class="input-text"
+                            title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>"
+                            data-mage-init='{"mage/trim-input":{}}'
+                            data-validate="{required:true, 'mobileloginvalidationrule':true}">
+                        <input
+                            placeholder="<?= $block->escapeHtml(__('Email ')) ?>"
+                            name="login[username]"
+                            type="hidden"
+                            <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                            id="username" type="text" class="input-text" placeholder="Enter email or mobile number"
+                            title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>"
+                            data-mage-init='{"mage/trim-input":{}}'
+                            data-validate="{required:true}">
+                    </div>
+                </div>
+                <div class="field password required">
+                    <label for="pass" class="label"><span><?= $block->escapeHtml(__('Please enter your password')) ?></span></label>
+                    <div class="control">
+                        <input placeholder="<?= $block->escapeHtml(__('Please enter your password')) ?>" name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>" data-validate="{required:true}">
+                    </div>
+                </div>
+
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit"
+                                class="action login primary"
+                                name="send"
+                                id="send2"
+                                ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
+                                ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
+                                ap-click-data="<?= $block->escapeHtmlAttr('General Login') ?>">
+                            <span>
+                                <?= $block->escapeHtml(__('LOGIN')) ?>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="secondary">
+                        <?= $block->getChildHtml('form_additional_info') ?>
+                        <a class="action remind"
+                           href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"
+                           ap-click-area="<?= $block->escapeHtmlAttr('login') ?>"
+                           ap-click-name="<?= $block->escapeHtmlAttr('login menu click') ?>"
+                           ap-click-data="<?= $block->escapeHtmlAttr('Find Password') ?>
+                        ">
+                            <span><?= $block->escapeHtml(__('Find Password')) ?></span>
+                        </a>
+                    </div>
+                    <?= $block->getChildHtml('social_media_login') ?>
+
+                    <?= $block->getChildHtml('customer.new') ?>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <?= $block->getChildHtml('hk_sulwhasoo_login_benefit') ?>
+</div>
+
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "mobileLoginRule": {
+                "min":<?= $helper->getMinimumMobileNumberDigits() ?>,
+                "max": <?= $helper->getMaximumMobileNumberDigits() ?>
+           }
+       }
+   }
+
+</script>
+<script type="text/x-magento-init">
+   {
+       "*": {
+           "validateNumber": {}
+       }
+   }
+</script>
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        $(document).ready(function () {
+            var emailInput = $('#email'),
+                phoneInput = $('#phone'),
+                countryInput = $('#country-mobile'),
+                usernameInput = $('#username'),
+                type = 'email';
+            $(document).on('click', '#email-option', function (e) {
+                $('#phone-error').hide();
+                emailInput.show();
+                phoneInput.hide();
+                countryInput.hide();
+                $('#phone-error').hide();
+                type = "email";
+            });
+            $('#phone-error').hide();
+            $(document).on('click', '#phone-option', function (e) {
+                $('#email-error').hide();
+                emailInput.hide();
+                countryInput.show();
+                phoneInput.show();
+                $('#email-error').hide();
+                type = 'phone';
+            });
+            $(document).on('submit', '#login-form', function (e) {
+                usernameInput.val(emailInput.val());
+                if(type === 'phone'){
+                    usernameInput.val(phoneInput.val());
+                }
+                return true;
+            })
+        });
+    });
+</script>

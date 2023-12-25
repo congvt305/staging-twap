@@ -1,0 +1,143 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+//phpcs:disable Magento2.Files.LineLength.MaxExceeded
+//phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+/** @var $block \Magento\Rma\Block\Returns\View */
+/** @var $viewModel \Eguana\CustomRMA\ViewModel\GetStoreInfo */
+
+$viewModel = $block->getData('store_view_model');
+$orderViewModel = $block->getData('order_item_model');
+
+?>
+
+<?php
+    $_rma = $block->getRma();
+    $_order = $block->getOrder();
+    $orderItems = $_order->getAllItems();
+    $additionalData = $block->getAdditionalData();
+    $rmaHelper = $block->getRmaHelper();
+    $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+?>
+
+<div class="block block-rma-order-information">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Order Information')) ?></strong></div>
+    <div class="block-content">
+        <span class="title"><?= $block->escapeHtml(__('Order Date')) ?></span>
+        <span class="value"><?= $block->escapeHtml(date("F d, Y", strtotime($_order->getCreatedAt()))) ?></span>
+        <span class="title"><?= $block->escapeHtml(__('Order Number')) ?></span>
+        <span class="value"><?= $block->escapeHtml($_rma->getOrderIncrementId()) ?></span>
+    </div>
+</div>
+
+
+<div id="order_history" class="block block-returns-items">
+    <div class="block-content">
+        <div class="table-wrapper cart">
+            <table class="cart data table items" id="my-returns-items-table">
+                <thead>
+                <tr>
+                    <?php $availableAttributes = $block->getVisibleAttributes(); ?>
+                    <th scope="col" class="col id"><?= $block->escapeHtml(__('Product Name')); ?></th>
+                    <?php if (isset($availableAttributes['condition'])) : ?>
+                        <th scope="col" class="col condition"><?= $block->escapeHtml(__('Condition')); ?></th>
+                    <?php endif; ?>
+                    <?php if (isset($availableAttributes['condition'])) : ?>
+                        <th scope="col" class="col resolution"><?= $block->escapeHtml(__('Resolution')); ?></th>
+                    <?php endif; ?>
+                    <th scope="col" class="col request qty"><?= $block->escapeHtml(__('Request Qty')) ?></th>
+                    <th scope="col" class="col qty"><?= $block->escapeHtml(__('Qty')); ?></th>
+                    <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $_qna = null; ?>
+                <?php foreach ($block->getItems() as $key => $item) : ?>
+                    <?php $_orderItem = $orderViewModel->getOrderItem($item->getOrderItemId()); ?>
+                    <?php foreach ($block->getRealValueAttributes($item->getId()) as $code => $attribute) {
+                        if (!in_array($code, $block->getAttributeFilter()) && !empty($attribute['value']) && $block->getAttributeLabel($item->getId(), $code)
+                            && false !== $block->getAttributeValue($item->getId(), $code)) {
+                            $_qna .= '
+                                    <tr><td class="col questions">' . $block->getAttributeLabel($item->getId(), $code) . '</td>
+                                    <td class="col answers">' . $block->getAttributeValue($item->getId(), $code) . '</td></tr>
+                                ';
+                        }
+                    } ?>
+                    <tr class="item-info">
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>" class="col id">
+
+                            <?php $product = $_orderItem->getProduct(); ?>
+                            <span class="product-item-photo"><?= $orderViewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?></span>
+
+                            <div class="product-item-details">
+                                <div class="shipping">
+                                    <span class="in-delivery"><?= __('In Delivery') ?></span>
+                                    <span class="method"><?= $_order->getShippingDescription() ?></span>
+                                </div>
+                                <strong class="product-item-name">
+                                    <?= $block->escapeHtml($item->getProductName()) ?>
+                                </strong>
+                                <?php if ($_options = $block->getItemOptions($item)) : ?>
+                                    <dl class="item-options">
+                                        <?php foreach ($_options as $_option) : ?>
+                                            <dt><?= $block->escapeHtml($_option['label']); ?></dt>
+                                            <dd><?= $block->escapeHtml($_option['value']); ?></dd>
+                                        <?php endforeach; ?>
+                                    </dl>
+                                <?php endif; ?>
+
+                                <span class="cart-price"><?= $priceHelper->currency($_orderItem->getPrice()); ?></span>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="block block-rma-detail">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Refund Detail')) ?></strong></div>
+    <div class="block-content">
+        <table>
+            <tbody>
+                <tr>
+                    <th><?= $block->escapeHtml(__('ID')); ?></th>
+                    <td><?= $block->escapeHtml($_rma->getIncrementId()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Date Requested')); ?></th>
+                    <td><?= $block->escapeHtml(date("F d, Y", strtotime($_rma->getDateRequested()))) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Email')); ?></th>
+                    <td><?= $block->escapeHtml($_order->getCustomerEmail()) ?></td>
+                </tr>
+                <?php if ($_rma->getCustomerCustomEmail()) : ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Contact Email Address')); ?></th>
+                    <td><?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?></td>
+                </tr>
+                <?php endif ?>
+                <?php if ($_rma->getCustomerCustomPhone()) : ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Contact Phone Number')); ?></th>
+                    <td><?= $block->escapeHtml($_rma->getCustomerCustomEmail()) ?></td>
+                </tr>
+                <?php endif ?>
+                <?php if ($_rma->getData('shipping_preference')) : ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Shipping Preference')); ?></th>
+                    <td><?= $block->escapeHtml(__($_rma->getData('shipping_preference'))) ?></td>
+                </tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+        <div class="actions-back">
+            <a class="action back primary" href="<?= $block->getUrl('rma/returns/history') ?>"><span><?= $block->escapeHtml(__('Back to the list')); ?></span></a>
+        </div>
+    </div>
+</div>
