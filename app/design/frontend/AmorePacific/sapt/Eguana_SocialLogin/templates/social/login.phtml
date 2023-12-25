@@ -19,47 +19,47 @@ $block->unSetSession();
     $googleUrl = $block->getUrl('sociallogin/googlelogin/connect');
     $facebookUrl = $block->getUrl('sociallogin/facebooklogin/connect'); ?>
     <div class="socialloginlogin-login">
-        <?php if ($helper->isEnabledLine()):?>
-            <a class="line-button-link"
-               href="javascript:void(0);"
-               rel="nofollow"
-               data-role="eguana_sociallogin"
-               data-href="<?= $block->escapeUrl($lineUrl) ?>"
-               ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
-               ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
-               ap-click-data="<?= $block->escapeHtmlAttr('Login with LINE') ?>">
-                <?= $block->escapeHtml(__('Login with LINE')) ?>
-            </a>
-        <?php endif; ?>
-        <?php if ($helper->isEnabledFacebook()):?>
-            <a class="facebook-button-link"
-               href="javascript:void(0);" rel="nofollow"
-               data-role="eguana_sociallogin"
-               data-href="<?= $block->escapeUrl($facebookUrl) ?>"
-               ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
-               ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
-               ap-click-data="<?= $block->escapeHtmlAttr('Login with Facebook') ?>">
-                <?= $block->escapeHtml(__('Continue with facebook')) ?>
-            </a>
-        <?php endif; ?>
-        <?php if ($helper->isEnabledGoogle()):?>
-            <a class="google-button-link"
-               href="javascript:void(0);"
-               rel="nofollow"
-               data-role="eguana_sociallogin"
-               data-href="<?= $block->escapeUrl($googleUrl) ?>"
-               ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
-               ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
-               ap-click-data="<?= $block->escapeHtmlAttr('Login with Google') ?>">
-                <?= $block->escapeHtml(__('Login with Google')) ?>
-            </a>
-        <?php endif; ?>
-    </div>
+    <?php if ($helper->isEnabledLine()):?>
+        <a class="line-button-link"
+           href="javascript:void(0);"
+           rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($lineUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr('Login with LINE') ?>">
+            <?= $block->escapeHtml(__('Login with LINE')) ?>
+        </a>
+    <?php endif; ?>
+    <?php if ($helper->isEnabledFacebook()):?>
+        <a class="facebook-button-link"
+           href="javascript:void(0);" rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($facebookUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr('Login with Facebook') ?>">
+            <?= $block->escapeHtml(__('Continue with facebook')) ?>
+        </a>
+    <?php endif; ?>
+    <?php if ($helper->isEnabledGoogle()):?>
+        <a class="google-button-link"
+           href="javascript:void(0);"
+           rel="nofollow"
+           data-role="eguana_sociallogin"
+           data-href="<?= $block->escapeUrl($googleUrl) ?>"
+           ap-click-area="<?= $block->escapeHtmlAttr('Login') ?>"
+           ap-click-name="<?= $block->escapeHtmlAttr('Login Click') ?>"
+           ap-click-data="<?= $block->escapeHtmlAttr('Login with Google') ?>">
+            <?= $block->escapeHtml(__('Login with Google')) ?>
+        </a>
+    <?php endif; ?>
+</div>
 <?php endif; ?>
 <script type="text/x-magento-init">
-    {
-        "*": {
-            "socialLoginJs": {}
-        }
+{
+    "*": {
+        "socialLoginJs": {}
     }
+}
 </script>

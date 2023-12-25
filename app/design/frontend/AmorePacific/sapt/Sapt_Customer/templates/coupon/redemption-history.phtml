@@ -1,0 +1,91 @@
+<?php
+/** @var \Amore\PointsIntegration\ViewModel\Points\RedeemAjax  $viewModel */
+$viewModel = $block->getData('redeem_view_model');
+$pointSearchResults = $viewModel->getPageData();
+?>
+
+<div class="block-title text-small">
+    <strong><?= __('Redemption history') ?></strong>
+</div>
+<div class="table-wrapper">
+    <table class="data table">
+        <thead>
+        <tr>
+            <th><?= __('the product name') ?></th>
+            <th><?= __('redemption credits') ?></th>
+            <th><?= __('Redemption date') ?></th>
+            <th><?= __('Redemption counter points') ?></th>
+            <th><?= __('the number of redemptions') ?></th>
+        </tr>
+        </thead>
+        <?php if(count($pointSearchResults)) :?>
+            <tbody>
+                <?php foreach ($pointSearchResults as $redeemSearch): ?>
+                    <tr>
+                        <td><?=$redeemSearch['prdNM'] ?></td>
+                        <td><?=$redeemSearch['usePoint'] ?></td>
+                        <td><?=$redeemSearch['redeemDate'] ?></td>
+                        <td><?=$redeemSearch['redeemStoreNM'] ?></td>
+                        <td><?=$redeemSearch['redeemQty'] ?></td
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        <?php endif; ?>
+    </table>
+
+    <table class="data table mobile">
+        <tbody>
+        <?php for($i = 0; $i < 5; $i++) { ?>
+            <tr>
+                <?php
+                switch ($i) {
+                    case 0:
+                        echo '<td class="col-title">' . __('the product name') . '</td>';
+                        break;
+                    case 1:
+                        echo '<td class="col-title">' . __('redemption credits') . '</td>';
+                        break;
+                    case 2:
+                        echo '<td class="col-title">' . __('Redemption date') . '</td>';
+                        break;
+                    case 3:
+                        echo '<td class="col-title">' . __('Redemption counter points') . '</td>';
+                        break;
+                    case 4:
+                        echo '<td class="col-title">' . __('the number of redemptions') . '</td>';
+                        break;
+                }
+                ?>
+                <?php if (count($pointSearchResults) > 0) : ?>
+                    <?php foreach ($pointSearchResults as $redeemSearch) : ?>
+                        <?php
+                        $value = '';
+                        switch ($i) {
+                            case 0:
+                                $value = $redeemSearch['prdNM'];
+                                break;
+                            case 1:
+                                $value = $redeemSearch['usePoint'];
+                                break;
+                            case 2:
+                                $value = $redeemSearch['redeemDate'];
+                                break;
+                            case 3:
+                                $value = $redeemSearch['redeemStoreNM'];
+                                break;
+                            case 4:
+                                $value = $redeemSearch['redeemQty'];
+                                break;
+                        }
+                        ?>
+                        <td><?= $value ?></td>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+
+

@@ -1,0 +1,189 @@
+<?php
+
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
+use Magento\Catalog\Helper\Product\Compare;
+use Magento\CatalogWidget\Block\Product\ProductsList;
+use Magento\Framework\App\Action\Action;
+use Magento\Wishlist\Helper\Data as CoreHelper;
+use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
+
+/** @var ProductsList $block */
+?>
+<?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
+    <?php
+    $type = 'widget-product-grid';
+
+    $mode = 'grid';
+
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $templateType = ReviewRendererInterface::FULL_VIEW;
+    $description = false;
+    ?>
+    <div class="block related widget block-products-widget-slider <?= /* @noEscape */ $mode ?>">
+        <?php if ($block->getTitle()): ?>
+            <div class="block-title">
+                <strong><?= $block->escapeHtml(__($block->getTitle())) ?></strong>
+            </div>
+        <?php endif ?>
+        <div class="swiper-container products wrapper grid products-grid">
+            <ol class="swiper-wrapper products list items product-items">
+                <?php foreach ($items as $_item): ?>
+                    <li class="swiper-slide item product product-item">
+                        <div class="product-item-info">
+                            <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product photo product-item-photo">
+                                <?= $block->getImage($_item, $image)->toHtml() ?>
+                            </a>
+                            <div class="product-item-inner">
+                                <div class="product actions product-item-actions">
+                                    <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
+                                        <?php //phpcs:disable?>
+                                        <?php if ($this->helper(CoreHelper::class)->isAllow() && $showWishlist) : ?>
+                                            <?php $moduleEnabled = $this->helper(AjaxHelper::class)->isModuleEnabled() ?>
+                                            <?php //phpcs:enable?>
+                                            <?php if ($moduleEnabled): ?>
+                                                <!-- ko scope: 'ajaxwishlist' -->
+                                                <a
+                                                    data-bind="css:{wishlisticon : wishlistitem().all_wishlist_items ?typeof wishlistitem().all_wishlist_items['<?= $block->escapeHtmlAttr($_item->getId()) ?>'] !='undefined':false}"
+                                                    data-wishlist-action='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>'
+                                                    data-action="wishlist-actions"
+                                                    data-product-id='<?= /* @noEscape */ $_item->getId() ?>'
+                                                    class="action towishlist"
+                                                    title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?> ">
+                                                    <span>
+                                                        <?= $block->escapeHtml(__('Add to Wish List')) ?>
+                                                    </span>
+                                                </a>
+                                                <!-- /ko  -->
+                                            <?php else: ?>
+                                                <a href="#"
+                                                    data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>'
+                                                    class="action towishlist"
+                                                    data-action="add-to-wishlist"
+                                                    title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
+                                                    <span>
+                                                        <?= $block->escapeHtml(__('Add to Wish List')) ?>
+                                                    </span>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product details product-item-details">
+                                <strong class="product name product-item-name">
+                                    <a title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
+                                        href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                        class="product-item-link">
+                                        <?= $block->escapeHtml($_item->getName()) ?>
+                                    </a>
+                                </strong>
+
+                                <?= $block->getProductPriceHtml($_item, $type) ?>
+
+                                <?php if ($templateType): ?>
+                                    <?php if($block->getReviewsSummaryHtml($_item, $templateType)): ?>
+                                        <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                    <?php else: ?>
+                                        <div class="product-reviews-summary empty">
+                                            <div class="reviews-actions">
+                                                <a class="action add" href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>#review-form">
+                                                    <?= __('Be the First to Review'); ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php endif ?>
+                                <?php endif; ?>
+
+                                <div class="product-item-inner">
+                                    <div class="product actions product-item-actions">
+                                        <div class="actions-primary">
+                                            <?php if ($_item->isSaleable()): ?>
+                                                <?php $postParams = $block->getAddToCartPostParams($_item); ?>
+                                                <form data-role="tocart-form"
+                                                        data-product-sku="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
+                                                        action="<?= $block->escapeUrl($postParams['action']) ?>"
+                                                        method="post">
+                                                    <input type="hidden" name="product" value="<?= /* @noEscape */ $_item->getId() ?>" />
+                                                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                            value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                    <?= $block->getBlockHtml('formkey') ?>
+                                                    <button type="submit"
+                                                            title="<?= $block
+                                                                ->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                            class="action tocart primary">
+                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach ?>
+            </ol>
+        </div>
+        <div class="swiper-button-prev swiper-button-prev"></div>
+        <div class="swiper-button-next swiper-button-next"></div>
+        <script>
+            require([
+                'jquery',
+                'swiper',
+                'matchMedia',
+                'mage/translate',
+                'domReady!',
+            ],function ($,Swiper, mediaCheck, $t) {
+                mediaCheck({
+                    media: '(min-width: 768px)',
+                    entry: function () {
+                        if ($('.block-products-widget-slider .product-items .item').length < 5) {
+                            $('.block-products-widget-slider').addClass('align-items');
+                        } else {
+                            var relatedSlider = new Swiper('.block-products-widget-slider .products-grid', {
+                                slidesPerView: 5,
+                                freeMode: false,
+                                autoHeight: true,
+                                direction: 'horizontal',
+                                loop: true,
+                                spaceBetween: 20,
+                                breakpoints: {
+                                    768: {
+                                        slidesPerView: 3
+                                    }
+                                },
+                                navigation: {
+                                    nextEl: '.block-products-widget-slider .swiper-button-next',
+                                    prevEl: '.block-products-widget-slider .swiper-button-prev'
+                                }
+                            });
+                        }
+                    },
+                    exit: function () {
+                        if ($('.block-products-widget-slider .product-items .item').length < 2) {
+                            $('.block-products-widget-slider').addClass('align-items');
+                        } else {
+                            var relatedSlider = new Swiper('.block-products-widget-slider .products-grid', {
+                                slidesPerView: 1.7,
+                                spaceBetween: 16,
+                                freeMode: false,
+                                autoHeight: true,
+                                direction: 'horizontal',
+                                loop: false,
+                                navigation: {
+                                    nextEl: '.block-products-widget-slider .swiper-button-next',
+                                    prevEl: '.block-products-widget-slider .swiper-button-prev'
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+    </div>
+<?php endif; ?>

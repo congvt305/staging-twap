@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sapt_ajaxcart>
+            <general>
+                <enabled>1</enabled>
+                <enabled_product_view>1</enabled_product_view>
+                <selector>.action.tocart</selector>
+            </general>
+            <success_popup>
+            	<mini_checkout>0</mini_checkout>
+            </success_popup>
+        </sapt_ajaxcart>
+    </default>
+</config>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="page.top">
+            <referenceBlock name="breadcrumbs">
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Home</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Home</item>
+                        <item name="label" xsi:type="string" translate="true">Home</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string" translate="true">My Page</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string" translate="true">My Page</item>
+                        <item name="label" xsi:type="string" translate="true">My Page</item>
+                    </argument>
+                </action>
+            </referenceBlock>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
+        </referenceContainer>
+        <referenceBlock name="customer-account-navigation-account-link">
+            <arguments>
+                <argument name="is_highlighted" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Member Center</argument>
+            </action>
+        </referenceBlock>
+        <move element="page.main.title" destination="content" before="-"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+
+        <referenceBlock name="customer_account_dashboard_top" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Sapt\Customer\Block\Widget\BeautyProfile" name="customer_account_dashboard_beauty_profile" template="Sapt_Customer::dashboard/beauty_profile.phtml">
+                <arguments>
+                    <argument name="attribute_code" xsi:type="string">beauty_profile</argument>
+                    <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Edit</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <move element="customer_account_dashboard_leave_account" destination="content" after="customer_account_dashboard_beauty_profile"/>
+        <referenceBlock name="customer_account_dashboard_info1" remove="true"/>
+    </body>
+</page>
