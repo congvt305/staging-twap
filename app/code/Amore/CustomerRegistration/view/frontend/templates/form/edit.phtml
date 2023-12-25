@@ -12,7 +12,6 @@ $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $notAllowedChar = $viewModel->getNotAllowedCharList();
 $mobileNumber = $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number');
-$countryPoscode = $viewModel->getCustomAttributeValue($block->getCustomer(), 'country_pos_code');
 $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" autocomplete="off">

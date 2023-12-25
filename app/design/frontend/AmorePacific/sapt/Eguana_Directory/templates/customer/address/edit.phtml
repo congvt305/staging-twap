@@ -18,8 +18,6 @@ $addressHelper = $this->helper(\Magento\Customer\Helper\Address::class);
 $requiredAttributesPrechecked = $block->getData('required_attributes_prechecked');
 $autofilledFlag = $this->helper(\Eguana\Directory\Helper\Data::class)->isZipCodeAutofilled();
 $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
-$attributeCode = 'country_pos_code';
-$countryPosCode = $block->getAddress()->getCustomAttribute($attributeCode) ? $block->getAddress()->getCustomAttribute($attributeCode)->getValue() : 'HK';
 ?>
 <form class="form-address-edit" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
     <fieldset class="fieldset">
