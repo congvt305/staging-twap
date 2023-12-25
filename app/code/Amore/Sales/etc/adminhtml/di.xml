@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 	<preference for="Magento\Sales\Block\Adminhtml\Report\Filter\Form\Order" type="Amore\Sales\Block\Adminhtml\Report\Filter\Form\Order" />
-	<!-- <preference for="Magento\AdminGws\Plugin\CollectionFilter" type="Amore\Sales\Plugin\CollectionFilter" /> -->
+	<preference for="Magento\AdminGws\Plugin\CollectionFilter" type="Amore\Sales\Plugin\CollectionFilter" />
 	<preference for="Magento\Sales\Model\ResourceModel\Report\Order" type="Amore\Sales\Model\ResourceModel\Report\Order" />
 	<preference for="Magento\Reports\Block\Adminhtml\Sales\Sales\Grid" type="Amore\Sales\Block\Adminhtml\Sales\Sales\Grid" />
-    <!-- <type name="Magento\Sales\Block\Adminhtml\Order\View">
+    <type name="Magento\Sales\Block\Adminhtml\Order\View">
         <plugin name="Amore_Sales::hideButtonShipPluginAfter" type="Amore\Sales\Plugin\HideShipButtonPlugin" />
-    </type> -->
+    </type>
 </config>

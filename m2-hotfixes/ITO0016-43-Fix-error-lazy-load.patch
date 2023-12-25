@@ -1,28 +1,27 @@
-diff --git a/vendor/amasty/module-image-optimizer/Model/Output/ImageReplaceProcessor.php b/vendor/amasty/module-image-optimizer/Model/Output/ImageReplaceProcessor.php
-index 2d4f345dc..de558434f 100644
---- a/vendor/amasty/module-image-optimizer/Model/Output/ImageReplaceProcessor.php
-+++ b/vendor/amasty/module-image-optimizer/Model/Output/ImageReplaceProcessor.php
-@@ -76,6 +76,9 @@ class ImageReplaceProcessor implements OutputProcessorInterface
-         $replaceStrategy = $this->getReplaceConfig()->getData(ReplaceConfig\ReplaceConfig::REPLACE_STRATEGY);
-         if ($replaceStrategy !== ReplaceStrategies::NONE) {
-             $tempOutput = preg_replace('/<script.*?>.*?<\/script.*?>/is', '', $output);
-+            if (!$tempOutput) {
-+                $tempOutput = $output;
-+            }
-             $replacePatterns = $this->replacePatternsResolver->getByKey(static::REPLACE_PATTERNS_GROUP_KEY);
-             foreach ($replacePatterns as $replacePattern) {
-                 if (preg_match_all('/' . $replacePattern->getPattern() . '/is', $tempOutput, $images)) {
+From dd27a89cfb9ce0c7ae7a8ac80ab91f9374e25245 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Tue, 8 Nov 2022 22:40:03 -0500
+Subject: [PATCH] ITO0016-43 Fix error lazy load
+
+---
+ vendor/amasty/module-lazy-load/Model/Output/LazyLoadProcessor.php | 4 ++++
+ 1 file changed, 4 insertions(+)
+
 diff --git a/vendor/amasty/module-lazy-load/Model/Output/LazyLoadProcessor.php b/vendor/amasty/module-lazy-load/Model/Output/LazyLoadProcessor.php
-index 914c6cd9a..08271cc45 100644
+index 7d5c4d8..0d3101f 100644
 --- a/vendor/amasty/module-lazy-load/Model/Output/LazyLoadProcessor.php
 +++ b/vendor/amasty/module-lazy-load/Model/Output/LazyLoadProcessor.php
-@@ -126,6 +126,9 @@ class LazyLoadProcessor implements OutputProcessorInterface
-     public function processLazyImages(string &$output): void
+@@ -122,6 +122,10 @@ class LazyLoadProcessor implements OutputProcessorInterface
      {
          $tempOutput = preg_replace('/<script[^>]*>(?>.*?<\/script>)/is', '', $output);
+
 +        if (!$tempOutput) {
 +            $tempOutput = $output;
 +        }
-         $replacePatterns = $this->replacePatternsResolver->getByKey(static::REPLACE_PATTERNS_GROUP_KEY);
-         foreach ($replacePatterns as $replacePattern) {
-             if (preg_match_all('/' . $replacePattern->getPattern() . '/is', $tempOutput, $images)) {
++
+         foreach ($this->regexPatterns as $patternKey => $regexConfig) {
+             $this->currentRegexPattern = $patternKey;
+             if (preg_match_all('/' . $this->getRegex($regexConfig) . '/is', $tempOutput, $images)) {
+--
+2.25.1
+
