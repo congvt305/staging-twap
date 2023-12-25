@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div class="order-info">
+    <div class="order-date">
+        <span class="label"><?= $block->escapeHtml(__('Order Date')) ?></span>
+        <span class="value"><?= $block->escapeHtml($block->formatDate($block->getOrder()->getCreatedAt(), \IntlDateFormatter::LONG)) ?></span>
+    </div>
+    <div class="order-number">
+        <span class="label"><?= $block->escapeHtml(__('Order Number')) ?></span>
+        <span class="value"><?= $block->escapeHtml($block->getOrder()->getIncrementId()) ?></span>
+    </div>
+    <div class="order-status">
+        <span class="label"><?= $block->escapeHtml(__('Order Status')) ?></span>
+        <span class="value"><?= $block->escapeHtml(__($block->getOrder()->getStatusLabel())) ?></span>
+    </div>
+</div>

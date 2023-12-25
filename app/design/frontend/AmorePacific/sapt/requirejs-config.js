@@ -14,11 +14,11 @@ var config = {
         'Magento_Theme/js/sapt_sws_common',
         'Magento_Theme/js/spa.min'
     ],
-    config: {
-        mixins: {
+	config: {
+		mixins: {
             'mage/collapsible': {
                 'js/mage/collapsible-mixin': true
             }
-        }
-    }
+		}
+	}
 };

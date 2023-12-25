@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Sales\Model\Order\AddressRepository">
-        <plugin sortOrder="1" name="amoreSapAddressRepository" type="Amore\Sap\Plugin\Model\Order\AddressRepositoryPlugin"/>
-    </type>
-
     <preference for="Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection"
                 type="Amore\Sap\Model\ResourceModel\Order\Creditmemo\Grid\Collection" />
     <preference for="Magento\Rma\Block\Adminhtml\Rma\Grid" type="Amore\Sap\Block\Adminhtml\Rma\CustomGrid" />

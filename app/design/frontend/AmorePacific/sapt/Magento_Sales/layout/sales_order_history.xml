@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="sales_order_item_renderers"/>
+    <update handle="sales_order_item_price"/>
+    <body>
+        <referenceContainer name="page.top">
+            <referenceBlock name="breadcrumbs">
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Home</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Home</item>
+                        <item name="label" xsi:type="string" translate="true">Home</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string" translate="true">My Page</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string" translate="true">My Page</item>
+                        <item name="label" xsi:type="string" translate="true">My Page</item>
+                        <item name="link" xsi:type="string">{{baseUrl}}customer/account/dashboard</item>
+                    </argument>
+                </action>
+                <action method="addCrumb">
+                    <argument name="crumbName" xsi:type="string">Order/Refund</argument>
+                    <argument name="crumbInfo" xsi:type="array">
+                        <item name="title" xsi:type="string">Order/Refund</item>
+                        <item name="label" xsi:type="string" translate="true">Order/Refund</item>
+                    </argument>
+                </action>
+            </referenceBlock>
+            <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
+        </referenceContainer>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Order/Refund</argument>
+            </action>
+        </referenceBlock>
+        <move element="page.main.title" destination="content" before="-"/>
+
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="sales.order.history.search" template="Sapt_Sales::order/history/search.phtml" before="sales.order.history"/>
+        </referenceContainer>
+
+        <referenceBlock name="sales.order.history">
+            <block class="Sapt\Sales\Block\Order\History\Items" name="order_items" template="Magento_Sales::order/items.phtml" cacheable="false">
+                <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list"/>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="sales.order.items.renderers.default">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="sales.order.items.renderers.bundle">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="sales.order.items.renderers.grouped">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
