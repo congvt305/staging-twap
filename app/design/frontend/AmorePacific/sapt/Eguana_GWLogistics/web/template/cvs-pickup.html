@@ -1,0 +1,49 @@
+<div class="shipping-method-wrapper">
+    <div class="shipping-method-title" translate="'Shipping Method'"></div>
+</div>
+<li id="cvs-pickup"
+    if="isAvailable"
+    css="'selected-shipping': !isCvsPickupSelected(), 'selected-cvs-pickup': isCvsPickupSelected()"
+>
+    <render args="deliveryMethodSelectorTemplate"></render>
+    <each args="getRegion('shipping-messages')">
+        <div template=" {name: getTemplate()}"></div>
+    </each>
+    <if args="isCvsPickupSelected">
+        <if args="isVisible">
+            <each args="getRegion('cvs-selector')">
+                <div template=" {name: getTemplate()}"></div>
+            </each>
+        </if>
+    </if>
+</li>
+<div class="shipping-method-wrapper">
+    <div class="shipping-method-title" translate="'Shipping Method'"></div>
+    <li id="store-pickup"
+        css="'selected-shipping': isHomeDeliverySelected(), 'selected-store-pickup': isStorePickupSelected(), 'selected-store-pickup-sf': isStorePickupSelected()"
+    >
+        <render args="deliveryMethodSelectorTemplate"></render>
+        <if args="isHomeDeliverySelected">
+            <each args="getRegion('home-delivery-selector')">
+                <div template=" {name: getTemplate()}"></div>
+            </each>
+        </if>
+        <if args="isStorePickupSelected">
+            <each args="getRegion('store-selector')">
+                <div template=" {name: getTemplate()}"></div>
+            </each>
+        </if>
+        <if args="isStorePickupSfSelected">
+            <each args="getRegion('store-sf-selector')">
+                <div template=" {name: getTemplate()}"></div>
+            </each>
+        </if>
+    </li>
+    <p class="notice">
+        請仔細閱讀本網站所載的本公司的服務及使用條款､
+        網上訂購及送貨服務注意事項及私隱政策聲明。
+        如你確認提交訂單，即代表閣下已經閱讀、
+        明白及同意接受此等使用條款的約束。
+    </p>
+</div>
+

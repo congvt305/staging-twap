@@ -1,0 +1,16 @@
+<?php
+/** @var \Amasty\AdvancedReview\Block\Images $block */
+$collection = $block->getCollection();
+?>
+
+<?php if ($collection->getSize()): ?>
+    <?php  $firstImage = $collection->getFirstItem(); ?>
+    <div class="images-thumb-wrapper">
+        <img class="amreview-image"
+             src="<?= /* @noEscape */ $block->getResizedImagePath($firstImage);?>"
+             title="<?= $block->escapeHtml(__('Review image')); ?>"
+             alt="<?= $block->escapeHtml(__('Review image')); ?>"
+        />
+        <span class="image-count"><?=$collection->getSize()?></span>
+    </div>
+<?php endif;?>

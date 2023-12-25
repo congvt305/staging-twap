@@ -1,0 +1,137 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Default appearance styles
+//  _____________________________________________
+
+div[data-content-type='tabs'] {
+    .tabs-navigation {
+        display: block;
+        font-size: 0;
+        margin: 0 0 -1px;
+        padding: 0;
+        text-align: center !important;
+
+        li:first-child {
+            margin-left: 0 !important;
+        }
+
+        li.tab-header {
+            background: transparent;
+            border: 2px solid #e6e6e6 !important;
+            border-top: 0 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;
+            display: inline-block;
+            margin: 0;
+            max-width: 100%;
+            min-width: 250px;
+            text-align: center;
+            overflow-wrap: break-word;
+            position: relative;
+            word-wrap: break-word;
+            z-index: 1;
+
+            &:not(:first-child) {
+                margin-left: -1px;
+            }
+
+            a.tab-title {
+                border-right: 0;
+                color: @secondary__color;
+                cursor: pointer !important;
+                display: block;
+                font-size: 17px;
+                font-weight: @font-weight__regular;
+                padding: 0.9rem 2rem;
+                position: relative;
+                vertical-align: middle;
+                white-space: normal;
+                text-transform: uppercase;
+
+                span.tab-title {
+                    display: block;
+                }
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            &.ui-state-active {
+                background: @color-white;
+                z-index: 19;
+                border-color: @theme__color__primary !important;
+
+                a.tab-title {
+                    position: relative;
+                    color: @theme__color__primary;
+                    font-weight: @font-weight__bold;
+                }
+            }
+        }
+    }
+
+    .tabs-content {
+        border: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        z-index: 9;
+
+        [data-content-type='tab-item'] {
+            box-sizing: border-box;
+            min-height: inherit;
+
+            &:not(:first-child) {
+                display: none;
+            }
+        }
+    }
+
+    &.tab-align-left {
+        .tabs-content {
+            border-top-left-radius: 0 !important;
+        }
+    }
+    &.tab-align-right {
+        .tabs-content {
+            border-top-right-radius: 0 !important;
+        }
+    }
+}
+
+//
+//  Responsive Classes
+//  _____________________________________________
+
+@media only screen and (max-width: @screen__m) {
+    [data-content-type='tab-item'] {
+        background-attachment: scroll !important;
+    }
+
+    div[data-content-type='tabs'] {
+        .tabs-navigation {
+            margin: 0 @indent__s;
+
+            li.tab-header {
+                border-width: 1px !important;
+                width: (100% / 3);
+                min-width: auto;
+
+                &:not(:first-child) {
+                    margin-left: -1px;
+                }
+
+                a.tab-title {
+                    font-size: 12px;
+                    padding: 0;
+                    line-height: 40px;
+                }
+            }
+        }
+    }
+}

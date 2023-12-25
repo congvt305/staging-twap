@@ -1,0 +1,53 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div class="message-main" data-bind="scope: 'messages'">
+    <div class="message-visible"  data-bind="css: { has_message: messages().messages && messages().messages.length > 0 ? true : false }">
+        <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
+        <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages">
+            <div data-bind="attr: {
+                class: 'message-' + message.type + ' ' + message.type + ' message',
+                'data-ui-id': 'message-' + message.type
+            }">
+                <div data-bind="html: message.text"></div>
+                <div class="remove"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: messages().messages && messages().messages.length > 0 -->
+        <!-- ko foreach: { data: messages().messages, as: 'message'}  -->
+        <!-- ko if: message.type != undefined -->
+        <!-- ko if: (message.text != '點數查詢') -->
+        <div role="alert" class="messages">
+            <div data-bind="attr: {
+                            class: 'message-' + message.type + ' ' + message.type + ' message',
+                            'data-ui-id': 'message-' + message.type
+                        }">
+                <div data-bind="html: message.text"></div>
+                <div class="remove"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                        "messages": {
+                            "component": "Magento_Theme/js/view/messages"
+                        }
+                    }
+                }
+            }
+    }
+</script>
+

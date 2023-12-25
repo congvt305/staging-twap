@@ -1,0 +1,236 @@
+<!--<title>雪花秀水療中心位於首爾和香港 | 雪花秀</title>-->
+<!--<meta name="description" content="瞭解首爾和香港的水療中心。查看江南旗艦店和首爾樂天飯店的地址、地圖、營業時間和電話號碼 | Sulwhasoo Hong Kong 中國香港">-->
+<!--<meta property="og:title" content="雪花秀水療中心位於首爾和香港 | 雪花秀">-->
+<!--<meta property="og:description" content="瞭解首爾和香港的水療中心。查看江南旗艦店和首爾樂天飯店的地址、地圖、營業時間和電話號碼 | Sulwhasoo Hong Kong 中國香港">-->
+<!--<meta property="twitter:title" content="雪花秀水療中心位於首爾和香港 | 雪花秀">-->
+<!--<meta property="twitter:description" content="瞭解首爾和香港的水療中心。查看江南旗艦店和首爾樂天飯店的地址、地圖、營業時間和電話號碼 | Sulwhasoo Hong Kong 中國香港">-->
+<?php
+    $storeHelper = $this->helper('Eguana\StoreLocator\Helper\ConfigData');
+    $apiKey = $storeHelper->getApiKey();
+?>
+
+<section class="content">
+  <h1 class="blind">SPA LOCATION</h1>
+
+  <div class="l-wrap">
+    <div class="spa-location">
+      <ul class="spa-list">
+        <div class="parsys data"><div class="parbase location section"><li>
+			<a href="#map-location_c429" data-lat="22.297627" data-lng="114.168619" class="spa-link" data-track-name="Sulwhasoo SPA 海港城">
+			  <div class="spa-info q">
+			    <div class="mark">
+			      <mark class="mark-global">香港</mark>
+			      <mark class="mark-spa">SPA</mark>
+			    </div>
+			    <strong class="spa-title">Sulwhasoo SPA 海港城</strong>
+			    <span class="address">尖沙咀海港城世界商業中心8樓</span>
+			    <span class="tel">+852-2314-3288</span>
+			    <div class="more"><i class="icon-more"></i></div>
+			  </div>
+			</a>
+			<div class="spa-map a">
+			  <div class="map-container">
+			    <div class="flx">
+			      <div id="map-location_c429" class="map-canvas"></div>
+			    </div>
+			  </div>
+			</div>
+			</li>
+			</div>
+			<div class="parbase location section"><li>
+			<a href="#map-location_4254" data-lat="22.278177" data-lng="114.182255" class="spa-link" data-track-name="Sulwhasoo SPA 時代廣場">
+			  <div class="spa-info q">
+			    <div class="mark">
+			      <mark class="mark-global">香港</mark>
+			      <mark class="mark-spa">SPA</mark>
+			    </div>
+			    <strong class="spa-title">Sulwhasoo SPA 時代廣場</strong>
+			    <span class="address">銅鑼灣時代廣場1座15樓</span>
+			    <span class="tel">+852-2114-4728</span>
+			    <div class="more"><i class="icon-more"></i></div>
+			  </div>
+			</a>
+			<div class="spa-map a">
+			  <div class="map-container">
+			    <div class="flx">
+			      <div id="map-location_4254" class="map-canvas"></div>
+			    </div>
+			  </div>
+			</div>
+			</li>
+			</div>
+			<div class="parbase location section"><li>
+			<a href="#map-location_8258" data-lat="22.297627" data-lng="114.168619" class="spa-link" data-track-name="Sulwhasoo 海港城韓方美療中心">
+			  <div class="spa-info q">
+			    <div class="mark">
+			      <mark class="mark-global">香港</mark>
+			      <mark class="mark-spa">韓方美療中心</mark>
+			    </div>
+			    <strong class="spa-title">Sulwhasoo 海港城韓方美療中心</strong>
+			    <span class="address">尖沙咀海港城世界商業中心8樓</span>
+			    <span class="tel">+852-3104-0336</span>
+			    <div class="more"><i class="icon-more"></i></div>
+			  </div>
+			</a>
+			<div class="spa-map a">
+			  <div class="map-container">
+			    <div class="flx">
+			      <div id="map-location_8258" class="map-canvas"></div>
+			    </div>
+			  </div>
+			</div>
+			</li>
+			</div>
+			<div class="parbase location section"><li>
+			<a href="#map-location_450" data-lat="22.278177" data-lng="114.182255" class="spa-link" data-track-name="Sulwhasoo  時代廣場韓方美療中心">
+			  <div class="spa-info q">
+			    <div class="mark">
+			      <mark class="mark-global">香港</mark>
+			      <mark class="mark-spa">韓方美療中心</mark>
+			    </div>
+			    <strong class="spa-title">Sulwhasoo  時代廣場韓方美療中心</strong>
+			    <span class="address">銅鑼灣時代廣場1座15樓</span>
+			    <span class="tel">+852-2154-4230</span>
+			    <div class="more"><i class="icon-more"></i></div>
+			  </div>
+			</a>
+			<div class="spa-map a">
+			  <div class="map-container">
+			    <div class="flx">
+			      <div id="map-location_450" class="map-canvas"></div>
+			    </div>
+			  </div>
+			</div>
+			</li>
+			</div>
+
+			</div>
+
+      </ul>
+    </div>
+  </div>
+</section>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=<?= $block->escapeUrl($apiKey) ?>&sensor=true&region=KR&ver=4.1.1&language=zh"></script>
+<script>
+	require([
+    'jquery',
+	], function ($) {
+        var $storeItem = $('.spa-list li'),
+		$firstMapLink = $storeItem.eq(0).find('>a'),
+		$map = $('.spa-map'),
+		$scroll = $('html, body'),
+		delay = parseFloat($('.spa-map').css('transition-duration')) * 1000,
+        marker = '/hk/zh/resource/img/a/marker.png';
+
+		$storeItem.each(function(idx, el){
+			var $item = $(el),
+				$a = $item.find('>a'),
+				$target = $($a.attr('href'));
+
+			$a.data('order', idx);
+			$item.data('is-open', false);
+			$target.data('hasMap', false);
+
+			$a.on('click', function(event){
+				openMap($item, $(this), $target);
+				event.stopPropagation();
+				event.preventDefault();
+			});
+		});
+
+        function initMap(c, h, i, l) {
+            var c = (c) ? c : "map-canvas000",
+                h = (h) ? h : 0,
+                i = (i) ? i : 0;
+            var k = [{
+                stylers: [{
+                    hue: "#000000"
+                }, {
+                    saturation: -100
+                }]
+            }, {
+                featureType: "road",
+                elementType: "geometry",
+                stylers: [{
+                    saturation: 0
+                }, {
+                    visibility: "simplified"
+                }]
+            }, {
+                featureType: "road",
+                elementType: "labels",
+                stylers: [{
+                    visibility: "off"
+                }]
+            }];
+            var j = new google.maps.StyledMapType(k, {
+                name: "Styled Map"
+            });
+            var g = new google.maps.LatLng(h, i);
+            var d = {
+                zoom: 17,
+                center: g,
+                mapTypeControlOptions: {
+                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, "map_style"]
+                },
+                restriction: {
+                    latLngBounds: {
+                        east: 114.47238764504375,
+                        south: 22.112407641761905,
+                        north: 22.610254810545563,
+                        west: 113.74591672530627
+                    }, strictBounds: false
+                },
+            };
+            var b = new google.maps.Map(document.getElementById(c), d);
+            var e = l;
+            var a = new google.maps.Marker({
+                position: g,
+                map: b,
+                icon: e
+            });
+            b.mapTypes.set("map_style", j);
+            b.setMapTypeId("map_style")
+        }
+
+		function openMap($item, $a, $target) {
+
+			if ( !$item.length || !$a.length || !$target.length ) return;
+
+			var map_id = $a.attr('href').replace('#', ''),
+				lat, lng, scrollTop;
+
+			lat = $a.data('lat');
+			lng = $a.data('lng');
+
+			if ( !$target.data('hasMap') && map_id !== '' ) {
+				$target.data('hasMap', true);
+				initMap(map_id, lat, lng, marker);
+			}
+
+			if ( $item.data('is-open') ) {
+
+				$storeItem.removeClass('is-active');
+				$item.data('is-open', false);
+
+			} else {
+
+				$storeItem.removeClass('is-active');
+				$storeItem.data('is-open', false);
+				$item.addClass('is-active');
+
+				if ( $map.css('position') !== 'absolute' ) {
+					scrollTop = ( $a.data('order') ) ? $item.offset().top : 0;
+					setTimeout(function(){
+						$scroll.animate({'scrollTop': scrollTop}, 250, 'easeOutSine');
+					}, delay);
+				}
+
+				$item.data('is-open', true);
+			}
+		}
+
+		openMap($firstMapLink.parent(), $firstMapLink, $($firstMapLink.attr('href')));
+    });
+
+</script>

@@ -1,0 +1,82 @@
+<?php
+/** @var \Amore\PointsIntegration\ViewModel\Points\HistoryAjax  $viewModel */
+$viewModel = $block->getData('history_view_model');
+$pointsHistoryResults = $viewModel->getPageData();
+?>
+
+<div class="block-title text-small">
+    <strong><?= __('Points history') ?></strong>
+</div>
+<div class="table-wrapper">
+    <table class="data table">
+        <thead>
+        <tr>
+            <th><?= __('the name of the point') ?></th>
+            <th><?= __('points are accumulated and used') ?></th>
+            <th><?= __('membership credits') ?></th>
+            <th><?= __('the expiry date of the points') ?></th>
+        </tr>
+        </thead>
+        <?php if (count($pointsHistoryResults) > 0) : ?>
+        <tbody>
+        <?php foreach ($pointsHistoryResults as $pointsHistory) :?>
+            <tr>
+                <td><?=$pointsHistory['typeNM'] ?></td>
+                <td><?=$pointsHistory['reason'] ?></td>
+                <td><?=$pointsHistory['point'] ?></td>
+                <td><?=$pointsHistory['validPeriod'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+        <?php endif; ?>
+    </table>
+    <table class="data table mobile">
+        <tbody>
+        <?php for($i = 0; $i < 4; $i++) { ?>
+            <tr>
+                <?php
+                switch ($i) {
+                    case 0:
+                        echo '<td class="col-title">' . __('the name of the point') . '</td>';
+                        break;
+                    case 1:
+                        echo '<td class="col-title">' . __('points are accumulated and used') . '</td>';
+                        break;
+                    case 2:
+                        echo '<td class="col-title">' . __('membership credits') . '</td>';
+                        break;
+                    case 3:
+                        echo '<td class="col-title">' . __('the expiry date of the points') . '</td>';
+                        break;
+                }
+                ?>
+                <?php if (count($pointsHistoryResults) > 0) : ?>
+                    <?php foreach ($pointsHistoryResults as $pointsHistory) : ?>
+                        <?php
+                        $value = '';
+                        switch ($i) {
+                            case 0:
+                                $value = $pointsHistory['typeNM'];
+                                break;
+                            case 1:
+                                $value = $pointsHistory['reason'];
+                                break;
+                            case 2:
+                                $value = $pointsHistory['point'];
+                                break;
+                            case 3:
+                                $value = $pointsHistory['validPeriod'];
+                                break;
+                        }
+                        ?>
+                        <td><?= $value ?></td>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+
+

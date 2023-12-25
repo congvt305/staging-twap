@@ -1,0 +1,35 @@
+<?php
+/** @var $block \Sapt\Customer\Block\Membership */
+$customer = $block->getCustomer();
+$groupName = $block->getGroupName($customer->getGroupId());
+?>
+
+<div class="membership_section">
+    <div class="container">
+        <div class="box_member">
+            <div class="member_info">
+                <h3><?= $customer->getName() ?></h3>
+                <p><?= $block->escapeHtml(__('Membership')) ?></p>
+                <div class="rank">
+                    <h2><?= $groupName ? $groupName->getCode() : '' ?></h2>
+                    <a class="view_all" href="#"><?= $block->escapeHtml(__('View all benefits')) ?></a>
+                </div>
+            </div>
+            <div class="member_point">
+                <p class="label point"><?= $block->escapeHtml(__('Point')) ?></p>
+                <p class="count"><?=number_format($block->getPoint());?><span>p</span></p>
+            </div>
+
+
+
+            <div class="member_coupon">
+                <p class="label point"><?= $block->escapeHtml(__('Coupon')) ?></p>
+                <p class="count"><?=number_format($block->getCountCoupon())?></p>
+            </div>
+            <div class="member_review">
+                <p class="label point"><?= $block->escapeHtml(__('Review')) ?></p>
+                <p class="count"><?=number_format($block->getCountOrderReviewed())?> / <?=number_format($block->getCountOrderReviewAvailable())?></p>
+            </div>
+        </div>
+    </div>
+</div>

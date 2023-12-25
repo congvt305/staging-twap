@@ -18,16 +18,4 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\Framework\Console\CommandListInterface">
-        <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="logTestCommand" xsi:type="object">Eguana\BizConnect\Console\Command\LogTestCommand</item>
-            </argument>
-        </arguments>
-    </type>
-    <type name="Magento\Sales\Model\Order\StateResolver">
-        <plugin name="eguana_bizconnect_add_inprogress_state"
-                type="\Eguana\BizConnect\Plugin\Order\StateResolver\InProgressStatePlugin"
-                disabled="true"/>
-    </type>
 </config>
