@@ -3258,7 +3258,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "Invalid shipping method","無效的運送方式",module,Magento_Checkout
 "There are more than one shipping addresses.","有多個送貨地址。",module,Magento_Checkout
 "Sorry, guest checkout is not available.","對不起,客人沒有退房。",module,Magento_Checkout
-"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","你必須確認你的帳戶。 請檢查你的電郵以取得確認連結,<a href=""%1"">或按此處</a>以取得新的連結。",module,Magento_Checkout
+"You must confirm your account. Please check your email for the confirmation link or <a href=""%1"">click here</a> for a new link.","你必須確認你的帳戶。 請檢查你的電子郵件以取得確認連結,<a href=""%1"">或按此處</a>以取得新的連結。",module,Magento_Checkout
 "Load customer quote error","裝載客戶報價錯誤",module,Magento_Checkout
 "Error message!","錯誤消息!",module,Magento_Checkout
 "Error!","錯誤!",module,Magento_Checkout
