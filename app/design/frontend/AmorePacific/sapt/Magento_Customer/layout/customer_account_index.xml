@@ -42,6 +42,14 @@
         <referenceBlock name="catalog.compare.sidebar" remove="true"/>
 
         <referenceBlock name="customer_account_dashboard_top" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Sapt\Customer\Block\Widget\BeautyProfile" name="customer_account_dashboard_beauty_profile" template="Sapt_Customer::dashboard/beauty_profile.phtml">
+                <arguments>
+                    <argument name="attribute_code" xsi:type="string">beauty_profile</argument>
+                    <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Edit</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
         <move element="customer_account_dashboard_leave_account" destination="content" after="customer_account_dashboard_beauty_profile"/>
         <referenceBlock name="customer_account_dashboard_info1" remove="true"/>
     </body>
