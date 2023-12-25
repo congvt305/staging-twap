@@ -49,6 +49,14 @@ return [
                 'sort_order' => '0',
                 'default_group_id' => '10',
                 'is_default' => '0'
+            ],
+            'my_sulwhasoo_website' => [
+                'website_id' => '11',
+                'code' => 'my_sulwhasoo_website',
+                'name' => 'MY Sulwhasoo Website',
+                'sort_order' => '0',
+                'default_group_id' => '11',
+                'is_default' => '0'
             ]
         ],
         'groups' => [
@@ -99,6 +107,14 @@ return [
                 'root_category_id' => '751',
                 'default_store_id' => '10',
                 'code' => 'my_laneige_website_store'
+            ],
+            11 => [
+                'group_id' => '11',
+                'website_id' => '11',
+                'name' => 'MY Sulwhasoo Website Store',
+                'root_category_id' => '751',
+                'default_store_id' => '11',
+                'code' => 'my_sulwhasoo_website_store'
             ]
         ],
         'stores' => [
@@ -153,6 +169,15 @@ return [
                 'website_id' => '10',
                 'group_id' => '10',
                 'name' => 'MY Laneige Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
+            'my_sulwhasoo' => [
+                'store_id' => '11',
+                'code' => 'my_sulwhasoo',
+                'website_id' => '11',
+                'group_id' => '11',
+                'name' => 'MY Sulwhasoo Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
             ]
@@ -239,6 +264,13 @@ return [
                 ]
             ],
             'my_laneige_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'ms_MY'
+                    ]
+                ]
+            ],
+            'my_sulwhasoo_website' => [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
@@ -796,6 +828,7 @@ return [
         'CJ_AmastyBirth' => 1,
         'CJ_AmastyCheckoutCore' => 1,
         'CJ_AmastyPromo' => 1,
+        'CJ_AmastyReview' => 1,
         'CJ_AmastyShopby' => 1,
         'CJ_Base' => 1,
         'CJ_Catalog' => 1,
