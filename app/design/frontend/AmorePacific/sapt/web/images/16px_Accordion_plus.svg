@@ -1,0 +1,8 @@
+<svg data-name="16px_Accordion_+" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <g data-name="Group 468765">
+        <path transform="translate(0 7)" style="fill:#222" d="M0 0h16v2H0z" data-name="Icon_+/-"/>
+        <g data-name="Icon_+/-">
+            <path data-name="icon_-" transform="rotate(90 4.5 4.5)" style="fill:#222" d="M0 0h16v2H0z"/>
+        </g>
+    </g>
+</svg>

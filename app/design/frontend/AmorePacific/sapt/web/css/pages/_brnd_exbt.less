@@ -1,0 +1,172 @@
+.culture {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+}
+.culture:hover {
+    border-color: #191919;
+    text-decoration: none;
+}
+.culture:focus .btn, .culture:hover .btn {
+    color: #fff;
+    background: #333;
+}
+.culture-thumb {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top;
+}
+.culture-desc {
+    position: relative;
+    padding: 11.5% 8% 0 11%;
+    font-size: 1.7em;
+}
+.culture .history {
+    font-size: 1.6em;
+}
+.culture .h {
+    color: #333;
+    margin-top: 0.7em;
+    font-weight: 400;
+    font-size: 1.7em;
+    letter-spacing: -.023em;
+}
+.culture .h {
+    color: #333;
+    margin-top: 0.7em;
+    font-weight: 400;
+    font-size: 1.7em;
+    letter-spacing: -.023em;
+}
+.culture .date {
+    display: block;
+    margin: 0.4em 0 0.1em;
+    font-family: Theinhardt, 'Microsoft jhengHei', 'Microsoft YaHei New', 'Microsoft Yahei', Arial, Helvetica, sans-serif;
+    letter-spacing: -.03em;
+    text-transform: uppercase;
+}
+.culture .p {
+    margin: 0;
+}
+.culture .func {
+    margin-top: 2em;
+    font-size: .85em;
+    text-align: left;
+}
+@media only all and (min-width: 1280px) {
+    .culture .history {
+        font-size: 2em;
+        letter-spacing: -.06em;
+    }
+    .culture-desc {
+        font-size: 1.8em;
+    }
+    .culture .h {
+        margin: 0.6em 0 0;
+        letter-spacing: -.03em;
+    }
+    .culture .date {
+        margin: 0.1em 0 0.3em;
+        letter-spacing: .03em;
+    }
+    .culture .p {
+        line-height: 1.7;
+    }
+    .culture .func {
+        margin-top: 1.9em;
+        font-size: 15px;
+    }
+    .culture .btn {
+        padding-left: 1.4em;
+        padding-right: 1.4em;
+    }
+
+}
+
+
+@media only all and (max-width: 1023px) {
+    .culture-thumb {
+        width: 41%;
+    }
+    .culture-desc {
+        padding: 20px 20px 0;
+        font-size: 1.4em;
+    }
+    .culture .h {
+        margin-top: 0.2em;
+    }
+    .culture .date {
+        font-size: 1.4em;
+    }
+    .culture .func {
+        display: none;
+    }
+}
+@media only all and (max-width: 767px) {
+    .experience-header .h {
+        font-size: 2.4em;
+    }
+    .experience-header p {
+        font-size: 1.3em;
+    }
+    .culture-desc {
+        padding: 12px 20px;
+        font-size: 1.15em;
+    }
+    .culture .date {
+        display: none;
+    }
+    .culture .p {
+        margin-top: 0.5em;
+    }
+
+}
+
+@media only all and (max-width: 599px) {
+    .culture-thumb {
+        width: 43.2%;
+    }
+    .culture-desc {
+        padding: 6px 0 0 10px;
+        font-size: 1.1em;
+    }
+    .culture .history {
+        font-size: 1.5em;
+    }
+    .culture .h {
+        font-size: 1.8em;
+    }
+    .culture .p {
+        font-size: 1.2em;
+    }
+    .experience-header .h {
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+    .experience-header-cell {
+        padding: 1.5em 0;
+    }
+    .experience-header p {
+        padding: 0 5%;
+        font-size: 1em;
+    }
+}
+@media only all and (max-width: 384px) {
+    .culture-desc {
+        font-size: 1em;
+    }
+    .culture .h {
+        font-size: 1.55em;
+    }
+    .culture .p {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+}
+

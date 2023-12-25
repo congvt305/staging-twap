@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="28" viewBox="0 0 92 28">
+    <g data-name="사각형 349209" style="stroke:#ddd;fill:none">
+        <rect width="92" height="28" rx="14" style="stroke:none"/>
+        <rect x=".5" y=".5" width="91" height="27" rx="13.5" style="fill:none"/>
+    </g>
+    <g data-name="그룹 469778">
+        <text transform="translate(38 19)" style="fill:#222;font-size:14px;font-family:Theinhardt-Medium,Theinhardt;font-weight:500"><tspan x="0" y="0">PRINT</tspan></text>
+        <g data-name="그룹 471787">
+            <g data-name="그룹 471533">
+                <g data-name="그룹 471785">
+                    <path data-name="패스 845675" d="M0 0h14v7.259H0z" transform="translate(17.227 14.325)" style="stroke-linejoin:round;stroke:#000"/>
+                    <path data-name="패스 845656" d="M5.549 11.669V4.175h10v7.494" transform="translate(13.677 4.241)" style="stroke-linejoin:round;stroke:#000;fill:none"/>
+                    <path data-name="선 485" transform="translate(27.33 18.747)" style="stroke-linecap:round;stroke:#fff;stroke-linejoin:round;fill:none" d="M0 0h2"/>
+                    <path data-name="선 488" transform="translate(22.16 11.384)" style="stroke-linecap:round;stroke-linejoin:round;stroke:#000;fill:none" d="M0 0h4.133"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

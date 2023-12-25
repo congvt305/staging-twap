@@ -1,0 +1,48 @@
+<?php
+/**
+ * Top menu for store
+ *
+ * @see \Sapt\Megamenu\Block\Topmenu
+ */
+?>
+<?php
+    $_helper = $this->helper('Sapt\Megamenu\Helper\Data');
+    $_config = $_helper->getConfig('sapt_megamenu');
+    $columnsLimit = 0;
+    if($_config['general']['enable']) {
+?>
+<?php $_menu = $block->getMegamenuHtml(); ?>
+<span data-action="toggle-nav" class="close-nav-toggle nav-toggle"></span>
+<nav class="navigation sapt-megamenu" role="navigation">
+    <ul>
+        <?php echo $_menu; ?>
+    </ul>
+    <div class="menu-overlay"></div>
+</nav>
+<?php if($_config['custom_links']['staticblock_after']) { ?>
+    <div class="megamenu-static-mobile">
+        <?php echo $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId($_config['custom_links']['staticblock_after'])->toHtml();?>
+    </div>
+<?php } ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Sapt_Megamenu/js/sapt_megamenu'
+    ], function ($) {
+        $(".sapt-megamenu").saptMegamenu();
+    });
+</script>
+<?php
+    } else {
+?>
+<?php $_menu = $block->getHtml('level-top', 'submenu', $columnsLimit); ?>
+
+<nav class="navigation sapt-megamenu" role="navigation">
+    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+        <?php /* @escapeNotVerified */ echo $_menu; ?>
+    </ul>
+</nav>
+
+<?php
+    }
+?>

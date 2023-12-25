@@ -1,0 +1,31 @@
+<div class="product attribute review">
+        <strong class="type click_show review">Review</strong>
+    <div class="value content_detail content_review" style="display: none">
+        this is content
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery'
+    ],function ($) {
+        $("#tab-label-reviews").click(function() {
+            $(".click_show.review").addClass("active");
+            $(".content_review").show();
+        });
+
+        $(document).mouseup(e => {
+        if (!$(".click_show.review").is(e.target)
+        && $(".click_show.review").has(e.target).length === 0)
+        {
+            $(".content_review").hide('');
+            $(".click_show.review").removeClass("active");
+        }
+        });
+
+        $(".click_show.review").click(function(){
+            $(this).toggleClass("active");
+            $(".content_review").slideToggle();
+        });
+    });
+</script>

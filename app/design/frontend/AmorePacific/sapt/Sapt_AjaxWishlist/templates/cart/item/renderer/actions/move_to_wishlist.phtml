@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+
+use Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus;
+
+/** @var \Magento\Wishlist\Block\Cart\Item\Renderer\Actions\MoveToWishlist $block */
+
+/** @var AjaxWishlistStatus $viewModel */
+$viewModel = $block->getData('moduleStatusViewModel');
+
+?>
+<?php  if ($viewModel->moduleStatus()): ?>
+    <?php if ($block->isProductVisibleInSiteVisibility()) : ?>
+        <?php $product = $block->getItem()->getProduct(); ?>
+
+        <!-- ko scope: 'ajaxwishlist' -->
+        <a
+            class="action towishlist use-ajax action-towishlist"
+            data-bind="css:{wishlisticon : wishlistitem().all_wishlist_items
+         ?typeof wishlistitem().all_wishlist_items[<?= /* @noEscape */ $product->getId() ?>]!='undefined':false}"
+            title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
+            aria-label="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
+            data-action="wishlist-actions"
+            data-product-id='<?= /* @noEscape */ $product->getId() ?>'
+            role="button">
+            <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+
+        </a>
+        <!-- /ko -->
+    <?php endif; ?>
+<?php else: ?>
+
+    <?php if ($block->isAllowInCart() && $block->isProductVisibleInSiteVisibility()) : ?>
+        <a href="#"
+           data-post='<?= /* @noEscape */ $block->getMoveFromCartParams() ?>'
+           class="use-ajax action towishlist action-towishlist">
+            <span><?= $block->escapeHtml(__('Move to Wishlist')) ?></span>
+        </a>
+    <?php endif ?>
+<?php endif; ?>
