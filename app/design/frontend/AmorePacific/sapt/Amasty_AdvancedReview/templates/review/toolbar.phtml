@@ -1,0 +1,38 @@
+<?php
+/** @var \Amasty\AdvancedReview\Block\Review\Toolbar $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+use Amasty\AdvancedReview\Model\Toolbar\UrlBuilder;
+
+$toolbarCssClass = $block->isFilteringEnabled() && $block->isSortingEnabled() ? '-all' : '';
+
+if ($block->isToolbarDisplayed()): ?>
+    <figure class="amrev-toolbar-container <?= /* @noEscape */ $toolbarCssClass ?>" data-amrev-js="toolbar-container">
+        <div class="review-filters">
+            <span class="review-filter-item all <?=$block->isFilterSelected('with_images')?:'active'?>"><?= __('All') ?></span>
+            <span class="review-filter-item images <?=!$block->isFilterSelected('with_images')?:'active'?>"><?= __('Photo Review') ?></span>
+        </div>
+        <div class="review-add-button">
+            <span><?= __('WRITE A REVIEW') ?></span>
+        </div>
+        <?php if ($block->isFilteringEnabled()): ?>
+            <ul class="amrev-filters">
+                <?php foreach ($block->getAvailableFilters() as $key => $filterName): ?>
+                    <?php $selected = $block->isFilterSelected($key); ?>
+                    <li class="amrev-filter amrev-checkbox-container">
+                        <input type="checkbox"
+                               class="amrev-input"
+                               name="<?= $escaper->escapeHtml($key) ?>"
+                               data-amreview-js="filter"
+                            <?= /* @noEscape */ $selected ? 'checked' : ''; ?>
+                               data-href="<?= $escaper->escapeUrl($block->generateUrl($key, !$selected)); ?>"
+                               id="amreview-filter-<?= $escaper->escapeHtml($key) ?>">
+                        <label class="amrev-label amrev-label" for="amreview-filter-<?= $escaper->escapeHtml($key); ?>">
+                            <?= $escaper->escapeHtml(__($filterName)) ?>
+                        </label>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </figure>
+<?php endif; ?>

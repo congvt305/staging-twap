@@ -1,0 +1,167 @@
+//
+//  Toolbar Styles
+//  ____________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+
+@amrev-toolbar__active__color: #007bdb;
+
+//
+//  Common
+//  --------------------------------------------
+
+& when (@media-common = true) {
+  .amrev-toolbar-container {
+    & {
+      .am-flex(center, center);
+      flex-wrap: wrap;
+      font-size: 16px;
+      line-height: 1.31;
+      font-weight: 700;
+      justify-content: space-between;
+      padding: 0 0 10px;
+      border-bottom: 1px solid #222222;
+    }
+
+    &.-disabled {
+      ._amrev-disabled;
+    }
+
+    &.-all .amrev-sorting {
+      border-left: none;
+    }
+
+    .amrev-filters {
+      .am-flex(center, center);
+
+      flex-basis: 100%;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: 0;
+      order: 2;
+      padding: 0;
+      display: none;
+    }
+
+    .amrev-filter {
+      border-bottom: 1px solid #dcdcdc;
+      flex-basis: 100%;
+      margin: 0;
+      padding: @amrev__indent__l 0 @amrev__indent @amrev__indent__xl;
+    }
+
+    .amrev-sorting {
+      background: @amreview-placeholder__color;
+      border: none;
+      flex-basis: 100%;
+      order: 1;
+      padding: @amrev__indent 18px;
+    }
+
+    .amrev-sortbtn:before {
+      font-size: 14px;
+    }
+
+    .amrev-sortbtn:hover:before,
+    .amrev-sortbtn:focus:before {
+      color: @amrev-toolbar__active__color;
+    }
+
+    .amrev-select {
+      height: 25px;
+      margin: 5px 5px 5px 8px;
+      max-width: 160px;
+      padding: 0 0 0 10px;
+      width: 100%;
+    }
+
+    .amrev-label {
+      margin: 0;
+    }
+
+    .review-filter-item, .review-add-button {
+      cursor: pointer;
+    }
+
+    .review-filter-item {
+      margin-right: 10px;
+
+      &:not(.active) {
+        font-weight: 500;
+        color: #999;
+      }
+
+      &:before {
+        width: 20px;
+        height: 12px;
+        display: inline-block;
+        content: '';
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxnIGRhdGEtbmFtZT0iR3JvdXAgNDcwMzg1Ij4KICAgICAgICA8cGF0aCBkYXRhLW5hbWU9IlJlY3RhbmdsZSAzNDE0ODEiIHN0eWxlPSJmaWxsOiNmZmYiIGQ9Ik0wIDBoMjB2MjBIMHoiLz4KICAgICAgICA8cGF0aCBkYXRhLW5hbWU9IlBhdGggODQ1NDgxIiBkPSJNLTcwOTQuNjY3IDU4MzIuMzMzLTcwOTAgNTgzN2w3LTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcwOTkuMTY2IC01ODIzLjUpIiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojOTU5NTk1O3N0cm9rZS13aWR0aDoycHgiLz4KICAgIDwvZz4KPC9zdmc+Cg==);
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-right: 5px;
+      }
+
+      &.active:before {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9Ikdyb3VwIDQ3MDM4NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBkYXRhLW5hbWU9IlJlY3RhbmdsZSAzNDg3ODUiIHN0eWxlPSJmaWxsOiNmZmYiIGQ9Ik0wIDBoMjB2MjBIMHoiLz4KICAgIDxwYXRoIGRhdGEtbmFtZT0iUGF0aCA4NDU0NDciIGQ9Ik0tNzA5NC42NjcgNTgzMi4zMzMtNzA5MCA1ODM3bDctNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzA5OS4xNjYgLTU4MjMuNSkiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiMyMjI7c3Ryb2tlLXdpZHRoOjJweCIvPgo8L3N2Zz4K)
+      }
+    }
+
+    .review-add-button:after {
+      width: 8px;
+      height: 20px;
+      display: inline-block;
+      content: '';
+      background-image: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IjIwcHhfQ2F0ZWdvcnlfJmd0OyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBkYXRhLW5hbWU9IlBhdGggODQ1MjU3IiBkPSJNNiAwIDAgNmw2IDYiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA2Ljc1IDguMjUpIiBzdHlsZT0ic3Ryb2tlOiMyMjI7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLXdpZHRoOjEuNXB4O2ZpbGw6bm9uZTtzdHJva2UtbWl0ZXJsaW1pdDoxMCIvPgo8L3N2Zz4K);
+      background-repeat: no-repeat;
+      background-position: -6px -3px;
+      vertical-align: bottom;
+    }
+  }
+}
+
+//
+//  Tablet
+//  --------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .amrev-toolbar-container {
+    & {
+      margin: 35px 0 0 0;
+      padding: 16px 0px;
+    }
+
+    .amrev-filters {
+      flex-basis: auto;
+      flex-wrap: nowrap;
+      order: 1;
+    }
+
+    .amrev-filter {
+      border: none;
+      flex-basis: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+    .amrev-sorting {
+      flex-basis: 250px;
+      order: 2;
+      padding: 0 0 0 @amrev__indent__l;
+    }
+
+    &.-all .amrev-sorting {
+      border-left: 1px solid #d6d6d6;
+    }
+
+    .amrev-label {
+      margin: 0 @amrev__indent__l / 2;
+    }
+
+    .amrev-select {
+      max-width: 175px;
+    }
+  }
+}
