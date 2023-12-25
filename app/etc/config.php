@@ -244,13 +244,6 @@ return [
                         'code' => 'ms_MY'
                     ]
                 ]
-            ],
-            'my_sulwhasoo_website' => [
-                'general' => [
-                    'locale' => [
-                        'code' => 'ms_MY'
-                    ]
-                ]
             ]
         ]
     ],
