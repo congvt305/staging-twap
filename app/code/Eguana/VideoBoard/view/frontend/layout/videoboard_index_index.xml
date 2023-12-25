@@ -1,20 +1,33 @@
 <?xml version="1.0"?>
+<!--
+/**
+* @author Eguana Team
+* @copyriht Copyright (c) 2020 Eguana {http://eguanacommerce.com}
+* Created by PhpStorm
+* User: arslan
+* Date: 16/6/20
+* Time: 12:35 PM
+*/
+-->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>How To</title>
+    </head>
     <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">How To</argument>
+            </action>
+        </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Cms\Block\Block" name="hk_sulhwasoo_banner_event_detail" before="-">
+            <block class="Eguana\VideoBoard\Block\ListBlock" name="videoboard.list.top.banner" template="Eguana_VideoBoard::top-banner.phtml" before="-">
                 <arguments>
-                    <argument name="block_id" xsi:type="string">hk_sulhwasoo_banner_event_detail_page</argument>
+                    <argument name="view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoBoard</argument>
                 </arguments>
             </block>
-            <block class="Eguana\EventManager\Block\View" name="eventmanager.details" template="Eguana_EventManager::details.phtml">
+            <block class="Eguana\VideoBoard\Block\ListBlock" name="VideoBoard.list" template="Eguana_VideoBoard::list.phtml">
                 <arguments>
-                    <argument name="detail_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventDetail</argument>
-                </arguments>
-            </block>
-            <block class="Sapt\CommonSapt\Block\ListBlock" name="eventmanager.list" template="Eguana_EventManager::list.phtml">
-                <arguments>
-                    <argument name="list_view_model" xsi:type="object">Eguana\EventManager\ViewModel\EventList</argument>
+                    <argument name="list_view_model" xsi:type="object">Eguana\VideoBoard\ViewModel\VideoList</argument>
                 </arguments>
             </block>
         </referenceContainer>
