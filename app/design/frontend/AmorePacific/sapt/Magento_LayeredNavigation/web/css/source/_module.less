@@ -1,0 +1,301 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .block.filter {
+        margin-bottom: 22px;
+
+        .filter-title {
+            display: none;
+            margin-bottom: @indent__base;
+
+            strong {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .block-subtitle {
+        display: none;
+        margin-bottom: @indent__s;
+    }
+
+    .filter-current {
+        margin-top: @indent__m;
+
+        .item {
+            display: inline-block;
+            margin-bottom: @indent__s;
+            margin-right: @indent__s;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        .filter-label {
+            display: inline-block;
+            font-weight: @font-weight__bold;
+
+            &:after {
+                content: ':';
+                margin-left: @indent__xs;
+            }
+        }
+
+        + .filter-actions {
+            margin-bottom: @indent__l;
+
+            .clear {
+                font-size: 13px;
+                text-transform: uppercase;
+                font-weight: @font-weight__bold;
+            }
+        }
+
+        .action.remove {
+            &:extend(.abs-remove-button-for-blocks all);
+
+            &:before {
+                font-size: 13px;
+                line-height: 18px;
+            }
+        }
+    }
+
+    .filter-options-content {
+        .filter-count-label {
+            &:extend(.abs-visually-hidden all);
+        }
+    }
+
+    .filter-options {
+        margin: 0;
+
+        &:after {
+            display: block;
+            content: '';
+            clear: both;
+        }
+
+        .filter-option {
+            position: relative;
+            display: block;
+            vertical-align: top;
+            text-align: left;
+
+            &.active {
+                .filter-options-title {
+                    .lib-icon-font-symbol(
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-position: after
+                    );
+                    color: @primary__color;
+
+                    .text {
+                        padding-left: 0;
+                    }
+                }
+
+                .filter-options-content {
+                    display: block;
+                }
+            }
+
+        }
+
+        .filter-options-title {
+            .lib-icon-font(
+                @_icon-font-content: @icon-down,
+                @_icon-font-position: after
+            );
+            padding: 27px 0 12px;
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            color: #222;
+            font-size: 18px;
+            font-weight: @font-weight__bold;
+            line-height: 1.4;
+            cursor: pointer;
+            word-break: break-all;
+            font-family: Theinhardt;
+            text-transform: capitalize;
+
+            &:hover {
+                color: @primary__color;
+            }
+
+            &:after {
+                float: right;
+                margin-right: @indent__xs;
+                font-weight: @font-weight__bold;
+                font-size: 14px;
+                padding: 6px 0 0;
+            }
+
+            .text {
+                display: inline-block;
+                letter-spacing: -0.4px;
+                -moz-transition: all .2s;
+                -o-transition: all .2s;
+                -webkit-transition: all .2s;
+                transition: all .2s;
+            }
+        }
+
+        .filter-options-content {
+            width: 100%;
+            margin: 0;
+            padding: 20px 0;
+            background-color: @color-white;
+            color: @black__color;
+            z-index: 5;
+            box-sizing: border-box;
+            display: none;
+
+            .item {
+                margin-bottom: 0;
+
+                a {
+                    display: block;
+                    line-height: 1.4;
+                    padding: 7px 0 5px 0;
+                    vertical-align: middle;
+                    letter-spacing: 0;
+                    white-space: nowrap;
+                    text-decoration: none;
+                    text-transform: capitalize;
+
+                    &,
+                    .price {
+                        font-size: 16px;
+                        color: @black__color;
+                        font-weight: 500;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+
+                        &,
+                        .price {
+                            color: @primary__color__darker;
+                        }
+                    }
+                    .count {
+                        display: none;
+                    }
+                }
+            }
+        }
+        .items[class*='category_ids']:not(.items-children) > .item > a {
+            font-weight: 500;
+        }
+        .count {
+
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
+    }
+
+    .items {
+        &:extend(.abs-reset-list all);
+    }
+
+    .filtered {
+        .items {
+            margin: 15px 0;
+        }
+
+        .item {
+            margin-bottom: 6px;
+            padding-left: 22px;
+            position: relative;
+
+            .label {
+                font-weight: @font-weight__bold;
+            }
+
+            .action.remove {
+                &:extend(.abs-remove-button-for-blocks all);
+                left: -6px;
+                position: absolute;
+                top: 0;
+            }
+        }
+
+        & + .actions {
+            margin-bottom: 35px;
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .page-with-filter {
+        .columns {
+            .sidebar-main {
+                .lib-vendor-prefix-order(0);
+            }
+        }
+    }
+
+    .filter-options {
+        .filter-option {
+            margin-bottom: 15px;
+        }
+    }
+
+    .filter-current {
+        + .filter-actions {
+            text-align: center;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .page-layout-1column {
+        .filter-options {
+            .filter-option {
+                display: inline-block;
+                width: 200px;
+
+                &:first-child {
+                    float: left;
+                }
+            }
+
+            .filter-options-title {
+                font-size: 13px;
+            }
+
+            .filter-options-content {
+                .item {
+                    a {
+                        &,
+                        .price {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
