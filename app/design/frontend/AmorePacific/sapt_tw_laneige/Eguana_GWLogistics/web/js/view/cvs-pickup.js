@@ -200,6 +200,7 @@ define([
         selectShippingMethod: function (shippingMethod) {
             if (!stepNavigator.isProcessed('shipping')) {
                 selectShippingMethodAction(shippingMethod);
+                checkoutData.setSelectedShippingRate(shippingMethod['carrier_code'] + '_' + shippingMethod['method_code']);
                 checkoutData.setSelectedShippingAddress(
                     quote.shippingAddress().getKey()
                 );
