@@ -104,7 +104,6 @@
             <span data-role="title" class="toggle"><!-- ko i18n: 'View Details' --><!-- /ko --></span>
             <div data-role="content" class="content" style="display: none;">
                 <strong class="subtitle"><!-- ko i18n: 'Options Details' --><!-- /ko --></strong>
-                <div class="item-options" data-bind="html: getConfigurableOptions($parent)"></div>
                 <dl class="item-options">
                     <!-- ko fastForEach: JSON.parse($parent.options)-->
                     <dt class="label" data-bind="text: label"></dt>
