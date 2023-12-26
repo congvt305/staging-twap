@@ -183,10 +183,10 @@ define(
                     if (!this.isInitialDefaultShipping) {
                         if (customer.isLoggedIn()) {
                             let shippingMethod = quote.shippingMethod();
-                            if (addressList()[0] && shippingMethod.carrier_code === 'vlogic') {
+                            if (addressList()[0] && shippingMethod.carrier_code === 'blackcat') {
                                 let initialAddress = addressList()[0];
                                 setTimeout(function () {
-                                    homeDeliverySelector().fillShippingAddressInfo(initialAddress);
+                                    selectShippingAddress(initialAddress);
                                 }, 4000);
                             }
 
