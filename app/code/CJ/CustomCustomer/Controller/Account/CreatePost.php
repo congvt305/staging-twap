@@ -224,4 +224,37 @@ class CreatePost extends MagentoCreatePost
         }
         return $this->cookieMetadataFactory;
     }
+
+    /**
+     * Retrieve success message manager message
+     *
+     * @return MessageInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    private function getMessageManagerSuccessMessage(): MessageInterface
+    {
+        if ($this->addressHelper->isVatValidationEnabled()) {
+            if ($this->addressHelper->getTaxCalculationAddressType() == Address::TYPE_SHIPPING) {
+                $identifier = 'customerVatShippingAddressSuccessMessage';
+            } else {
+                $identifier = 'customerVatBillingAddressSuccessMessage';
+            }
+
+            $message = $this->messageManager
+                ->createMessage(MessageInterface::TYPE_SUCCESS, $identifier)
+                ->setData(
+                    [
+                        'url' => $this->urlModel->getUrl('customer/address/edit'),
+                    ]
+                );
+        } else {
+            $message = $this->messageManager
+                ->createMessage(MessageInterface::TYPE_SUCCESS)
+                ->setText(
+                    __('Thank you for registering with %1.', $this->storeManager->getStore()->getFrontendName())
+                );
+        }
+
+        return $message;
+    }
 }
