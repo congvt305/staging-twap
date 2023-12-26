@@ -33,7 +33,7 @@ $pointSearchResult = $block->getPointsSearchResult();
                 </p> -->
                 <!-- <p class="count"><?=number_format($block->getPoint());?><span><?= __('p') ?></span></p> -->
                 <a href="/customer/account/dashboard/" class="link"><?= __('All benefits') ?></a>
-                <p class="count"><?= $pointSearchResult['cstmGradeNM']; ?></p>
+                <p class="count"><?= $pointSearchResult['cstmGradeNM'] ?? ''; ?></p>
                 <p class="title"><?= __('Membership') ?></p>
             </div>
             <div class="member_point">
