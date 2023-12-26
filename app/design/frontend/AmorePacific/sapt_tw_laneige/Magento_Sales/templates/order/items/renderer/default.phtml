@@ -56,6 +56,7 @@ $viewModel = $block->getData('view_model');
             <?php endif; ?>
         </div>
     </td>
+    <?php if (!$_item->getIsFreeGift()): ?>
     <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
         <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
             <a href="#" class="btn secondary review" data-order-item-id="<?= $_item->getId() ?>"><?= __('Review') ?></a>
@@ -81,4 +82,5 @@ $viewModel = $block->getData('view_model');
             <?= /* @noEscape */ $viewModel->getAddReviewForm($_item, $block) ?>
         <?php endif; ?>
     </td>
+    <?php endif; ?>
 </tr>
