@@ -185,9 +185,7 @@ define(
                             let shippingMethod = quote.shippingMethod();
                             if (addressList()[0] && shippingMethod.carrier_code === 'blackcat') {
                                 let initialAddress = addressList()[0];
-                                setTimeout(function () {
-                                    selectShippingAddress(initialAddress);
-                                }, 4000);
+                                selectShippingAddress(initialAddress);
                             }
 
                         }
