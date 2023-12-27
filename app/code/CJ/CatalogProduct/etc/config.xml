@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <catalog>
+            <best_seller_products>
+                <limit_products>20</limit_products>
+                <use_product_sale>0</use_product_sale>
+                <enable_sort_best_sellers>0</enable_sort_best_sellers>
+                <enable_filter_on_sale>0</enable_filter_on_sale>
+            </best_seller_products>
+            <bundle_product>
+                <allow_quick_buy_bundle_product>1</allow_quick_buy_bundle_product>
+            </bundle_product>
+        </catalog>
+    </default>
+</config>
