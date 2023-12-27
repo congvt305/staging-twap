@@ -1,6 +1,7 @@
 <?php
 namespace Sapt\Customer\Block;
 
+use CJ\CustomCustomer\Helper\Data;
 use Magento\Customer\Api\Data\GroupInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\Customer;
@@ -44,6 +45,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         Json              $json,
         CustomerPointsSearch $customerPointsSearch,
         PointsIndex $pointsIndex,
+        Data $customerHelper,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
@@ -53,6 +55,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         $this->json = $json;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->pointsIndex = $pointsIndex;
+        $this->customerHelper = $customerHelper;
         parent::__construct(
             $context,
             $orderCollectionFactory,
@@ -119,5 +122,9 @@ class Membership extends \CJ\Review\Block\Top\Info
     public function getReviewUrl()
     {
         return $this->getUrl('review/customer');
+    }
+
+    public function getMembershipBenefitsUrl() {
+        return $this->customerHelper->getEnvironmentMembershipBenefit();
     }
 }
