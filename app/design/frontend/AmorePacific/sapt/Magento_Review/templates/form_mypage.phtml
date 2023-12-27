@@ -87,15 +87,6 @@ $advancedReviewHelper = $this->helper(Amasty\AdvancedReview\Helper\Config::class
                             <textarea name="detail" placeholder="<?= __('Please enter a message') ?>" id="review_field" cols="5" rows="3" data-validate="{required:true}" data-bind="value: review().detail"></textarea>
                         </div>
                     </div>
-                    <?php if ($advancedReviewHelper->isAllowImages()): ?>
-                        <div class="field review-field-image ">
-                            <label class="label"><?= __('Add your photo') ?></label><div class="control">
-                                <label id="am_upload_image_button_<?= $orderItemId ?>" class="cj_am_upload_image_button"><?= __("Select upload file") ?></label>
-                                <label id="am_upload_image_label_<?= $orderItemId ?>" class="label" style="margin-left: 20px"><?= __("No file uploaded") ?></label>
-                                <input id="am_upload_image_<?= $orderItemId ?>" class="amrev-input" name="review_images[]" accept="image/*" multiple="" type="file" title="<?= __('Add your photo') ?>" hidden="hidden" placeholder="<?= __('Add your photo') ?>">
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </fieldset>
                 <div class="field required amreview-gdpr-wrap">
                     <input type="checkbox" name="gdpr" class="amreview-checkbox" id="amreview-gdpr-field" title="<?= __('GDPR') ?>" data-validate="{required:true}">
@@ -130,27 +121,3 @@ $advancedReviewHelper = $this->helper(Amasty\AdvancedReview\Helper\Config::class
         <?php endif ?>
     </div>
 </div>
-
-<script>
-    require(["jquery"], function($){
-        var imageElement = $("#am_upload_image_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>");
-        document.getElementById("am_upload_image_button_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").onclick = function() {showImageUpload()};
-        document.getElementById("am_upload_image_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").onchange = function() {changeImageText()};
-
-        function showImageUpload (){
-            imageElement.trigger("click");
-        }
-        function changeImageText(){
-            var fileName;
-            if (imageElement[0].files.length > 1){
-                fileName = imageElement[0].files.length + " files";
-            } else {
-                fileName = imageElement[0].files[0].name;
-                if (fileName.length > 30) {
-                    fileName = fileName.substring(0, 10) + "...";
-                }
-            }
-            $("#am_upload_image_label_<?= $orderItemId; ?>-<?= $block->getProductInfo()->getId()?>").text(fileName)
-        }
-    });
-</script>
