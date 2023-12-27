@@ -55,6 +55,11 @@ class Membership extends Template
     protected $json;
 
     /**
+     * @var Data
+     */
+    private $customerHelper;
+
+    /**
      * @param Template\Context $context
      * @param CollectionFactory $orderCollectionFactory
      * @param Session $customerSession
