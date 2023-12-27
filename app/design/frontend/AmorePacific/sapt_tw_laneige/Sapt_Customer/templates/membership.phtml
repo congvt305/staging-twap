@@ -18,7 +18,7 @@ $pointSearchResult = $block->getPointsSearchResult();
                 <a href="<?=$block->getMembershipBenefitsUrl()?>" class="link"><?= __('All benefits') ?></a>
                 <p class="date"><?= __('Membership expiry date') ?>: <span>
                     <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
-                        <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['expireDate']))) ?>
+                        <?= $block->dateFormat($pointSearchResult['expireDate']) ?>
                     <?php endif; ?>
                 </span></p>
                 <p class="count"><?= $pointSearchResult['cstmGradeNM'] ?? ''; ?></p>
