@@ -1,6 +1,7 @@
 <?php
 namespace Sapt\Customer\Block;
 
+use CJ\CustomCustomer\Helper\Data;
 use Magento\Customer\Api\Data\GroupInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\Customer;
@@ -70,6 +71,7 @@ class Membership extends Template
         GroupRepositoryInterface  $groupRepository,
         CustomerPointsSearch $customerPointsSearch,
         PointsIndex  $pointsIndex,
+        Data $customerHelper,
         array             $data = []
     ) {
         parent::__construct($context, $data);
@@ -80,6 +82,7 @@ class Membership extends Template
         $this->pointsIndex = $pointsIndex;
         $this->couponHelper = $couponHelper;
         $this->customerPointsSearch = $customerPointsSearch;
+        $this->customerHelper = $customerHelper;
     }
 
     /**
@@ -189,5 +192,9 @@ class Membership extends Template
     public function getReviewUrl()
     {
         return $this->getUrl('review/customer');
+    }
+
+    public function getMembershipBenefitsUrl() {
+        return $this->customerHelper->getEnvironmentMembershipBenefit();
     }
 }
