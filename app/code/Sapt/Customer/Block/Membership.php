@@ -125,6 +125,6 @@ class Membership extends \CJ\Review\Block\Top\Info
     }
 
     public function getMembershipBenefitsUrl() {
-        return $this->customerHelper->getEnvironmentMembershipBenefit();
+        return $this->customerHelper->getMembershipBenefitsUrl();
     }
 }
