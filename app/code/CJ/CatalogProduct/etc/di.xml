@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/*
+ *  @author Eguana Commerce Brian
+ *  @copyright Copyright 2020 (c) Eguana Commerce
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="CJ\CatalogProduct\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="CJ\CatalogProduct\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">CatalogProductLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\CatalogProduct\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Config">
+        <plugin name="catalog_model_config_plugin" type="CJ\CatalogProduct\Plugin\Catalog\Model\Config" />
+    </type>
+    <type name="Magento\Catalog\Block\Product\ProductList\Toolbar">
+        <plugin name="catalog_productlist_toolbar_plugin" type="CJ\CatalogProduct\Plugin\Catalog\Block\Product\ProductList\Toolbar" />
+    </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="cj_catalog_product_verify_bundle_options" type="CJ\CatalogProduct\Plugin\Checkout\Model\Cart\BundleOptions"/>
+    </type>
+</config>
