@@ -5,7 +5,7 @@
     <default>
         <cjcustomer>
             <general>
-                <environment_membership_benefits>/special-offers/membership.html</environment_membership_benefits>
+                <membership_benefits_url>/special-offers/membership.html</membership_benefits_url>
             </general>
             <group>
                 <logging>0</logging>

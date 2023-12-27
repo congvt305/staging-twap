@@ -15,7 +15,7 @@ class Data
 
     const XML_PATH_POS_CSTM_NO_CRON_ENABLED = 'cjcustomer/poscstmno/enable_cron';
 
-    const XML_PATH_ENVIRONMENT_MEMBERSHIP_BENEIFTS = 'cjcustomer/general/environment_membership_benefits';
+    const XML_PATH_MEMBERSHIP_BENEIFTS_URL = 'cjcustomer/general/membership_benefits_url';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -97,9 +97,9 @@ class Data
     /**
      * @return string
      */
-    public function getEnvironmentMembershipBenefit()
+    public function getMembershipBenefitsUrl()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_ENVIRONMENT_MEMBERSHIP_BENEIFTS, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(self::XML_PATH_MEMBERSHIP_BENEIFTS_URL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
 }
