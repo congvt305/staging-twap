@@ -4,6 +4,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <cjcustomer>
+            <general>
+                <membership_benefits_url>/special-offers/membership.html</membership_benefits_url>
+            </general>
             <group>
                 <logging>0</logging>
             </group>

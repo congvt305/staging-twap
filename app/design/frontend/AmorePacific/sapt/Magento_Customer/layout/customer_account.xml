@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <referenceBlock name="customer-account-navigation-delimiter-1" remove="true"/>
+        <referenceBlock name="customer-account-navigation-delimiter-2" remove="true"/>
+        <referenceBlock name="customer-account-navigation-account-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">My Dashboard</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-account-edit-link">
+            <arguments>
+                <argument name="sortOrder" xsi:type="number">200</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="sidebar.main">
+            <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.order" template="Magento_Theme::html/collapsible.phtml" before="-">
+                <arguments>
+                    <argument name="block_css" xsi:type="string">account-nav</argument>
+                    <argument name="block_id" xsi:type="string">account-order</argument>
+                    <!-- <argument name="block_title" xsi:type="string">MY PROFILE</argument> -->
+                </arguments>
+
+
+                <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_order" before="-">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">nav items</argument>
+                    </arguments>
+
+                    <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.myorder" template="Magento_Theme::html/collapsible.phtml">
+                        <arguments>
+                            <argument name="block_css" xsi:type="string">account-nav</argument>
+                            <argument name="block_id" xsi:type="string">my-order</argument>
+                            <argument name="block_title" xsi:type="string" translate="true">My Order</argument>
+                        </arguments>
+                        <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_service-my-order" before="-">
+                            <arguments>
+                                <argument name="css_class" xsi:type="string">nav items</argument>
+                            </arguments>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-sales-order-history">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Order/Refund</argument>
+                                    <argument name="path" xsi:type="string">sales/order/history</argument>
+                                    <argument name="sortOrder" xsi:type="number">990</argument>
+                                </arguments>
+                            </block>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-review-customer">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Review</argument>
+                                    <argument name="path" xsi:type="string">review/customer</argument>
+                                    <argument name="sortOrder" xsi:type="number">980</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.myaccount" template="Magento_Theme::html/collapsible.phtml">
+                        <arguments>
+                            <argument name="block_css" xsi:type="string">account-nav</argument>
+                            <argument name="block_id" xsi:type="string">my-account</argument>
+                            <argument name="block_title" xsi:type="string" translate="true">My Account</argument>
+                        </arguments>
+                        <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_service-my-account" before="-">
+                            <arguments>
+                                <argument name="css_class" xsi:type="string">nav items</argument>
+                            </arguments>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-wishlist">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Wishlist</argument>
+                                    <argument name="path" xsi:type="string">wishlist</argument>
+                                    <argument name="sortOrder" xsi:type="number">970</argument>
+                                </arguments>
+                            </block>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-profile-address">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">My History</argument>
+                                    <argument name="path" xsi:type="string">customer/account/history</argument>
+                                    <argument name="sortOrder" xsi:type="number">960</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.myprofile" template="Magento_Theme::html/collapsible.phtml">
+                        <arguments>
+                            <argument name="block_css" xsi:type="string">account-nav</argument>
+                            <argument name="block_id" xsi:type="string">my-account</argument>
+                            <argument name="block_title" xsi:type="string" translate="true">My Profile</argument>
+                        </arguments>
+                        <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_service-my-profile" before="-">
+                            <arguments>
+                                <argument name="css_class" xsi:type="string">nav items</argument>
+                            </arguments>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-customer-account">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Personal Information</argument>
+                                    <argument name="path" xsi:type="string">customer/account</argument>
+                                    <argument name="sortOrder" xsi:type="number">950</argument>
+                                </arguments>
+                            </block>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-customer-address">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Address</argument>
+                                    <argument name="path" xsi:type="string">customer/address</argument>
+                                    <argument name="sortOrder" xsi:type="number">940</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.mymembership" template="Magento_Theme::html/collapsible.phtml">
+                        <arguments>
+                            <argument name="block_css" xsi:type="string">account-nav</argument>
+                            <argument name="block_id" xsi:type="string">my-account</argument>
+                            <argument name="block_title" xsi:type="string" translate="true">My Membership</argument>
+                        </arguments>
+                        <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_service-my-membership" before="-">
+                            <arguments>
+                                <argument name="css_class" xsi:type="string">nav items</argument>
+                            </arguments>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-customercoupon-coupon">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Coupon/Point</argument>
+                                    <argument name="path" xsi:type="string">customercoupon/coupon</argument>
+                                    <argument name="sortOrder" xsi:type="number">930</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" name="sidebar.main.account_nav.logout" template="Magento_Theme::html/collapsible.phtml">
+                        <arguments>
+                            <argument name="block_css" xsi:type="string">account-nav</argument>
+                            <argument name="block_id" xsi:type="string">my-account</argument>
+                        </arguments>
+                        <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation_logout" before="-">
+                            <arguments>
+                                <argument name="css_class" xsi:type="string">nav logout</argument>
+                            </arguments>
+                            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-account-logout">
+                                <arguments>
+                                    <argument name="label" xsi:type="string" translate="true">Logout</argument>
+                                    <argument name="path" xsi:type="string">customer/account/logout</argument>
+                                    <argument name="sortOrder" xsi:type="number">930</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </block>
+
+
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="sidebar.main.account_nav" remove="true"/>
+        <referenceBlock name="customer-account-navigation-address-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-account-edit-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-delimiter-2" remove="true"/>
+        <referenceBlock name="customer-account-navigation-delimiter-1" remove="true"/>
+        <referenceBlock name="customer-account-navigation-account-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-return-history-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-pos-integration-points" remove="true"/>
+        <referenceBlock name="customer-account-coupon-wallet" remove="true"/>
+        <referenceBlock name="customer-account-navigation-ticket-link" remove="true"/>
+        <referenceBlock name="company-customer-account-navigation-orders-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-return-history-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-orders-link" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+    </body>
+</page>

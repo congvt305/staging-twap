@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
 
@@ -7,6 +11,7 @@ $item = $block->getItem();
 $product = $item->getProduct();
 /** @var \Magento\Wishlist\ViewModel\AllowedQuantity $viewModel */
 $viewModel = $block->getData('allowedQuantityViewModel');
+$addToCartFormViewModel = $block->getData('addToCartFormViewModel');
 $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
 ?>
 <?php foreach ($block->getChildNames() as $childName) : ?>
@@ -24,9 +29,28 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
                     </div>
                 </div>
             <?php endif; ?>
-            <?php if ($product->isSaleable()) : ?>
-                <button type="button" data-role="tocart" data-post='<?= /* @noEscape */ $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>" data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
-                </button>
+            <?php if ($product->isSaleable()): ?>
+                <div class="product-item-actions">
+                    <div class="actions-primary">
+                        <button type="button"
+                                clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                data-post="<?= $block->escapeHtml($addToCartFormViewModel->getAddToCartPostParams($product)) ?>"
+                                class="action wishlist-item tocart primary">
+                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="product-item-actions">
+                    <div class="actions-primary">
+                        <button type="submit" title="<?= $block->escapeHtmlAttr(__('Out of stock')) ?>"
+                                class="action tocart primary disabled" id="product-addtocart-button">
+                            <span><?php /* @escapeNotVerified */echo __('Out of stock'); ?></span>
+                        </button>
+                    </div>
+                </div>
             <?php endif; ?>
         </fieldset>
     </div>

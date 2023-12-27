@@ -1,0 +1,76 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+use Magento\Framework\App\Action\Action;
+/** @var $block \Magento\Bundle\Block\Sales\Order\Items\Renderer */
+$parentItem = $block->getItem();
+$shippingMethod = $parentItem->getOrder()->getShippingDescription();
+$product = $parentItem->getProduct();
+$viewModel = $block->getData('view_model');
+$items = $parentItem->getChildrenItems();
+$index = 1;
+$prevOptionId = '';
+?>
+
+<tr id="order-item-row-<?= (int) $parentItem->getId() ?>" class="item-info">
+    <td class="col item" data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
+        <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"
+           title="<?= $block->escapeHtmlAttr($block->getProductName()) ?>"
+           tabindex="-1"
+           class="product-item-photo">
+            <?= $viewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?>
+        </a>
+        <div class="product-item-details">
+            <div class="shipping">
+                <?php if ((int)$parentItem->getQtyShipped() > 0): ?>
+                    <span class="in-delivery"><?= __('In Delivery') ?></span>
+                <?php endif; ?>
+                <span class="method"><?= $shippingMethod ?></span>
+            </div>
+            <strong class="product-item-name">
+                <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
+            </strong>
+            <?= $block->getItemPriceHtml() ?>
+        </div>
+        <div class="bundle-detail-cart">
+            <button class="bundle-button-toggle" type="button">
+                <span><?= $block->escapeHtml(__('SET GOODS')) ?>(<span class="count"><?= count($items); ?></span>)</span>
+            </button>
+            <dl class="item-options">
+                <?php foreach ($items as $item) : ?>
+                    <?php $attributes = $block->getSelectionAttributes($item) ?>
+                    <dd><?= __('%1 - %2', $index, $block->getValueHtml($item)); ?></dd>
+                    <?php $index++ ?>
+                <?php endforeach; ?>
+            </dl>
+        </div>
+    </td>
+    <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
+        <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
+            <a href="#" class="btn secondary review" data-order-item-id="<?= $parentItem->getId() ?>"><?= __('Review') ?></a>
+            <?php $postParams = $viewModel->getPostData($product, $block); ?>
+            <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($product->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                <?php $optionsData = $viewModel->getOptionsData($product); ?>
+                <?php foreach ($optionsData as $optionItem): ?>
+                    <input type="hidden"
+                           name="<?= $block->escapeHtml($optionItem['name']) ?>"
+                           value="<?= $block->escapeHtml($optionItem['value']) ?>">
+                <?php endforeach; ?>
+                <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                <?= $block->getBlockHtml('formkey') ?>
+                <button type="submit"
+                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                        class="action tocart primary">
+                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                </button>
+            </form>
+            <?= /* @noEscape */ $viewModel->getAddReviewForm($parentItem, $block) ?>
+        <?php endif; ?>
+    </td>
+</tr>

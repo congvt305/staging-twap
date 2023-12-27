@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Wishlist\Block\Customer\Sidebar $block */
+?>
+<?php
+$wishlstViewModel = $block->getData('wishlistDataViewModel');
+?>
+<?php if ($wishlstViewModel->isAllow()): ?>
+    <div class="block block-wishlist block-wishlist-account" data-bind="scope: 'wishlist'">
+        <div class="block-title">
+            <strong role="heading" aria-level="2"><?= $block->escapeHtml($block->getTitle()) ?></strong>
+            <!-- ko if: wishlist().counter -->
+            <span data-bind="text: wishlist().counter" class="counter"></span>
+            <!-- /ko -->
+        </div>
+        <div class="block-content">
+            <!-- ko if: wishlist().counter -->
+            <ol class="product-items no-display"
+                id="wishlist-sidebar"
+                data-bind="foreach: wishlist().items, css: {'no-display': null}">
+                <li class="product-item">
+                    <div class="product-item-info">
+                        <a class="product-item-photo" data-bind="attr: { href: product_url, title: product_name }">
+                            <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
+                        </a>
+                    </div>
+                </li>
+                <!-- ko if: ($index() === ($parent.wishlist().items.length - 1)) -->
+                <li class="wishlist-view-more product-item" data-bind="visible : $index() != ($parent.length-1), css:
+                {'no-display': null}">
+                    <a class="btn-viewmore"
+                       href="<?= $block->escapeUrl($wishlstViewModel->getListUrl()) ?>"
+                       title="<?= $block->escapeHtmlAttr(__('View More')) ?>">
+                        <span><?= $block->escapeHtml(__('View More')) ?></span>
+                    </a>
+                </li>
+                <!-- /ko -->
+            </ol>
+
+            <!-- /ko -->
+            <!-- ko ifnot: wishlist().counter -->
+            <div class="empty"><?= $block->escapeHtml(__('You have no items in your wish list.')) ?></div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "wishlist": {
+                        "component": "Magento_Wishlist/js/view/wishlist"
+                    }
+                }
+            }
+        }
+    }
+</script>
+<?php endif ?>

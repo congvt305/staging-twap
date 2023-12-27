@@ -1,0 +1,68 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .e-invoice {
+        .control {
+            margin-bottom: 15px;
+
+            input[type="radio"]:checked + label {
+                font-weight: @font-weight__bold !important;
+            }
+
+            .fieldset {
+                margin-top: 15px;
+                
+                > .field.note {
+                    text-align: left;
+
+                    span {
+                        .lib-font-size(15);
+                        color: #787878;
+                        display: block;
+                        line-height: 24px;
+                    }
+                }
+
+                > p {
+                    .lib-font-size(15);
+                    color: #787878;
+                    line-height: 24px;
+                }
+
+                label {
+                    .lib-font-size(15);
+                    font-weight: @font-weight__regular;
+                }
+            }
+        }
+    }
+
+    .ecpaypayment-title {
+        & + span {
+            .lib-font-size(14);
+            display: block;
+            margin-left: @indent__l;
+        }
+    }
+
+    .ecpay-payment-form {
+        &:extend(.abs-hidden);
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .e-invoice {
+        .control .fieldset {
+            input[type="text"] {
+                max-width: 221px;
+            }
+        }
+    }
+}
+

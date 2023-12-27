@@ -1,0 +1,281 @@
+//
+//  Amasty Multiple coupons
+//  ____________________________________________
+
+//
+//  Variables
+//  --------------------------------------------
+
+@amcoupons-arrow-icon__font-size: 12px;
+@amcoupons-arrow-icon__color: #858585;
+@amcoupons-remove-icon__font-size: 14px;
+@amcoupons-remove-icon__color: #575855;
+@amcoupons-applied-coupon__cart__background: @color-white;
+@amcoupons-applied-coupon__checkout__background: #f5faff;
+
+//
+//  Helpers
+//  --------------------------------------------
+
+._am-word-break {
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+//
+//  Common
+//  --------------------------------------------
+
+& when (@media-common = true) {
+    .amcoupons-main-container {
+        .amcoupons-input .label {
+            font-weight: @font-weight__regular;
+        }
+    }
+
+    .amcoupons-applied-coupon {
+        & {
+            ._am-word-break;
+
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 7px 10px;
+            border-radius: 1px;
+            background: @amcoupons-applied-coupon__cart__background;
+        }
+
+        &:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
+
+        .amcoupons-remove {
+            margin-left: auto;
+            line-height: 1;
+
+            .lib-icon-font(
+                @icon-remove,
+                @_icon-font-size: @amcoupons-remove-icon__font-size,
+                @_icon-font-line-height: @amcoupons-remove-icon__font-size,
+                @_icon-font-color: @amcoupons-remove-icon__color,
+                @_icon-font-position: before,
+                @_icon-font-margin: 0,
+                @_icon-font-display: inline-block
+            );
+        }
+
+        .amcoupons-message {
+            width: 100%;
+        }
+    }
+
+    .amcoupons-applied-coupon.message.success,
+    .amcoupons-applied-coupon.message.warning {
+        & {
+            display: flex; // override '.message' property
+            padding: 7px 10px;
+        }
+
+        .amcoupons-remove {
+            display: none;
+        }
+
+        > *:first-child:before {
+            content: '';
+        }
+    }
+
+    .cart-totals tr[class='totals'] .title,
+    .totals.discount .title {
+        .lib-icon-font(
+            @icon-down,
+            @_icon-font-size: @amcoupons-arrow-icon__font-size,
+            @_icon-font-line-height: @amcoupons-arrow-icon__font-size,
+            @_icon-font-color: @amcoupons-arrow-icon__color,
+            @_icon-font-position: after,
+            @_icon-font-margin: 0 0 0 10px,
+            @_icon-font-display: inline-block
+        );
+    }
+
+    .cart-totals tr[class='totals'] .title.-active,
+    .totals.discount .title.-active {
+        .lib-icon-font(
+            @icon-up,
+            @_icon-font-size: @amcoupons-arrow-icon__font-size,
+            @_icon-font-line-height: @amcoupons-arrow-icon__font-size,
+            @_icon-font-color: @amcoupons-arrow-icon__color,
+            @_icon-font-position: after,
+            @_icon-font-margin: 0 0 0 10px,
+            @_icon-font-display: inline-block
+        );
+    }
+
+    .totals.discount {
+        & {
+            cursor: pointer;
+        }
+
+        .title {
+            ._am-word-break;
+        }
+
+        .discount.coupon {
+            display: none;
+        }
+
+        .mark {
+            max-width: 290px;
+        }
+    }
+
+    .cart-totals {
+        .title {
+            ._am-word-break;
+        }
+
+        .mark {
+            max-width: 209px;
+        }
+
+        .discount.coupon {
+            display: none;
+        }
+
+        tr[class='totals'] .title {
+            ._am-word-break;
+        }
+    }
+
+    .table-wrapper tr[class='totals'] {
+        cursor: pointer;
+    }
+
+    .cart-totals .amcoupons-total-coupons {
+        & {
+            display: none;
+        }
+
+        .mark {
+            padding-left: 10px;
+        }
+    }
+
+    // override magento
+    .cart-summary .block,
+    .checkout-index-index,
+    .paypal-express-review,
+    .braintree-paypal-review {
+        .amcoupons-main-container .actions-toolbar > .amcoupons-apply {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    .checkout-index-index .amcoupons-main-container,
+    .paypal-express-review .amcoupons-main-container,
+    .braintree-paypal-review .amcoupons-main-container {
+        & {
+            display: flex;
+            flex-direction: column;
+            width: 275px;
+        }
+
+        .amcoupons-applied-coupon:not(.message) {
+            background: @amcoupons-applied-coupon__checkout__background;
+        }
+
+        .field {
+            margin: 0;
+        }
+
+        .actions-toolbar {
+            margin: 0;
+            width: auto;
+        }
+
+        .actions-toolbar > .amcoupons-apply {
+            margin: 10px 0 0;
+        }
+    }
+
+    // override magento
+    .paypal-express-review .paypal-review-discount .block .actions-toolbar .action.primary,
+    .braintree-paypal-review .paypal-review-discount .block .actions-toolbar .action.primary {
+        &:extend(.action.primary all);
+
+        border-radius: @button__border-radius;
+        box-shadow: none;
+    }
+}
+
+//
+//  Mobile
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+    .checkout-index-index .columns .amcoupons-main-container,
+    .paypal-express-review .amcoupons-main-container,
+    .braintree-paypal-review .amcoupons-main-container {
+        box-sizing: border-box;
+        width: 100%;
+    }
+}
+#checkout-step-discount {
+    margin: 0;
+    max-width: 680px;
+    .amcoupon-wallet {
+        margin-bottom: 20px;
+    }
+    .amcp-title {
+        font-weight: 400;
+    }
+    .amcoupons-main-container {
+        width: 100%;
+    }
+    .payment-option-inner {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 20px;
+        .field {
+            width: 74%;
+        }
+        .actions-toolbar {
+            padding-left: 14px;
+            width: 26%;
+            button {
+                background: #fff;
+                width: 100%;
+                font-size: 16px;
+                line-height: 1.5;
+                padding: 6px 0;
+                color: #222;
+                border: 1px solid #222;
+                text-transform: uppercase;
+                border-radius: 0;
+            }
+        }
+    }
+    .amcoupons-applied-wrapper {
+        margin: 0 auto 45px;
+        max-width: 580px;
+        ul {
+            padding: 0;
+        }
+        .amcoupons-applied-coupon {
+            width: calc((100% - 10px) / 3);
+            padding: 9px 15px 11px;
+            border: 1px solid #4477be;
+            color: #4477be;
+            background: #fff !important;
+            font-size: 15px;
+            line-height: 1.2;
+            margin: 0;
+            margin-top: 10px;
+            display: inline-flex;
+            .amcoupons-remove:before {
+                font-size: 40px !important;
+            }
+        }
+    }
+}

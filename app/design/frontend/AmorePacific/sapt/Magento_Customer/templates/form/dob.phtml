@@ -1,0 +1,82 @@
+<?php
+/** @var \Magento\Customer\Block\Widget\Dob $block */
+echo $block->getDate();
+$fieldCssClass = 'field date field-' . $block->getHtmlId();
+$fieldCssClass .= $block->isRequired() ? ' required' : '';
+?>
+<div class="<?= $block->escapeHtmlAttr($fieldCssClass) ?>">
+    <div class="control customer-dob required">
+        <label class=""><?= __('Birthday') ?></label>
+        <!-- years -->
+        <div class="sYear">
+            <select id="sYear" name="sYear" class="dateselect required-entry">
+                <option value=""><?= __('Year') ?></option>
+                <?php $year_end = date('Y'); $year_start = $year_end-80; for ($i = $year_end; $i >= $year_start; $i--) {
+                    $selected = ($block->getYear() == $i) ? "selected='selected'" : "";
+                    echo '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+                }
+                ?>
+            </select>
+        </div>
+
+        <!-- months -->
+        <?php $months = array( '01'=>'01',
+            '02'=>'02',
+            '03'=>'03',
+            '04'=>'04',
+            '05'=>'05',
+            '06'=>'06',
+            '07'=>'07',
+            '08'=>'08',
+            '09'=>'09',
+            '10'=>'10',
+            '11'=>'11',
+            '12'=>'12',
+        );
+        ?>
+        <div class="sMonth">
+            <select id="sMonth" name="sMonth"  class="dateselect required-entry">
+                <option value="" ><?= __('Month') ?></option>
+                <?php foreach ($months as $key=>$var){
+                    $selected = ($block->getMonth() == $key) ? "selected='selected'" : "";
+                    echo '<option value="'.$key.'" '.$selected.'>'.$var.'</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <!-- days -->
+        <div class="sDay">
+            <select id="sDay" name="sDay" class="dateselect required-entry">
+                <option value="" ><?= __('Day') ?></option>
+                <?php
+                for ($i = 1; $i <= 31; $i++) { $day = str_pad($i, 2, "0", STR_PAD_LEFT); $selected = ($block->getDay() == $day) ? "selected='selected'" : "";
+                    echo '<option value="'.$day.'" '.$selected.'>'.$i.'</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <input type="hidden" id="hidesDay"  value="<?php echo $block->getDay()?>" />
+        <input type="hidden" id="hidesMonth"  value="<?php echo $block->getMonth()?>" />
+        <input type="hidden" id="hidesYear"  value="<?php echo $block->getYear()?>" />
+        <input type="hidden" id="<?php echo $block->getHtmlId()?>" name="<?php echo $block->getHtmlId() ?>" />
+    </div>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function($){
+        // on load
+        $( ".dateselect" ).each(function() {
+            var field_id = $(this).attr('id');
+            var value = $( "#hide"+field_id ).val();
+            $(this).val(value);
+        });
+        $( "#<?=  $block->getHtmlId()?>" ).val($("#hidesMonth").val()+'/'+$("#hidesDay").val()+'/'+$("#hidesYear").val());
+        // on change
+        $( ".dateselect" ).change(function() {
+            $( "#<?=  $block->getHtmlId()?>" ).val($("#sMonth").val()+'/'+$("#sDay").val()+'/'+$("#sYear").val());
+        });
+    });
+</script>

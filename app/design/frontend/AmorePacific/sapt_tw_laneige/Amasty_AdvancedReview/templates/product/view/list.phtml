@@ -1,0 +1,168 @@
+<?php
+//rewrite file Magento_Review::product/view/list.phtml
+// phpcs:ignoreFile
+
+/** @var Magento\Review\Block\Product\View\ListView $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$displayedCollection = $block->getReviewsCollection();
+$_items = $displayedCollection->getItems();
+$format = $block->getDateFormat() ?: \IntlDateFormatter::MEDIUM;
+
+/** @var \Amasty\AdvancedReview\Helper\BlockHelper $advancedHelper */
+$advancedHelper = $block->getData('advanced-review-helper');
+
+$isFilterApplied = $displayedCollection->getFlag(\Amasty\AdvancedReview\Model\Toolbar\Applier::COLLECTION_FLAG);
+$imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Block\Images::class)->setTemplate('Amasty_AdvancedReview::images_thumb.phtml');
+?>
+
+<?php if (count($_items) || $isFilterApplied) : ?>
+<div class="block review-list" id="customer-reviews">
+    <div class="amreview-info-wrapper" data-amreview-js="review-container">
+        <?= /* @noEscape */ $advancedHelper->getReviewsSummaryHtml($block->getProduct(), $displayedCollection) ?>
+        <?= $block->getChildHtml('amasty.reviews.write_review_button') ?>
+    </div>
+    <?= /* @noEscape */ $advancedHelper->getReviewToolbarHtml($displayedCollection); ?>
+    <div class="amrev-items-block block-content" data-amload-js="container">
+        <?php if (count($_items)): ?>
+            <ol class="items amreview-review-items"
+                data-mage-init='{
+                    "amReview": {
+                        "slidesToShow": <?= (int)$advancedHelper->getSlidesToShow(); ?>,
+                        "slidesToScroll": 1
+                    }
+                }'>
+                <?php foreach ($_items as $review) : ?>
+                    <li class="item review-item amreview-review-wrapper"
+                        data-amreview-js="review-entity"
+                        data-amreview-id="<?= (int)$review->getId() ?>"
+                        itemscope itemprop="review"
+                        itemtype="http://schema.org/Review">
+                        <div class="review-details amreview-author-details">
+                            <div class="amreview-wrap">
+                                <?php if (count($review->getRatingVotes())) : ?>
+                                    <?php foreach ($review->getRatingVotes() as $_vote) : ?>
+                                        <div class="amstars-rating-container -small"
+                                            <?php $stars = $_vote->getValue(); ?>
+                                            title="<?= $block->escapeHtml($stars > 1 ? __('%1 stars', $stars) : __('%1 star', $stars)) ?>"
+                                            itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                            <meta itemprop="worstRating" content="1"/>
+                                            <meta itemprop="bestRating" content="100"/>
+                                            <p class="amstars-stars"
+                                            style="width:<?= $block->escapeHtml($_vote->getPercent()) ?>%">
+                                                    <span itemprop="ratingValue" class="hidden">
+                                                        <?= $block->escapeHtml($_vote->getPercent()) ?>%
+                                                    </span>
+                                            </p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                                <div class="amreview-author" itemprop="author">
+                                    <?php
+                                        $name = $block->escapeHtml($review->getNickname());
+                                        $nameMasked = mb_substr($name, 0, 3);
+                                        echo $nameMasked . "******";
+                                    ?>
+                                </div>
+                                <span class="separator"></span>
+                                <?= $advancedHelper->getVerifiedBuyerHtml($review) ?>
+                                <div class="amreview-date">
+                                    <time class="review-details-value"
+                                          itemprop="datePublished"
+                                          datetime="<?= $block->escapeHtml(date("Y.m.d", strtotime($review->getCreatedAt()))) ?>">
+                                        <?= $block->escapeHtml(date("Y.m.d", strtotime($review->getCreatedAt()))) ?>
+                                    </time>
+                                </div>
+                                <?= $advancedHelper->getRecommendedHtml($review) ?>
+                            </div>
+                        </div>
+                        <div class="amreview-description-wrap" data-amreview-js="description-wrap">
+                            <div class="amreview-content">
+                                <div class="amrev-desc-title">
+                                        <span class="amreview-title-review" itemprop="name">
+                                            <?= $block->escapeHtml($review->getTitle()) ?>
+                                        </span>
+                                    <?= $advancedHelper->getHelpfulHtml($review, true) ?>
+                                </div>
+
+                                <div class="amreview-description amshowmore-container"
+                                    data-mage-init='{"Amasty_AdvancedReview/js/components/am-show-more": {"maxCharaters": 500}}'
+                                    itemprop="description">
+                                    <span class="amreview-text amshowmore-text" data-amshowmore-js="text"><?= nl2br($block->escapeHtml($review->getDetail())); ?></span>
+                                </div>
+                            </div>
+                            <?= $imagesThumbBlock->setReviewId($review->getId())->toHtml() ?>
+                        </div>
+                        <?= /* @noEscape */ $advancedHelper->getReviewImagesHtml($review->getId()) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+            <div class="toolbar review-toolbar amreview-toolbar-wrap">
+                <?= $block->getChildHtml('toolbar') ?>
+            </div>
+        <?php else : ?>
+            <div class="amreview-review-list -empty">
+                <img src='data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IjQ4cHhfcmVzdWx0IGZhaWwiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgNDggNDgiPgogICAgPGcgZGF0YS1uYW1lPSJFbGxpcHNlIDg0MjYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMgMykiIHN0eWxlPSJzdHJva2U6IzAwMDtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoxMDtzdHJva2Utd2lkdGg6MnB4O2ZpbGw6bm9uZSI+CiAgICAgICAgPGNpcmNsZSBjeD0iMjEiIGN5PSIyMSIgcj0iMjEiIHN0eWxlPSJzdHJva2U6bm9uZSIvPgogICAgICAgIDxjaXJjbGUgY3g9IjIxIiBjeT0iMjEiIHI9IjIwIiBzdHlsZT0iZmlsbDpub25lIi8+CiAgICA8L2c+CiAgICA8ZyBkYXRhLW5hbWU9Ikdyb3VwIDQ2OTI5MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjMgMTcuNSkiPgogICAgICAgIDxnIGRhdGEtbmFtZT0iR3JvdXAgNDY4MjYxIj4KICAgICAgICAgICAgPHBhdGggZGF0YS1uYW1lPSJMaW5lIDg3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxLjUgLTEuNSkiIHN0eWxlPSJzdHJva2U6IzAwMDtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoxMDtzdHJva2Utd2lkdGg6MnB4O2ZpbGw6bm9uZSIgZD0iTTAgMHYxMCIvPgogICAgICAgIDwvZz4KICAgICAgICA8Y2lyY2xlIGRhdGEtbmFtZT0iRWxsaXBzZSA4NDI3IiBjeD0iMS41IiBjeT0iMS41IiByPSIxLjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMTEuOTY4KSIvPgogICAgPC9nPgo8L3N2Zz4K'/>
+                <p><?= $block->escapeHtml(__('Be the First to Review')); ?></p>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endif; ?>
+<?= $block->getChildHtml('modal.product.review.form'); ?>
+<script type="text/javascript">
+    require([
+        "jquery",
+        "Magento_Ui/js/modal/modal",
+        'Magento_Ui/js/modal/confirm',
+        'Magento_Customer/js/customer-data',
+        'mage/url',
+        'mage/translate'
+    ],function($, modal, uiConfirm, customerData, urlBuilder, $t) {
+        var options = {
+            type: 'popup',
+            responsive: true,
+            innerScroll: true,
+            modalClass: "add-review-modal",
+            title: $.mage.__('<?= $escaper->escapeJs(__('Write a review')) ?>'),
+        };
+
+        var popup = modal(options, $('.block.review-add'));
+        $(".review-add-button").click(function() {
+            var customer = customerData.get('customer');
+
+            if(!customer().fullname && !customer().firstname) {
+                var signupUrl = urlBuilder.build('customer/account/create');
+                var loginUrl = urlBuilder.build('customer/account/login');
+                var contentTitle = "<?= $escaper->escapeHtml(__('You Can Access A Review Write After Logging In')) ?>";
+                var content = '<span class="msg">' + contentTitle + '</span>' +
+                    '<a class="action secondary" href="' + loginUrl + '">' + $.mage.__('Log in') + '</a>' +
+                    '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Laneige? Create new account') + '</a>';
+                uiConfirm({
+                    title: 'Please login',
+                    content: content,
+                    modalClass: 'wishlist-popup-login'
+                });
+                return true;
+            }
+            $('.block.review-add').show();
+            $('.block.review-add').modal('openModal');
+            return true;
+        });
+
+        $('#product-review-container').on('click','.review-filter-item',function(e){
+            $('.review-filter-item').removeClass('active');
+            $(this).addClass('active');
+            if($(this).hasClass('images') && $('input[name="with_images"]').prop('checked') === false) {
+                $('input[name="with_images"]').click();
+            }
+            if($(this).hasClass('all') && $('input[name="with_images"]').prop('checked') === true) {
+                $('input[name="with_images"]').click();
+            }
+        });
+
+        $('#product-review-container').on('click','.images-thumb-wrapper',function(e){
+            $(this).parents('.amreview-review-wrapper').addClass('show-images');
+        })
+    });
+</script>

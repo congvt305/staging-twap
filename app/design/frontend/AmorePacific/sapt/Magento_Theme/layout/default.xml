@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="header" remove="true"/>
+        <referenceBlock name="store.settings" remove="true"/>
+        <referenceBlock name="store.links" remove="true"/>
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="page.top">
+            <block class="Magento\Framework\View\Element\Template" name="sapt.taskbar" template="Magento_Theme::html/taskbar.phtml" before="-"/>
+        </referenceContainer>
+        <referenceContainer name="footer">
+            <block class="Magento\Cms\Block\Block" name="social_links" after="footer_links">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">footer-social-links</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Store\Block\Switcher" name="footer.settings.language" template="Magento_Store::switch/languages.phtml">
+                <arguments>
+                    <argument name="id_modifier" xsi:type="string">footer</argument>
+                    <argument name="view_model" xsi:type="object">Magento\Store\ViewModel\SwitcherUrlProvider</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="page.bottom">
+            <block class="Magento\Framework\View\Element\Text" name="back">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[<div class="box_totop"><div class="box_chat"><a href="https://api.whatsapp.com/send/?phone=85251349152&text=Hi&app_absent=0" target="_blank">icon chat</a></div><div class="back-top"><span>back</span></div></div>]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="navigation.sections">
+            <arguments>
+                <argument name="group_behaviour" xsi:type="string">{"accordion":{"collapsible": true, "animate": {"duration": 300}, "active": false, "multipleCollapsible": true}}</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="store.links">
+            <arguments>
+                <argument name="title" translate="true" xsi:type="string">My Account</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="store.settings">
+            <block class="Magento\Framework\View\Element\Text" name="logo.m" before="-">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[<span class="mobile-logo"></span>]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
+        <referenceContainer name="sidebar.additional" remove="true"/>
+
+        <referenceContainer name="footer-container">
+            <container name="footer.content" htmlTag="div" htmlClass="box_content" before="-">
+                <container name="footer.content.top" htmlTag="div" htmlClass="footer_top" before="-">
+                    <block class="Magento\Cms\Block\Block" name="hk_sulhwasoo_footer_content" before="-">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">hk_sulhwasoo_footer_content</argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
+            <!-- <block class="Magento\Framework\View\Element\Template" name="popup.cookie"
+                   template="Magento_Theme::html/popup_cookie.phtml" ifconfig="sapt_general/main_popup/enabled"/>
+            <block class="Magento\Framework\View\Element\Template" name="policy.cookie" template="Magento_Theme::html/popup_cookie_policy.phtml"/> -->
+        </referenceContainer>
+        <referenceContainer name="footer">
+            <block class="Magento\Cms\Block\Block" name="hk_sulhwasoo_footer_store" after="-">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">hk_sulhwasoo_footer_store</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="store-locator-link" remove="true"/>
+        <referenceBlock name="social_links" remove="true"/>
+        <referenceBlock name="footer_links" remove="true"/>
+        <referenceBlock name="register-link" remove="true"/>
+    </body>
+</page>

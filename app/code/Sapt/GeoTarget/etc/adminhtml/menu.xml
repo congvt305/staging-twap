@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Sapt_GeoTarget::unique_identifier"
+            title="Sapt GeoTarget"
+            translate="true"
+            module="Sapt_GeoTarget"
+            sortOrder="100"
+            parent="Magento_Backend::marketing_seo"
+            action="sapt_geotarget/index/index"
+            resource="Magento_Config::config"
+            dependsOnModule="Magento_Backend"/>
+    </menu>
+</config>
