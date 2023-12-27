@@ -46,6 +46,7 @@ define([
 
             } else if (deliveryMethod.carrier_code === 'gwlogistics'
             ) {
+                //Move code from cvs-selector to here
                 var emailValidationResult,
                     cvsStoreNameValidationResult,
                     cvsStoreAddressValidationResult,
@@ -53,9 +54,16 @@ define([
                     firstnameValidationResult,
                     lastnameValidationResult,
                     cvsFormSelector = '#checkout-step-cvs-selector form[data-role=cvs-map-load-form]',
-                    loginFormSelector = '#cvs-selector form[data-role=email-with-possible-login]';
+                    loginFormSelector = '#cvs-selector form[data-role=email-with-possible-login]',
+                    firstname = $(cvsFormSelector + ' input[name=firstname]').val(),
+                    lastname = $(cvsFormSelector + ' input[name=lastname]').val(),
+                    mobile = $(cvsFormSelector + ' input[name=mobile_number]').val(),
+                    shippingAddress,
+                    selectedLocation = pickupLocationService.selectedLocation();
 
-
+                if (!selectedLocation) {
+                    return;
+                }
                 if (!customer.isLoggedIn()) {
                     $(loginFormSelector).validation();
                     emailValidationResult = $(loginFormSelector + ' input[name=username]').valid() ? true : false;
@@ -72,9 +80,14 @@ define([
                 firstnameValidationResult = $(cvsFormSelector + ' input[name=firstname]').valid() ? true : false;
                 lastnameValidationResult = $(cvsFormSelector + ' input[name=lastname]').valid() ? true : false;
                 mobileValidationResult = $(cvsFormSelector + ' input[name=mobile_number]').valid() ? true : false;
+                _.extend(selectedLocation, {'firstname': firstname, 'lastname': lastname, 'mobileNumber': mobile});
+                pickupLocationService.selectForShipping(selectedLocation);
 
                 if (cvsStoreNameValidationResult && cvsStoreAddressValidationResult && firstnameValidationResult && lastnameValidationResult && mobileValidationResult) {
                     validateShippingAddressResult = true;
+                    shippingAddress = addressConverter.quoteAddressToFormAddressData(quote.shippingAddress());
+                    checkoutData.setShippingAddressFromData(shippingAddress);
+                    setShippingInformationAction();
                 }
             }
 
