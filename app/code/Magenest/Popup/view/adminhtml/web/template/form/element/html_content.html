@@ -1,0 +1,43 @@
+<div class="admin__field input_name _required"
+     data-bind="css: $data.additionalClasses, attr: {'data-index': index}, visible: visible">
+    <div class="admin__field-label" data-bind="visible: $data.labelVisible">
+        <!-- ko if: $data.label -->
+        <label data-bind="attr: {for: uid}">
+            <span data-bind="attr: {'data-config-scope': $data.scopeLabel}, i18n: label"></span>
+        </label>
+        <!-- /ko -->
+    </div>
+
+
+    <div class="admin__field-control"
+         data-bind="css: {'_with-tooltip': $data.tooltip, '_with-reset': $data.showFallbackReset && $data.isDifferedFromDefault}">
+        <div id="editor_template_html" class="admin__control-wysiwig hor-scroll"
+             data-bind="afterRender: loadJsAfterKoRender">
+            <div id="buttonsproduct_form_description" class="buttons-set">
+                <button type="button" class="scalable action-show-hide" style="" id="show_editor_template_html">
+                    <span><span><span>Show Editor</span></span></span>
+                </button>
+                <button type="button" data-bind="click: insertWidget" class="scalable action-show-hide" style="" id="insert_wiget">
+                    <span><span><span>Insert Widget</span></span></span>
+                </button>
+            </div>
+            <!-- ko ifnot: hasAddons() -->
+            <!-- ko template: elementTmpl --><!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: hasAddons() --><!-- /ko -->
+
+            <!-- ko if: $data.tooltip --><!-- /ko -->
+
+            <!-- ko if: $data.showFallbackReset && $data.isDifferedFromDefault --><!-- /ko -->
+
+            <!-- ko if: error --><!-- /ko -->
+
+            <!-- ko if: $data.notice --><!-- /ko -->
+
+            <!-- ko if: $data.additionalInfo --><!-- /ko -->
+
+            <!-- ko if: $data.hasService() --><!-- /ko -->
+        </div>
+    </div>
+</div>
