@@ -200,6 +200,6 @@ class Membership extends Template
     }
 
     public function getMembershipBenefitsUrl() {
-        return $this->customerHelper->getEnvironmentMembershipBenefit();
+        return $this->customerHelper->getMembershipBenefitsUrl();
     }
 }
