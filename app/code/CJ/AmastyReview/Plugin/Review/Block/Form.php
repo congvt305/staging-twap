@@ -51,6 +51,15 @@ class Form
             $result = substr_replace($result, $replace, strrpos($result, $search), strlen($search));
         }
 
+        if ($this->configHelper->isAllowImages()) {
+            $replace = $this->getImageUploadHtml() . $search;
+            /* insert before last fieldset tag end*/
+            $result = substr_replace($result, $replace, strrpos($result, $search), strlen($search));
+
+            $searchForm = 'data-role="product-review-form"';
+            $result = str_replace($searchForm, $searchForm . ' enctype="multipart/form-data" ', $result);
+        }
+
         $replace = $this->getRecommendFieldHtml();
         $replace .= $this->getGdprFieldHtml();
         if ($replace) {
