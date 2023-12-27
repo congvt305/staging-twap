@@ -16,6 +16,12 @@ define([
         if (shippingAddress.telephone) {
             $("#shipping-new-address-form input[name='telephone']").val(shippingAddress.telephone);
         }
+        if (shippingAddress.firstname) {
+            $("#shipping-new-address-form input[name='firstname']").val(shippingAddress.firstname);
+        }
+        if (shippingAddress.lastname) {
+            $("#shipping-new-address-form input[name='lastname']").val(shippingAddress.lastname);
+        }
         quote.shippingAddress(shippingAddress);
     };
 });
