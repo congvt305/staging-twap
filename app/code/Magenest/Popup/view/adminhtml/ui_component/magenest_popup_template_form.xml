@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="label" xsi:type="string" translate="true">Popup Template</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">magenest_popup_template_form.magenest_popup_template_form_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back">
+                <url path="*/*/"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+            <button name="delete" class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\DeleteButton"/>
+            <button name="reset">
+                <label translate="true">Reset</label>
+            </button>
+            <button name="save" class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\SaveButton"/>
+        </buttons>
+        <namespace>magenest_popup_template_form</namespace>
+        <deps>
+            <dep>magenest_popup_template_form.magenest_popup_template_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="magenest_popup_template_form" component="Magento_Ui/js/form/provider">
+        <settings>
+            <submitUrl path="*/*/save"/>
+        </settings>
+        <dataProvider class="Magenest\Popup\Ui\Component\DataProvider\PopupTemplate" name="magenest_popup_template_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>template_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">Popup Template</label>
+            <dataScope>data</dataScope>
+        </settings>
+        <field name="template_id" formElement="hidden">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">ID</label>
+            </settings>
+        </field>
+
+        <field name="template_name" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Template Name</label>
+            </settings>
+        </field>
+
+        <field name="template_type" formElement="select">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Template Type</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Template\TemplateType" />
+                        <caption translate="true">&#45;&#45; Please Select &#45;&#45;</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="html_content" template="ui/form/field" formElement="wysiwyg">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">HTML Content</label>
+                <notice translate="true">Note: Keyboard shortcut to activate editor help : Alt + 0 (Windows) or &#x2325;0 (MacOS)</notice>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+
+        <field name="css_style">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="label" translate="true" xsi:type="string">CSS Style</item>
+                    <item name="dataType" translate="true" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

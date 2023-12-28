@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="magenest_popup_templates" resource="default" engine="innodb" comment="Table manage template popup">
+        <column xsi:type="int" name="template_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Popup Template Id"/>
+        <column xsi:type="varchar" name="template_name" nullable="false" length="255" comment="Popup Template Name"/>
+        <column xsi:type="int" name="template_type" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Popup template Type"/>
+        <column xsi:type="mediumtext" name="html_content" nullable="true" comment="Template Popup Html Content"/>
+        <column xsi:type="mediumtext" name="css_style" nullable="true" comment="Css style"/>
+        <column xsi:type="mediumtext" name="class" nullable="true" comment="Class"/>
+        <column xsi:type="int" name="status" padding="11" unsigned="false" nullable="false" identity="false"
+                comment="Status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="template_id"/>
+        </constraint>
+    </table>
+    <table name="magenest_popup" resource="default" engine="innodb" comment="Table manage popup">
+        <column xsi:type="int" name="popup_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Popup id"/>
+        <column xsi:type="varchar" name="popup_name" nullable="false" length="255" comment="Popup Name"/>
+        <column xsi:type="int" name="popup_type" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Popup type"/>
+        <column xsi:type="int" name="popup_status" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Popup Status"/>
+        <column xsi:type="varchar" name="start_date" nullable="true" length="255" comment="Start Date"/>
+        <column xsi:type="varchar" name="end_date" nullable="true" length="255" comment="End Date"/>
+        <column xsi:type="int" name="priority" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Priority"/>
+        <column xsi:type="int" name="popup_template_id" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Popup Template Id"/>
+        <column xsi:type="int" name="popup_trigger" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Popup display trigger"/>
+        <column xsi:type="int" name="number_x" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Number X"/>
+        <column xsi:type="int" name="popup_positioninpage" padding="11" unsigned="false" nullable="true"
+                identity="false" comment="Popup Position in page"/>
+        <column xsi:type="text" name="popup_position" nullable="true" comment="Position popup"/>
+        <column xsi:type="int" name="popup_animation" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Popup Animation"/>
+        <column xsi:type="text" name="visible_stores" nullable="true" comment="Visible In Stores"/>
+        <column xsi:type="int" name="enable_cookie_lifetime" padding="11" unsigned="false" nullable="true"
+                identity="false" comment="Enable Cookie LifeTime"/>
+        <column xsi:type="text" name="cookie_lifetime" nullable="true" comment="Cookie LifeTime"/>
+        <column xsi:type="text" name="coupon_code" nullable="true" comment="Coupon Code"/>
+        <column xsi:type="text" name="thankyou_message" nullable="true" comment="Thank You Message"/>
+        <column xsi:type="mediumtext" name="html_content" nullable="true" comment="Template Popup Html Content"/>
+        <column xsi:type="mediumtext" name="css_style" nullable="true" comment="Css style"/>
+        <column xsi:type="int" name="click" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Click"/>
+        <column xsi:type="int" name="view" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="View"/>
+        <column xsi:type="text" name="ctr" nullable="true" comment="CTR"/>
+        <column xsi:type="text" name="popup_link" nullable="true" comment="Add Link"/>
+        <column xsi:type="int" name="enable_floating_button" padding="11" unsigned="false" nullable="true"
+                identity="false" comment="Enable Floating Button"/>
+        <column xsi:type="text" name="floating_button_content" nullable="true" comment="Floating Button Content"/>
+        <column xsi:type="int" name="floating_button_position" padding="11" unsigned="false" nullable="true"
+                identity="false" comment="Floating Button Position"/>
+        <column xsi:type="text" name="floating_button_text_color" nullable="true" comment="Floating Button Text Color"/>
+        <column xsi:type="text" name="floating_button_text_hover_color" nullable="true"
+                comment="Floating Button Text Hover Color"/>
+        <column xsi:type="text" name="floating_button_hover_color" nullable="true"
+                comment="Floating Button Hover Color"/>
+        <column xsi:type="text" name="floating_button_background_color" nullable="true"
+                comment="Floating Button Background Color"/>
+        <column xsi:type="int" name="floating_button_display_popup" padding="11" unsigned="false" nullable="true"
+                identity="false" comment="Floating Button Display Popup"/>
+        <column xsi:type="int" name="enable_mailchimp" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Enable Mail"/>
+        <column xsi:type="text" name="api_key" nullable="false" comment="Api Key"/>
+        <column xsi:type="text" name="audience_id" nullable="false" comment="Audience Id"/>
+        <column xsi:type="text" name="widget_instance" nullable="false" comment="Widget Instance"/>
+        <column xsi:type="text" name="customer_group_ids" nullable="false" comment="Customer Groups"/>
+        <column xsi:type="text" name="background_image" nullable="true" comment="Background Image"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="popup_id"/>
+        </constraint>
+    </table>
+    <table name="magenest_log" resource="default" engine="innodb" comment="Tabel saved data collect from fronend">
+        <column xsi:type="int" name="log_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Log Id"/>
+        <column xsi:type="varchar" name="popup_id" nullable="true" length="255" comment="Popup Id"/>
+        <column xsi:type="text" name="content" nullable="true" comment="Data collect from frontend"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="text" name="popup_name" nullable="false" comment="Popup Name"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+    </table>
+    <table name="magenest_popup_layout" resource="default" engine="innodb" comment="Magenest Popup Layout">
+        <column xsi:type="int" name="popup_id" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="popup id"/>
+        <column xsi:type="int" name="layout_update_id" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Layout update id "/>
+    </table>
+</schema>
