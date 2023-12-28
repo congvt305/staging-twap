@@ -122,7 +122,7 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
             responsive: true,
             innerScroll: true,
             modalClass: "add-review-modal",
-            title: $.mage.__('<?= $escaper->escapeJs(__('Write a review')) ?>'),
+            title: "<?= __('Write a review')?>"
         };
 
         var popup = modal(options, $('.block.review-add'));
