@@ -12,12 +12,12 @@ $shippingMethod = $parentItem->getOrder()->getShippingDescription();
 $shippingMethod = str_replace('In-Store Pickup Delivery','店鋪自取',$shippingMethod);
 $product = $parentItem->getProduct();
 $viewModel = $block->getData('view_model');
-$items = $parentItem->getChildrenItems();
+$layoutHander = $block->getRequest()->getFullActionName();
+$items = $layoutHander == 'sales_order_view' ? $_order->getItemById($parentItem->getItemId())->getChildrenItems() : $parentItem->getChildrenItems();
 $index = 1;
 $prevOptionId = '';
 /** @var \Magento\Framework\Pricing\Helper\Data $priceHelper */
 $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
-$layoutHander = $block->getRequest()->getFullActionName();
 if ($layoutHander == "sales_order_history") {
     $orderItems = $_order->getAllVisibleItems();
     $productItemsCount = 0;

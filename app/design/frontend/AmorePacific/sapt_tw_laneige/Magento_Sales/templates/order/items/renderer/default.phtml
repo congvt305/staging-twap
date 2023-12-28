@@ -52,7 +52,10 @@ $viewModel = $block->getData('view_model');
                 <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
                 <?= $priceHelper->currency(0) ?>
             <?php else: ?>
-                <?= $block->getItemPriceHtml() ?>
+                <?= $block->getItemPriceHtml() ?><span class="product-qty-ordered">
+                <?php if($layoutHander == 'sales_order_view'): ?>
+                    <?= __(' / ') ?> <?= __("QTY %1", (int)$_item->getQtyOrdered()) ?></span>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </td>
