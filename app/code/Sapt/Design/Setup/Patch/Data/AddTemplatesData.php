@@ -2475,8 +2475,8 @@ require([
                                     <img src="{{media url=wysiwyg/banner/LINE_Brand_icon_2_1.png}}" alt="" />
                     </a>
                     <div class="link-text">
-                    <p class="note">Get First-Hand Beauty with Laneige Line Official</p>
-                    <a class="link" href="https://lin.ee/qH9tM5h">Add Line Friend</a>
+                    <p class="note">Get First-Hand Beauty with Laneige LINE Official</p>
+                    <a class="link" href="https://lin.ee/qH9tM5h">Add LINE Friend</a>
                     </div>
                     </div></div>',
                     'created_for' => 'any'
