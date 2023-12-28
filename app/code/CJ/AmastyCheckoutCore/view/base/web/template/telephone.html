@@ -1,0 +1,15 @@
+<input class="input-text" type="tel" pattern="\d*" data-bind="
+    value: value,
+    valueUpdate: 'keyup',
+    hasFocus: focused,
+    event: {keydown : onKeypress.bind($data)},
+    attr: {
+        name: inputName,
+        placeholder: placeholder,
+        'aria-describedby': getDescriptionId(),
+        'aria-required': required,
+        'aria-invalid': error() ? true : 'false',
+        id: uid,
+        disabled: disabled,
+        maxLength: $data.size
+    }" />
