@@ -18,6 +18,8 @@
         <span class="value"><?= $block->escapeHtml(__($block->getOrder()->getStatusLabel())) ?></span>
     </div>
     <div class="cancel-order">
-         <button type="submit" clicktext="加入購物車" formtext="加入購物車" title="加入購物車" class="action tocart primary"><span>加入購物車</span></button>
+         <a href="#" clicktext="<?= $block->escapeHtml(__('Cancel')) ?>" formtext="<?= $block->escapeHtml(__('Cancel')) ?>" title="<?= $block->escapeHtml(__('Cancel')) ?>" class="action cancel primary">
+             <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+         </a>
     </div>
 </div>
