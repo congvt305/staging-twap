@@ -1,0 +1,47 @@
+<?php
+
+$helper = $block->getAjaxHelper();
+$addUrl = $block->getUrl('ajaxcart');
+$quickview = 'true';
+$isProductView = 'false';
+
+if ($block->getRequest()->getModuleName() == 'ajaxcart') {
+    $quickview = 'true';
+    $isProductView = 'true';
+}
+
+if ($block->getRequest()->getFullActionName() == 'catalog_product_view') {
+    $isProductView = 'true';
+}
+
+$isEnable = $helper->isEnabled();
+
+if ($isProductView == 'true' && !$helper->isEnabledProductView()) {
+    $isEnable = false;
+}
+
+if ($block->getRequest()->getFullActionName() == 'checkout_cart_index'
+    || $block->getRequest()->getFullActionName() == 'customer_account_index'
+    || $block->getRequest()->getFullActionName() == 'catalog_product_compare_index'
+    || $block->getRequest()->getFullActionName() == 'checkout_cart_configure') {
+    $isEnable = false;
+}
+
+if (!$isEnable) return;
+$quickViewUrl = $block->getUrl('ajaxcart/index/view/');
+?>
+
+<div id="sapt_ajaxcart_popup"></div>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "saptAjaxcart": {
+                "addUrl": "<?php echo $block->escapeUrl($addUrl); ?>",
+                "quickview": <?php echo $block->escapeJsQuote($quickview); ?>,
+                "quickViewUrl": "<?php echo $block->escapeUrl($quickViewUrl); ?>",
+                "isProductView": <?= $isProductView ? 1 : 0 ?>,
+                "addToCartSelector": ".action.tocart"
+            }
+        }
+    }
+</script>
