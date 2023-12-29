@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Magenest\Popup\Model\ResourceModel\Template\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magenest_popup_templates</argument>
+            <argument name="resourceModel" xsi:type="string">Magenest\Popup\Model\ResourceModel\Template</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="magenest_popup_template_listing_data_source" xsi:type="string">Magenest\Popup\Model\ResourceModel\Template\Grid\Collection</item>
+                <item name="magenest_popup_popup_listing_data_source" xsi:type="string">Magenest\Popup\Model\ResourceModel\Popup\Grid\Collection</item>
+                <item name="magenest_popup_log_listing_data_source" xsi:type="string">Magenest\Popup\Model\ResourceModel\Log\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Magenest\Popup\Model\ResourceModel\Popup\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magenest_popup</argument>
+            <argument name="resourceModel" xsi:type="string">Magenest\Popup\Model\ResourceModel\Popup</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Magenest\Popup\Model\ResourceModel\Log\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magenest_log</argument>
+            <argument name="resourceModel" xsi:type="string">Magenest\Popup\Model\ResourceModel\Log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Magenest\Popup\BackgroundImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">magenest/popup</argument>
+            <argument name="basePath" xsi:type="string">magenest/popup</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magenest\Popup\Controller\Adminhtml\Popup\BackgroundImage\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Magenest\Popup\BackgroundImageUpload</argument>
+        </arguments>
+    </type>
+</config>

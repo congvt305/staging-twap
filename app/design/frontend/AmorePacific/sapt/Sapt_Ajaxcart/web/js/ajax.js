@@ -1,8 +1,9 @@
 define([
     'jquery',
     'mage/translate',
+    'Magento_Customer/js/customer-data',
     'Magento_Ui/js/modal/modal'
-], function ($, $t, modal) {
+], function ($, $t, customerData, modal) {
     'use strict';
 
     $.widget('magepow.ajaxcart', {
@@ -29,9 +30,15 @@ define([
         productIdInputName: ["product", "product-id", "data-product-id", "data-product"],
 
         _create: function () {
-            this._initAjaxcart();
-            this._initQtyChange();
-            window.ajaxCart = this;
+            var self = this;
+            customerData.reload(['wishlist'], true);
+            customerData.get('wishlist').subscribe(function(wishlist) {
+                self._updateWishlistIcons(wishlist);
+            });
+
+            self._initAjaxcart();
+            self._initQtyChange();
+            window.ajaxCart = self;
             $('body').on('ajaxcart:refresh', function () {
                 window.ajaxCart._initAjaxcart();
             });
@@ -55,14 +62,13 @@ define([
                         return;
                     }
                 }
-                if($(this).attr('data-post')) return;// turn off add to cart for wishlist in category page
+
                 var form = $(this).parents('form').get(0);
                 if($(form).hasClass('reorder')) return;// turn off the recently ordered sidebar in category page
                 e.preventDefault();
 
-                var form = $(this).parents('form').get(0);
                 var data = '';
-                if (form) {
+                if (form && !$(this).hasClass('wishlist-item')) {
                     var isValid = true;
                     if (options.isProductView || $('body').hasClass('open-quickview')) {
                         try {
@@ -88,7 +94,11 @@ define([
                             }
 
                             if (options.quickview) {
-                                window.parent.ajaxCart._sendAjax(options.addUrl, data, oldAction, form);
+                                var isWishlist = false;
+                                if (window.location.pathname == '/wishlist/'){
+                                    isWishlist = true;
+                                }
+                                window.parent.ajaxCart._sendAjax(options.addUrl, data, oldAction, form, isWishlist);
                                 return false;
                             }
 
@@ -99,12 +109,16 @@ define([
                         window.location.href = oldAction;
                     }
                 } else {
-                    var dataPost = $.parseJSON($(this).attr('data-post'));
+                    var dataPost = $(this).data('post');
                     if (dataPost) {
-                        var formKey = $("input[name='form_key']").val();
-                        var oldAction = dataPost.action;
-                        data += 'id=' + dataPost.data.product + '&product=' + dataPost.data.product + '&form_key=' + formKey + '&uenc=' + dataPost.data.uenc;
-                        self._sendAjax(options.addUrl, data, oldAction);
+                        var formKey = $("input[name='form_key']").val(),
+                            oldAction = dataPost.action,
+                            formData = new FormData();
+                        formData.set('product', dataPost.data.product);
+                        formData.set('form_key', formKey);
+                        formData.set('uenc', dataPost.data.uenc);
+                        self._sendAjax(options.addUrl, formData, oldAction, false, true);
+
                         return false;
                     } else {
                         var id = self._findId(this);
@@ -159,7 +173,7 @@ define([
             return false;
         },
 
-        _sendAjax: function (addUrl, data, oldAction, form=false) {
+        _sendAjax: function (addUrl, data, oldAction, form=false, isWishlist = false) {
             var body = $('body');
             var options = this.options;
             var self = this;
@@ -182,6 +196,11 @@ define([
                     if (data.popup) {
                         if (data.success) {
                             $(document).trigger('ajax:addToCart', {productIds: [data.id]});
+                            setTimeout(function (){
+                                if (isWishlist){
+                                    window.location.reload();
+                                }
+                            }, 2000);
                         }
                         self._showPopup(_qsModal, '<div class="content-ajaxcart">' + data.popup + '</div>');
                     } else if (data.error && data.view) {
@@ -212,7 +231,7 @@ define([
 
         _showPopup: function (_qsModal, data) {
             var body = $('body');
-            self = this;
+            var self = this;
             _qsModal.html(data);
             if(!body.hasClass('open-ajaxcart')){
                 self._closePopup();
@@ -231,6 +250,9 @@ define([
                     }, _qsModal);
                 }
                 _qsModal.modal('openModal');
+
+                var wishlist = customerData.get('wishlist')();
+                self._updateWishlistIcons(wishlist);
                 _qsModal.trigger('contentUpdated');
             }
             _qsModal.find('.btn-continue').on('click', function() {
@@ -321,6 +343,24 @@ define([
                     quickajax($(this).data('url'))
                 });
             }
+        },
+
+        /**
+         * Update all related product's wishlist icons in quick view popup
+         *
+         * @param wishlist
+         * @private
+         */
+        _updateWishlistIcons: function (wishlist) {
+            var wishlistItems = wishlist && wishlist['all_wishlist_items'] ? wishlist['all_wishlist_items'] : {}
+            $(`.content-ajaxcart .action.towishlist`).each(function () {
+                var productId = $(this).data('product-id');
+                if (wishlistItems.hasOwnProperty(productId)) {
+                    $(this).addClass('wishlisticon');
+                } else {
+                    $(this).removeClass('wishlisticon');
+                }
+            });
         }
 
     });
