@@ -112,7 +112,6 @@ class Membership extends Template
     public function getCountOrderReviewAvailable(): int
     {
         $orderCollection = $this->getOrderCollection();
-        $orderCollection->addFieldToFilter('reviewed', 0);
         $orderCollection->addFieldToFilter('status', 'complete');
         return $orderCollection->getSize();
     }
@@ -123,7 +122,6 @@ class Membership extends Template
     public function getCountOrderReviewed(): int
     {
         $orderCollection = $this->getOrderCollection();
-        $orderCollection->addFieldToFilter('reviewed', 1);
         return $orderCollection->getSize();
     }
 
