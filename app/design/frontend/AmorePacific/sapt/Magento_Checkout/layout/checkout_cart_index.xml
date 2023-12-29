@@ -53,6 +53,7 @@
         </referenceBlock>
         <referenceBlock name="checkout.cart.coupon" remove="true" />
         <referenceBlock name="checkout.cart.multicoupons" remove="true" />
+        <referenceBlock name="checkout.cart.methods.multishipping" remove="true" />
         <referenceBlock name="checkout.cart.empty">
             <block class="Magento\Framework\View\Element\Template" name="checkout.cart.noitems.summary" template="Magento_Checkout::cart/noitem/summary.phtml"/>
         </referenceBlock>
