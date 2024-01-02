@@ -1,9 +1,8 @@
 <?php
 /**
-* @author Amasty Team
-* @copyright Copyright (c) 2022 Amasty (https://www.amasty.com)
-* @package Amasty_CheckoutThankYouPage
-*/
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 use Amasty\Rewards\Api\Data\SalesQuote\OrderInterface;
 
@@ -28,8 +27,6 @@ foreach ($items as $item) {
 /** @var \Satp\Sales\ViewModel\OrderInfo $viewModel */
 $viewModel = $block->getData('view_model_info');
 
-$amount = (float)$order->getData(OrderInterface::POINTS_EARN);
-$amount = $amount ? round($amount, 2) : 0;
 ?>
 
 <ul class="order-info">
