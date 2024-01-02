@@ -7,12 +7,15 @@ use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Psr\Log\LoggerInterface;
+use Magento\Eav\Api\Data\AttributeSetInterface;
+use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 
 class AddProductDateLaunchAttribute implements DataPatchInterface
 {
 
     const PROMOTION_TEXT = 'promotion_text';
+
+    const ATTRIBUTES_SET = ['TW Sulwhasoo', 'TW Laneige'];
 
     /**
      * @var ModuleDataSetupInterface
@@ -45,6 +48,7 @@ class AddProductDateLaunchAttribute implements DataPatchInterface
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Catalog\Model\Config $config
      * @param \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
+     * @param AttributeSetRepositoryInterface $attributeSetRepository
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
@@ -52,7 +56,8 @@ class AddProductDateLaunchAttribute implements DataPatchInterface
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory,
         \Magento\Framework\App\State $state,
         \Magento\Catalog\Model\Config $config,
-        \Magento\Eav\Api\AttributeManagementInterface $attributeManagement
+        \Magento\Eav\Api\AttributeManagementInterface $attributeManagement,
+        AttributeSetRepositoryInterface $attributeSetRepository
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;
@@ -60,6 +65,7 @@ class AddProductDateLaunchAttribute implements DataPatchInterface
         $this->state = $state;
         $this->config = $config;
         $this->attributeManagement = $attributeManagement;
+        $this->attributeSetRepository = $attributeSetRepository;
     }
 
     public function apply()
@@ -94,14 +100,17 @@ class AddProductDateLaunchAttribute implements DataPatchInterface
 
         foreach ($attributeSetIds as $attributeSetId) {
             if ($attributeSetId) {
-                $group_id = $this->config->getAttributeGroupId($attributeSetId, $ATTRIBUTE_GROUP);
-                $this->attributeManagement->assign(
-                    \Magento\Catalog\Model\Product::ENTITY,
-                    $attributeSetId,
-                    $group_id,
-                    self::PROMOTION_TEXT,
-                    999
-                );
+                $attributeDetail = $this->attributeSetRepository->get($attributeSetId);
+                if (in_array($attributeDetail->getAttributeSetName(), self::ATTRIBUTES_SET)){
+                    $group_id = $this->config->getAttributeGroupId($attributeSetId, $ATTRIBUTE_GROUP);
+                    $this->attributeManagement->assign(
+                        \Magento\Catalog\Model\Product::ENTITY,
+                        $attributeSetId,
+                        $group_id,
+                        self::PROMOTION_TEXT,
+                        999
+                    );
+                }
             }
         }
 
