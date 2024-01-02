@@ -93,6 +93,12 @@ class AddToCart
         ) {
             throw new LocalizedException(__("You need to register for Laneige membership before making a purchase"));
         }
+
+        if ($productInfo->getData('promotion_text')
+        ) {
+            throw new LocalizedException(__("Product is coming soon"));
+        }
+
         return [$productInfo, $requestInfo];
 
     }

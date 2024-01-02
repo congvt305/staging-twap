@@ -51,6 +51,20 @@
                             &:extend(.abs-action-button-as-link all);
                             &:extend(.abs-actions-addto-gridlist all);
                         }
+                        .coming-soon {
+                            &:extend(.abs-button-l all);
+                            border: none;
+                            background: #e86c01;
+                            color: white;
+                            width: 60%;
+                            line-height: 3.4rem;
+
+                            &:hover {
+                                color: #191919;
+                                background: #999999;
+                                border-color: #999999;
+                            }
+                        }
                     }
                 }
             }
@@ -692,6 +706,9 @@
                         width: 100%;
                     }
 
+                    .product-item-inner:has(.coming-soon) {
+                        top: 20%;
+                    }
                     .product-item-actions {
                         padding: 0 24px;
 
