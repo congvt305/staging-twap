@@ -4,6 +4,8 @@
  * See COPYING.txt for license details.
  */
 
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
+
 // @codingStandardsIgnoreFile
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
@@ -302,12 +304,12 @@ $_item = null;
                                                     <?php if ($showAddTo || $showCart): ?>
 			                                            <div class="actions-primary">
                                                             <?php if ($_item->isSaleable()): ?>
-                                                                <?php if ($_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
+                                                                <?php if ($_item->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
 						                                            <button type="button"
-						                                                    title="<?= $block->escapeHtmlAttr($_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+						                                                    title="<?= $block->escapeHtmlAttr($_item->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
 						                                                    class="action coming-soon"
 						                                                    id="product-comming-soon-button">
-							                                            <span><?= $_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT) ?></span>
+							                                            <span><?= $_item->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT) ?></span>
 						                                            </button>
                                                                 <?php else: ?>
                                                                     <?php if (!$_item->getTypeInstance()->isPossibleBuyFromList($_item)): ?>
@@ -333,7 +335,7 @@ $_item = null;
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
 			                                            </div>
-	                                                    <?php if (!$_item->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
+	                                                    <?php if (!$_item->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
 	                                                        <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
 	                                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
 	                                                                <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
