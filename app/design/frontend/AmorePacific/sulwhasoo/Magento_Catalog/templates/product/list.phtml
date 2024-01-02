@@ -4,6 +4,7 @@
  * See COPYING.txt for license details.
  */
 use Magento\Framework\App\Action\Action;
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 
 // @codingStandardsIgnoreFile
 
@@ -179,11 +180,11 @@ $apProductPosition = "";
                                                     <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
                                                     <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                                     <?= $block->getBlockHtml('formkey') ?>
-                                                    <?php if ($_product->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
+                                                    <?php if ($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
 	                                                    <button type="button"
-	                                                            title="<?= $block->escapeHtmlAttr($_product->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+	                                                            title="<?= $block->escapeHtmlAttr($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
 	                                                            class="action coming-soon">
-		                                                    <span><?= $_product->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT); ?></span>
+		                                                    <span><?= $_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT); ?></span>
 	                                                    </button>
                                                     <?php else: ?>
                                                     <button type="submit"
@@ -195,7 +196,7 @@ $apProductPosition = "";
                                                 </form>
                                             <?php endif; ?>
                                         </div>
-                                        <?php if(!$_product->getData('offline') && !$_product->getData(CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
+                                        <?php if(!$_product->getData('offline') && !$_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
                                         <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
                                             <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
                                                 <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
