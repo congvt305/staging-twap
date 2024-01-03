@@ -18,7 +18,19 @@
 
     .page-product-bundle {
         .bundle-options-wrapper {
-            &:extend(.abs-visually-hidden all);
+            button.select-option {
+                margin-bottom: 10px;
+                margin-right: 10px;
+            }
+
+            button.select-option.selected {
+                background-color: #33333380;
+                border: solid 0.4rem #5a8cd2;
+            }
+
+            p.required {
+                display: none;
+            }
         }
 
         .product-info-main-attribute .product.attribute {
@@ -37,7 +49,7 @@
 
         .legend.title {
             .lib-heading(h2);
-            display: none;
+            //display: none;
         }
 
         select {
@@ -49,13 +61,13 @@
 
             .field.option {
                 > .label {
-                    display: none;
+                    //display: none;
                 }
 
                 .choice {
                     .control {
                         > .qty-disabled {
-                            display: none;
+                            //display: none;
                         }
                     }
                 }
@@ -95,7 +107,7 @@
             .lib-css(background, transparent);
 
             > .title {
-                display: none;
+                //display: none;
             }
 
             > .title > strong {
