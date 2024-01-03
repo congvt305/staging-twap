@@ -11,7 +11,7 @@
 -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="eguana_sociallogin_customer" resource="default" engine="innodb" comment="Eguana Social Login Customer">
-        <column xsi:type="smallint" name="sociallogin_id" padding="6" unsigned="false" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="sociallogin_id" padding="6" unsigned="false" nullable="false" identity="true" comment="ID"/>
         <column xsi:type="varchar" name="social_id" nullable="false" length="255" comment="Line Id"/>
         <column xsi:type="varchar" name="username" nullable="false" length="255" comment="Username"/>
         <column xsi:type="varchar" name="socialmedia" nullable="false" length="255" comment="Social Media Name"/>
