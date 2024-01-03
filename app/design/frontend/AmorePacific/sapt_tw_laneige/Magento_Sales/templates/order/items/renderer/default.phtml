@@ -15,8 +15,10 @@ $_order = $_item->getOrder();
 $layoutHander = $block->getRequest()->getFullActionName();
 $viewModel = $block->getData('view_model');
 ?>
-<tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info">
-    <td class="col item" data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
+<tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info<?php if ($_item->getIsFreeGift()): ?> gift-item<?php endif; ?>">
+    <td class="col item"
+        <?php if ($_item->getIsFreeGift()): ?>colspan="2" <?php endif; ?>
+        data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
         <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"
            title="<?= $block->escapeHtmlAttr($product->getName()) ?>"
            tabindex="-1"
