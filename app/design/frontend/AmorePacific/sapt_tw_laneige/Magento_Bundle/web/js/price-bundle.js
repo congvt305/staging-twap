@@ -19,7 +19,7 @@ define([
         optionConfig: null,
         productBundleSelector: 'input.bundle.option, select.bundle.option, textarea.bundle.option',
         qtyFieldSelector: 'input.qty',
-        priceBoxSelector: '[data-role=priceBox]',
+        priceBoxSelector: '.price-box',
         optionHandlers: {},
         optionTemplate: '<%- data.label %>' +
             '<% if (data.finalPrice.value) { %>' +
