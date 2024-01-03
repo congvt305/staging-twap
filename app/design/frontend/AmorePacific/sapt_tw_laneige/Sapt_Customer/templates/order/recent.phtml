@@ -80,6 +80,9 @@ $viewModel = $block->getData('view_model');
                                 <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view">
                                     <span><?= $block->escapeHtml($block->formatOrderDate($_order->getCreatedAt())) ?></span>
                                 </a>
+                                <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view increment-id">
+                                    <span><?= $_order->getIncrementId() ?></span>
+                                </a>
                                 <span class="product-thumbnail-wrapper">
                                     <img class="product-thumbnail"
                                         src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($orderItems[0])) ?>"
