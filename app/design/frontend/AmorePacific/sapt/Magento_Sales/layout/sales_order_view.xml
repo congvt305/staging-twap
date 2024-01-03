@@ -43,6 +43,11 @@
                 </argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="order.date">
+            <arguments>
+                <argument name="refund_online_view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund</argument>
+            </arguments>
+        </referenceBlock>
         <move element="page.main.title" destination="content" before="-"/>
         <move element="order.status" destination="content" after="page.main.title"/>
         <move element="order.date" destination="content" after="order.status"/>
