@@ -122,12 +122,12 @@ $productImageUrl = $productImage->getUrl();
         $('.product.oneline-review .review-rating-wrapper a').click(function(e){
             e.preventDefault();
             $('#tab-label-reviews').click();
-            
+
             $([document.documentElement, document.body]).animate({
                 scrollTop: $("#review-form").offset().top - 55
             }, 300);
 
-            setTimeout(function(){ 
+            setTimeout(function(){
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $("#review-form").offset().top - 55
                 }, 300);
