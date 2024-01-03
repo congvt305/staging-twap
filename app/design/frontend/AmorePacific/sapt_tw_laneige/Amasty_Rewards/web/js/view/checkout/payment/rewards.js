@@ -14,7 +14,7 @@ define([
             template: 'Amasty_Rewards/checkout/payment/rewards',
             isApplied: false,
             pointsUsed: 0,
-            amountUsed:0,
+            amountUsed:'',
             pointsLeft: 0,
             noticeMessage: '',
             minimumPointsValue: 0,
