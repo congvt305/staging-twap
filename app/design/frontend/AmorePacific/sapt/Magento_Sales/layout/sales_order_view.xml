@@ -69,6 +69,7 @@
         <move element="order.actions.container" destination="order.status"/>
         <move element="order_totals" destination="sales.order.info"/>
         <referenceBlock name="sales.order.info.links" remove="true"/>
+        <referenceBlock name="order.comments" remove="true"/>
         <referenceBlock name="sales.order.items.renderers.default">
             <arguments>
                 <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
