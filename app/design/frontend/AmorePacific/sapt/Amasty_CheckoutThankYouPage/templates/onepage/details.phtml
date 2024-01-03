@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Amasty\Rewards\Api\Data\SalesQuote\OrderInterface;
+
+?>
+<?php
+/**
+ * @var $block Amasty\CheckoutThankYouPage\Block\Onepage\Success\Details
+ * @var $escaper Magento\Framework\Escaper
+ */
+$order = $block->getOrder();
+$shippingMethod = $order->getShippingMethod(true);
+$items = $order->getAllVisibleItems();
+$product = null;
+$count = 0;
+/** @var \Magento\Sales\Model\Order\Item $item */
+foreach ($items as $item) {
+    if (!$count) {
+        $product = $item->getProduct();
+    }
+    $count++;
+}
+/** @var \Satp\Sales\ViewModel\OrderInfo $viewModel */
+$viewModel = $block->getData('view_model_info');
+
+?>
+
+<ul class="order-info">
+    <li class="shipping-method">
+        <span class="label"><?= __('Shipping Method') ?></span>
+        <?php
+        $shippingDescription = str_replace('In-Store Pickup Delivery','店鋪自取',$order->getShippingDescription());
+        ?>
+        <span class="value"><?= __($shippingDescription) ?><br/>
+            <span class="address">
+                <?= $viewModel->getFormattedAddress($order->getShippingAddress()) ?>
+            </span>
+        </span>
+    </li>
+    <li>
+        <span class="label"><?= __('Date') ?></span>
+        <span class="value"><?= $escaper->escapeHtml(
+                $block->formatDate($order->getCreatedAt(), \IntlDateFormatter::MEDIUM, true)
+            ) ?></span>
+    </li>
+    <li>
+        <span class="label"><?= __('Product') ?></span>
+        <span class="value"><?= $count > 1 ? __('%1 + %2 more products', $product->getName(), $count - 1) : $product->getName() ?></span>
+    </li>
+    <li class="payment-method">
+        <span class="label"><?= __('Payment') ?></span>
+        <span class="value"><?= $order->formatPrice($order->getGrandTotal()) ?><br/>
+            <?php
+            $method = $order->getPayment()->getMethodInstance();
+            $methodTitle = $method ? $method->getTitle() : '';
+            ?>
+            <span><?= $methodTitle ?></span>
+        </span>
+    </li>
+    <?= $block->getChildHtml('discount_breakdown') ?>
+</ul>

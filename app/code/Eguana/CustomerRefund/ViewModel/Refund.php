@@ -9,6 +9,7 @@
 namespace Eguana\CustomerRefund\ViewModel;
 
 
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 class Refund implements ArgumentInterface
@@ -27,15 +28,28 @@ class Refund implements ArgumentInterface
      */
     private $timezone;
 
+    /**
+     * @var DateTime
+     */
+    private $dateTime;
+
+    /**
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone $timezone
+     * @param \Eguana\CustomerRefund\Model\Refund $refundModel
+     * @param \Magento\Framework\Registry $registry
+     * @param DateTime $dateTime
+     */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\Timezone $timezone,
         \Eguana\CustomerRefund\Model\Refund $refundModel,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        DateTime $dateTime
     )
     {
         $this->refundModel = $refundModel;
         $this->registry = $registry;
         $this->timezone = $timezone;
+        $this->dateTime = $dateTime;
     }
 
     /**
@@ -73,5 +87,29 @@ class Refund implements ArgumentInterface
         $localHour = $localTime->format('H');
         $localMin = $localTime->format('i');
         return $localHour === $closingHour && $localMin >= $closingMinFrom && $localMin <= $closingMinTo;
+    }
+
+
+    /**
+     * Check can available return
+     *
+     * @return bool
+     */
+    public function availableFreeReturn()
+    {
+        $result = false;
+        $order = $this->getOrder();
+        if ($order->getStatus() == 'complete') {
+            $updateAt = $order->getUpdatedAt();
+            $orderFreeReturnDate = $this->dateTime->date('Y-m-d H:i:s', strtotime($updateAt . '+ 7 days'));
+            $currentDate = $this->dateTime->date();
+            if ($currentDate < $orderFreeReturnDate) {
+                $result = true;
+            }
+        } elseif ($order->getStatus() == 'delivery_complete') {
+            $result = true;
+        }
+
+        return $result;
     }
 }

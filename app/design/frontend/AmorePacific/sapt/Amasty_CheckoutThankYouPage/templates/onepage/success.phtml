@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * @var $block Magento\Checkout\Block\Onepage\Success
+ * @var $escaper Magento\Framework\Escaper
+ */
+?>
+
+<div class="checkout-success">
+    <?php if ($block->getOrderId()) :?>
+        <?php if ($block->getCanViewOrder()) :?>
+            <h4><?= $block->escapeHtml(__('Order No. %1', $block->getOrderId())) ?></h4>
+        <?php  else :?>
+            <h3><?= $block->escapeHtml(__('Order No. %1', $block->getOrderId())) ?></h3>
+        <?php endif;?>
+        <?= $block->getChildHtml('details') ?>
+    <?php endif;?>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <?php if ($block->getOrderId() && $block->getCanViewOrder()) :?>
+                <a class="action secondary" href="<?= $block->escapeUrl($block->getViewOrderUrl()) ?>"><span><?= $block->escapeHtml(__('Order History')) ?></span></a>
+            <?php endif;?>
+            <a class="action secondary continue" href="<?= $block->escapeUrl($this->getUrl()) ?>"><span><?= $block->escapeHtml(__('Main Page')) ?></span></a>
+        </div>
+    </div>
+</div>
+
+<?= $block->getChildHtml('cms') ?>
