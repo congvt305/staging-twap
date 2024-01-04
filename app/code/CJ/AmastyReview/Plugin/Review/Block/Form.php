@@ -52,7 +52,7 @@ class Form
         }
 
         if ($this->configHelper->isAllowImages()) {
-            $replace = $this->getImageUploadHtml() . $search;
+            $replace = $this->getImageUploadHtml($subject->getData('order_item_id')) . $search;
             /* insert before last fieldset tag end*/
             $result = substr_replace($result, $replace, strrpos($result, $search), strlen($search));
 
@@ -73,45 +73,51 @@ class Form
     }
 
     /**
+     * @param $orderItemId
      * @return string
      */
-    private function getImageUploadHtml()
+    private function getImageUploadHtml($orderItemId)
     {
         $html = '';
         if ($this->blockHelper->isAllowGuest()) {
             $html = sprintf(
                 '<div class="field review-field-image %s">
                 <label class="label">%s</label><div class="control">
-                <label id="am_upload_image_button">%s</label>
-                <label id="am_upload_image_label" class="label" style="margin-left: 20px">%s</label>
-                <input id="am_upload_image" class="amrev-input" name="review_images[]" accept="image/*" multiple %s type="file" title="%s" hidden="hidden">
+                <label id="am_upload_image_button_%s" class="am_upload_image_button">%s</label>
+                <label id="am_upload_image_label_%s" class="label" style="margin-left: 20px">%s</label>
+                <input id="am_upload_image_%s" class="amrev-input" name="review_images[]" accept="image/*" multiple %s type="file" title="%s" hidden="hidden">
                 </div></div>',
                 $this->configHelper->isImagesRequired() ? 'required' : '',
                 __('Add your photo'),
+                $orderItemId,
                 __("Select upload file"),
+                $orderItemId,
                 __("No file uploaded"),
+                $orderItemId,
                 $this->configHelper->isImagesRequired() ? 'data-validate="{required:true}"' : '',
                 __('Add your photo')
             );
             $html .= '<script>
                             require(["jquery"], function($){
-                                document.getElementById("am_upload_image_button").onclick = function() {showImageUpload()};
-                                document.getElementById("am_upload_image").onchange = function() {changeImageText()};
-                                function showImageUpload (){
-                                            $("#am_upload_image").trigger("click");
-                                }
-                               function changeImageText(){
-                                    var fileName;
-                                    if ($("#am_upload_image")[0].files.length > 1){
-                                        fileName = $("#am_upload_image")[0].files.length + " files";
-                                    } else {
-                                              fileName = $("#am_upload_image")[0].files[0].name;
-                                              if (fileName.length > 30) {
-                                                fileName = fileName.substring(0, 10) + "...";
-                                              }
-                                            }
-                                    $("#am_upload_image_label").text(fileName)
-                               }
+								$(document).ready(function(){
+                                    document.getElementById("am_upload_image_button_' . $orderItemId . '").onclick = function() {showImageUpload()};
+                                    document.getElementById("am_upload_image_' . $orderItemId . '").onchange = function() {changeImageText()};
+                                    function showImageUpload (){
+                                                $("#am_upload_image_' . $orderItemId . '").trigger("click");
+                                    }
+                                   function changeImageText(){
+                                        var fileName;
+                                        if ($("#am_upload_image_' . $orderItemId . '")[0].files.length > 1){
+                                            fileName = $("#am_upload_image_' . $orderItemId . '")[0].files.length + " files";
+                                        } else {
+                                                  fileName = $("#am_upload_image_' . $orderItemId . '")[0].files[0].name;
+                                                  if (fileName.length > 30) {
+                                                    fileName = fileName.substring(0, 10) + "...";
+                                                  }
+                                                }
+                                        $("#am_upload_image_label_' . $orderItemId . '").text(fileName)
+                                   }
+							   });
                             });
             </script>';
         }
