@@ -84,8 +84,9 @@ class CheckCondition
             $this->quoteRepository->save($quote);
             return $subject;
         } else {
-            if ($this->rewardsData->isEnableShowListOptionRewardPoint()) {
-                $listOptions = $this->rewardsData->getListOptionRewardPoint();
+            $isEnableShowListOption = $this->rewardsData->isEnableShowListOptionRewardPoint($quote->getStoreId());
+            if ($isEnableShowListOption) {
+                $listOptions = $this->rewardsData->getListOptionRewardPoint($quote->getStoreId());
                 if ($spentPoints) {
                     $amountDiscount = $listOptions[$spentPoints] ?? 0;
                     if ($quote->getGrandTotal() - $quote->getShippingAddress()->getShippingAmount() < $amountDiscount) {
@@ -101,7 +102,7 @@ class CheckCondition
             }
             $proceed($quote, $shippingAssignment, $total);
             //some special case will make points wrong Ex: from 800 -> 799.999999998
-            if ($quote->getData(EntityInterface::POINTS_SPENT) != $spentPoints) {
+            if ($isEnableShowListOption && $quote->getData(EntityInterface::POINTS_SPENT) != $spentPoints) {
                 $quote->setData(EntityInterface::POINTS_SPENT, $spentPoints);
             }
             return $subject;
