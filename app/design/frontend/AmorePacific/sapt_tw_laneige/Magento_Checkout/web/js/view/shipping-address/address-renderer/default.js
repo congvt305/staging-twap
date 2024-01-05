@@ -97,10 +97,20 @@
 
         /** Set selected customer shipping address  */
         selectAddress: function () {
-            homeDeliverySelector().getRegionValue();
-            if($('#address-type-1').prop('checked')) {
-                homeDeliverySelector().fillShippingAddressInfo(this.address());
+            let message = $('.validation-shipping-address');
+            if (this.validationAddress(this.address())) {
+                message.addClass('no-display');
+            } else {
+                message.removeClass('no-display');
             }
+            selectShippingAddressAction(this.address());
+            checkoutData.setSelectedShippingAddress(this.address().getKey());
+        },
+
+        /** validation first name and last name */
+        validationAddress: function (address) {
+            var value = address.firstname + address.lastname;
+            return /^[a-zA-Z]+$/.test(value) || /^[\u4e00-\u9fa5]+$/.test(value);
         },
 
         /**

@@ -208,7 +208,7 @@ return [
                 ],
                 'js' => [
                     'merge_files' => '0',
-                    'minify_files' => '1',
+                    'minify_files' => '0',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/',
                         'cardinal_commerce' => '/v1/songbird',
@@ -221,8 +221,8 @@ return [
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
-                    'merge_css_files' => '1',
-                    'minify_files' => '1',
+                    'merge_css_files' => '0',
+                    'minify_files' => '0',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
                     ],
@@ -239,6 +239,13 @@ return [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
                 ]
             ],
             'tw_lageige_website' => [
@@ -253,6 +260,13 @@ return [
                     'locale' => [
                         'code' => 'vi_VN'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
                 ]
             ],
             'vn_sulwhasoo_website' => [
@@ -266,6 +280,13 @@ return [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
+                    ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
                     ]
                 ]
             ],
@@ -776,6 +797,7 @@ return [
         'Amasty_LazyLoadUi' => 1,
         'Amasty_LegacyTemplates' => 1,
         'Amasty_ShopbyBase' => 1,
+        'Amasty_Mage245Fix' => 1,
         'Amasty_Mage24Fix' => 1,
         'Amasty_Meta' => 1,
         'Amasty_OpenGraphTags' => 1,
@@ -797,14 +819,14 @@ return [
         'Amasty_SeoSingleUrl' => 1,
         'Amasty_SeoRichData' => 1,
         'Amasty_SeoToolkitLite' => 1,
-        'Amasty_ShopByQuickConfig' => 1,
+        'Amasty_ShopByQuickConfig' => 0,
         'Amasty_Shopby' => 1,
-        'Amasty_ShopbyBrand' => 1,
-        'Amasty_CPS' => 1,
-        'Amasty_ShopbyFilterAnalytics' => 1,
-        'Amasty_ShopbyPage' => 1,
-        'Amasty_ShopbyPremium' => 1,
-        'Amasty_ShopbySeo' => 1,
+        'Amasty_ShopbyBrand' => 0,
+        'Amasty_CPS' => 0,
+        'Amasty_ShopbyFilterAnalytics' => 0,
+        'Amasty_ShopbyPage' => 0,
+        'Amasty_ShopbyPremium' => 0,
+        'Amasty_ShopbySeo' => 0,
         'Amasty_SocialLogin' => 0,
         'Amasty_ThankYouPage' => 0,
         'Amasty_VisualMerchUi' => 1,
@@ -827,6 +849,7 @@ return [
         'CJ_AmastyCheckoutCore' => 1,
         'CJ_AmastyPromo' => 1,
         'CJ_AmastyReview' => 1,
+        'CJ_AmastyShopby' => 1,
         'CJ_Base' => 1,
         'CJ_Catalog' => 1,
         'CJ_CatalogFaq' => 1,
@@ -941,7 +964,7 @@ return [
         'Sapt_Megamenu' => 1,
         'Sapt_Newsletter' => 0,
         'Sapt_Review' => 1,
-        'Sapt_Sales' => 0,
+        'Sapt_Sales' => 1,
         'Sapt_SearchTerms' => 0,
         'Sapt_Share' => 0,
         'Temando_ShippingRemover' => 1

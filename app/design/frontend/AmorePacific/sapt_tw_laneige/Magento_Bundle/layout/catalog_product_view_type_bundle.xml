@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.price.render.bundle.customization" remove="false"/>
+        <referenceBlock name="product.info.addto.bundle" remove="false"/>
+        <move element="bundle.options.container" destination="product.info.main" after="customize.button" />
+        <referenceBlock name="product_sticky" remove="true"/>
+        <move element="product.info.overview" destination="product.info.main" before="-"/>
+        <move element="product.info.options.wrapper.bottom" destination="product.info.addtocart.bundle"/>
+        <move element="product.info.price" destination="product.info.addtocart.bundle"/>
+        <move element="product.info.prdvl" destination="product.info.addtocart.bundle"/>
+        <move element="product.info.vlunt" destination="product.info.addtocart.bundle"/>
+        <move element="product.info.product.count" destination="product.info.addtocart.bundle"/>
+        <move element="product.price.render.bundle.customization" destination="product.info.addtocart.bundle" before="-" />
+        <referenceBlock name="product.info.addtocart.bundle">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Bundle::product/view/addtocart.phtml</argument>
+            </action>
+        </referenceBlock>
+        <move element="product.info.visualaids" destination="bundle.summary" before="-"/>
+        <move element="bundle.product.options.wrapper" destination="bundle.summary" after="product.info.visualaids"/>
+    </body>
+</page>

@@ -33,8 +33,8 @@
          data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
         <div class="amcheckout-wrapper">
             <!-- ko ifnot: isFormInline -->
-            <div class="pickup-information-options" style="display: none">
-                    <p class="select-address-tit" translate="'Select shipping information type'"></p>
+                <div class="pickup-information-options" style="display: none">
+                    <p class="select-address-tit">地址</p>
                     <div class="select-address-menu">
                         <div class="rdo-set"
                              css="'active': isSamePerson()"
@@ -46,7 +46,7 @@
                                    checked="true"
                                    value="0"
                             >
-                            <label for="address-type-1"><span translate="'Use member address'"></span></label>
+                            <label for="address-type-1"><span>使用會員地址</span></label>
                         </div>
                         <div class="rdo-set"
                              css="'active': isDifferentPerson()"
@@ -58,7 +58,7 @@
                                 class="input-rdo"
                                 value="1"
                             >
-                            <label for="address-type-2"><span translate="'Use another shipping address'"></span></label>
+                            <label for="address-type-2"><span>輸入新地址</span></label>
                         </div>
                     </div>
                 </div>

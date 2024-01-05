@@ -98,6 +98,8 @@ use Magento\Framework\App\Action\Action;
                                                 <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                                 <?= $block->getBlockHtml('formkey') ?>
                                                 <button type="submit"
+                                                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                         title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                         class="action tocart primary">
                                                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
@@ -116,6 +118,8 @@ use Magento\Framework\App\Action\Action;
                                     <div class="actions-secondary" data-role="add-to-links">
                                         <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>
                                             <a href="#"
+                                               clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+                                               formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
                                                data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
                                                 <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
                                             </a>

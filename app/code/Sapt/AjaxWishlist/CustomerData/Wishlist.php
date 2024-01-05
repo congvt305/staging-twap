@@ -7,7 +7,7 @@ use Magento\Wishlist\CustomerData\Wishlist as WishlistData;
 
 class Wishlist extends WishlistData
 {
-    const MY_SWS_STORE_CODE = 'my_sulwhasoo';
+    const TW_LNG_STORE_CODE = 'tw_laneige';
     /**
      * @var StoreManagerInterface
      */
@@ -46,7 +46,7 @@ class Wishlist extends WishlistData
             'counter' => $counter,
             'items' => $counter ? $this->getItems() : [],
         ];
-        if ($this->storeManager->getStore()->getCode() == self::MY_SWS_STORE_CODE) {
+        if ($this->storeManager->getStore()->getCode() == self::TW_LNG_STORE_CODE) {
             $result = array_merge(
                 $result,
                 [

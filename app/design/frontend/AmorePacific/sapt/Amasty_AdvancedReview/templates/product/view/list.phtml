@@ -107,7 +107,7 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
     </div>
 </div>
 <?php endif; ?>
-
+<?= $block->getChildHtml('modal.product.review.form'); ?>
 <script type="text/javascript">
     require([
         "jquery",
@@ -115,14 +115,15 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
         'Magento_Ui/js/modal/confirm',
         'Magento_Customer/js/customer-data',
         'mage/url',
-    ],function($, modal, uiConfirm, customerData, urlBuilder) {
-
+        'mage/translate'
+    ],function($, modal, uiConfirm, customerData, urlBuilder, $t) {
         var options = {
             type: 'popup',
             responsive: true,
             innerScroll: true,
             modalClass: "add-review-modal",
-            title: $.mage.__('Write a review'),
+            title: "<?= __('Write a review')?>",
+            buttons: []
         };
 
         var popup = modal(options, $('.block.review-add'));
@@ -134,7 +135,7 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
                 var loginUrl = urlBuilder.build('customer/account/login');
                 var content = '<span class="msg">' + $.mage.__('You Can Access A Review Write After Logging In') + '</span>' +
                     '<a class="action secondary" href="' + loginUrl + '">' + $.mage.__('Log in') + '</a>' +
-                    '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Sulwhasoo? Create new account') + '</a>';
+                    '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Laneige? Create new account') + '</a>';
                 uiConfirm({
                     title: 'Please login',
                     content: content,

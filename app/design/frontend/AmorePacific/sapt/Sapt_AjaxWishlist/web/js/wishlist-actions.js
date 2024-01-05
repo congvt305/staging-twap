@@ -37,7 +37,7 @@ define([
                     var loginUrl = urlBuilder.build('customer/account/login');
                     var content = '<span class="msg">' + $.mage.__('You Can Access A Wishlist After Logging In') + '</span>' +
                         '<a class="action secondary" href="' + loginUrl + '">' + $.mage.__('Log in') + '</a>' +
-                        '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Sulwhasoo? Create new account') + '</a>';
+                        '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Laneige? Create new account') + '</a>';
                     confirmation({
                         title: $.mage.__('Please login'),
                         content: content,

@@ -119,13 +119,13 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
         'mage/url',
         'mage/translate'
     ],function($, modal, uiConfirm, customerData, urlBuilder, $t) {
-        var isReviewModalBinded = false;
         var options = {
             type: 'popup',
             responsive: true,
             innerScroll: true,
             modalClass: "add-review-modal",
-            title: $.mage.__('<?= $escaper->escapeJs(__('Write a review')) ?>'),
+            title: "<?= __('Write a review')?>",
+            buttons: []
         };
 
         var popup = modal(options, $('.block.review-add'));
@@ -145,10 +145,6 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
                     modalClass: 'wishlist-popup-login'
                 });
                 return true;
-            }
-            if (!isReviewModalBinded) {
-                $('.block.review-add').find('[data-role=product-review-form]').applyBindings();
-                isReviewModalBinded = true;
             }
             $('.block.review-add').show();
             $('.block.review-add').modal('openModal');

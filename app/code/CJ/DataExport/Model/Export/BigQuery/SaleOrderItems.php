@@ -140,6 +140,7 @@ class SaleOrderItems extends \Amore\GcrmDataExport\Model\Export\OrderItems\Order
      */
     public function joinedItemCollection()
     {
+        $orderItems = [];
         try {
             $storeEnable = [];
             foreach ($this->_storeManager->getStores() as $store) {

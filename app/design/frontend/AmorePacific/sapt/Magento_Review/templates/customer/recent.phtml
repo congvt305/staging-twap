@@ -144,7 +144,6 @@ $limit = 3;
                 </div>
             </div>
         </div>
-
         <script type="text/javascript">
             require([
                 "jquery",
@@ -156,7 +155,8 @@ $limit = 3;
                     responsive: true,
                     innerScroll: true,
                     modalClass: "add-review-modal",
-                    title: $.mage.__('Write a review'),
+                    title: "<?= __('Write a review')?>",
+                    buttons: []
                 };
 
                 $(".unwritten-reviews .action.write-review").click(function() {
@@ -170,3 +170,10 @@ $limit = 3;
         </script>
     </div>
 </div>
+
+<?php
+    echo $this->getLayout()
+        ->createBlock('Magento\Cms\Block\Block')
+        ->setBlockId('tw_account_dashboard_banner')
+        ->toHtml();
+?>

@@ -183,11 +183,9 @@ define(
                     if (!this.isInitialDefaultShipping) {
                         if (customer.isLoggedIn()) {
                             let shippingMethod = quote.shippingMethod();
-                            if (addressList()[0] && shippingMethod.carrier_code === 'vlogic') {
+                            if (addressList()[0] && shippingMethod.carrier_code === 'blackcat') {
                                 let initialAddress = addressList()[0];
-                                setTimeout(function () {
-                                    homeDeliverySelector().fillShippingAddressInfo(initialAddress);
-                                }, 4000);
+                                selectShippingAddress(initialAddress);
                             }
 
                         }
@@ -707,7 +705,7 @@ define(
                     let address = quote.shippingAddress();
                     $('[name="firstname"]').val(address.firstname);
                     $('[name="lastname"]').val(address.lastname);
-                    $('[name="telephone"]').val(address.telephone);
+                    $('[name="telephone"]').val(address.telephone).trigger("change");
                     _.each(address.customAttributes, function (value, key) {
                         if (value.attribute_code == 'country_pos_code') {
                             if (typeof value.value == 'string') {

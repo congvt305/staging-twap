@@ -29,7 +29,12 @@
                 <?php /** @var \Magento\Sales\Model\Order $_order */ ?>
                 <?php foreach ($_orders as $_order): ?>
                     <div class="order-wrapper">
-                        <a href="<?= $block->getUrl('sales/order/view', ['order_id' => $_order->getId()]) ?>"><?= $block->formatDate($_order->getCreatedAt()) ?></a>
+                        <a class="created-at" href="<?= $block->getUrl('sales/order/view', ['order_id' => $_order->getId()]) ?>">
+                            <?= $block->formatDate($_order->getCreatedAt()) ?>
+                        </a>
+                        <a href="<?= $block->getUrl('sales/order/view', ['order_id' => $_order->getId()]) ?>">
+                            <?= $_order->getIncrementId() ?>
+                        </a>
                         <?php $itemBlock = $block->getChildBlock('order_items')->setOrder($_order) ?>
                         <?= $itemBlock->toHtml() ?>
                     </div>
@@ -46,7 +51,8 @@
                             responsive: true,
                             innerScroll: true,
                             modalClass: "add-review-modal",
-                            title: $.mage.__('Write a review'),
+                            title: "<?= __('Write a review')?>",
+                            buttons: []
                         };
 
                         $(".actions a.btn.review").click(function() {

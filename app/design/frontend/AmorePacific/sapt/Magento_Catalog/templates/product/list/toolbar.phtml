@@ -16,10 +16,10 @@
         $widgetOptions = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($widget['productListToolbarForm']);
     ?>
     <div class="toolbar toolbar-products" data-mage-init='{"productListToolbarForm":<?= /* @noEscape */ $widgetOptions ?>}'>
-        <div id="on-sale-box" class="field choice sale_filter">
+        <!-- <div id="on-sale-box" class="field choice sale_filter">
             <input type="checkbox" name="on_sale" class="checkbox" id="on_sale" title="On Sale">
             <label for="on_sale" class="label"><span>On Sale</span></label>
-        </div>
+        </div> -->
         <?php if ($block->getIsBottom()): ?>
             <?= $block->getPagerHtml() ?>
             <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>

@@ -391,7 +391,7 @@ define([
                         this.responseList.indexList = this.autoComplete.html(dropdown)
                             .css(clonePosition)
                             .show()
-                            .find(this.options.responseFieldElements + ':visible');
+                            .find(this.options.responseFieldElements);
                         this.searchHistory.show();
                         this.element.removeAttr('aria-activedescendant');
 

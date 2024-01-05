@@ -12,7 +12,6 @@ $minimumMobileNumberDigits = $viewModel->getMinimumMobileNumberDigits();
 $maximumMobileNumberDigits = $viewModel->getMaximumMobileNumberDigits();
 $notAllowedChar = $viewModel->getNotAllowedCharList();
 $mobileNumber = $viewModel->getCustomAttributeValue($block->getCustomer(), 'mobile_number');
-$countryPoscode = $viewModel->getCustomAttributeValue($block->getCustomer(), 'country_pos_code');
 $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>" autocomplete="off">
@@ -21,17 +20,9 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
         <legend class="legend"><span><?= $block->escapeHtml(__('Account Information')) ?></span></legend><br>
         <?= $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
         <div class="field mobile required">
-            <label for="mobile_number_info" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <label for="mobile_number" class="label"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
             <div class="control">
-                <?php //phpcs:disable ?>
-                <select disabled style="width: 20%;">
-                    <?php foreach($helper->getCountryList() as $key => $value) : ?>
-                        <option value='<?= $key ?>' <?= $key==$countryPoscode ? 'selected' : '' ?>><?= $value ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <input type="hidden" name="country_pos_code" value="<?= $countryPoscode ?>">
-                <input type="text" name="mobile_number_info" value="<?= $mobileNumber ?>" disabled>
-                <?php //phpcs:enable ?>
+                <input type="text" name="mobile_number" value="<?= $mobileNumber ?>" disabled>
             </div>
             <span class="note code-send-message" style="display: none"><?= $block->escapeHtml(__('Verification code has been sent to your mobile')); ?></span>
         </div>
@@ -145,11 +136,6 @@ $helper = $this->helper(Amore\CustomerRegistration\Helper\Data::class);
             </div>
         </div>
     </fieldset>
-
-    <?php $beautyProfileStatus = $block->getLayout()->createBlock(\Sapt\Customer\Block\Widget\BeautyProfile::class, 'beauty_profile', ['data'=>['attribute_code'=>'beauty_profile', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'beauty_profile'))]]) ?>
-    <?php if ($beautyProfileStatus->isEnabled()) : ?>
-        <?= $beautyProfileStatus->toHtml() ?>
-    <?php endif ?>
 
     <?php $callSubscriptionStatus = $block->getLayout()->createBlock(\Amore\CustomerRegistration\Block\Widget\Subscription::class, 'call_subscription_status', ['data'=>['attribute_code'=>'call_subscription_status', 'form_value'=> $block->escapeHtmlAttr($viewModel->getCustomAttributeValue($block->getCustomer(), 'call_subscription_status'))]]) ?>
     <?php if ($callSubscriptionStatus->isEnabled()) : ?>

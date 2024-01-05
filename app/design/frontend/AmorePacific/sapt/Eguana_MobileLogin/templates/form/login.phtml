@@ -13,7 +13,6 @@
 <div class="block block-customer-login">
     <?= $block->getChildHtml('page.main.title') ?>
     <div class="block-content" aria-labelledby="block-customer-login-heading">
-        <h4><?= __('Start sulwhasoo shop with various benefits') ?></h4>
         <form class="form form-login"
               action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
               method="post"
@@ -23,11 +22,11 @@
             <fieldset class="fieldset login">
                 <div class="field email required">
                     <label class="label" for="email">
-                        <span><?= $block->escapeHtml(__('Please enter your email or phone number')) ?></span>
+                        <span><?= $block->escapeHtml(__('Email / Phone number')) ?></span>
                     </label>
                     <div class="control">
                         <input
-                            placeholder="<?= $block->escapeHtml(__('Please enter your email or phone number')) ?>"
+                            placeholder="<?= $block->escapeHtml(__('Email / Phone number')) ?>"
                             name="login[username]"
                             value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>" <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email" type="text" class="input-text" placeholder="Enter email or mobile number" title="<?= $block->escapeHtmlAttr(__('Email / Phone number')) ?>" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'mobileloginvalidationrule':true}">
                     </div>
@@ -71,7 +70,7 @@
             </fieldset>
         </form>
     </div>
-    <?= $block->getChildHtml('hk_sulwhasoo_login_benefit') ?>
+    <?= $block->getChildHtml('tw_laneige_login_benefit') ?>
 </div>
 <script type="text/x-magento-init">
    {

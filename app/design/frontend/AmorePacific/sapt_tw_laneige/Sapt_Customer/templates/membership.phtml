@@ -10,30 +10,29 @@ $pointSearchResult = $block->getPointsSearchResult();
     <div class="container">
         <div class="box_member">
             <div class="member_info">
-                <h3><?= $customer->getName() ?></h3>
-                <p>
-                    <?= $block->escapeHtml(__('Membership')) ?>
-                    <?php if (isset($pointSearchResult['memberExpreDate']) && !empty($pointSearchResult['memberExpreDate'])): ?>
-                        <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['memberExpreDate']))) ?>
-                    <?php endif; ?>
-                </p>
-                <div class="rank">
-                    <h2><?php // $groupName ?></h2>
-                    <a class="view_all" href="<?= $block->getUrl('membership/member.html') ?>"><?= $block->escapeHtml(__('View all benefits')) ?></a>
-                </div>
+            <p class="hi">Hi,</p>
+            <h3><?= $customer->getName() ?></h3>
+                <p><?= $block->escapeHtml(__('Member No.')) ?><span><?= $pointSearchResult['cstmIntgSeq'] ?? ''?></span></p>
             </div>
             <div class="member_point">
-                <p class="label point">
-                    <?= $block->escapeHtml(__('Point')) ?>
+                <a href="<?=$block->getMembershipBenefitsUrl()?>" class="link"><?= __('All benefits') ?></a>
+                <p class="date"><?= __('Membership expiry date') ?>: <span>
                     <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
-                        <?= $block->escapeHtml(__('(Expiry Date: %1)', $block->dateFormat($pointSearchResult['expireDate']))) ?>
+                        <?= $block->dateFormat($pointSearchResult['expireDate']) ?>
                     <?php endif; ?>
-                </p>
-                <p class="count"><?=number_format($block->getPoint());?><span><?= __('p') ?></span></p>
+                </span></p>
+                <p class="count"><?= $pointSearchResult['cstmGradeNM'] ?? ''; ?></p>
+                <p class="title"><?= __('Membership') ?></p>
+            </div>
+            <div class="member_point">
+                <a href="<?= $block->getPointsUrl() ?>" class="link"><?= __('Point History') ?></a>
+                <p class="count"><?=number_format($block->getPoint());?><span><?= __('Points') ?></span></p>
+                <p class="title"><?= __('Points') ?></p>
             </div>
             <div class="member_review">
-                <p class="label point"><?= $block->escapeHtml(__('Review')) ?></p>
+                <a href="<?= $block->getReviewUrl() ?>" class="link"><p class="label point"><?= $block->escapeHtml(__('Review')) ?></p></a>
                 <p class="count"><?=number_format($block->getCountOrderReviewed())?> / <?=number_format($block->getCountOrderReviewAvailable())?></p>
+                <p class="title"><?= __('Reviews') ?></p>
             </div>
         </div>
     </div>

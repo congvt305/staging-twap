@@ -11,6 +11,16 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceBlock name="head.additional">
+            <container name="canonical.url.cms.page.container">
+                <block class="Magento\Framework\View\Element\Text" name="canonical.url.event.page">
+                    <arguments>
+                        <argument name="label" xsi:type="string">Adding canonical link with base URL</argument>
+                        <argument name="text" xsi:type="helper" helper="Eguana\EventManager\Helper\ConfigData::getCanonicalForAllEvent"/>
+                    </arguments>
+                </block>
+            </container>
+        </referenceBlock>
         <referenceContainer name="content">
             <block class="Eguana\EventManager\Block\View" name="eventmanager.details" template="Eguana_EventManager::details.phtml">
                 <arguments>

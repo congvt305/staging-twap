@@ -27,6 +27,9 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus;
+use Magento\Wishlist\Helper\Data as WishlistHelper;
+use Magento\Wishlist\Model\ItemFactory as WishlistItemFactory;
+use Magento\Wishlist\Model\ResourceModel\Item as WishlistItemResource;
 
 class Index extends \Magento\Framework\App\Action\Action implements HttpPostActionInterface
 {
@@ -135,8 +138,21 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
     protected $wishlistViewModel;
 
     /**
-     * Initialize dependencies.
-     *
+     * @var WishlistHelper
+     */
+    protected $wishlistHelper;
+
+    /**
+     * @var WishlistItemFactory
+     */
+    protected $wishlistItemFactory;
+
+    /**
+     * @var WishlistItemResource
+     */
+    protected $wishlistItemResource;
+
+    /**
      * @param Context $context
      * @param Validator $formKeyValidator
      * @param CustomerCart $cart
@@ -152,6 +168,9 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
      * @param Registry $registry
      * @param GetDefaultCategory $viewModel
      * @param AjaxWishlistStatus $wishlistViewModel
+     * @param WishlistHelper $wishlistHelper
+     * @param WishlistItemFactory $wishlistItemFactory
+     * @param WishlistItemResource $wishlistItemResource
      */
     public function __construct(
         Context $context,
@@ -168,7 +187,11 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         DataObjectFactory $dataObjectFactory,
         Registry $registry,
         GetDefaultCategory $viewModel,
-        AjaxWishlistStatus $wishlistViewModel
+        AjaxWishlistStatus $wishlistViewModel,
+        WishlistHelper $wishlistHelper,
+        WishlistItemFactory $wishlistItemFactory,
+        WishlistItemResource $wishlistItemResource
+
     ) {
         parent::__construct($context);
         $this->formKeyValidator = $formKeyValidator;
@@ -186,6 +209,10 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         $this->registry = $registry;
         $this->viewModel = $viewModel;
         $this->wishlistViewModel = $wishlistViewModel;
+        $this->wishlistHelper = $wishlistHelper;
+        $this->wishlistItemFactory = $wishlistItemFactory;
+        $this->wishlistItemResource = $wishlistItemResource;
+
     }
 
     /**
@@ -429,6 +456,7 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
 
         if (!$result->getData('added')) {
             $this->cart->addProduct($product, $params);
+            $this->removeFromWishlist($product);
         }
 
         $related = $this->getRequest()->getParam('related_product');
@@ -442,4 +470,34 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
             $this->cart->addProductsByIds(explode(',', $related));
         }
     }
+
+    /**
+     * @param ProductInterface $product
+     * @return void
+     */
+    protected function removeFromWishlist($product)
+    {
+        $customerWishlist = $this->wishlistHelper->getWishlist();
+        if (!$customerWishlist->getId() || !$product || !$product->getId()) {
+            return;
+        }
+
+        try {
+            $wishlistItem = $this->wishlistItemFactory->create()->loadByProductWishlist(
+                $customerWishlist->getId(),
+                $product->getId(),
+                $customerWishlist->getSharedStoreIds()
+            );
+
+            if (!$wishlistItem->getId()) {
+                return;
+            }
+
+            $this->wishlistItemResource->delete($wishlistItem);
+        } catch (\Exception $e) {
+            $this->loggerInterface->error(__('Can\'t remove this product ID %1 from wishlist.', $product->getId()));
+            return;
+        }
+    }
+
 }

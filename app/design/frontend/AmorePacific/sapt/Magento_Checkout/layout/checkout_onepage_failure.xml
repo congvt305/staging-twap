@@ -31,9 +31,9 @@
         </referenceBlock>
         <referenceContainer name="content">
             <block class="Magento\Checkout\Block\Onepage\Failure" name="checkout.failure" template="Magento_Checkout::onepage/failure.phtml"/>
-            <block class="Magento\Cms\Block\Block" name="hk_sulwhasoo_ordersuccess_favorites" after="-">
+            <block class="Magento\Cms\Block\Block" name="tw_laneige_ordersuccess_favorites" after="-">
                 <arguments>
-                    <argument name="block_id" xsi:type="string">hk_sulwhasoo_order_failed_content</argument>
+                    <argument name="block_id" xsi:type="string">tw_laneige_order_failed_content</argument>
                 </arguments>
             </block>
         </referenceContainer>

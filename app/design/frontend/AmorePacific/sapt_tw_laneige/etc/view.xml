@@ -96,7 +96,7 @@
             <image id="product_page_image_large" type="image"/>
             <image id="product_page_image_medium" type="image">
                 <width>600</width>
-                <height>600</height>
+                <height>650</height>
                 <frame>false</frame>
                 <transparency>false</transparency>
             </image>

@@ -4,6 +4,11 @@
  */
 
 var config = {
+    map: {
+        '*': {
+            'js/plugins/slick/slick' : 'Magento_PageBuilder/js/resource/slick/slick'
+        }
+    },
     deps: [
         'Magento_Theme/js/modernizr.min',
         'Magento_Theme/js/sapt_sws_common',

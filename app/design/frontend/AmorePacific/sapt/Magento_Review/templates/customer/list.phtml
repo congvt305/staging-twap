@@ -149,7 +149,8 @@ $reviewHelper = $block->getData('reviewHelper');
             responsive: true,
             innerScroll: true,
             modalClass: "add-review-modal",
-            title: $.mage.__('Write a review'),
+            title: "<?= __('Write a review')?>",
+            buttons: []
         };
 
         $(".unwritten-reviews .action.write-review").click(function() {

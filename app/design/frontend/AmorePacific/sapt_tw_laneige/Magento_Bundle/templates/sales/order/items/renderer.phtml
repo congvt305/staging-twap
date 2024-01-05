@@ -12,12 +12,12 @@ $shippingMethod = $parentItem->getOrder()->getShippingDescription();
 $shippingMethod = str_replace('In-Store Pickup Delivery','店鋪自取',$shippingMethod);
 $product = $parentItem->getProduct();
 $viewModel = $block->getData('view_model');
-$items = $parentItem->getChildrenItems();
+$layoutHander = $block->getRequest()->getFullActionName();
+$items = $layoutHander == 'sales_order_view' ? $_order->getItemById($parentItem->getItemId())->getChildrenItems() : $parentItem->getChildrenItems();
 $index = 1;
 $prevOptionId = '';
 /** @var \Magento\Framework\Pricing\Helper\Data $priceHelper */
 $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
-$layoutHander = $block->getRequest()->getFullActionName();
 if ($layoutHander == "sales_order_history") {
     $orderItems = $_order->getAllVisibleItems();
     $productItemsCount = 0;
@@ -40,10 +40,6 @@ if ($layoutHander == "sales_order_history") {
             <?= $viewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?>
         </a>
         <div class="product-item-details">
-            <div class="shipping">
-                <span class="in-delivery"><?= $escaper->escapeHtml(__($_order->getStatusLabel())) ?></span>
-                <span class="method"><?= $escaper->escapeHtml(__($shippingMethod)) ?></span>
-            </div>
             <strong class="product-item-name">
                 <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
             </strong>
@@ -74,6 +70,7 @@ if ($layoutHander == "sales_order_history") {
             </dl>
         </div>
     </td>
+    <?php if (!$parentItem->getIsFreeGift()): ?>
     <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
         <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
             <a href="#" class="btn secondary review" data-order-item-id="<?= $parentItem->getId() ?>"><?= __('Review') ?></a>
@@ -89,6 +86,8 @@ if ($layoutHander == "sales_order_history") {
                 <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                 <?= $block->getBlockHtml('formkey') ?>
                 <button type="submit"
+                        clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                        formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
                         class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
@@ -97,6 +96,7 @@ if ($layoutHander == "sales_order_history") {
             <?= /* @noEscape */ $viewModel->getAddReviewForm($parentItem, $block) ?>
         <?php endif; ?>
     </td>
+    <?php endif; ?>
 </tr>
 <?php else: ?>
     <span><?= __("This product doesn't exist.") ?></span>

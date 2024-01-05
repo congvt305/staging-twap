@@ -6,6 +6,7 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Checkout\Model\Session;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Amasty\Promo\Helper\Item as PromoHelper;
+use Magento\SalesRule\Model\Rule;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -47,22 +48,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @return float|int
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getItemsValidForRule($rule)
+    public function isValidExcludeSkuRule($rule)
     {
-        $itemsValidQty = 0;
-        $quoteId = $this->checkoutSession->getQuoteId();
-        if ($quoteId) {
-            $quote = $this->cartRepository->get($quoteId);
+        $quote = $this->checkoutSession->getQuote();
+        if ($quote->getId()) {
             $quoteItems = $quote->getItems();
             foreach ($quoteItems as $item) {
-                $isValid = $rule->getActions()->validate($item);
-                if ($isValid && !$this->promoHelper->isPromoItem($item)) {
-                    $itemsValidQty += $item->getQty();
+                $productSku = $this->getProductSkuOfItem($item);
+                if (!in_array($productSku, $this->getExcludeSkusOfRule($rule))){
+                    return true;
                 }
+            }
+
+            if ($rule->getCouponType() == Rule::COUPON_TYPE_SPECIFIC){
+                $couponCode = $rule->getCouponCode();
+                $curCouponCode = ltrim(\Safe\preg_replace("/(,?)$couponCode/", '', $quote->getCouponCode()), ',');
+                $quote->setCouponCode($curCouponCode)->collectTotals()->save();
             }
         }
 
-        return $itemsValidQty;
+        return false;
     }
 
     /**
@@ -75,6 +80,34 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if ($rule->getData("exclude_skus")) {
             $exludeSkus = explode(",", $rule->getData("exclude_skus"));
         }
+        $exludeSkus = array_map('trim', $exludeSkus);
         return $exludeSkus;
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    public function getProductSkuOfItem($item)
+    {
+        switch ($item->getProductType()){
+            case 'bundle':
+                $productSku = $item->getProduct()->getData('sku');
+                break;
+            case 'simple':
+                $productSku = $item->getSku();
+                if ($item->getParentItemId()){
+                    if ($item->getParentItem()->getProduct()->getTypeId() == 'bundle'){
+                        $productSku = $item->getParentItem()->getProduct()->getData('sku');
+                    } else {
+                        $productSku = $item->getProduct()->getSku();
+                    }
+                }
+                break;
+            default:
+                $productSku = $item->getSku();
+                break;
+        }
+        return $productSku;
     }
 }
