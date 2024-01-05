@@ -27,6 +27,7 @@ if ($productType == 'bundle')
 }
 ?>
 <?php if ($block->getWishlistHelper()->isAllow()) : ?>
+	<!-- ko scope: 'ajaxwishlist' -->
     <a href="#"
        clicktext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
        formtext="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
@@ -35,7 +36,10 @@ if ($productType == 'bundle')
        aria-label="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>"
        data-post='<?= /* @noEscape */ $block->getWishlistHelper()->getAddParams($block->getProduct(), $requestData) ?>'
        data-action="add-to-wishlist"
+       data-bind="css:{wishlisticon : wishlistitem().all_wishlist_items ?
+       typeof wishlistitem().all_wishlist_items[<?=/* @noEscape */$block->getProduct()->getId()?>] !='undefined':false}"
        role="button">
         <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
     </a>
+	<!-- /ko -->
 <?php endif; ?>
