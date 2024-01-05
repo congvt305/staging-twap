@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Rewards\Model\Quote\Validator\LimitValidator" type="CJ\Rewards\Model\Quote\Validator\LimitValidator"/>
     <type name="Magento\Checkout\Controller\Cart\Index">
         <plugin name="cj_checkout_point_set_plugin" type="CJ\Rewards\Plugin\Checkout\Controller\IndexPlugin" sortOrder="1" />
     </type>
