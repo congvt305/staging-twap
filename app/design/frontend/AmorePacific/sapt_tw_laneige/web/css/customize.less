@@ -1230,7 +1230,7 @@ body {
                             left: 10px;
                             top: 8px;
                         }
-                    
+
                     .google-button-link::before {
                             left: 10px;
                             top: 8px;
@@ -5013,6 +5013,14 @@ body > .widget.block.block-static-block {
             right: 0;
         }
     }
+
+    .catalog-product-view {
+        &.page-product-bundle {
+            .titles.sticky {
+                top: 0 !important;
+            }
+        }
+    }
 }
 /* End SAPT-1641 */
 /* SAPT-1635 */
@@ -5577,9 +5585,9 @@ button.action.action-show-popup.amcheckout-button:hover, .amcoupon-form button.a
 }
 
 
-.modal-popup .modal-footer button.action-primary, 
-.modal-popup .modal-footer button.action-secondary { 
-    padding: 0px !important; line-height: 5.4rem !important; 
+.modal-popup .modal-footer button.action-primary,
+.modal-popup .modal-footer button.action-secondary {
+    padding: 0px !important; line-height: 5.4rem !important;
     border-radius: 30px;
 }
 
@@ -5842,8 +5850,8 @@ button.action.action-show-popup.amcheckout-button {
     vertical-align: middle;
     font-size: 16px;
 }
-form.review-form .field.review-field-image .label, 
-form.review-form .field.review-field-text .label, 
+form.review-form .field.review-field-image .label,
+form.review-form .field.review-field-text .label,
 form.review-form  .field.review-field-summary .label {
     height: auto !important;
     width: auto !important;
