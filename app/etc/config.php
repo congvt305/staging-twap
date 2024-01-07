@@ -801,6 +801,7 @@ return [
         'CJ_Base' => 1,
         'CJ_Catalog' => 1,
         'CJ_CatalogFaq' => 1,
+        'CJ_CatalogProduct' => 1,
         'CJ_ChangeOrderStatus' => 1,
         'CJ_Checkout' => 1,
         'CJ_Cms' => 1,
