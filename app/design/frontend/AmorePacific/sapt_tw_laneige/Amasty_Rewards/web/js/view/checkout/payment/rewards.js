@@ -69,7 +69,7 @@ define([
          * Coupon code application procedure
          */
         apply: function () {
-            this.pointsUsed(this.amountUsed * this.getRateForCurrency());
+            this.pointsUsed(this.amountUsed() * this.getRateForCurrency());
             if (this.validate()) {
                 setRewardPointAction(this.pointsUsed, this.isApplied, this.pointsLeft, this.rateForCurrency, this.noticeMessage);
             }
@@ -88,7 +88,7 @@ define([
          * @return {*}
          */
         getRewardsCount: function () {
-            return this.pointsLeft();
+            return Number.parseFloat(this.pointsLeft()).toFixed(0);
         },
 
         /**
