@@ -5602,13 +5602,6 @@ fieldset.fieldset.extra-info .choice:not(:first-child) {
     margin-left: 37px;
 }
 
-
-
-.is_popupcart .product-info-main .box-tocart {
-    display: inline-block !important;
-}
-
-
 .ampromo-item-buttons {
     margin: 20px auto;
 }
@@ -6074,14 +6067,9 @@ span.product-name {
    padding-top: 10px;
    padding-bottom: 5px;
 }
-.product-info-main .box-tocart, .product-options-bottom .box-tocart {
-   margin: 29px 0px;
+.product-info-main.sticky .product-add-form .box-tocart .actions.actions{
+    padding:0px
 }
-.product-info-main .box-tocart .actions {
-   padding-top: 15px;
-}
-
-
 
 .order-cancel {
    margin-left: auto;
@@ -6248,4 +6236,8 @@ h1#modal-title-32  {
 
 .checkout-onepage-success [data-content-type='row'][data-appearance='contained'] {
    display: none
+}
+
+.page-product-bundle.catalog-product-view .product.info.detailed .product.data.items .titles.sticky {
+    top: 0px;
 }
