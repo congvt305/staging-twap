@@ -28,7 +28,7 @@ define([
 
         initObservable: function () {
             this._super();
-            this.observe(['pointsUsed', 'pointsLeft', 'isApplied', 'noticeMessage', 'disableElem']);
+            this.observe(['pointsUsed', 'pointsLeft', 'isApplied', 'noticeMessage', 'disableElem', 'amountUsed']);
 
             return this;
         },
@@ -41,6 +41,7 @@ define([
             this.isApplied(false);
 
             if (this.pointsUsed() > 0) {
+                this.amountUsed(this.pointsUsed() / this.rateForCurrency);
                 this.isApplied(true);
             }
 
