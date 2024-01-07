@@ -505,18 +505,9 @@
                 sliderStatus = '';
             }
 
-            if (_.$slider.find('.slick-button').length) {
-                _.$slider.find('.slick-button').remove();
-            }
-
             _.$dots.after('<div class="slick-button"><button class="slick-pause'+sliderStatus+'" aria-label="Pause Play" type="button"><span>Pause Play</span></button></div>');
 
-            _.$dots.appendTo(_.$slider.find('.slick-button'));
-
-            if ( _.options.arrows === true ) {
-                _.$prevArrow.prependTo(_.$slider.find('.slick-button'));
-                _.$nextArrow.appendTo(_.$slider.find('.slick-button'));
-            }
+            _.$dots.prependTo(_.$slider.find('.slick-button'));
         }
 
     };
