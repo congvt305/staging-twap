@@ -70,7 +70,7 @@ if ($layoutHander == "sales_order_history") {
             </dl>
         </div>
     </td>
-    <?php if (!$parentItem->getIsFreeGift()): ?>
+    <?php if (!$viewModel->isPromoItem($parentItem)): ?>
     <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
         <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
             <a href="#" class="btn secondary review" data-order-item-id="<?= $parentItem->getId() ?>"><?= __('Review') ?></a>
