@@ -71,8 +71,8 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
                 'include_container' => true
             ]); ?>
         </p>
-		<span>&nbsp;-&nbsp;</span>
         <p class="price-to">
+	        <span class="price-space"></span>
             <?php if ($maximalPrice < $maximalRegularPrice): ?>
                 <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $maximalRegularPrice->getValue())):?>
                     <span class="discount-label">
