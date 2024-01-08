@@ -16,9 +16,22 @@
                 <th class="col actions"><?= $block->escapeHtml(__('Actions')) ?></th>
             </tr>
         </thead>
-        <?php $items = $block->getItems(); ?>
-        <?php $giftMessage = ''?>
-        <?php foreach ($items as $item) :
+        <?php
+        $items = $block->getItems();
+        $normalItems = [];
+        $freeGiftItems = [];
+        $giftMessage = '';
+        $promoViewModel = $block->getData('amasty_promo_view_model');
+        foreach ($items as $item) {
+            if ($promoViewModel->isPromoItem($item)) {
+                $freeGiftItems[] = $item;
+            } else {
+                $normalItems[] = $item;
+            }
+        }
+        $allItems = array_merge($normalItems, $freeGiftItems);
+        ?>
+        <?php foreach ($allItems as $item) :
             if ($item->getParentItem()) :
                 continue;
             endif;

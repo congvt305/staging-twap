@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Sapt\Sales\ViewModel;
-
 
 use Amasty\AdvancedReview\Block\Widget\ProductReviews\Form;
 use Magento\Catalog\Block\Product\Image;
@@ -36,20 +35,29 @@ class Product extends \Magento\Catalog\ViewModel\Product\OptionsData
     protected $postHelper;
 
     /**
-     * Product constructor.
+     * @var \Amasty\Promo\Model\Order\Item\PromoChecker
+     */
+    private $amastyPromoChecker;
+
+    /**
      * @param ImageBuilder $imageBuilder
      * @param Cart $_cartHelper
+     * @param OrderItemRepositoryInterface $orderItem
+     * @param PostHelper $postHelper
+     * @param \Amasty\Promo\Model\Order\Item\PromoChecker $amastyPromoChecker
      */
     public function __construct(
         ImageBuilder $imageBuilder,
         Cart $_cartHelper,
         OrderItemRepositoryInterface $orderItem,
-        PostHelper $postHelper
+        PostHelper $postHelper,
+        \Amasty\Promo\Model\Order\Item\PromoChecker $amastyPromoChecker
     ) {
         $this->imageBuilder = $imageBuilder;
         $this->_cartHelper = $_cartHelper;
         $this->orderItem = $orderItem;
         $this->postHelper = $postHelper;
+        $this->amastyPromoChecker = $amastyPromoChecker;
     }
 
     /**
@@ -178,5 +186,16 @@ class Product extends \Magento\Catalog\ViewModel\Product\OptionsData
     public function getImage($product, $imageId, $attributes = [])
     {
         return $this->imageBuilder->create($product, $imageId, $attributes);
+    }
+
+    /**
+     * Check is promo order item
+     *
+     * @param $item
+     * @return bool
+     */
+    public function isPromoItem($item)
+    {
+        return $this->amastyPromoChecker->isPromoItem($item);
     }
 }
