@@ -15,9 +15,9 @@ $_order = $_item->getOrder();
 $layoutHander = $block->getRequest()->getFullActionName();
 $viewModel = $block->getData('view_model');
 ?>
-<tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info<?php if ($_item->getIsFreeGift()): ?> gift-item<?php endif; ?>">
+<tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info<?php if ($viewModel->isPromoItem($_item)): ?> gift-item<?php endif; ?>">
     <td class="col item"
-        <?php if ($_item->getIsFreeGift()): ?>colspan="2" <?php endif; ?>
+        <?php if ($viewModel->isPromoItem($_item)): ?>colspan="2" <?php endif; ?>
         data-th="<?= $block->escapeHtmlAttr(__('Product Name')) ?>">
         <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"
            title="<?= $block->escapeHtmlAttr($product->getName()) ?>"
@@ -61,7 +61,7 @@ $viewModel = $block->getData('view_model');
             <?php endif; ?>
         </div>
     </td>
-    <?php if (!$_item->getIsFreeGift()): ?>
+    <?php if (!$viewModel->isPromoItem($_item)): ?>
     <td class="col actions" data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>">
         <?php if (!$block->getPrintStatus() && !$viewModel->getPrintStatus($block)) : ?>
             <a href="#" class="btn secondary review" data-order-item-id="<?= $_item->getId() ?>"><?= __('Review') ?></a>
