@@ -204,5 +204,7 @@ $getDefault = $block->getData('view_model');
         }
         </script>
     <?php endif; ?>
-    <?= $block->getChildHtml('category.description') ?>
+	<?php if (!$block->getRequest()->getParam('is_scroll')): ?>
+	    <?= $block->getChildHtml('category.description') ?>
+	<?php endif; ?>
 <?php endif; ?>
