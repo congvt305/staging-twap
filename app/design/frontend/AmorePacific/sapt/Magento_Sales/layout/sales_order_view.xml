@@ -10,6 +10,11 @@
         <referenceContainer name="page.top">
             <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
+        <referenceBlock name="order_items">
+            <arguments>
+                <argument name="amasty_promo_view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
                 <argument name="crumbName" xsi:type="string">Home</argument>

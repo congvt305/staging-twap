@@ -73,7 +73,13 @@ $viewModel = $block->getData('view_model');
                         <?php
                             $orderItems = $_order->getAllVisibleItems();
                             $moreProduct = count($orderItems) - 1;
-                            $item = $block->getProduct($orderItems[0]);
+                            foreach($orderItems as $orderItem) {
+                                if (!$viewModel->isPromoItem($orderItem)) {
+                                    $normalItem = $orderItem;
+                                     $item = $block->getProduct($orderItem);
+                                     break;
+                                }
+                            }
                         ?>
                         <tr>
                             <td class="col thumbnail">
@@ -85,9 +91,9 @@ $viewModel = $block->getData('view_model');
                                 </a>
                                 <span class="product-thumbnail-wrapper">
                                     <img class="product-thumbnail"
-                                        src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($orderItems[0])) ?>"
+                                        src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($normalItem)) ?>"
                                         loading="lazy"
-                                        alt="<?= $escaper->escapeHtml($orderItems[0]->getName()) ?>" />
+                                        alt="<?= $escaper->escapeHtml($normalItem->getName()) ?>" />
                                 </span>
                             </td>
                             <td class="col item">
@@ -97,18 +103,18 @@ $viewModel = $block->getData('view_model');
                                 </div>
                                 </div class="order-item-info">
                                     <div class="product-name">
-                                        <a href="<?= $escaper->escapeUrl($block->getOrderItemUrl($orderItems[0])) ?>">
-                                            <?= $escaper->escapeHtml($orderItems[0]->getName()) ?>
+                                        <a href="<?= $escaper->escapeUrl($block->getOrderItemUrl($normalItem)) ?>">
+                                            <?= $escaper->escapeHtml($normalItem->getName()) ?>
                                         </a>
                                         <?php if($moreProduct): ?>
-                                        <span class="more-product"><?= $block->escapeHtml(__('+%1 More Products', 1)) ?></span>
+                                        <span class="more-product"><?= $block->escapeHtml(__('+%1 More Products', $moreProduct)) ?></span>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="product-price"><?= $_order->formatPrice($orderItems[0]->getPriceInclTax()) ?></div>
+                                    <div class="product-price"><?= $_order->formatPrice($normalItem->getPriceInclTax()) ?></div>
                                 </div>
                             </td>
                             <td class="col actions">
-                                <a href="<?= $block->escapeUrl($block->getUrl('review/customer')) . '?review_order_item=' . $orderItems[0]->getId() ?>" class="action write-review">
+                                <a href="<?= $block->escapeUrl($block->getUrl('review/customer')) . '?review_order_item=' . $normalItem->getId() ?>" class="action write-review">
                                     <span><?= $escaper->escapeHtml(__('Review')) ?></span>
                                 </a>
                                 <?php $postParams = $viewModel->getPostData($item, $block); ?>
