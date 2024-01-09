@@ -28,7 +28,10 @@ $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
                 <?php foreach ($_returns as $_return): ?>
                     <?php $_order = $_return->getOrder(); ?>
                     <div class="order-wrapper">
-                        <a href="<?= $block->escapeUrl($block->getViewUrl($_return)) ?>"><?= $block->escapeHtml($this->helper(Magento\Rma\Helper\Data::class)->getFormatedDate($_return->getDateRequested())) ?></a>
+                        <a class="created-at" href="<?= $block->escapeUrl($block->getViewUrl($_return)) ?>"><?= $block->escapeHtml($this->helper(Magento\Rma\Helper\Data::class)->getFormatedDate($_return->getDateRequested())) ?></a>
+	                    <a href="<?= $block->getUrl('sales/order/view', ['order_id' => $_return->getOrder()->getId()]) ?>">
+                            <?= $_order->getIncrementId() ?>
+	                    </a>
                         <div class="table-wrapper cart">
                             <?php $items = $_return->getItems(); ?>
                             <table class="cart data table items">
