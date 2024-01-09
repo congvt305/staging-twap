@@ -217,10 +217,10 @@ class EventList implements ArgumentInterface
     public function getEventCondition()
     {
         $controllerName = $this->requestInterface->getFullActionName();
-        if ($controllerName == "events_index_index") {
-            $condition = "gteq";
-        } elseif ($controllerName == "events_previous_index") {
+        if ($controllerName == "events_previous_index") {
             $condition = "lt";
+        } else {
+            $condition = "gteq";
         }
         return $condition;
     }

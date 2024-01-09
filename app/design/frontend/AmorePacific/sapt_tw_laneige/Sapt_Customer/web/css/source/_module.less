@@ -1123,7 +1123,10 @@
         }
         .table-wrapper{
             table{
-                display: none !important;
+                &:not(.table-point) {
+                    display: none !important;
+                }
+
                 &.mobile{
                     overflow: scroll !important;
                     display: table !important;
@@ -1321,7 +1324,7 @@
     }
     .box_member .member_review .label {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAClSURBVHgB5ZLRDcIwDETrwgDNBk4maCcAJgEmoSt0A5gANgAWSRiBDcJdlF+K+a6lk+0oT/fhk8ZYqrpFo84vlBihk4gcMD6hTc55tzJCI3RLKR2dcwOeu9biBIcB6kMIVzpC71nIe5/Qte499gx4/AdS7kuDSgD4iZ2HLY8id+gSY/wKrhklALzLRKCCsxCr5YEhznuowzz9gopjdWMGGalHY6wPJjxZvYNNC3cAAAAASUVORK5CYII=") !important;
-        background-position: center left !important;        
+        background-position: center left !important;
     }
     .box_member .member_info h3 {
         margin-bottom: 5px !important;
