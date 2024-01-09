@@ -11,10 +11,10 @@
         <referenceContainer name="page.top">
             <block class="Magento\Theme\Block\Html\Breadcrumbs" name="breadcrumbs.cms">
                 <action method="addCrumb">
-                    <argument name="crumbName" xsi:type="string">首頁</argument>
+                    <argument name="crumbName" xsi:type="string" translate="true">Home</argument>
                     <argument name="crumbInfo" xsi:type="array">
-                        <item name="title" xsi:type="string">首頁</item>
-                        <item name="label" xsi:type="string">首頁</item>
+                        <item name="title" xsi:type="string"  translate="true">Home</item>
+                        <item name="label" xsi:type="string" translate="true">Home</item>
                         <item name="link" xsi:type="string">/</item>
                     </argument>
                 </action>
