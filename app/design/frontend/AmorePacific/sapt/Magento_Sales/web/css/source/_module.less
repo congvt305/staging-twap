@@ -901,6 +901,17 @@
             margin-left: -1px;
         }
     }
+
+    .form-create-return {
+        .field.id {
+            display: none;
+        }
+
+        .fieldset .actions-toolbar,
+        .field.comment {
+            margin-top: 0 !important;
+        }
+    }
 }
 @media only all and (max-width: 1365px) {
     .order-toolbar{
@@ -1005,6 +1016,20 @@
             display: block;
             float: none;
             margin-bottom: @indent__s;
+        }
+    }
+
+    .order-info {
+        .order-number,
+        .order-status {
+            margin: 0 0 12px !important;
+        }
+
+        .order-status {
+            font-size: 14px !important;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500 !important;
         }
     }
 
@@ -1251,7 +1276,6 @@
                 .price-excluding-tax{
                     font-size: 14px;
                     line-height: 18.5px;
-                    float: left;
                 }
                 .price{
                     font-size: 14px;
