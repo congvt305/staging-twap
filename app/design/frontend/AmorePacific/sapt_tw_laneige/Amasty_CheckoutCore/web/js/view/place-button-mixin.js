@@ -32,7 +32,7 @@ define([
                 let streetValidateResult = $("input[name='street[0]']").val() != "";
                 let regionIdValidateResult = $("select[name='region_id']").find(":selected").val() != "0";
                 validateShippingAddressResult = false;
-                if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid && validateShippingAddressResult) {
+                if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid) {
                     validateShippingAddressResult = true;
                 }
             } else if (deliveryMethod.carrier_code === 'gwlogistics') {
