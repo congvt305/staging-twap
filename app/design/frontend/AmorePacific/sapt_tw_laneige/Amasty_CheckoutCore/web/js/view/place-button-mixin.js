@@ -22,30 +22,20 @@ define([
             let deliveryMethod = quote.shippingMethod();
             let validateShippingAddressResult = false;
             if (deliveryMethod.carrier_code === 'blackcat') {
-                if (customer.isLoggedIn()) {
-                    if (!$(".shipping-address-items .selected-item").length) {
-                        validateShippingAddressResult = false;
-                    } else {
-                        validateShippingAddressResult = true;
-                    }
-                } else {
-                    let telephoneComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.telephone");
-                    let telephoneValidateResult = telephoneComponent.validate();
-                    let firstnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.firstname");
-                    let firstnameValidateResult = firstnameComponent.validate();
-                    let lastnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname");
-                    let lastnameValidateResult = lastnameComponent.validate();
+                let telephoneComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.telephone");
+                let telephoneValidateResult = telephoneComponent.validate();
+                let firstnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.firstname");
+                let firstnameValidateResult = firstnameComponent.validate();
+                let lastnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname");
+                let lastnameValidateResult = lastnameComponent.validate();
 
-                    let streetValidateResult = $("input[name='street[0]']").val() != "";
-                    let regionIdValidateResult = $("select[name='region_id']").find(":selected").val() != "0";
-                    validateShippingAddressResult = false;
-                    if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid && validateShippingAddressResult) {
-                        validateShippingAddressResult = true;
-                    }
+                let streetValidateResult = $("input[name='street[0]']").val() != "";
+                let regionIdValidateResult = $("select[name='region_id']").find(":selected").val() != "0";
+                validateShippingAddressResult = false;
+                if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid && validateShippingAddressResult) {
+                    validateShippingAddressResult = true;
                 }
-
-            } else if (deliveryMethod.carrier_code === 'gwlogistics'
-            ) {
+            } else if (deliveryMethod.carrier_code === 'gwlogistics') {
                 //Move code from cvs-selector to here
                 var emailValidationResult,
                     cvsStoreNameValidationResult,

@@ -104,6 +104,9 @@
                 checkoutData.setSelectedShippingAddress(this.address().getKey());
             } else {
                 message.removeClass('no-display');
+                $('html, body').animate({
+                    scrollTop: message.offset().top - 100
+                });
             }
         },
 
