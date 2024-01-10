@@ -35,7 +35,7 @@ define([
             function(value, element) {
                 if (typeof $('input[name="lastname"]').val() != 'undefined') {
                     var lastname = $('input[name="lastname"]').val();
-                    value = lastname + value;
+                    value = lastname + $('input[name="firstname"]').val();//must get again in case when choose address with English name then click edit new address with has Chinese Name
                     return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value) || /^\s/.test(value);
                 }
                 return true;
