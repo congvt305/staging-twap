@@ -25,6 +25,8 @@ define([
         validator.addRule(
             'validate-cvs-address-lastname',
             function(value, element) {
+                //must get again because if the default lastName customer > 10 will get error
+                value = $('input[name="lastname"]').val();
                 return /^[a-zA-Z]{1,9}$/.test(value) || /^[\u4e00-\u9fa5]{1,4}$/.test(value) || /^\s/.test(value);
             },
             $.mage.__('Last name must be less than 5 Chinese alphabets or 10 English alphabets.')
