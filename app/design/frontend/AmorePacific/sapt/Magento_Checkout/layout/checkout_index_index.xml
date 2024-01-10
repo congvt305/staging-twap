@@ -80,11 +80,13 @@
                                                             <item name="children" xsi:type="array">
                                                                 <item name="lastname" xsi:type="array">
                                                                     <item name="config" xsi:type="array">
+                                                                        <item name="elementTmpl" xsi:type="string">Amasty_CheckoutCore/form/element/input</item>
                                                                         <item name="placeholder" xsi:type="string" translate="true">Be sure to fill out the name on your ID card in case you can't collect the goods</item>
                                                                     </item>
                                                                 </item>
                                                                 <item name="firstname" xsi:type="array">
                                                                     <item name="config" xsi:type="array">
+                                                                        <item name="elementTmpl" xsi:type="string">Amasty_CheckoutCore/form/element/input</item>
                                                                         <item name="placeholder" xsi:type="string" translate="true">Be sure to fill out the name on your ID card in case you can't collect the goods</item>
                                                                     </item>
                                                                 </item>
