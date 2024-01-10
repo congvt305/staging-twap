@@ -21,6 +21,26 @@ define([
             },
             $.mage.__('Please enter exactly proper mobile number. Start with 09 and 10 digit.')
         );
+
+        validator.addRule(
+            'validate-cvs-address-lastname',
+            function(value, element) {
+                return /^[a-zA-Z]{1,9}$/.test(value) || /^[\u4e00-\u9fa5]{1,4}$/.test(value) || /^\s/.test(value);
+            },
+            $.mage.__('Last name must be less than 5 Chinese alphabets or 10 English alphabets.')
+        );
+
+        validator.addRule(
+            'validate-cvs-address-firstname',
+            function(value, element) {
+                if (typeof $('input[name="lastname"]') != 'undefined') {
+                    var lastname = $('input[name="lastname"]').val();
+                    value = lastname + value;
+                    return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value) || /^\s/.test(value);
+                }
+            },
+            $.mage.__('Last name + first name must be the most 5 Chinese alphabets or 10 English alphabets and should not contain spaces.')
+        );
         return validator;
     };
 });
