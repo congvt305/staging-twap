@@ -100,17 +100,18 @@
             let message = $('.validation-shipping-address');
             if (this.validationAddress(this.address())) {
                 message.addClass('no-display');
+                selectShippingAddressAction(this.address());
+                checkoutData.setSelectedShippingAddress(this.address().getKey());
             } else {
                 message.removeClass('no-display');
             }
-            selectShippingAddressAction(this.address());
-            checkoutData.setSelectedShippingAddress(this.address().getKey());
         },
 
         /** validation first name and last name */
         validationAddress: function (address) {
-            var value = address.firstname + address.lastname;
-            return /^[a-zA-Z]+$/.test(value) || /^[\u4e00-\u9fa5]+$/.test(value);
+            var value = address.firstname + address.lastname,
+                telephone = address.telephone;
+            return (/^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value)) && /^[0]{1}[9]{1}\d{8}$/.test(telephone);
         },
 
         /**
