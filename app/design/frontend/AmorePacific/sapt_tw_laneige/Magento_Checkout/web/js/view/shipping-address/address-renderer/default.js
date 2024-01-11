@@ -97,20 +97,53 @@
 
         /** Set selected customer shipping address  */
         selectAddress: function () {
-            let message = $('.validation-shipping-address');
+            // let message = $('.validation-shipping-address');
+            // if (this.validationAddress(this.address())) {
+            //     message.addClass('no-display');
+            //     selectShippingAddressAction(this.address());
+            //     checkoutData.setSelectedShippingAddress(this.address().getKey());
+            // } else {
+            //     message.removeClass('no-display');
+            //     $('html, body').animate({
+            //         scrollTop: message.offset().top - 100
+            //     });
+            // }
+
+            let message = $('.validation-shipping-address'), validateAddress = false, validateTel = false, messageTel = $('.validation-telephone');
             if (this.validationAddress(this.address())) {
-                message.addClass('no-display');
-            } else {
-                message.removeClass('no-display');
+                validateAddress = true;
+
             }
-            selectShippingAddressAction(this.address());
-            checkoutData.setSelectedShippingAddress(this.address().getKey());
+            if (/^[0]{1}[9]{1}\d{8}$/.test(this.address().telephone)) {
+                validateTel = true;
+            }
+
+            if (validateAddress && validateTel) {
+                message.addClass('no-display');
+                messageTel.addClass('no-display')
+                selectShippingAddressAction(this.address());
+                checkoutData.setSelectedShippingAddress(this.address().getKey());
+            } else {
+                if (!validateAddress) {
+                    message.removeClass('no-display');
+                    $('html, body').animate({
+                        scrollTop: message.offset().top - 100
+                    });
+                } else if (!validateTel) {
+                    messageTel.removeClass('no-display')
+                    $('html, body').animate({
+                        scrollTop: messageTel.offset().top - 100
+                    });
+                }
+
+            }
         },
 
         /** validation first name and last name */
         validationAddress: function (address) {
-            var value = address.firstname + address.lastname;
-            return /^[a-zA-Z]+$/.test(value) || /^[\u4e00-\u9fa5]+$/.test(value);
+            var value = address.firstname + address.lastname,
+                telephone = address.telephone;
+            return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value);
         },
 
         /**
