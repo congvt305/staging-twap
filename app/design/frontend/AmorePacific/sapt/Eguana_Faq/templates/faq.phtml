@@ -24,12 +24,6 @@ $searchUrl = $block->getSearchUrl();
                 <li>
                     <span><?= __('FAQ') ?></span>
                 </li>
-                <li>
-                    <a title="<?= $block->escapeHtmlAttr(__('Shipping Info')) ?>"
-                       href="<?= $block->escapeUrl($block->getUrl('shipping-info')) ?>">
-                       <?=__('Shipping Info')?>
-                    </a>
-                </li>
             </ul>
             <style>
             @media only all and (max-width:767px) {
@@ -44,6 +38,15 @@ $searchUrl = $block->getSearchUrl();
             <?php foreach ($categoryData as $key => $value):?>
                 <?php if (isset($faqData[$key]) && count($faqData[$key]) > 0):?>
                     <div class="block">
+                        <div class="item title" data-role="tab-collapsible">
+                            <strong class="switch"
+                                    role="heading"
+                                    data-toggle="trigger"
+                                    data-role="tab-title"
+                                    aria-level="2">
+                                <?= $block->escapeHtml($value) ?>
+                            </strong>
+                        </div>
                         <div class="faq-actions">
                             <a class="open-all" href="javascript:void(0)">
                                 <span class="open-all-label"><?= __('OPEN ALL QUESTIONS') ?></span>

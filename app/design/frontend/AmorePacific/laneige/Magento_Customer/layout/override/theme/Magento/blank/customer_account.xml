@@ -13,6 +13,5 @@
                 <argument name="block_css" xsi:type="string">account-nav</argument>
             </arguments>
         </referenceBlock>
-
     </body>
 </page>
