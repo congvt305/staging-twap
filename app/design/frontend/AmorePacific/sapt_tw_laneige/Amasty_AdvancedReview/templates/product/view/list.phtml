@@ -135,7 +135,7 @@ $imagesThumbBlock = $block->getLayout()->createBlock(\Amasty\AdvancedReview\Bloc
             if(!customer().fullname && !customer().firstname) {
                 var signupUrl = urlBuilder.build('customer/account/create');
                 var loginUrl = urlBuilder.build('customer/account/login');
-                var contentTitle = "<?= $escaper->escapeHtml(__('You Can Access A Review Write After Logging In')) ?>";
+                var contentTitle = "<?= $escaper->escapeHtml(__('Please Login to Review')) ?>";
                 var content = '<span class="msg">' + contentTitle + '</span>' +
                     '<a class="action secondary" href="' + loginUrl + '">' + $.mage.__('Log in') + '</a>' +
                     '<a class="action signup-link" href="' + signupUrl + '">' + $.mage.__('New to Laneige? Create new account') + '</a>';
