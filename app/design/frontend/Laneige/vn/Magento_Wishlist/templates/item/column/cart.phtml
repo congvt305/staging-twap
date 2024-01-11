@@ -18,40 +18,36 @@ $allowedQty = $viewModel->setItem($item)->getMinMaxQty();
     <?= /* @noEscape */ $block->getLayout()->renderElement($childName, false) ?>
 <?php endforeach;?>
 <div class="actions-secondary">
-    <div class="box-tocart">
-        <fieldset class="fieldset">
+	<div class="box-tocart">
+		<fieldset class="fieldset">
             <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()) : ?>
-                <div class="field qty">
-                    <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
-                    <div class="control">
-                        <input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" class="input-text qty" data-validate="{'required-number':true,'validate-greater-than-zero':true, 'validate-item-quantity':{'minAllowed':<?= /* @noEscape */ $allowedQty['minAllowed'] ?>,'maxAllowed':<?= /* @noEscape */ $allowedQty['maxAllowed'] ?>}}"
-                               name="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" value="<?= /* @noEscape */ $block->getAddToCartQty($item) * 1 ?>" <?= $product->isSaleable() ? '' : 'disabled="disabled"' ?>>
-                    </div>
-                </div>
+				<div class="field qty">
+					<label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+					<div class="control">
+						<input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" class="input-text qty" data-validate="{'required-number':true,'validate-greater-than-zero':true, 'validate-item-quantity':{'minAllowed':<?= /* @noEscape */ $allowedQty['minAllowed'] ?>,'maxAllowed':<?= /* @noEscape */ $allowedQty['maxAllowed'] ?>}}"
+						       name="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" value="<?= /* @noEscape */ $block->getAddToCartQty($item) * 1 ?>" <?= $product->isSaleable() ? '' : 'disabled="disabled"' ?>>
+					</div>
+				</div>
             <?php endif; ?>
             <?php if ($product->isSaleable()): ?>
-                <div class="product-item-actions">
-                    <div class="actions-primary">
-                        <button type="button"
-                                clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                                formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                data-post="<?= $block->escapeHtml($addToCartFormViewModel->getAddToCartPostParams($product)) ?>"
-                                class="action wishlist-item tocart primary">
-                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                        </button>
-                    </div>
-                </div>
+				<div class="product-item-actions">
+					<div class="actions-primary">
+						<button type="button"
+						        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+						        data-post="<?= $block->escapeHtml($addToCartFormViewModel->getAddToCartPostParams($product)) ?>"
+						        class="action wishlist-item tocart primary">
+						</button>
+					</div>
+				</div>
             <?php else: ?>
-                <div class="product-item-actions">
-                    <div class="actions-primary">
-                        <button type="submit" title="<?= $block->escapeHtmlAttr(__('Out of stock')) ?>"
-                                class="action tocart primary disabled" id="product-addtocart-button">
-                            <span><?php /* @escapeNotVerified */echo __('Out of stock'); ?></span>
-                        </button>
-                    </div>
-                </div>
+				<div class="product-item-actions">
+					<div class="actions-primary">
+						<button type="submit" title="<?= $block->escapeHtmlAttr(__('Out of stock')) ?>"
+						        class="action tocart primary disabled" id="product-addtocart-button">
+						</button>
+					</div>
+				</div>
             <?php endif; ?>
-        </fieldset>
-    </div>
+		</fieldset>
+	</div>
 </div>
