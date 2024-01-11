@@ -52,11 +52,26 @@ $discountPrice = $originalPrice - $price;
 <?php endif; ?>
 
 <?php if ($block->displayPriceExclTax() || $block->displayBothPrices()): ?>
-    <span class="price-excluding-tax"
-          data-label="<?= $block->escapeHtmlAttr(__('Excl. Tax')) ?>">
+       <span class="price-excluding-tax <?php if ($discountPrice > 0) : ?>cart-custom-price<?php endif; ?>"
+             data-label="<?= $block->escapeHtmlAttr(__('Excl. Tax')) ?>">
         <?php
-            $originalPriceFormat = $block->formatPrice($block->getRowDisplayPriceExclTax());
-        ?>
+        $originalPriceFormat = $block->formatPrice($block->getRowDisplayPriceExclTax());
+        if ($discountPrice > 0) :
+            ?>
+            <?php
+            $discountPercent = round($discountPrice / $originalPrice * 100, 0);
+            $originalPriceFormat = $block->formatPrice($originalPrice * $item->getQty());
+            ?>
+            <span class="cart-item-discount">
+                        <?= __('%1%', $discountPercent) ?>
+                    </span>
+            <span class="cart-final-price">
+                        <?= $block->escapeHtml(
+                            $this->helper(Magento\Checkout\Helper\Data::class)->formatPrice($price),
+                            ['span']
+                        ) ?>
+                    </span>
+        <?php endif; ?>
         <?php if ($block->displayPriceWithWeeeDetails()): ?>
             <span class="cart-tax-total"
                 data-mage-init='{"taxToggle": {"itemTaxId" : "#esubtotal-item-tax-details<?= (int) $item->getId()?>"}}'>
