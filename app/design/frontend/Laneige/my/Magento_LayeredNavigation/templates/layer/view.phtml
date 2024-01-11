@@ -60,7 +60,7 @@
                 endif; ?>
                 <div data-role="collapsible" class="filter-options-item">
                     <div data-role="title" class="filter-options-title"><?= $block->escapeHtml(__($filter->getName())) ?></div>
-                    <div data-role="content" class="filter-options-content"><?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?></div>
+                    <div data-role="content" class="filter-options-content" style="display: none"><?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?></div>
                 </div>
                 <?php endif; ?>
                 <?php endforeach; ?>
