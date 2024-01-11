@@ -28,8 +28,12 @@ define([
                 let firstnameValidateResult = firstnameComponent.validate();
                 let lastnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname");
                 let lastnameValidateResult = lastnameComponent.validate();
-
-                let streetValidateResult = $("input[name='street[0]']").val() != "";
+                let streetValidateResult = false;
+                if (customer.isLoggedIn()) {
+                    streetValidateResult = quote.shippingAddress().street[0] != "";
+                } else {
+                    streetValidateResult = $("input[name='street[0]']").val() != "";
+                }
                 let regionIdValidateResult = $("select[name='region_id']").find(":selected").val() != "0";
                 validateShippingAddressResult = false;
                 if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid) {
