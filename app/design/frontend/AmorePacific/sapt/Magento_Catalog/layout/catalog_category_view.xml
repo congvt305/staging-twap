@@ -11,7 +11,7 @@
     </head>
     <body>
         <move element="catalog.leftnav" destination="sidebar.main" before="-" />
-        <move element="category.view.container" destination="page.top" before="breadcrumbs" />
+        <!-- <move element="category.view.container" destination="page.top" before="breadcrumbs" /> -->
         <referenceBlock name="catalog.compare.sidebar" remove="true"/>
         <!-- <move element="catalog.compare.sidebar" destination="sidebar.main" after="-" /> -->
         <referenceBlock name="page.main.title" remove="true" />
