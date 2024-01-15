@@ -61,8 +61,8 @@
 
                             &:hover {
                                 color: #191919;
-                                background: #999999;
-                                border-color: #999999;
+                                background: #f0b18e;
+                                border-color: unset;
                             }
                         }
                     }
@@ -580,6 +580,20 @@
         }
         .block-content, #compare-clear-all, .empty {
             display: none;
+        }
+    }
+
+    .product {
+        &-item {
+            .products-grid & {
+                .product-item-details {
+                    .actions-primary {
+                        .coming-soon {
+                            display: none;
+                        }
+                    }
+                }
+            }
         }
     }
 
