@@ -165,7 +165,8 @@ class ImageFactory extends \Magento\Catalog\Block\Product\ImageFactory
                 'ratio' => $this->getRatio($imageMiscParams['image_width'] ?? 0, $imageMiscParams['image_height'] ?? 0),
                 'custom_attributes' => $this->filterCustomAttributes($attributes),
                 'class' => $this->getClass($attributes),
-                'product_id' => $product->getId()
+                'product_id' => $product->getId(),
+                'promotion_text' => $product->getData('promotion_text')
             ],
         ];
 

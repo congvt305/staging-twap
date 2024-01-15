@@ -21,7 +21,7 @@ $imageUrl = $block->getRedemptionLabelImage();
             </div>
         <?php endif;?>
 <!--        End of modification-->
-        <img class="<?= $escaper->escapeHtmlAttr($block->getClass()) ?>"
+        <img class="<?= $escaper->escapeHtmlAttr($block->getClass()) ?> hoanv"
             <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
                 <?= $escaper->escapeHtmlAttr($name) ?>="<?= $escaper->escapeHtml($value) ?>"
             <?php endforeach; ?>
@@ -29,7 +29,16 @@ $imageUrl = $block->getRedemptionLabelImage();
             loading="lazy"
             width="<?= $escaper->escapeHtmlAttr($block->getWidth()) ?>"
             height="<?= $escaper->escapeHtmlAttr($block->getHeight()) ?>"
-            alt="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>"/></span>
+            alt="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>"/
+	    >
+	    <?php if ($block->getData('promotion_text')): ?>
+		    <div class="coming-soon-overlay">
+	            <div class="coming-soon-text">
+		            <?= $block->getData('promotion_text'); ?>
+	            </div>
+	        </div>
+        <?php endif; ?>
+    </span>
 </span>
 <?php
 $styles = <<<STYLE
