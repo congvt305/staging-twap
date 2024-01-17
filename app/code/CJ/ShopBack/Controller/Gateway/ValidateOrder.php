@@ -24,6 +24,9 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
 
         try
         {
+            if (!$quote->getShippingAddress()->getShippingMethod()) {
+                throw new \Exception('Shipping method is missing');
+            }
             if ($this->hdata->credentials_are_empty())
                 throw new \Exception('Merchant credentials are empty', 9999);
 
