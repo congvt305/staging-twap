@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Eguana\CustomCatalog\Helper;
 
@@ -67,5 +68,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
-
+    /**
+     * Get total original price for bundle with dynamic
+     *
+     * @param $item
+     * @return int
+     */
+    public function getTotalOriginalPriceForBundleDynamic($item) {
+        $total = 0;
+        foreach ($item->getChildren() as $itemChild) {
+            $total += $itemChild->getProduct()->getPrice();
+        }
+        return $total;
+    }
 }
