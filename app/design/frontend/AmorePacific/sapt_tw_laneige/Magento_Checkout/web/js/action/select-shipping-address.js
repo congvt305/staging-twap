@@ -29,7 +29,7 @@ define([
         if (shippingAddress.lastname) {
             let lastnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname");
             lastnameComponent.value(shippingAddress.lastname);
-            registry.set("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.firstname", lastnameComponent);
+            registry.set("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname", lastnameComponent);
             $("#shipping-new-address-form input[name='lastname']").val(shippingAddress.lastname);
         }
         quote.shippingAddress(shippingAddress);
