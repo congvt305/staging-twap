@@ -14,9 +14,15 @@ $weeeHelper = $block->getData('weeeHelper');
 
 $item = $block->getItem();
 
-$price = (int)$item->getPrice();
+$price = round($item->getPrice());
 $originalPrice = (int)$item->getProduct()->getPrice();
 $discountPrice = $originalPrice - $price;
+$helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
+$isBundleDynamic = ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE && $item->getProduct()->getPriceType() == \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC);
+if ($isBundleDynamic) {
+    $originalPrice = $helper->getTotalOriginalPriceForBundleDynamic($item);
+    $discountPrice = $originalPrice - $price;
+}
 ?>
 <?php if (($block->displayPriceInclTax() || $block->displayBothPrices()) && !$item->getNoSubtotal()): ?>
     <span class="price-including-tax" data-label="<?= $block->escapeHtmlAttr(__('Incl. Tax')) ?>">
@@ -59,7 +65,7 @@ $discountPrice = $originalPrice - $price;
         if ($discountPrice > 0) :
             ?>
             <?php
-            $discountPercent = round($discountPrice / $originalPrice * 100, 0);
+            $discountPercent = round($discountPrice / $originalPrice * 100);
             $originalPriceFormat = $block->formatPrice($originalPrice * $item->getQty());
             ?>
             <span class="cart-item-discount">
