@@ -4,7 +4,7 @@
         <referenceBlock name="category.product.addto.compare" remove="true"/>
         <move element="category.view.container" destination="page.wrapper" before="page.top"/>
         <move element="breadcrumbs" destination="page.wrapper" before="page.top"/>
-        <move element="page.main.title" destination="content" before="category.products"/>
+        <move element="page.main.title" destination="main" before="-"/>
         <move element="page.messages" destination="page.wrapper" before="breadcrumbs" />
     </body>
 </page>
