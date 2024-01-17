@@ -305,7 +305,7 @@ class CounterSaveAjax extends Action
                     $this->redemptionRepository->save($redemptionDetail);
                     if ($this->emailSender->getRegistrationEmailEnableValue($storeId) == 1) {
                         try {
-                            $this->emailSender->sendEmail($model->getData('entity_id'));
+                            $this->emailSender->sendEmail($model->getData('entity_id'), $redemptionDetail);
                             $this->smsSender->sendSms($model->getData('entity_id'));
                         } catch (\Exception $e) {
                             $this->messageManager->addErrorMessage(
