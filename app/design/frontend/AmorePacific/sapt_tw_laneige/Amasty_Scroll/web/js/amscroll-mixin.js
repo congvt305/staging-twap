@@ -1,17 +1,12 @@
 define([
-	'jquery',
-	'Amasty_Base/js/http_build_query',
-	'uiRegistry',
-	'underscore',
-	'mage/cookies',
-	'Magento_Ui/js/modal/modal'
-], function ($, httpBuildQuery, uiRegistry, _) {
+	'jquery'
+], function ($) {
 	'use strict';
-
 	return function (widget) {
 		$.widget('mage.amScrollScript', widget, {
-			_hideToolbars: function () {},
+			_hideToolbars: function () {
+			},
 		});
-		return $.mage.SwatchRenderer;
+		return $.mage.amScrollScript;
 	}
 });
