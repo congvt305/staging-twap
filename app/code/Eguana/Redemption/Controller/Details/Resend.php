@@ -16,6 +16,7 @@ use Eguana\Redemption\Model\Service\EmailSender;
 use Magento\Framework\Controller\ResultFactory;
 use Eguana\Redemption\Model\Service\SmsSender;
 use Magento\Store\Model\StoreManagerInterface;
+use Eguana\Redemption\Api\RedemptionRepositoryInterface;
 
 /**
  * Class Resend
@@ -44,24 +45,31 @@ class Resend extends Action
     private $counterRepository;
 
     /**
-     * Index constructor.
-     *
+     * @var RedemptionRepositoryInterface
+     */
+    private $redemptionRepository;
+
+    /**
      * @param Context $context
      * @param EmailSender $emailSender
      * @param SmsSender $smsSender
      * @param StoreManagerInterface $storeManager
+     * @param CounterRepositoryInterface $counterRepository
+     * @param RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         Context $context,
         EmailSender $emailSender,
         SmsSender $smsSender,
         StoreManagerInterface $storeManager,
-        CounterRepositoryInterface $counterRepository
+        CounterRepositoryInterface $counterRepository,
+        RedemptionRepositoryInterface $redemptionRepository
     ) {
         $this->emailSender = $emailSender;
         $this->smsSender = $smsSender;
         $this->storeManager = $storeManager;
         $this->counterRepository = $counterRepository;
+        $this->redemptionRepository = $redemptionRepository;
         parent::__construct($context);
     }
 
@@ -104,7 +112,8 @@ class Resend extends Action
         }
         if ($this->emailSender->getRegistrationEmailEnableValue($defaultStoreId) == 1) {
             try {
-                $this->emailSender->sendEmail($counterId);
+                $redemptionDetail = $this->redemptionRepository->getById($counter->getRedemptionId());
+                $this->emailSender->sendEmail($counterId, $redemptionDetail);
                 $this->smsSender->sendSms($counterId);
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage(

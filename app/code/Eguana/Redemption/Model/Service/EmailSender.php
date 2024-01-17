@@ -122,10 +122,11 @@ class EmailSender
      * This method is used to send the email when counter add by customer
      *
      * @param $counterId
+     * @param \Eguana\Redemption\Model\Redemption $redemption
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function sendEmail($counterId)
+    public function sendEmail($counterId, \Eguana\Redemption\Model\Redemption $redemption)
     {
         $templateOptions = ['area' => \Magento\Framework\App\Area::AREA_FRONTEND,
             'store' => $this->storeManager->getStore()->getId()];
@@ -137,6 +138,7 @@ class EmailSender
             'counter_link' => $this->getCounterLink($counterId),
             'store_name' => $storeName,
             'email_address' => $this->getEmail($storeId),
+            'redemption_title' => $redemption->getTitle()
         ];
         $from = ['email' => $this->getEmail($storeId), 'name' => $this->getEmailSenderName($storeId)];
         $this->inlineTranslation->suspend();
