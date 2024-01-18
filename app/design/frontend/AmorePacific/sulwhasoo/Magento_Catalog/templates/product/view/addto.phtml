@@ -9,7 +9,7 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 /** @var $block \Magento\Catalog\Block\Product\View*/
 $product = $block->getProduct();
 ?>
-<?php if (!($product->getData('offline')) && !$product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) : ?>
+<?php if (!$product->getData('offline')) : ?>
     <div class="product-addto-links" data-role="add-to-links">
         <?= $block->getChildHtml() ?>
     </div>
