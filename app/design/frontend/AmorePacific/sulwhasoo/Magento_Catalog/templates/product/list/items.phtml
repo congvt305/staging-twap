@@ -259,13 +259,11 @@ $_item = null;
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
 			                                            </div>
-	                                                    <?php if (!$_item->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
 	                                                        <div class="secondary-addto-links actions-secondary" data-role="add-to-links">
 	                                                            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
 	                                                                <?= $addToBlock->setProduct($_item)->getChildHtml() ?>
 	                                                            <?php endif; ?>
 	                                                        </div>
-	                                                    <?php endif; ?>
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
