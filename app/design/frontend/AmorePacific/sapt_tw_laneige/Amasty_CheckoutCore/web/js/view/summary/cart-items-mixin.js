@@ -17,12 +17,16 @@ define([
 				}
 				var normalItems = [],
 					promoItems = [];
-				items.forEach((item, index) => {
-					if (quoteItems[index]['ampromo_rule_id']) {
-						promoItems.push(item);
-					} else {
-						normalItems.push(item);
-					}
+				items.forEach((item) => {
+					quoteItems.forEach((quoteItem) => {
+						if (item['item_id'] == quoteItem['item_id']) {
+							if (quoteItem['ampromo_rule_id']) {
+								promoItems.push(item);
+							} else {
+								normalItems.push(item);
+							}
+						}
+					})
 				})
 				items = normalItems.concat(promoItems);
 				this.items(items);
