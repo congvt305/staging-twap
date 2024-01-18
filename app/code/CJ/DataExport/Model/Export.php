@@ -61,9 +61,25 @@ class Export extends \Amore\GcrmDataExport\Model\Export
     const ENTITY_REDEMPTION = 'cj_redemption';
     const ENTITY_REDEMPTION_POS = 'cj_redemption_pos';
     const ENTITY_CRON_SCHEDULE = 'cj_cron_schedule';
-
+    const ENTITY_ORDER_DATAMARKETING = 'bigquery_order';
+    const ENTITY_ORDER_ITEM_DATAMARKETING = 'bigquery_sales_order_item';
 
     /**
+     * @var \Amore\GcrmDataExport\Model\Export\Adapter\OrderCsv
+     */
+    private $gcrmOrderCsv;
+
+    /**
+     * @var \Amore\GcrmDataExport\Model\Export\Adapter\OrderItemsCsv
+     */
+    private $gcrmOrderitemCsv;
+
+    /**
+     * @param Export\Adapter\OrderCsv $orderCsv
+     * @param Export\Adapter\RedemptionCsv $redemptionCsv
+     * @param Export\Adapter\RedemptionPosCsv $redemptionPosCsv
+     * @param Export\Adapter\RmaCsv $rmaCsv
+     * @param Export\Adapter\CronScheduleCsv $cronScheduleCsv
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Framework\Serialize\SerializerInterface $serializer
@@ -74,8 +90,11 @@ class Export extends \Amore\GcrmDataExport\Model\Export
      * @param \Magento\ImportExport\Model\Export\Adapter\Factory $exportAdapterFac
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $coreDate
+     * @param ResolverInterface $localeResolver
      * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
      * @param \Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory $collectionFactory
+     * @param \Amore\GcrmDataExport\Model\Export\Adapter\OrderCsv $gcrmOrderCsv
+     * @param \Amore\GcrmDataExport\Model\Export\Adapter\OrderItemsCsv $gcrmOrderitemCsv
      * @param array $data
      */
     public function __construct(
@@ -97,6 +116,8 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         ResolverInterface $localeResolver,
         \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
         \Amore\GcrmDataExport\Model\ResourceModel\CustomImportExport\CollectionFactory $collectionFactory,
+        \Amore\GcrmDataExport\Model\Export\Adapter\OrderCsv $gcrmOrderCsv,
+        \Amore\GcrmDataExport\Model\Export\Adapter\OrderItemsCsv $gcrmOrderitemCsv,
         array $data = []
     ) {
         parent::__construct(
@@ -123,6 +144,8 @@ class Export extends \Amore\GcrmDataExport\Model\Export
         $this->cjRedemptionWriter = $redemptionCsv;
         $this->cjRedemptionPosWriter = $redemptionPosCsv;
         $this->cjCronScheduleWriter = $cronScheduleCsv;
+        $this->gcrmOrderCsv = $gcrmOrderCsv;
+        $this->gcrmOrderitemCsv = $gcrmOrderitemCsv;
         $this->fileFormats = $this->_exportConfig->getFileFormats();
     }
 
@@ -141,6 +164,8 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             case self::ENTITY_RMA:
             case self::ENTITY_ORDER:
             case self::ENTITY_CRON_SCHEDULE:
+            case self::ENTITY_ORDER_DATAMARKETING:
+            case self::ENTITY_ORDER_ITEM_DATAMARKETING:
                 $this->_logger->log('info', __('Begin export of %1', $this->getEntity()));
                 $fileFormat = $this->getFileFormat();
                 if (!isset($this->fileFormats[$fileFormat])) {
@@ -185,6 +210,10 @@ class Export extends \Amore\GcrmDataExport\Model\Export
                 return $this->cjOrderWriter;
             case self::ENTITY_CRON_SCHEDULE:
                 return $this->cjCronScheduleWriter;
+            case self::ENTITY_ORDER_DATAMARKETING:
+                return $this->gcrmOrderCsv;
+            case self::ENTITY_ORDER_ITEM_DATAMARKETING:
+                return  $this->gcrmOrderitemCsv;
             default:
                 return parent::returnExport($className);
         }
@@ -219,6 +248,8 @@ class Export extends \Amore\GcrmDataExport\Model\Export
             case self::ENTITY_REDEMPTION:
             case self::ENTITY_REDEMPTION_POS:
             case self::ENTITY_CRON_SCHEDULE:
+            case self::ENTITY_ORDER_DATAMARKETING:
+            case self::ENTITY_ORDER_ITEM_DATAMARKETING:
                 $date = $this->_dateModel->date('Y-m-d H:i:s', $runDate);
                 $this->collectionFactory
                     ->create()
