@@ -18,19 +18,16 @@ define([
             let telComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.telephone");
             telComponent.value(shippingAddress.telephone);
             registry.set("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.telephone", telComponent);
-            $("#shipping-new-address-form input[name='telephone']").val(shippingAddress.telephone);
         }
         if (shippingAddress.firstname) {
             let firstnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.firstname");
             firstnameComponent.value(shippingAddress.firstname);
             registry.set("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.firstname", firstnameComponent);
-            $("#shipping-new-address-form input[name='firstname']").val(shippingAddress.firstname);
         }
         if (shippingAddress.lastname) {
             let lastnameComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname");
             lastnameComponent.value(shippingAddress.lastname);
             registry.set("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.lastname", lastnameComponent);
-            $("#shipping-new-address-form input[name='lastname']").val(shippingAddress.lastname);
         }
         quote.shippingAddress(shippingAddress);
     };
