@@ -108,6 +108,20 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                         data-product-sku="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
                                                         action="<?= $block->escapeUrl($postParams['action']) ?>"
                                                         method="post">
+                                                    <?php if ($_item->getTypeId() == 'bundle'):?>
+                                                        <?php $selectionCollection = $_item->getTypeInstance(true)->getSelectionsCollection($_item->getTypeInstance(true)->getOptionsIds($_item),$_item);
+                                                          foreach ($selectionCollection as $selection) {
+                                                              $valueSelect = '';
+                                                              if ($selection->getIsDefault() && $selection->isSaleable()) {
+                                                                  $valueSelect = $selection->getSelectionId();
+                                                              }
+                                                        ?>
+                                                              <input type="hidden"
+                                                                     class="bundle-option-<?= $block->escapeHtmlAttr($selection->getOptionId()) ?>  product bundle option"
+                                                                     name="bundle_option[<?= $block->escapeHtmlAttr($selection->getOptionId()) ?>]"
+                                                                     value="<?= $valueSelect ?>"/>
+                                                          <?php } ?>
+                                                    <?php endif;?>
                                                     <input type="hidden" name="product" value="<?= /* @noEscape */ $_item->getId() ?>" />
                                                     <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
                                                             value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
