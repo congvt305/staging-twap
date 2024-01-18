@@ -183,8 +183,14 @@ define(
                     if (!this.isInitialDefaultShipping) {
                         if (customer.isLoggedIn()) {
                             let shippingMethod = quote.shippingMethod();
-                            if (addressList()[0] && shippingMethod.carrier_code === 'blackcat') {
+                            if (addressList().length && shippingMethod.carrier_code === 'blackcat') {
                                 let initialAddress = addressList()[0];
+                                addressList.each(function (address){
+                                    if (address.isDefaultShipping()) {
+                                        initialAddress = address;
+                                        return false;
+                                    }
+                                })
                                 selectShippingAddress(initialAddress);
                             }
 
