@@ -8,7 +8,7 @@
  * Time: 2:56 PM
  */
 /** @var $block \Magento\Framework\View\Element\Template */
-
+use Magento\Framework\Escaper;
 $pointsModalCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('point_policy_modal_block')->toHtml();
 ?>
 <a id="points-modal-info" type="button" class="action" data-trigger="trigger">
@@ -17,11 +17,11 @@ $pointsModalCmsBlock = $block->getLayout()->createBlock('Magento\Cms\Block\Block
 <div data-bind="mageInit: {
 'Magento_Ui/js/modal/modal':{
     'type': 'popup',
-    'title': jQuery.mage.__('Points Policy'),
+    'title': '<?= $escaper->escapeHtmlAttr(__('Points Policy')); ?>',
     'trigger': '[data-trigger=trigger]',
     'responsive': true,
     'buttons': [{
-        text: jQuery.mage.__('Confirm'),
+        text: '<?= $escaper->escapeHtmlAttr(__('Confirm')); ?>',
         class: 'agree button action primary'
     }]
 }}">
