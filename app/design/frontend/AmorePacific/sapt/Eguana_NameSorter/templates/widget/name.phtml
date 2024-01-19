@@ -64,7 +64,7 @@ $suffix = $block->showSuffix();
                                name="<?= $block->escapeHtmlAttr($block->getFieldName('lastname')) ?>"
                                value="<?= $block->escapeHtmlAttr($block->getObject()->getLastname()) ?>"
                                title="<?= $block->escapeHtmlAttr($block->getStoreLabel('lastname')) ?>"
-                               class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('lastname')) ?>" <?= ($block->getAttributeValidationClass('lastname') == 'required-entry') ? ' data-validate="{required:true}"' : '' ?>>
+                               class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('lastname')) ?> validate-cvs-address-lastname" <?= ($block->getAttributeValidationClass('lastname') == 'required-entry') ? ' data-validate="{required:true}"' : '' ?>>
                     </div>
                 </div>
                 <?php if ($middle) : ?>
@@ -87,7 +87,7 @@ $suffix = $block->showSuffix();
                                name="<?= $block->escapeHtmlAttr($block->getFieldName('firstname')) ?>"
                                value="<?= $block->escapeHtmlAttr($block->getObject()->getFirstname()) ?>"
                                title="<?= $block->escapeHtmlAttr($block->getStoreLabel('firstname')) ?>"
-                               class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('firstname')) ?>" <?= ($block->getAttributeValidationClass('firstname') == 'required-entry') ? ' data-validate="{required:true}"' : '' ?>>
+                               class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('firstname')) ?> validate-cvs-address-firstname" <?= ($block->getAttributeValidationClass('firstname') == 'required-entry') ? ' data-validate="{required:true}"' : '' ?>>
                     </div>
                 </div>
                 <?php if ($suffix) : ?>
