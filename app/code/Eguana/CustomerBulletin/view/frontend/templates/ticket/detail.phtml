@@ -12,7 +12,7 @@ $ticket = $viewmodel->getTicketDetail();
     </div>
     <div class="ticket-info">
         <div class="ticket-type">
-            <strong><?= $block->escapeHtml(__('Category'));?></strong>
+            <strong><?= $block->escapeHtml(__('Ticket Type'));?></strong>
             <?= $block->escapeHtml($ticket->getCategory());?>
             <div class="ticket-status">
                 <?= $block->escapeHtml($viewmodel->getStatus($ticket->getStatus()));?>
