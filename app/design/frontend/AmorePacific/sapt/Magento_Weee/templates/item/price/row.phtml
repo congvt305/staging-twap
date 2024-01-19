@@ -15,7 +15,7 @@ $weeeHelper = $block->getData('weeeHelper');
 $item = $block->getItem();
 
 $price = round($item->getPrice());
-$originalPrice = (int)$item->getProduct()->getPrice();
+$originalPrice = $item->getProduct() ? (int)$item->getProduct()->getPrice() : $item->getOriginalPrice();
 $discountPrice = $originalPrice - $price;
 $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
 $isBundleDynamic = ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE && $item->getProduct()->getPriceType() == \Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC);
