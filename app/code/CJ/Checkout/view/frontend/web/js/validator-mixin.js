@@ -25,8 +25,6 @@ define([
         validator.addRule(
             'validate-cvs-address-lastname',
             function(value, element) {
-                //must get again because if the default lastName customer > 10 will get error
-                value = $('input[name="lastname"]').val();
                 return /^[a-zA-Z]{1,9}$/.test(value) || /^[\u4e00-\u9fa5]{1,4}$/.test(value) || /^\s/.test(value);
             },
             $.mage.__('Last name must be less than 5 Chinese alphabets or 10 English alphabets.')
@@ -35,9 +33,9 @@ define([
         validator.addRule(
             'validate-cvs-address-firstname',
             function(value, element) {
-                if (typeof $('input[name="lastname"]').val() != 'undefined') {
-                    var lastname = $('input[name="lastname"]').val();
-                    value = lastname + $('input[name="firstname"]').val();//must get again in case when choose address with English name then click edit new address with has Chinese Name
+                var lastname = $('#opc-new-shipping-address input[name="lastname"]').val();
+                if (typeof lastname != 'undefined') {
+                    value = lastname + value;
                     return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value) || /^\s/.test(value);
                 }
                 return true;
