@@ -15,5 +15,11 @@
                 <argument translate="true" name="label" xsi:type="string">Order Information</argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="order.date">
+            <arguments>
+                <argument name="refund_online_view_model" xsi:type="object">\Eguana\CustomerRefund\ViewModel\Refund</argument>
+                <argument name="refund_offline_view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
