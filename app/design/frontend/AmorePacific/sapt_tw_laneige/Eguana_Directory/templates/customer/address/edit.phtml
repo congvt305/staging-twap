@@ -34,7 +34,7 @@ $countryPosCode = $block->getAddress()->getCustomAttribute($attributeCode) ? $bl
                 <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
                 <div class="control">
                     <div>
-                    <input type="text" placeholder="<?= $block->escapeHtml(__('Please enter a phone number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?>" id="telephone"
+                    <input type="text" placeholder="<?= $block->escapeHtml(__('Please enter a phone number')) ?>" name="telephone" value="<?= $block->escapeHtmlAttr($block->getAddress()->getTelephone()) ?>" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" class="input-text <?= /* @noEscape */ $addressHelper->getAttributeValidationClass('telephone') ?> validate-cvs-address-mobile-number" id="telephone"
                         onkeypress='validate(event)'
                     />
                     </div>
