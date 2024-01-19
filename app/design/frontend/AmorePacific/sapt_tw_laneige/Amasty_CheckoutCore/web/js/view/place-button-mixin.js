@@ -21,6 +21,7 @@ define([
             }
             let deliveryMethod = quote.shippingMethod();
             let validateShippingAddressResult = false;
+            let message = '';
             if (deliveryMethod.carrier_code === 'blackcat') {
                 let telephoneComponent = registry.get("checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.telephone");
                 let telephoneValidateResult = telephoneComponent.validate();
@@ -39,6 +40,15 @@ define([
                 if (streetValidateResult && regionIdValidateResult && telephoneValidateResult.valid && firstnameValidateResult.valid && lastnameValidateResult.valid) {
                     validateShippingAddressResult = true;
                 }
+                if (!validateShippingAddressResult) {
+                    message = $t('Please check the shipping address information.');
+                    if (!firstnameValidateResult.valid || !lastnameValidateResult.valid) {
+                        message = $t('Last name + first name must be the most 5 Chinese alphabets or 10 English alphabets and should not contain spaces.');
+                    } else if (!telephoneValidateResult.valid) {
+                        message = $t('Please enter exactly proper mobile number. Start with 09 and 10 digit.');
+                    }
+                }
+
             } else if (deliveryMethod.carrier_code === 'gwlogistics') {
                 //Move code from cvs-selector to here
                 var emailValidationResult,
@@ -83,12 +93,22 @@ define([
                     checkoutData.setShippingAddressFromData(shippingAddress);
                     setShippingInformationAction();
                 }
+                if (!validateShippingAddressResult) {
+                    message = $t('Please check the shipping address information.');
+                    if (!firstnameValidationResult || !lastnameValidationResult) {
+                        message = $t('Last name + first name must be the most 5 Chinese alphabets or 10 English alphabets and should not contain spaces.');
+                    } else if (!mobileValidationResult) {
+                        message = $t('Please enter exactly proper mobile number. Start with 09 and 10 digit.');
+                    }
+                }
+
+
             }
 
             if (validateShippingAddressResult) {
                 return this._super();
             } else {
-                alert({content: $t('Please check the shipping address information.')});
+                alert({content: message});
             }
             return false;
         },
