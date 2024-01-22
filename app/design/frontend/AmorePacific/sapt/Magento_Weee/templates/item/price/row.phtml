@@ -65,7 +65,7 @@ if ($isBundleDynamic) {
         if ($discountPrice > 0) :
             ?>
             <?php
-            $discountPercent = round($discountPrice / $originalPrice * 100);
+            $discountPercent = floor($discountPrice / $originalPrice * 100);
             $originalPriceFormat = $block->formatPrice($originalPrice * $item->getQty());
             ?>
             <span class="cart-item-discount">

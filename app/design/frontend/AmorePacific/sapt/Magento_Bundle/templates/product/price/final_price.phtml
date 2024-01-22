@@ -32,7 +32,7 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
         ]); ?>
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
 
-            <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $minimalPrice->getValue())):?>
+            <?php if($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $minimalPrice->getValue())):?>
                 <span class="discount-label">
                         <?= $discountedPrice ?>%
                 </span>
@@ -52,7 +52,7 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
         <p class="price-from">
             <span class="price-label"><?= $block->escapeHtml(__('From'))?></span>
             <?php if ($minimalPrice < $minimalRegularPrice): ?>
-                <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $minimalPrice->getValue()) ):?>
+                <?php if($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $minimalPrice->getValue()) ):?>
                     <span class="discount-label">
                         <?= $discountedPrice?>%
                     </span>
@@ -75,7 +75,7 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
         <p class="price-to">
             <span class="price-label"><?= __('To')?></span>
             <?php if ($maximalPrice < $maximalRegularPrice): ?>
-                <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $maximalRegularPrice->getValue())):?>
+                <?php if($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $maximalRegularPrice->getValue())):?>
                     <span class="discount-label">
                         <?= $discountedPrice?>%
                     </span>
@@ -98,7 +98,7 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
     <?php else: ?>
         <p class="bundle-regular-price">
         <?php if ($minimalPrice < $minimalRegularPrice): ?>
-            <?php if($discountedPrice = $helper->getDiscountPrice($minimalRegularPrice->getValue(), $minimalPrice->getValue())):?>
+            <?php if($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $minimalPrice->getValue())):?>
                 <span class="discount-label">
                     <?= $discountedPrice?>%
                 </span>

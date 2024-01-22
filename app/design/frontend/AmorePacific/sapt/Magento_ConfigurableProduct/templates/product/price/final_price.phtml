@@ -25,7 +25,7 @@ $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice 
 <p class="price-title configurable-price-title"><?= $block->escapeHtml(__('Price')) ?></p>
     <?php if (!$block->isProductList() && $block->hasSpecialPrice()): ?>
         <?php if ($discountPercent): ?>
-            <span class="discount-label"><?= round($discountPercent) ?>%</span>
+            <span class="discount-label"><?= floor($discountPercent) ?>%</span>
         <?php endif; ?>
         <span class="special-price config-special-price">
             <?php
@@ -52,7 +52,7 @@ $discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice 
 
     <?php elseif ($block->isProductList() && $block->hasSpecialPrice()): ?>
         <?php if ($discountPercent): ?>
-            <span class="discount-label"><?= round($discountPercent) ?>%</span>
+            <span class="discount-label"><?= floor($discountPercent) ?>%</span>
         <?php endif; ?>
         <span class="special-price">
             <?php /* @escapeNotVerified */ echo $block->renderAmount($finalPriceModel->getAmount(), [
