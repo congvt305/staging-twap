@@ -108,7 +108,7 @@ define([
             if (validateShippingAddressResult) {
                 return this._super();
             } else {
-                alert({content: message});
+                alert({content: "<div class='checkout-error-message'>" + message + "</div>"});
             }
             return false;
         },
