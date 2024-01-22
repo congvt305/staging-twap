@@ -218,7 +218,7 @@ define([
                     'buttons': [{
                         class: 'action-primary action-accept',
                         type: 'button',
-                        text: 'Ok',
+                        text: 'OK',
 
                         /** Click action */
                         click: function () {
