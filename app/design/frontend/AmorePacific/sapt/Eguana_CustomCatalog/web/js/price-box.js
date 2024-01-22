@@ -35,7 +35,7 @@ define([
                     if (this.cache.displayPrices.oldPrice != undefined) {
                         var oldPrice = this.cache.displayPrices.oldPrice.amount;
                         if (price.final != oldPrice) {
-                            var discount = Math.round((oldPrice - price.final) / oldPrice * 100);
+                            var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
                             $('.discount-label').text(discount+'%');
                         }
                     }
