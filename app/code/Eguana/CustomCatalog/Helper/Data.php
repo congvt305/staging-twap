@@ -80,4 +80,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $total;
     }
+
+    public function getDiscountPriceForSapt($price, $finalPrice)
+    {
+        $discount =  $price - $finalPrice ;
+        if ($discount > 0 && $price > 0 ) {
+            return floor($discount/$price * 100);
+        }
+        return false;
+    }
 }
