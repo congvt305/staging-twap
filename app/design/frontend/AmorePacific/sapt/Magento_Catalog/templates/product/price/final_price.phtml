@@ -25,7 +25,7 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
 ?>
 <?php if ($block->hasSpecialPrice()): ?>
 
-    <?php if ($discountedPrice = $helper->getDiscountPrice($priceModel->getValue() ,  $finalPriceModel->getValue())):?>
+    <?php if ($discountedPrice = $helper->getDiscountPriceForSapt($priceModel->getValue() ,  $finalPriceModel->getValue())):?>
         <span class="discount-label">
                 <?= $discountedPrice?>%
         </span>
