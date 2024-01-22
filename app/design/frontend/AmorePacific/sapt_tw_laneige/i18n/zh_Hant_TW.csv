@@ -1230,3 +1230,4 @@
 "Ticket Type","類型"
 "The maximum file name length is %1","檔名長度不可超過%1"
 "characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).","字且不能包含特殊符號"
+"Close button","關閉"
