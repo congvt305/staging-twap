@@ -219,6 +219,10 @@ class SapOrderReturnData extends AbstractSapOrder
             $dcamt = $this->itemsDiscountAmount;
             $miamt = $this->itemsMileage;
             $slamt = $nsamt - $dcamt;
+            //we need this item to set amount for refund with Payoo specially partial return
+            if ($websiteCode == 'vn_laneige_website') {
+                $rma->setPartialTotalAmount($this->itemsGrandTotal);
+            }
         }
 
         $isMileageOrder = ($slamt == $miamt && $slamt > 0);
