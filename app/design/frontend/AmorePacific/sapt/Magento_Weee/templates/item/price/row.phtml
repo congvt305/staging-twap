@@ -67,13 +67,14 @@ if ($isBundleDynamic) {
             <?php
             $discountPercent = floor($discountPrice / $originalPrice * 100);
             $originalPriceFormat = $block->formatPrice($originalPrice * $item->getQty());
+            $priceFormat = $block->formatPrice($price * $item->getQty());
             ?>
             <span class="cart-item-discount">
                         <?= __('%1%', $discountPercent) ?>
                     </span>
             <span class="cart-final-price">
                         <?= $block->escapeHtml(
-                            $this->helper(Magento\Checkout\Helper\Data::class)->formatPrice($price),
+                            $this->helper(Magento\Checkout\Helper\Data::class)->formatPrice($priceFormat),
                             ['span']
                         ) ?>
                     </span>
