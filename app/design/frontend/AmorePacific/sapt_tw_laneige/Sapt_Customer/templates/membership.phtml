@@ -4,6 +4,7 @@ $customer = $block->getCustomer();
 $groupName = $block->getGroupName($customer->getGroupId());
 $couponCount = number_format($block->getCountCoupon());
 $pointSearchResult = $block->getPointsSearchResult();
+$memberInfo = $block->getMemberInfo();
 ?>
 
 <div class="membership_section">
@@ -12,7 +13,7 @@ $pointSearchResult = $block->getPointsSearchResult();
             <div class="member_info">
             <p class="hi">Hi,</p>
             <h3><?= $customer->getName() ?></h3>
-                <p><?= $block->escapeHtml(__('Member No.')) ?><span><?= $pointSearchResult['cstmIntgSeq'] ?? ''?></span></p>
+                <p><?= $block->escapeHtml(__('Member No.')) ?><span><?= $memberInfo['cstmNO'] ?? ''?></span></p>
             </div>
             <div class="member_point">
                 <a href="<?=$block->getMembershipBenefitsUrl()?>" class="link"><?= __('All benefits') ?></a>

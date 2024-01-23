@@ -7,6 +7,7 @@
  */
 /** @var $block \Amore\PointsIntegration\Block\Points\Index */
 $pointSearchResult = $block->getPointsSearchResult();
+$memberInfo = $block->getMemberInfo();
 ?>
 <div class="block block-points-integration">
     <div class="block-title">
@@ -17,7 +18,7 @@ $pointSearchResult = $block->getPointsSearchResult();
             <div class="pos-customer-info">
                 <div class="pos-customer-name">
                     <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . ' ' . $pointSearchResult['firstName']; ?></strong>
-                    <span>(<?= $block->escapeHtml(__('Customer Code')) ?>: <?= $pointSearchResult['cstmIntgSeq']; ?>)</span>
+                    <span>(<?= $block->escapeHtml(__('Customer Code')) ?>: <?= $memberInfo['cstmNO'] ?? ''; ?>)</span>
                 </div>
                 <div class="pos-customer-grade-name">
                     <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
