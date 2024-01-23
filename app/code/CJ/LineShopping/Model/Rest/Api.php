@@ -205,6 +205,10 @@ class Api
         // @codingStandardsIgnoreEnd
         $data['hash'] = $hashHmac;
 
+	    $data[Data::IS_NEW_MEMBER] = false;
+		if ($this->dataHelper->isNewMember($order)){
+			$data[Data::IS_NEW_MEMBER] = true;
+		}
         return $data;
     }
 

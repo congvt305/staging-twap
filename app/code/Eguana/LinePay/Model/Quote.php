@@ -110,9 +110,7 @@ class Quote
     {
         try {
             $this->checkoutSession->getQuote()->reserveOrderId();
-            $timestamp = $this->dateTime->timestamp();
             $origReserveId = $this->checkoutSession->getQuote()->getReservedOrderId();
-            $reserveId = $origReserveId.$timestamp;
             $quoteId = $this->checkoutSession->getQuote()->getId();
             $currentQuote = $this->quoteRepository->get($quoteId);
             $shippingAddress = $currentQuote->getShippingAddress();
@@ -163,7 +161,7 @@ class Quote
             }
             //End check new quote
 
-            return $reserveId;
+            return $origReserveId;
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage(__($e->getMessage()));
             throw new LocalizedException(__($e->getMessage()));
