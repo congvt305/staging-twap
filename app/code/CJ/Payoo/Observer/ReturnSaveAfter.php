@@ -68,7 +68,11 @@ class ReturnSaveAfter implements ObserverInterface
                 $invoice = $order->getInvoiceCollection()->getFirstItem();
                 $invoicedata = $this->invoice->loadByIncrementId($invoice->getIncrementId());
                 $creditmemo = $this->creditmemoFactory->createByOrder($order);
-                $creditmemo->setInvoice($invoicedata );
+                if ($return->getPartialTotalAmount()) {
+                    $creditmemo->setBaseGrandTotal($return->getPartialTotalAmount());
+                    $creditmemo->setBaseSubtotal($return->getPartialTotalAmount());
+                }
+                $creditmemo->setInvoice($invoicedata);
                 if (!$order->getTotalRefunded()) {
                     $this->creditmemoService->refund($creditmemo);
                 }
