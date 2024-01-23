@@ -136,6 +136,6 @@ class Data
         $orderCollection = $this->orderCollectionFactory->create()
             ->addFieldToFilter(self::IS_LINE_SHOPPING, 1)
             ->addAttributeToFilter('customer_email', $order->getCustomerEmail());
-        return $orderCollection->getSize() < 1;
+        return $orderCollection->getSize() == 1;
     }
 }
