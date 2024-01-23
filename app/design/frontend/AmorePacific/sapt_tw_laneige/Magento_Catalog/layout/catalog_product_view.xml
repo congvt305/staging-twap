@@ -28,6 +28,7 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="product.info.upsell" remove="true"/>
         <referenceBlock name="product.info.product.faq" remove="true" />
     </body>
 </page>

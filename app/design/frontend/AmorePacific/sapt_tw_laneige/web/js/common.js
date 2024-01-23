@@ -483,6 +483,12 @@ require([
                 $('.mobile-my-page').toggleClass('_active');
             });
         }
+
+        $(document).ajaxStop(function(){
+            if($('.rewards .payment-option-content').is(":hidden")){
+                $('.rewards .amcheckout-icon.-plus').trigger('click');
+            }
+        });
     });
 
     /**
