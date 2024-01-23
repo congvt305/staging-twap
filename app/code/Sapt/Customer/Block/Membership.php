@@ -1,6 +1,7 @@
 <?php
 namespace Sapt\Customer\Block;
 
+use Amore\CustomerRegistration\Model\POSSystem;
 use CJ\CustomCustomer\Helper\Data;
 use Magento\Customer\Api\Data\GroupInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
@@ -36,6 +37,16 @@ class Membership extends \CJ\Review\Block\Top\Info
      * @var PointsIndex
      */
     private $pointsIndex;
+    /**
+     * @var Data
+     */
+    private $customerHelper;
+
+    /**
+     * @var
+     */
+    private $posSystem;
+
     public function __construct(
         Template\Context $context,
         Session $customerSession,
@@ -45,6 +56,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         Json              $json,
         CustomerPointsSearch $customerPointsSearch,
         PointsIndex $pointsIndex,
+        POSSystem $posSystem,
         Data $customerHelper,
         array $data = []
     ) {
@@ -56,6 +68,7 @@ class Membership extends \CJ\Review\Block\Top\Info
         $this->customerPointsSearch = $customerPointsSearch;
         $this->pointsIndex = $pointsIndex;
         $this->customerHelper = $customerHelper;
+        $this->posSystem = $posSystem;
         parent::__construct(
             $context,
             $orderCollectionFactory,
@@ -127,4 +140,18 @@ class Membership extends \CJ\Review\Block\Top\Info
     public function getMembershipBenefitsUrl() {
         return $this->customerHelper->getMembershipBenefitsUrl();
     }
+
+    /**
+     * Get customer data from POS
+     *
+     * @return array
+     */
+    public function getMemberInfo() {
+        $customer = $this->getCustomer();
+        return $this->posSystem->getMemberInfo(
+            $customer->getFirstname(),
+            $customer->getLastname(),
+            $customer->getMobileNumber(),
+            $customer->getStoreId()
+        );    }
 }
