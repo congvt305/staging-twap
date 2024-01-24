@@ -483,12 +483,6 @@ require([
                 $('.mobile-my-page').toggleClass('_active');
             });
         }
-
-        $(document).ajaxStop(function(){
-            if($('.rewards .payment-option-content').is(":hidden")){
-                $('.rewards .amcheckout-icon.-plus').trigger('click');
-            }
-        });
     });
 
     /**
@@ -545,13 +539,10 @@ require([
 
     });
 
-    $(document).ready(function() {
-        $('.product-image-wrapper').each(function() {
-                  $(this).children('img').height($(this).innerHeight());
-                  $(this).children('img').width($(this).innerWidth());
-              })
-       
-      });
-
-
+    $(document).ready(function () {
+        $('.product-image-wrapper').each(function () {
+            $(this).children('img').height($(this).innerHeight());
+            $(this).children('img').width($(this).innerWidth());
+        })
+    });
 });
