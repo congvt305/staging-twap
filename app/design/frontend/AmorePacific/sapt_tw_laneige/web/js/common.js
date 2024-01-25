@@ -539,13 +539,10 @@ require([
 
     });
 
-    $(document).ready(function() {
-        $('.product-image-wrapper').each(function() {
-                  $(this).children('img').height($(this).innerHeight());
-                  $(this).children('img').width($(this).innerWidth());
-              })
-       
-      });
-
-
+    $(document).ready(function () {
+        $('.product-image-wrapper').each(function () {
+            $(this).children('img').height($(this).innerHeight());
+            $(this).children('img').width($(this).innerWidth());
+        })
+    });
 });

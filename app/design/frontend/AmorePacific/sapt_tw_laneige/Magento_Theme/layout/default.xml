@@ -47,5 +47,6 @@
             </arguments>
         </referenceBlock>
         <referenceBlock name="catalog.compare.sidebar" remove="true"/> 
+        <move element="tw_account_dashboard_banner" destination="page.bottom.container" after="-"/>
     </body>
 </page>
