@@ -36,14 +36,15 @@ define([
                 $('.inner-store:not(:first-of-type)').css('display', 'block');
                 $('.store-list:first-of-type').addClass('current-li' , 300, "easeOutSine" );
                 $('.store-list:first-of-type').addClass('selected-store', 300 , "easeOutSine" );
-                $('li.store-list').on('click', function() {
-                    if ($(this).hasClass('current-li')){
-                        $(this).removeClass('current-li',300, "easeOutSine" );
-                        $(this).find('.inner-store').slideUp(300, "easeOutSine");
+                $('.store-info').on('click', function() {
+                    var liTag = $(this).parent('li.store-list');
+                    if (liTag.hasClass('current-li')){
+                        liTag.removeClass('current-li',300, "easeOutSine" );
+                        liTag.find('.inner-store').slideUp(300, "easeOutSine");
                     } else {
-                        $(".current-li").not(this).removeClass("current-li",300, "easeOutSine").find('.store-info').find('.inner-store').slideUp(300, "easeOutSine");
-                        $(this).toggleClass('current-li',300, "easeOutSine" ).find('.store-info').find('.inner-store').slideToggle(300, "easeOutSine");
-                        $(this).find('.inner-store').slideDown(300, "easeOutSine");
+                        $(".current-li").not(liTag).removeClass("current-li",300, "easeOutSine").find('.store-info').find('.inner-store').slideUp(300, "easeOutSine");
+                        liTag.toggleClass('current-li',300, "easeOutSine" ).find('.store-info').find('.inner-store').slideToggle(300, "easeOutSine");
+                        liTag.find('.inner-store').slideDown(300, "easeOutSine");
                     }
                 });
             } else {
