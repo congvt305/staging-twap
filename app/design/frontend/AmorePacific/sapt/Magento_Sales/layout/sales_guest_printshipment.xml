@@ -9,5 +9,21 @@
     <body>
         <move element="order.status" destination="content" before="-"/>
         <move element="order.date" destination="order.status" after="-"/>
+        <referenceBlock name="order.date">
+            <arguments>
+                <argument name="refund_online_view_model" xsi:type="object">\Eguana\CustomerRefund\ViewModel\Refund
+                </argument>
+                <argument name="refund_offline_view_model" xsi:type="object">Eguana\CustomerRefund\ViewModel\Refund
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="sales.order.history">
+            <block class="Sapt\Sales\Block\Order\History\Items" name="order_items" template="Magento_Sales::order/items.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Sapt\Sales\ViewModel\Product</argument>
+                </arguments>
+                <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list"/>
+            </block>
+        </referenceBlock>
     </body>
 </page>
