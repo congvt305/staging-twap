@@ -99,6 +99,7 @@ $orderGrandTotal = $_order->getGrandTotal();
                         clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                        <?php if (!$product->isInStock()): ?>disabled="disabled"<?php endif; ?>
                         class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                 </button>
