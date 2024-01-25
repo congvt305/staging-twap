@@ -126,11 +126,17 @@
             } else {
                 if (!validateAddress) {
                     message.removeClass('no-display');
+                    setTimeout(function(){
+                        message.addClass('no-display');
+                    }, 3000)
                     $('html, body').animate({
                         scrollTop: message.offset().top - 100
                     });
                 } else if (!validateTel) {
                     messageTel.removeClass('no-display')
+                    setTimeout(function(){
+                        messageTel.addClass('no-display');
+                    }, 3000)
                     $('html, body').animate({
                         scrollTop: messageTel.offset().top - 100
                     });
@@ -150,8 +156,10 @@
          * Edit address.
          */
         editAddress: function () {
-            formPopUpState.isVisible(true);
-            this.showPopup();
+            $.when(this.selectAddress()).done(function () {
+                formPopUpState.isVisible(true);
+                this.showPopup();
+            });
         },
 
         /**

@@ -649,7 +649,7 @@ define(
                             'country_pos_code': addressData['country_pos_code']
                         };
                         // New address must be selected as a shipping address
-                        let shippingAddressForm = $('#checkout-step-shipping #co-shipping-form');
+                        let shippingAddressForm = $('#co-shipping-form');
                         addressData.firstname = shippingAddressForm.find('[name="firstname"]').val();
                         addressData.lastname = shippingAddressForm.find('[name="lastname"]').val();
                         addressData.telephone = shippingAddressForm.find('[name="telephone"]').val();
