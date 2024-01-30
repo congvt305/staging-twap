@@ -10,4 +10,7 @@
     <action name="customer/ajax/login">
         <section name="customer-ap-data"/>
     </action>
+    <action name="sociallogin/login/validatelogin">
+        <section name="customer-ap-data"/>
+    </action>
 </config>

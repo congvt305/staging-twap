@@ -12,16 +12,12 @@
     //회원가입
     var AP_JOIN_NAME = "<?= $block->escapeHtml($block->getJoinName()) ?>";
 </script>
-
-<?php if ($block->getEventName()) : ?>
-    <script type="text/x-magento-init">
+<script type="text/x-magento-init">
     {
-        "#form-validate": {
+        "#login-form": {
             "Amore_GaTagging/js/customer/ap-push-data":{
                 "eventName": "<?= /* @noEscape */$block->getEventName() ?>"
             }
         }
     }
 </script>
-<?php endif; ?>
-

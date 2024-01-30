@@ -130,4 +130,41 @@ class Data extends AbstractHelper
         }
         return 0;
     }
+
+
+    /**
+     * @param $currentProduct
+     * @return mixed
+     */
+    public function getProductOriginalPrice($currentProduct)
+    {
+        $productType = $currentProduct->getTypeId();
+        if ($productType == 'bundle') {
+            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue());
+        } else if ($productType == 'configurable') {
+            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount()->getValue());
+        } else {
+            $originalPrice = intval($currentProduct->getPrice());
+        }
+
+        return $originalPrice;
+    }
+
+    /**
+     * @param $currentProduct
+     * @return float|mixed
+     */
+    public function getProductDiscountedPrice($currentProduct)
+    {
+        $productType = $currentProduct->getTypeId();
+        if ($productType == 'bundle') {
+            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
+        } elseif ($productType == 'configurable'){
+            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getValue());
+        } else {
+            $price = intval($currentProduct->getFinalPrice());
+        }
+
+        return $price;
+    }
 }

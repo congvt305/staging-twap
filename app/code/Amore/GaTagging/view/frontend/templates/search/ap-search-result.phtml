@@ -19,9 +19,15 @@
     var AP_SEARCH_PRDRESULT = AP_SEARCH_PRDRESULT || '';
     AP_SEARCH_PRDRESULT = "<?= $block->escapeHtml($block->getResultProductData())?>";
 
+    var AP_SEARCH_RESULT;
+    AP_SEARCH_RESULT = "<?= $block->getSearchNumber()? 'Y': 'N'?>";
+
     var AP_SEARCH_NUM = AP_SEARCH_NUM || '';
     AP_SEARCH_NUM = "<?= $block->escapeHtml($block->getSearchNumber())?>";
 
-    var AP_SEARCH_TYPE = AP_SEARCH_TYPE || '';
+    var AP_SEARCH_TYPE;
     AP_SEARCH_TYPE = "<?= $block->escapeHtml($block->getSearchType())?>";
+
+    var AP_ECOMM_CURRENCY;
+    AP_ECOMM_CURRENCY = "<?= $block->escapeHtml($block->getCurrentCurrencyCode())?>";
 </script>

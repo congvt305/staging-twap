@@ -118,17 +118,21 @@ class Ap
     {
         $productInfos = [];
         $productInfo = [];
+        $prdPrice = $this->getProductOriginalPrice($product);
+        $price = $this->getProductDiscountedPrice($product);
         $productInfo['name'] = $product->getName();
         $productInfo['code'] = $product->getSku();
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
-        $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
+        $productInfo['prdprice'] = $prdPrice;
+        $productInfo['discount'] = $prdPrice - $price;
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
         $productInfo['cate'] = $this->helper->getProductCategory($product);
         $productInfo['catecode'] = '';
-        $productInfo['price'] = $this->getProductDiscountedPrice($product);
+        $productInfo['apg_brand_code'] = substr($product->getSku(), 0, 5);
+        $productInfo['price'] = $price;
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
         $productInfo['quantity'] = $qty ? intval($qty) : 0;
@@ -145,17 +149,21 @@ class Ap
     {
         $productInfos = [];
         $productInfo = [];
+        $prdPrice = $this->getProductOriginalPrice($product);
+        $price = $this->getProductDiscountedPrice($product);
         $productInfo['name'] = $product->getName();
         $productInfo['code'] = $product->getSku();
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
-        $productInfo['prdprice'] = $this->getProductOriginalPrice($product);
+        $productInfo['prdprice'] = $prdPrice;
+        $productInfo['discount'] = $prdPrice - $price;
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
         $productInfo['cate'] = $this->helper->getProductCategory($product);
+        $productInfo['apg_brand_code'] = substr($product->getSku(), 0, 5);
         $productInfo['catecode'] = '';
-        $productInfo['price'] = $this->getProductDiscountedPrice($product);
+        $productInfo['price'] = $price;
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
         $productInfo['quantity'] = $qty ? intval($qty) : 0;

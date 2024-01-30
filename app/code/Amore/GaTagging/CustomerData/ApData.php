@@ -10,9 +10,9 @@ namespace Amore\GaTagging\CustomerData;
 
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Customer\Model\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Eav\Model\Config;
 
 class ApData implements SectionSourceInterface
 {
@@ -38,18 +38,32 @@ class ApData implements SectionSourceInterface
      */
     protected $groupRepository;
 
+    /**
+     * @var \Eguana\SocialLogin\Model\SocialLoginHandler
+     */
+    private $socialLoginModel;
+
+    /**
+     * @var Config
+     */
+    private $eavConfig;
+
     public function __construct(
         \Magento\Framework\HTTP\Header $httpHeader,
         \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
+        \Eguana\SocialLogin\Model\SocialLoginHandler $socialLoginModel,
+        Config $eavConfig
     ) {
         $this->dateTimeFactory = $dateTimeFactory;
         $this->customerSession = $customerSession;
         $this->httpContext = $httpContext;
         $this->httpHeader = $httpHeader;
         $this->groupRepository = $groupRepository;
+        $this->socialLoginModel = $socialLoginModel;
+        $this->eavConfig = $eavConfig;
     }
 
     /**
@@ -59,22 +73,51 @@ class ApData implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        if (!$this->isLoggedIn()) {
-            return [];
+        if (!$this->customerSession->isLoggedIn()) {
+            return [
+                'AP_DATA_GCID' => 'undefined',
+                'AP_DATA_ISLOGIN' => 'N',
+                'AP_DATA_LOGINTYPE' => 'undefined',
+                'AP_DATA_CD' => 'undefined',
+                'AP_DATA_CG' => 'undefined',
+                'AP_DATA_CT' => 'undefined'
+            ];
         }
 
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         $customer = $this->customerSession->getCustomer();
+
+        $coreSession = $this->socialLoginModel->getCoreSession();
+        $loginType = 'NORMAL';
+        if (isset($coreSession->getData()['socialmedia_type'])) {
+            $loginType = $coreSession->getData()['socialmedia_type'];
+        }
+        $genderOptions = $this->eavConfig->getAttribute('customer','gender')->getSource()->getAllOptions();
+        $genderLabel = '';
+        $gender = '';
+        if ($customer->getGender()) {
+            foreach ($genderOptions as $genderOption) {
+                if ($genderOption['value'] == $customer->getGender()) {
+                    $genderLabel = $genderOption['label'];
+                    break;
+                }
+            }
+            if ($genderLabel == 'Male') {
+                $gender = 'M';
+            } elseif($genderLabel == 'Female') {
+                $gender = 'F';
+            }
+        }
 
         return [
             'AP_DATA_GCID' => hash('sha512', $customer->getId()),
             'AP_DATA_CID' => $this->getCustomerIntegrationNumber($customer),
             'AP_DATA_ISMEMBER' => $this->getCustomerIntegrationNumber($customer) !== 'X' ? 'O' : 'X',
             'AP_DATA_ISLOGIN' => 'Y',
-            'AP_DATA_LOGINTYPE' => 'NORMAL', // 비회원은 없다. 만약 허용한다면 비회원 주문조회, 모바일 로그인 추후 수정 필요
+            'AP_DATA_LOGINTYPE' => $loginType,
             'AP_DATA_CA' => $customer->getDob() ? $this->getCustomerAge($customer->getDob()) : '',
             'AP_DATA_CD' => $customer->getDob() ? $this->getCustomerBirthYear($customer->getDob()) : '',
-            'AP_DATA_CG' => $customer->getGender() ? $customer->getGender() : '',
+            'AP_DATA_CG' => $gender,
             'AP_DATA_CT' => $this->getCustomerGroupCode($customer->getGroupId())
         ];
     }
@@ -99,15 +142,6 @@ class ApData implements SectionSourceInterface
         } catch (\Exception $e) {
             return '';
         }
-    }
-    private function isLoggedIn()
-    {
-        return $this->httpContext->getValue(Context::CONTEXT_AUTH);
-    }
-
-    private function isMobile()
-    {
-        return preg_match("/(android|ipod|ipad|blackberry|windows\ ce|lg|mot|samsung|sonyericsson)/i", $this->httpHeader->getHttpUserAgent());
     }
 
     protected function getCustomerGroupCode($groupId)

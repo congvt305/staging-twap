@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- 2.3 주요페이지 로그인 가입버튼 AP & 이벤트 트리거 -->
-        <referenceContainer name="after.body.start">
+        <!-- PAGE SPECIFIC AP -->
+        <referenceContainer name="before.body.end">
             <block class="Amore\GaTagging\Block\GaTagging"
-                   name="ap_customer_register"
+                   name="ap_customer_login"
                    ifconfig="amore_gatagging/tagmanager/active"
-                   after="amore_gatagging_common_ap"
-                   template="Amore_GaTagging::customer/ap-customer-register.phtml" >
+                   after="amore_tagging_common_pageready"
+                   template="Amore_GaTagging::customer/ap-customer-login.phtml" >
                 <arguments>
-                    <argument name="event_name" xsi:type="string">sign_up_complete</argument>
+                    <argument name="event_name" xsi:type="string">login_complete</argument>
                 </arguments>
             </block>
         </referenceContainer>
