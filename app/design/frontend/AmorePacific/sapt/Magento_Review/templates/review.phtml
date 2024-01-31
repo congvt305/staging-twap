@@ -7,7 +7,7 @@
 /** @var \Magento\Review\Block\Product\Review $block */
 ?>
 <div class="product attribute review"  id="review-form">
-    <strong class="type click_show review">Review</strong>
+    <strong class="type click_show review"><?= $block->escapeHtml(__('Reviews')) ?></strong>
     <div class="value content_detail content_review" style="display: none">
         <div id="product-review-container" data-role="product-review"></div>
         <?= $block->getChildHtml() ?>

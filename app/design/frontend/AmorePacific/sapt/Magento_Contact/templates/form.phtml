@@ -15,7 +15,7 @@
       data-mage-init='{"validation":{}}'>
     <fieldset class="fieldset">
         <div class="field name required">
-            <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+            <label class="label" for="name"><span><?= $block->escapeHtml(__('Enter Name')) ?></span></label>
             <div class="control">
                 <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?= $block->escapeHtmlAttr($this->helper(\Magento\Contact\Helper\Data::class)->getPostValue('name') ?: $this->helper(\Magento\Contact\Helper\Data::class)->getUserName()) ?>" class="input-text" type="text" data-validate="{required:true}"/>
             </div>

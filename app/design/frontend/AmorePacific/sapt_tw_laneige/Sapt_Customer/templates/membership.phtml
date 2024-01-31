@@ -16,7 +16,7 @@ $memberInfo = $block->getMemberInfo();
                 <p><?= $block->escapeHtml(__('Member No.')) ?><span><?= $memberInfo['cstmNO'] ?? ''?></span></p>
             </div>
             <div class="member_point">
-                <a href="<?=$block->getMembershipBenefitsUrl()?>" class="link"><?= __('All benefits') ?></a>
+                
                 <p class="date"><?= __('Membership expiry date') ?>: <span>
                     <?php if (isset($pointSearchResult['expireDate']) && !empty($pointSearchResult['expireDate'])): ?>
                         <?= $block->dateFormat($pointSearchResult['expireDate']) ?>
