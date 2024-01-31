@@ -70,6 +70,10 @@
         <plugin name="eguana_gwlogistics_copy_cvs_location_field"
                 type="Eguana\GWLogistics\Plugin\Quote\CopyCvsLocationFieldPlugin" sortOrder="10"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\Address\ToOrder">
+        <plugin name="eguana_gwlogistics_update_shipping_desc_field"
+                type="Eguana\GWLogistics\Plugin\Quote\UpdateCvsShippingDescriptionPlugin" sortOrder="10"/>
+    </type>
     <type name="Magento\Rma\Model\Shipping">
         <plugin name="eguana_gwlogistics_set_rma_traking_number"
                 type="Eguana\GWLogistics\Plugin\Rma\ShippingPlugin" sortOrder="10"/>
