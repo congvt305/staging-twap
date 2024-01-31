@@ -12,7 +12,8 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Rma\Api\RmaRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Eguana\GWLogistics\Block\Adminhtml\Form\Field\ShippingTitles;
 use Psr\Log\LoggerInterface;
 
 class Data extends AbstractHelper
@@ -44,7 +45,7 @@ class Data extends AbstractHelper
     const XML_PATH_SEND_SMS_PREFIX = 'carriers/gwlogistics/send_sms_prefix';
     const XML_PATH_MESSAGE_TEMPLATE = 'carriers/gwlogistics/message_template';
     const XML_PATH_MESSAGE_GOODSNAME_PREFIX = 'carriers/gwlogistics/goodsname_prefix';
-
+    const XML_PATH_SHIPPING_TITLES = 'carriers/gwlogistics/shipping_titles';
     const XML_PATH_ENABLE_CRON = 'eguana_gwlogistics/cron_settings/enable_cron';
     const XML_PATH_ORDER_STATUS_TO_CREATE_SHIPMENT = 'eguana_gwlogistics/cron_settings/order_status_to_create_shipment';
     const XML_PATH_LAST_ORDER_ID = 'eguana_gwlogistics/cron_settings/last_order_id';
@@ -80,6 +81,10 @@ class Data extends AbstractHelper
      * @var RmaRepositoryInterface
      */
     private $rmaRepository;
+    /**
+     * @var Json
+     */
+    private $serializer;
 
     public function __construct(
         \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
@@ -89,6 +94,7 @@ class Data extends AbstractHelper
         \Eguana\GWLogistics\Model\Lib\EcpayLogistics $ecpayLogistics,
         OrderRepositoryInterface $orderRepository,
         RmaRepositoryInterface $rmaRepository,
+        Json $serializer,
         Context $context
     ) {
         parent::__construct($context);
@@ -99,6 +105,7 @@ class Data extends AbstractHelper
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
         $this->orderRepository = $orderRepository;
         $this->rmaRepository = $rmaRepository;
+        $this->serializer = $serializer;
     }
 
     public function isActive($storeId = null)
@@ -313,6 +320,32 @@ class Data extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    /**
+     * @param $subTypeCode
+     * @param $websiteId
+     * @return string
+     */
+    public function getShippingTitleByCode($subTypeCode, $websiteId = null)
+    {
+        $shippingTitlesJson = $this->scopeConfig->getValue(
+            self::XML_PATH_SHIPPING_TITLES,
+            \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+            $websiteId
+        ) ?? '';
+        if (!empty($shippingTitlesJson)) {
+            $shippingTitles = $this->serializer->unserialize($shippingTitlesJson);
+            if (is_array($shippingTitles) && !empty($shippingTitles)) {
+                foreach ($shippingTitles as $shippingTitle) {
+                    if ($shippingTitle[ShippingTitles::SUBTYPE_COLUMN] == $subTypeCode) {
+                        return $shippingTitle[ShippingTitles::TITLE_COLUMN];
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 
     /**

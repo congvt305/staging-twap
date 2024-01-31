@@ -76,6 +76,11 @@
                 <field id="goodsname_prefix" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Goods Name Prefix for API Call</label>
                 </field>
+                <field id="shipping_titles" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Shipping Titles</label>
+                    <frontend_model>Eguana\GWLogistics\Block\Adminhtml\Form\Field\ShippingTitles</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
             </group>
         </section>
         <section id="eguana_gwlogistics" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
