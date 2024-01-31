@@ -11,7 +11,6 @@ namespace Amore\Sap\Model\SapOrder;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
-use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
@@ -41,11 +40,6 @@ class SapOrderReturnData extends AbstractSapOrder
      * @var CustomerRepositoryInterface
      */
     private $customerRepository;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
 
     /**
      * @var StoreManagerInterface
@@ -79,7 +73,6 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param Config $config
      * @param CustomerRepositoryInterface $customerRepository
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
-     * @param ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param StoreManagerInterface $storeManager
      * @param Data $helper
@@ -94,7 +87,6 @@ class SapOrderReturnData extends AbstractSapOrder
         Config $config,
         CustomerRepositoryInterface $customerRepository,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
-        ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         StoreManagerInterface $storeManager,
         Data $helper,
@@ -105,7 +97,6 @@ class SapOrderReturnData extends AbstractSapOrder
         \Amore\Sap\Logger\Logger $logger
     ) {
         $this->customerRepository = $customerRepository;
-        $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
@@ -468,8 +459,6 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $storeId = $rma->getStoreId();
         $order = $rma->getOrder();
-        $product = $this->productRepository->get($sku, false, $rma->getStoreId());
-        $meins = $product->getData('meins');
         $skuPrefix = $this->config->getSapSkuPrefix($storeId);
         $skuPrefix = $skuPrefix ?: '';
         $sku = str_replace($skuPrefix, '', $sku);
@@ -485,7 +474,7 @@ class SapOrderReturnData extends AbstractSapOrder
             'itemMatnr' => $sku,
             'itemMenge' => intval($rmaItem->getQtyRequested()),
             // 아이템 단위, Default : EA
-            'itemMeins' => $this->getMeins($meins),
+            'itemMeins' => 'EA',
             'itemNsamt' => $itemNsamt,
             'itemDcamt' => $itemDcamt,
             'itemSlamt' => $itemSlamt,

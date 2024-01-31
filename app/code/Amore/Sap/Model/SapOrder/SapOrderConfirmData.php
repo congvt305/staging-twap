@@ -54,11 +54,6 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $timezoneInterface;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
      * @var StoreManagerInterface
      */
     private $storeManager;
@@ -92,7 +87,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param CustomerRepositoryInterface $customerRepository
      * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
@@ -111,7 +105,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         CustomerRepositoryInterface $customerRepository,
         TimezoneInterface $timezoneInterface,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         Logger $logger,
         StoreManagerInterface $storeManager,
@@ -124,7 +117,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->invoiceRepository = $invoiceRepository;
         $this->customerRepository = $customerRepository;
         $this->timezoneInterface = $timezoneInterface;
-        $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
@@ -674,8 +666,6 @@ class SapOrderConfirmData extends AbstractSapOrder
             $itemId = $bundleChild->getItemId();
         }
 
-        $product = $this->productRepository->get($sku, false, $order->getStoreId());
-        $meins = $product->getData('meins');
         $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = ($itemSlamt == $itemMiamt && $itemSlamt > 0);
         $salesOrg = $this->config->getSalesOrg('store', $storeId);
@@ -689,7 +679,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             'itemMatnr' => $sku,
             'itemMenge' => intval($itemMenge),
             // 아이템 단위, Default : EA
-            'itemMeins' => $this->getMeins($meins),
+            'itemMeins' => 'EA',
             'itemNsamt' => $itemNsamt,
             'itemDcamt' => $itemDcamt,
             'itemSlamt' => $itemSlamt,
