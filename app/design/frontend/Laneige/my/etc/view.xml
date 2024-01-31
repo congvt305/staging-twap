@@ -33,7 +33,7 @@
                 <var name="options">
                     <var name="products">
                         <var name="default">
-                            <var name="slidesToShow">3</var>
+                            <var name="slidesToShow">2</var>
                         </var>
                     </var>
                 </var>
@@ -42,10 +42,10 @@
                 <var name="options">
                     <var name="products">
                         <var name="default">
-                            <var name="slidesToShow">3</var>
+                            <var name="slidesToShow">2</var>
                         </var>
                         <var name="continuous">
-                            <var name="slidesToShow">3</var>
+                            <var name="slidesToShow">2</var>
                         </var>
                     </var>
                 </var>
