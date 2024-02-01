@@ -6,6 +6,7 @@ namespace Sapt\Sales\ViewModel;
 use Amasty\AdvancedReview\Block\Widget\ProductReviews\Form;
 use Magento\Catalog\Block\Product\Image;
 use Magento\Catalog\Block\Product\ImageBuilder;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Checkout\Helper\Cart;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\View\Element\AbstractBlock;
@@ -197,5 +198,16 @@ class Product extends \Magento\Catalog\ViewModel\Product\OptionsData
     public function isPromoItem($item)
     {
         return $this->amastyPromoChecker->isPromoItem($item);
+    }
+
+    /**
+     * Check if product is active and visible on storefront
+     *
+     * @param $product
+     * @return bool
+     */
+    public function isActiveProduct($product)
+    {
+        return $product->isInStock() && $product->isVisibleInSiteVisibility();
     }
 }

@@ -89,6 +89,7 @@ if ($layoutHander == "sales_order_history") {
                         clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                         title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                        <?php if (!$viewModel->isActiveProduct($product)): ?>disabled="disabled"<?php endif; ?>
                         class="action tocart primary">
                     <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                 </button>
