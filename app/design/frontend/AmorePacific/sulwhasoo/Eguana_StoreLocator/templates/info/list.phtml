@@ -102,11 +102,10 @@ if ($defaultCountry != null) {
                             $clickevent = "pushmarker(" . $count . ")";
                             ?>
                             <li class="store-list"
-                                onclick="<?= $block->escapeHtmlAttr($clickevent); ?>"
                                 store-expand ="<?= $block->escapeHtml($storeItem['title'] . $count); ?>"
                                 id ="<?= $block->escapeHtml(__($count)); ?>"
                             >
-                                <div class="store-info">
+                                <div class="store-info" onclick="<?= $block->escapeHtmlAttr($clickevent); ?>">
                                     <div class="store-primary-info">
                                         <div class="store-info-top">
                                             <label
