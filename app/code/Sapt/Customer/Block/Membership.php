@@ -1,6 +1,7 @@
 <?php
 namespace Sapt\Customer\Block;
 
+use Amore\CustomerRegistration\Model\POSSystem;
 use CJ\CustomCustomer\Helper\Data;
 use Magento\Customer\Api\Data\GroupInterface;
 use Magento\Customer\Api\GroupRepositoryInterface;
@@ -59,12 +60,23 @@ class Membership extends Template
      */
     private $customerHelper;
 
+
+    /**
+     * @var POSSystem
+     */
+    private $posSystem;
+
     /**
      * @param Template\Context $context
      * @param CollectionFactory $orderCollectionFactory
      * @param Session $customerSession
      * @param CouponHelper $couponHelper
      * @param Json $json
+     * @param GroupRepositoryInterface $groupRepository
+     * @param CustomerPointsSearch $customerPointsSearch
+     * @param PointsIndex $pointsIndex
+     * @param POSSystem $posSystem
+     * @param Data $customerHelper
      * @param array $data
      */
     public function __construct(
@@ -75,7 +87,8 @@ class Membership extends Template
         Json              $json,
         GroupRepositoryInterface  $groupRepository,
         CustomerPointsSearch $customerPointsSearch,
-        PointsIndex  $pointsIndex,
+        PointsIndex $pointsIndex,
+        POSSystem $posSystem,
         Data $customerHelper,
         array             $data = []
     ) {
@@ -88,6 +101,7 @@ class Membership extends Template
         $this->couponHelper = $couponHelper;
         $this->customerPointsSearch = $customerPointsSearch;
         $this->customerHelper = $customerHelper;
+        $this->posSystem = $posSystem;
     }
 
     /**
@@ -200,4 +214,18 @@ class Membership extends Template
     public function getMembershipBenefitsUrl() {
         return $this->customerHelper->getMembershipBenefitsUrl();
     }
+
+    /**
+     * Get customer data from POS
+     *
+     * @return array
+     */
+    public function getMemberInfo() {
+        $customer = $this->getCustomer();
+        return $this->posSystem->getMemberInfo(
+            $customer->getFirstname(),
+            $customer->getLastname(),
+            $customer->getMobileNumber(),
+            $customer->getStoreId()
+        );    }
 }

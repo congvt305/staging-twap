@@ -8,6 +8,7 @@
 
 namespace Amore\PointsIntegration\Block\Points;
 
+use Amore\CustomerRegistration\Model\POSSystem;
 use Amore\PointsIntegration\Model\CustomerPointsSearch;
 use Amore\PointsIntegration\Model\Source\Config;
 use Magento\Customer\Model\Session;
@@ -21,6 +22,11 @@ class Index extends AbstractPointsBlock
      * @var CustomerPointsSearch
      */
     private $customerPointsSearch;
+
+    /**
+     * @var POSSystem
+     */
+    private $posSystem;
 
     /**
      * Index constructor.
@@ -41,10 +47,12 @@ class Index extends AbstractPointsBlock
         Json $json,
         \Amore\PointsIntegration\Model\Pagination $pagination,
         CustomerPointsSearch $customerPointsSearch,
+        POSSystem $posSystem,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $config, $logger, $json, $pagination, $data);
         $this->customerPointsSearch = $customerPointsSearch;
+        $this->posSystem = $posSystem;
     }
 
     public function getPointsSearchResult()
@@ -67,5 +75,19 @@ class Index extends AbstractPointsBlock
     public function dateFormat($date)
     {
         return date("Y-m-d", strtotime($date));
+    }
+    /**
+     * Get customer data from POS
+     *
+     * @return array
+     */
+    public function getMemberInfo() {
+        $customer = $this->getCustomer();
+        return $this->posSystem->getMemberInfo(
+            $customer->getFirstname(),
+            $customer->getLastname(),
+            $customer->getMobileNumber(),
+            $customer->getStoreId()
+        );
     }
 }
