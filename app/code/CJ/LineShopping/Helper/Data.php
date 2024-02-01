@@ -6,6 +6,7 @@ use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Framework\Filesystem\Driver\File as FileDriver;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 
 class Data
 {
@@ -13,6 +14,7 @@ class Data
     const IS_LINE_SHOPPING = 'is_line_shopping';
     const IS_SENT_FEE_POST_BACK = 'is_sent_fee_post_back';
     const IS_SENT_ORDER_POST_BACK = 'is_sent_order_post_back';
+    const IS_NEW_MEMBER = 'is_new_member';
 
     /**
      * @var DirectoryList
@@ -34,22 +36,31 @@ class Data
      */
     protected TimezoneInterface $timezone;
 
+	/**
+	 * @var OrderCollectionFactory
+	 */
+    protected OrderCollectionFactory $orderCollectionFactory;
+
     /**
      * @param TimezoneInterface $timezone
      * @param DirectoryList $dir
      * @param File $file
      * @param FileDriver $fileDriver
+     * @param OrderCollectionFactory $orderCollectionFactory
      */
     public function __construct(
-        TimezoneInterface $timezone,
-        DirectoryList $dir,
-        File $file,
-        FileDriver $fileDriver
-    ) {
+        TimezoneInterface      $timezone,
+        DirectoryList          $dir,
+        File                   $file,
+        FileDriver             $fileDriver,
+        OrderCollectionFactory $orderCollectionFactory
+    )
+    {
         $this->timezone = $timezone;
         $this->dir = $dir;
         $this->file = $file;
         $this->fileDriver = $fileDriver;
+        $this->orderCollectionFactory = $orderCollectionFactory;
     }
 
     /**
@@ -113,5 +124,18 @@ class Data
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param $order
+     * @return bool
+     */
+    public function isNewMember($order)
+    {
+        /** @var OrderCollectionFactory $orderColelction */
+        $orderCollection = $this->orderCollectionFactory->create()
+            ->addFieldToFilter(self::IS_LINE_SHOPPING, 1)
+            ->addAttributeToFilter('customer_email', $order->getCustomerEmail());
+        return $orderCollection->getSize() == 1;
     }
 }
