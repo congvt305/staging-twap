@@ -169,7 +169,6 @@ class SendOrderToNinjaVan
                         throw new \Exception(__("Cannot Create delivery order: {$order->getIncrementId()}"));
                     }
 
-                    $this->setQtyShipToOrderItem($order);
                     $order->setState('processing');
                     $order->setStatus('processing_with_shipment');
                     $order->setData('sent_to_ninjavan', 1);
@@ -227,23 +226,5 @@ class SendOrderToNinjaVan
             $shipmentItems[] = $shipmentItem;
         }
         return $shipmentItems;
-    }
-
-    /**
-     * @param $order \Magento\Sales\Model\Order
-     */
-    public function setQtyShipToOrderItem($order)
-    {
-        if ($order->hasInvoices()) {
-            $orderItems = $order->getAllItems();
-            foreach ($orderItems as $item) {
-                if (empty($item->getQtyToShip()) || $item->getIsVirtual()) {
-                    continue;
-                }
-                $item->setQtyShipped($item->getQtyInvoiced());
-                $item->save();
-            }
-            $order->save();
-        }
     }
 }
