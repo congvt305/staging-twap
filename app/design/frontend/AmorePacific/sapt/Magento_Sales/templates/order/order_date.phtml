@@ -18,19 +18,21 @@ $_order = $block->getOrder();
         <span class="label"><?= $block->escapeHtml(__('Order Status')) ?></span>
         <span class="value"><?= $block->escapeHtml(__($block->getOrder()->getStatusLabel())) ?></span>
     </div>
-    <div class="order-cancel">
-        <?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
-            <span class="label">
-                <a href="#" class="action refund-online" data-role="refund-online-button"
-                                   data-mage-init='{"Eguana_CustomerRefund/js/view/refund-confirmation": {"orderId": "<?= (int)$_order->getId() ?>"}}'>
-                    <span><?= $block->escapeHtml(__('Cancel Order')) ?></span>
-                </a>
-            </span>
-        <?php endif; ?>
-        <?php if ($this->helper(Magento\Rma\Helper\Data::class)->canCreateRma($block->getOrder()) && $refundOnlineViewModel->availableFreeReturn()) : ?>
-            <span class="label">
-                <a href="<?= $block->escapeUrl($this->helper(Magento\Rma\Helper\Data::class)->getReturnCreateUrl($block->getOrder())) ?>" class="action return"><span><?= $block->escapeHtml(__('Return request')) ?></span></a>
-            </span>
-        <?php endif;?>
-    </div>
+    <?php if ($refundOnlineViewModel->isCustomerLoggedIn()):?>
+        <div class="order-cancel">
+            <?php if ($refundOnlineViewModel->canShowRefundOnlineButton($_order)): ?>
+                <span class="label">
+                    <a href="#" class="action refund-online" data-role="refund-online-button"
+                                       data-mage-init='{"Eguana_CustomerRefund/js/view/refund-confirmation": {"orderId": "<?= (int)$_order->getId() ?>"}}'>
+                        <span><?= $block->escapeHtml(__('Cancel Order')) ?></span>
+                    </a>
+                </span>
+            <?php endif; ?>
+            <?php if ($this->helper(Magento\Rma\Helper\Data::class)->canCreateRma($block->getOrder()) && $refundOnlineViewModel->availableFreeReturn()) : ?>
+                <span class="label">
+                    <a href="<?= $block->escapeUrl($this->helper(Magento\Rma\Helper\Data::class)->getReturnCreateUrl($block->getOrder())) ?>" class="action return"><span><?= $block->escapeHtml(__('Return request')) ?></span></a>
+                </span>
+            <?php endif;?>
+        </div>
+    <?php endif;?>
 </div>
