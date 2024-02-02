@@ -34,21 +34,29 @@ class Refund implements ArgumentInterface
     private $dateTime;
 
     /**
+     * @var \Magento\Customer\Model\Session
+     */
+    private $session;
+
+    /**
      * @param \Magento\Framework\Stdlib\DateTime\Timezone $timezone
      * @param \Eguana\CustomerRefund\Model\Refund $refundModel
      * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Customer\Model\Session $session
      * @param DateTime $dateTime
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\Timezone $timezone,
         \Eguana\CustomerRefund\Model\Refund $refundModel,
         \Magento\Framework\Registry $registry,
+        \Magento\Customer\Model\Session $session,
         DateTime $dateTime
     )
     {
         $this->refundModel = $refundModel;
         $this->registry = $registry;
         $this->timezone = $timezone;
+        $this->session = $session;
         $this->dateTime = $dateTime;
     }
 
@@ -111,5 +119,13 @@ class Refund implements ArgumentInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCustomerLoggedIn()
+    {
+         return $this->session->isLoggedIn();
     }
 }
