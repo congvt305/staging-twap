@@ -306,6 +306,22 @@ $_item = null;
                                                                 ?>
                                                                 <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
                                                                     <?php if ($type == 'crosssell'): ?>
+                                                                        <?php if ($_item->getTypeId() == 'bundle'):?>
+                                                                        <?php $bundleOptions = []; ?>
+                                                                            <?php $selectionCollection = $_item->getTypeInstance(true)->getSelectionsCollection($_item->getTypeInstance(true)->getOptionsIds($_item),$_item);
+                                                                            foreach ($selectionCollection as $selection) {
+                                                                                $valueSelect = '';
+                                                                                if ($selection->getIsDefault() && $selection->isSaleable()) {
+                                                                                    $valueSelect = $selection->getSelectionId();
+                                                                                }
+                                                                                $bundleOptions[$selection->getOptionId()] = $valueSelect;
+                                                                                ?>
+                                                                            <?php }
+                                                                            $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId(), 'bundle_option' => $bundleOptions])
+                                                                            ?>
+                                                                        <?php
+                                                                        ?>
+                                                                        <?php endif;?>
                                                                         <button class="action tocart primary"
                                                                                 clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                                 formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
