@@ -117,6 +117,9 @@ define([
                         formData.set('product', dataPost.data.product);
                         formData.set('form_key', formKey);
                         formData.set('uenc', dataPost.data.uenc);
+                        if (typeof dataPost.data.bundle_option == 'object'){
+                            formData.set('bundle_option', JSON.stringify(dataPost.data.bundle_option))
+                        }
                         self._sendAjax(options.addUrl, formData, oldAction, false, true);
 
                         return false;
