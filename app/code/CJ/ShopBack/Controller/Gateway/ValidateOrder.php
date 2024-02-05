@@ -4,7 +4,6 @@ namespace CJ\ShopBack\Controller\Gateway;
 
 use Hoolah\Hoolah\Controller\Main as HoolahMain;
 use Hoolah\Hoolah\Helper\API as HoolahAPI;
-use Hoolah\Hoolah\Model\Config\Source\OperationMode as OperationMode;
 use Hoolah\Hoolah\Model\Config\Source\OrderMode;
 use Magento\Framework\Api\SimpleDataObjectConverter;
 
@@ -146,7 +145,7 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
                 'orderNotes' => '',//$order->get_customer_note(),
                 //'merchantRef' => $quote->getEntityId(), //get_bloginfo('name'),
                 'cartId' => $quote->getEntityId(),
-                'currency' =>  ($this->hdata->get_mode($quote->getStoreId()) == OperationMode::MODE_LIVE) ? $quote->getQuoteCurrencyCode() : 'SGD',
+                'currency' => $quote->getQuoteCurrencyCode(),
                 'totalAmount' => floatval($quote->getGrandTotal()),
                 'originalAmount' => floatval($quote->getSubtotal()), //floatval($order->get_total()) - floatval($order->get_total_tax()) - floatval($order->get_total_shipping()) - floatval($order->get_shipping_tax()),
                 'taxAmount' => floatval($quote->getShippingAddress()->getTaxAmount()), //floatval($quote->getShippingAddress()->getSubtotalInclTax()) - floatval($quote->getSubtotal()),
