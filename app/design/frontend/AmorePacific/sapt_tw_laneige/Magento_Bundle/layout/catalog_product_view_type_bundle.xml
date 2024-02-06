@@ -26,7 +26,7 @@
         <referenceBlock name="product.price.render.bundle.customization">
             <arguments>
                 <argument name="price_render" xsi:type="string">product.price.render.default</argument>
-                <argument name="price_type_code" xsi:type="string">final_price</argument>
+                <argument name="price_type_code" xsi:type="string">configured_price</argument>
                 <argument name="zone" xsi:type="string">item_view</argument>
             </arguments>
         </referenceBlock>
