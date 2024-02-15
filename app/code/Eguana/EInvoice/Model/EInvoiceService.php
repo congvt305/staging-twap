@@ -91,35 +91,16 @@ class EInvoiceService
     public function fetchEInvoiceDetail(int $orderId): array
     {
         $order = $this->orderRepository->get($orderId);
-        if (!empty($data = $this->getMagentoEInvoiceData($order))) {
-            return $data;
-        } else {
-            if (!empty($output = $this->getEcpayEInvoiceData($order))) {
-                $invoiceData = [];
-                foreach ($this->mapper as $key => $value) {
-                    $invoiceData[$key] = $output[$value];
-                }
-                return $invoiceData;
-            } else {
-                return [];
+        if (!empty($output = $this->getEcpayEInvoiceData($order))) {
+            $invoiceData = [];
+            foreach ($this->mapper as $key => $value) {
+                $invoiceData[$key] = $output[$value];
             }
+            return $invoiceData;
+        } else {
+            return [];
         }
     }
-
-    /**
-     * Check whether order has einvoice data in payment already
-     * it returns an array
-     *
-     * @param \Magento\Sales\Model\Order $order
-     * @return array
-     */
-    protected function getMagentoEInvoiceData(\Magento\Sales\Model\Order $order): array
-    {
-        $payment = $order->getPayment();
-        $additionalData = $payment->getAdditionalData();
-        return !is_null($additionalData) ? json_decode($additionalData, true) : [];
-    }
-
     /**
      * Call API to query einvoice information
      *
