@@ -29,7 +29,7 @@ class ApplyExcludeCartRule
         $rule,
         $address
     ) {
-        if ($rule->getData('enable_exclude_skus') && !$this->helper->isValidExcludeSkuRule($rule)) {
+        if ($rule->getData('enable_exclude_skus') && !$this->helper->isValidExcludeSkuRule($rule, $address)) {
             return false;
         }
         return $result;

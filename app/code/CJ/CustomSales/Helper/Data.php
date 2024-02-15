@@ -25,6 +25,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $promoHelper;
 
+    private $isValidExcludeSkuRule = [];
+
     /**
      * @param Context $context
      * @param Session $checkoutSession
@@ -44,25 +46,27 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $rule
-     * @return float|int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Check if there is any sku doesn't in list exclude sku
+     *
+     * @param \Magento\SalesRule\Model\Rule $rule
+     * @param \Magento\Quote\Model\Quote\Address $address
+     * @return bool
      */
-    public function isValidExcludeSkuRule($rule)
+    public function isValidExcludeSkuRule($rule, $address)
     {
-        $quote = $this->checkoutSession->getQuote();
+        $quote = $address->getQuote();
         if ($quote->getId()) {
             $quoteItems = $quote->getItems();
             foreach ($quoteItems as $item) {
                 $productSku = $this->getProductSkuOfItem($item);
-                if (!in_array($productSku, $this->getExcludeSkusOfRule($rule))){
+                if (!in_array($productSku, $this->getExcludeSkusOfRule($rule))) {
                     return true;
                 }
             }
 
-            if ($rule->getCouponType() == Rule::COUPON_TYPE_SPECIFIC){
+            if ($rule->getCouponType() == Rule::COUPON_TYPE_SPECIFIC) {
                 $couponCode = $rule->getCouponCode();
-                $curCouponCode = ltrim(\Safe\preg_replace("/(,?)$couponCode/", '', $quote->getCouponCode()), ',');
+                $curCouponCode = ltrim(preg_replace("/(,?)$couponCode/", '', $quote->getCouponCode()), ',');
                 $quote->setCouponCode($curCouponCode)->collectTotals()->save();
             }
         }
