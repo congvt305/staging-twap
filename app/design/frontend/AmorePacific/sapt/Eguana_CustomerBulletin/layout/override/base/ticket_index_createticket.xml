@@ -21,7 +21,7 @@
                     <argument name="ticket_createticket" xsi:type="object">Eguana\CustomerBulletin\ViewModel\CreateTicket</argument>
                 </arguments>
             </block>
-            <referenceBlock name="customer-account-navigation-ticket-link">
+            <referenceBlock name="customer-ticket-navigation-account-customer-account">
                 <arguments>
                     <argument name="is_highlighted" xsi:type="boolean">true</argument>
                 </arguments>

@@ -6,7 +6,7 @@
             <block class="Sapt\Customer\Block\Membership" name="customer.membership" template="Sapt_Customer::membership.phtml" after="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="content">
-            <referenceBlock name="customer-account-navigation-ticket-link">
+            <referenceBlock name="customer-ticket-navigation-account-customer-account">
                 <arguments>
                     <argument name="is_highlighted" xsi:type="boolean">true</argument>
                 </arguments>

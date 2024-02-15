@@ -1,8 +1,3 @@
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 define([
     'jquery',
     'underscore',
@@ -148,7 +143,6 @@ define([
 
             this.options.typeError =  {
                 text: $t('The maximum file name length is %1').replace('%1', this.options.maxNameLength) +
-                      ' ' +
                       $t('characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).'),
                 subText: false
             };
@@ -205,7 +199,7 @@ define([
         },
 
         /**
-         * Init modal
+         * Ovveride to change translate for button modal
          * @private
          */
         _initModal: function () {
@@ -218,7 +212,7 @@ define([
                     'buttons': [{
                         class: 'action-primary action-accept',
                         type: 'button',
-                        text: 'OK',
+                        text: $.mage.__('Close button'),
 
                         /** Click action */
                         click: function () {
