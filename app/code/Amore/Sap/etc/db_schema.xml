@@ -24,6 +24,7 @@
         <column xsi:type="smallint" name="sap_return_send_check" nullable="true" comment="Check for rma send"/>
         <column xsi:type="varchar" name="sap_return_increment_id" nullable="true" length="50" comment="New Increment Id sent to SAP by failure of origin increment id return order sent" disabled="true"/>
         <column xsi:type="text" name="sap_response" nullable="true" comment="Message Returned from SAP"/>
+        <column xsi:type="decimal" name="partial_total_amount" nullable="false" default="0" scale="4" precision="12" comment="Partial Total Amount"/>
         <index referenceId="MAGENTO_RMA_SAP_RETURN_INCREMENT_ID" indexType="btree" disabled="true">
             <column name="sap_return_increment_id"/>
         </index>
