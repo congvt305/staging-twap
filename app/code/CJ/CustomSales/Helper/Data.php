@@ -49,9 +49,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if ($quote->getId()) {
             $quoteItems = $quote->getItems();
             foreach ($quoteItems as $item) {
-                $productSku = $this->getProductSkuOfItem($item);
-                if (!in_array($productSku, $this->getExcludeSkusOfRule($rule))) {
-                    return true;
+                if (!$this->promoHelper->isPromoItem($item)) {
+                    $productSku = $this->getProductSkuOfItem($item);
+                    if (!in_array($productSku, $this->getExcludeSkusOfRule($rule))) {
+                        return true;
+                    }
                 }
             }
 
