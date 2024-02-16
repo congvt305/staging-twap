@@ -1,19 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace CJ\CustomSales\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Magento\Checkout\Model\Session;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Amasty\Promo\Helper\Item as PromoHelper;
 use Magento\SalesRule\Model\Rule;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    /**
-     * @var Session
-     */
-    protected $checkoutSession;
 
     /**
      * @var CartRepositoryInterface
@@ -25,28 +21,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $promoHelper;
 
-    private $isValidExcludeSkuRule = [];
-
     /**
      * @param Context $context
-     * @param Session $checkoutSession
      * @param CartRepositoryInterface $cartRepository
      * @param PromoHelper $promoHelper
      */
     public function __construct(
         Context $context,
-        Session $checkoutSession,
         CartRepositoryInterface $cartRepository,
         PromoHelper $promoHelper
     ) {
-        $this->checkoutSession = $checkoutSession;
         $this->cartRepository = $cartRepository;
         $this->promoHelper = $promoHelper;
         parent::__construct($context);
     }
 
     /**
-     * Check if there is any sku doesn't in list exclude sku
+     * Check if there is any product which is not in exclude list sku
      *
      * @param \Magento\SalesRule\Model\Rule $rule
      * @param \Magento\Quote\Model\Quote\Address $address
@@ -75,6 +66,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Get list sku is exclude out of rule
+     *
      * @param $rule
      * @return array|string[]
      */
@@ -89,6 +82,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Get product sku from item
+     *
      * @param $item
      * @return mixed
      */
