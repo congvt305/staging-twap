@@ -215,7 +215,7 @@ class CartFixed extends \Magento\SalesRule\Model\Rule\Action\Discount\CartFixed
 
             if ($rule->getData("enable_exclude_skus")) {
                 $excludeSkus = $this->helper->getExcludeSkusOfRule($rule);
-                $productSku = $this->helper->getProductSkuOfItem($item);
+                $productSku = $this->helper->getProductSkuOfItem($item, $excludeSkus);
                 if (in_array($productSku, $excludeSkus)) {
                     $baseDiscountAmount = $discountAmount = 0.0;
                 }
