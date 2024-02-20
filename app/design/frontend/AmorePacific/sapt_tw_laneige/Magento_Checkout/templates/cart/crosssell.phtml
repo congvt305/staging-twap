@@ -1,3 +1,4 @@
+<?php if ($block->getItems()): ?>
 <div class="giftset_home_content giftset_tab_content">
     <div class="giftset_tab main-recommendation-slider">
         <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
@@ -7,7 +8,6 @@
                 <?php
                 /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
                 ?>
-                <?php if ($block->getItems()): ?>
                     <?php
                     $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
                     $optionDataHelper = $this->helper(Sapt\Catalog\Helper\OptionData::class);
@@ -145,10 +145,8 @@
                             <?= $block->getPagerHtml() ?>
                         </div>
                     </div>
-                <?php endif;?>
-
-
             </div>
         </div>
     </div>
 </div>
+<?php endif;?>
