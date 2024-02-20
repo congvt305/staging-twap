@@ -1,0 +1,154 @@
+<div class="giftset_home_content giftset_tab_content">
+    <div class="giftset_tab main-recommendation-slider">
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <h2 class="ex-title">專屬推薦</h2>
+            <hr/>
+            <div class="data item content giftset-contents-slider">
+                <?php
+                /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+                ?>
+                <?php if ($block->getItems()): ?>
+                    <?php
+                    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+                    $optionDataHelper = $this->helper(Sapt\Catalog\Helper\OptionData::class);
+                    $sliderId = $block->getData('id') ?: 'products-slider';
+                    $showProgress = $block->getData('progress') ?: false;
+                    $type = 'widget-product-grid';
+                    $mode = 'grid';
+                    $image = 'new_products_content_widget_grid';
+                    $items = $block->getItems();
+
+                    $showWishlist = true;
+                    $showCompare = false;
+                    $showCart = true;
+                    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+                    $description = false;
+                    ?>
+                    <div class="block widget block-products-slider block-products-list <?= /* @noEscape */ $mode ?>">
+                        <?php if ($block->getTitle()): ?>
+                            <div class="block-title">
+                                <strong><?= $block->escapeHtml(__($block->getTitle())) ?></strong>
+                            </div>
+                        <?php endif ?>
+                        <div class="block-content">
+                            <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
+                            <div id="<?= $sliderId ?>" class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
+                                <ol class="product-items products list items <?= /* @noEscape */ $type ?>">
+                                    <?php $iterator = 1; ?>
+                                    <?php foreach ($items as $_item) : ?>
+                                        <?php /* @noEscape */ $productSku = $_item->getSku() ?>
+                                        <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
+                                        <div class="product-item-wrapper">
+                                            <div class="product-item-info">
+                                                <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                                   class="product-item-photo"
+                                                   ap-click-area="product"
+                                                   ap-click-name="prd click"
+                                                   ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
+                                                    <?= $block->getImage($_item, $image)->toHtml() ?>
+                                                </a>
+                                                <?php if ($_item->getProductLabels()): ?>
+                                                    <div class="product_labels">
+                                                        <?php echo $_helper->productAttribute($_item, $_item->getProductLabels(), 'product_labels') ?>
+                                                    </div>
+                                                <?php endif;?>
+                                                <div class="product-item-details">
+                                                    <div class="product_tags">
+                                                        <?php if ($_item->getProductTags()): ?>
+                                                            <?php echo $_helper->productAttribute($_item, $_item->getProductTags(), 'product_tags') ?>
+                                                        <?php endif;?>
+                                                    </div>
+                                                    <?php if($_item->getData('new')):?>
+                                                        <span class="product-item-flag"><?= $block->escapeHtml($_item->getResource()->getAttribute('new')->getStoreLabel());?></span>
+                                                    <?php endif;?>
+                                                    <?php if($_item->getData('best')):?>
+                                                        <span class="product-item-flag"><?= $block->escapeHtml($_item->getResource()->getAttribute('best')->getStoreLabel()); ?></span>
+                                                    <?php endif;?>
+                                                    <strong class="product-item-name">
+                                                        <a title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
+                                                           href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                                           class="product-item-link"
+                                                           ap-click-area="product"
+                                                           ap-click-name="prd click"
+                                                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
+                                                            <?= $block->escapeHtml($_item->getName()) ?>
+                                                        </a>
+                                                    </strong>
+                                                    <div class="product-item-short-description">
+                                                        <?= $this->helper(Magento\Catalog\Helper\Output::class)->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
+                                                    </div>
+
+                                                    <?= $block->getProductPrice($_item) ?>
+
+                                                    <div class="product-item-inner">
+                                                        <div class="product-item-actions">
+                                                            <div class="actions-primary">
+                                                                <?php if ($showCart): ?>
+                                                                    <?php if ($_item->isSaleable()): ?>
+                                                                        <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                                                        $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId()])
+                                                                        ?>
+                                                                        <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
+                                                                            <?php if ($_item->getTypeId() == 'bundle'):?>
+                                                                                <?php $bundleOptions = []; ?>
+                                                                                <?php $selectionCollection = $_item->getTypeInstance(true)->getSelectionsCollection($_item->getTypeInstance(true)->getOptionsIds($_item),$_item);
+                                                                                foreach ($selectionCollection as $selection) {
+                                                                                    $valueSelect = '';
+                                                                                    if ($selection->getIsDefault() && $selection->isSaleable()) {
+                                                                                        $valueSelect = $selection->getSelectionId();
+                                                                                    }
+                                                                                    $bundleOptions[$selection->getOptionId()] = $valueSelect;
+                                                                                    ?>
+                                                                                <?php }
+                                                                                $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId(), 'bundle_option' => $bundleOptions])
+                                                                                ?>
+                                                                                <?php
+                                                                                ?>
+                                                                            <?php endif;?>
+                                                                            <button class="action tocart primary"
+                                                                                    clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                                    formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                                    data-post='<?= /* @escapeNotVerified */ $postData ?>'
+                                                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                                            </button>
+                                                                        <?php else: ?>
+                                                                            <button class="action tocart primary"
+                                                                                    clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                                    formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                                    data-post='<?= /* @escapeNotVerified */ $postData ?>'
+                                                                                    type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                                            </button>
+                                                                        <?php endif; ?>
+                                                                    <?php else: ?>
+                                                                        <button class="action tocart primary disabled"
+                                                                                type="button" disabled
+                                                                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                                            <span><?= $block->escapeHtml(__('Sold out')) ?></span>
+                                                                        </button>
+                                                                    <?php endif; ?>
+                                                                <?php endif?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <?= ($iterator == count($items) + 1) ? '</li>' : '' ?>
+                                    <?php endforeach ?>
+                                </ol>
+                                <?php if ($showProgress): ?>
+                                    <div class="progress"><span class="progress_ing"></span></div>
+                                <?php endif; ?>
+                            </div>
+                            <?= $block->getPagerHtml() ?>
+                        </div>
+                    </div>
+                <?php endif;?>
+
+
+            </div>
+        </div>
+    </div>
+</div>
