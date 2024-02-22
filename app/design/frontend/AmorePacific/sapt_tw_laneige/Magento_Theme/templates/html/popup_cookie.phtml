@@ -1,5 +1,10 @@
+<?php
+$popupContent = $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('tw_laneige_popup_cookie_content')->toHtml();
+?>
+
+<?php if ($popupContent): ?>
 <div id="popup-modal" class="popup_cookie">
-    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('tw_laneige_popup_cookie_content')->toHtml();?>
+    <?php echo $popupContent?>
 </div>
 <script>
     require(
@@ -57,3 +62,4 @@
     );
 
 </script>
+<?php endif; ?>
