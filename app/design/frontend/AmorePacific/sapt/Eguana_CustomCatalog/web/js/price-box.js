@@ -36,7 +36,11 @@ define([
                         var oldPrice = this.cache.displayPrices.oldPrice.amount;
                         if (price.final != oldPrice) {
                             var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
-                            $('.discount-label').text(discount+'%');
+                            $('[data-price-type="oldPrice"]').closest('.old-price').show();
+                            $('.discount-label').show().text(discount+'%');
+                        } else{
+                            $('[data-price-type="oldPrice"]').closest('.old-price').hide();
+                            $('.discount-label').hide();
                         }
                     }
 
@@ -46,12 +50,17 @@ define([
                             price.final = price.final * parseInt(qtyInput.val());
                         }
                         $('[data-price-type="' + priceCode + '"]', this.element).data('price-amount', price.final);
+                        $('[data-price-type="finalPriceBundle"]', this.element).html(priceTemplate({
+                            data: price
+                        }));
                         price.formatted = utils.formatPrice(price.final, priceFormat);
                     }
 
                     $('[data-price-type="' + priceCode + '"]', this.element).html(priceTemplate({
                         data: price
                     }));
+                    $('[data-price-type="minPrice"], [data-price-type="maxPrice"]').hide();
+                    $('[data-price-type="finalPriceBundle"]').closest('.final-price-bundle').show();
                 }, this);
             }
         });
