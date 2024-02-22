@@ -301,6 +301,9 @@ $_item = null;
                                                     <?php if ($showAddTo || $showCart): ?>
                                                         <div class="actions-primary">
                                                             <?php if ($_item->isSaleable()): ?>
+                                                                <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                                                $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId()])
+                                                                ?>
                                                                 <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
                                                                     <?php if ($type == 'crosssell'): ?>
                                                                         <?php if ($_item->getTypeId() == 'bundle'):?>
@@ -322,7 +325,7 @@ $_item = null;
                                                                         <button class="action tocart primary"
                                                                                 clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                                 formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                                                                                data-mage-init='{"redirectUrl": {"url": "<?= $block->getProductUrl($_item) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                                                data-post='<?= /* @escapeNotVerified */ $postData ?>'
                                                                             <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                                         </button>
                                                                     <?php else: ?>
@@ -334,9 +337,6 @@ $_item = null;
                                                                         </button>
                                                                     <?php endif; ?>
                                                                 <?php else: ?>
-                                                                    <?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                                    $postData = $postDataHelper->getPostData($block->escapeUrl($block->getAddToCartUrl($_item)), ['product' => $_item->getEntityId()])
-                                                                    ?>
                                                                     <button class="action tocart primary"
                                                                             clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                                             formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
