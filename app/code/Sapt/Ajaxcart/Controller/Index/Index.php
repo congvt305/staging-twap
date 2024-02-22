@@ -30,6 +30,7 @@ use Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus;
 use Magento\Wishlist\Helper\Data as WishlistHelper;
 use Magento\Wishlist\Model\ItemFactory as WishlistItemFactory;
 use Magento\Wishlist\Model\ResourceModel\Item as WishlistItemResource;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class Index extends \Magento\Framework\App\Action\Action implements HttpPostActionInterface
 {
@@ -153,6 +154,11 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
     protected $wishlistItemResource;
 
     /**
+     * @var Json
+     */
+    protected $json;
+
+    /**
      * @param Context $context
      * @param Validator $formKeyValidator
      * @param CustomerCart $cart
@@ -171,6 +177,7 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
      * @param WishlistHelper $wishlistHelper
      * @param WishlistItemFactory $wishlistItemFactory
      * @param WishlistItemResource $wishlistItemResource
+     * @param Json $json
      */
     public function __construct(
         Context $context,
@@ -190,8 +197,8 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         AjaxWishlistStatus $wishlistViewModel,
         WishlistHelper $wishlistHelper,
         WishlistItemFactory $wishlistItemFactory,
-        WishlistItemResource $wishlistItemResource
-
+        WishlistItemResource $wishlistItemResource,
+        Json $json
     ) {
         parent::__construct($context);
         $this->formKeyValidator = $formKeyValidator;
@@ -212,7 +219,7 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         $this->wishlistHelper = $wishlistHelper;
         $this->wishlistItemFactory = $wishlistItemFactory;
         $this->wishlistItemResource = $wishlistItemResource;
-
+        $this->json = $json;
     }
 
     /**
@@ -261,6 +268,9 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         }
 
         $params = $this->getRequest()->getParams();
+        if (isset($params['bundle_option']) && !is_array($params['bundle_option'])){
+            $params['bundle_option'] = $this->json->unserialize($params['bundle_option']);
+        }
         $product = $this->initProduct();
         try {
             if (array_key_exists('qty', $params)) {
