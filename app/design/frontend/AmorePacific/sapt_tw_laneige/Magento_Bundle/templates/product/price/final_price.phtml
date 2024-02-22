@@ -61,6 +61,7 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
                     <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
                         'display_label'     => $block->escapeHtml(__('Regular Price')),
                         'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
+                        'price_type'        => 'oldPrice',
                         'include_container' => true,
                         'skip_adjustments'  => true
                     ]); ?>
@@ -71,6 +72,13 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
                 'price_type'        => 'minPrice',
                 'include_container' => true
             ]); ?>
+            <span class="final-price-bundle" style="display: none">
+                <?php /* @escapeNotVerified */ echo $block->renderAmount($maximalPrice, [
+                    'price_id'          => $block->getPriceId('to-'),
+                    'price_type'        => 'finalPriceBundle',
+                    'include_container' => true
+                ]); ?>
+            </span>
         </p>
         <p class="price-to">
 	        <span class="price-space"></span>
