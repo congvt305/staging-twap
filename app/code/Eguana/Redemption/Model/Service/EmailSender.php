@@ -143,11 +143,15 @@ class EmailSender
         $from = ['email' => $this->getEmail($storeId), 'name' => $this->getEmailSenderName($storeId)];
         $this->inlineTranslation->suspend();
         $to = $this->getCustomerEmail($counterId);
-        $templateId = $this->scopeConfig->getValue(
-            self::REDEMPTION_EMAIL_TEMPLATE_PATH,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
+        $templateId = $redemption->getData('email_template');
+        if (!$templateId) {
+            $templateId = $this->scopeConfig->getValue(
+                self::REDEMPTION_EMAIL_TEMPLATE_PATH,
+                ScopeInterface::SCOPE_STORE,
+                $storeId
+            );
+        }
+
         $transport = $this->transportBuilder
             ->setTemplateIdentifier($templateId)
             ->setTemplateOptions($templateOptions)
