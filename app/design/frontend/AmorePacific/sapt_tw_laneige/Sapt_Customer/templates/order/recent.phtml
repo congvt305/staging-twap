@@ -80,6 +80,7 @@ $viewModel = $block->getData('view_model');
                                      break;
                                 }
                             }
+                            $totalQuantity = $viewModel->getTotalQuantity($_order);
                         ?>
                         <tr>
                             <td class="col thumbnail">
@@ -106,6 +107,7 @@ $viewModel = $block->getData('view_model');
                                         <a href="<?= $escaper->escapeUrl($block->getOrderItemUrl($normalItem)) ?>">
                                             <?= $escaper->escapeHtml($normalItem->getName()) ?>
                                         </a>
+                                        <div class="total-items"><?= __("Total %1 items", $totalQuantity) ?></div>
                                         <?php if($moreProduct): ?>
                                         <span class="more-product"><?= $block->escapeHtml(__('+%1 More Products', $moreProduct)) ?></span>
                                         <?php endif; ?>

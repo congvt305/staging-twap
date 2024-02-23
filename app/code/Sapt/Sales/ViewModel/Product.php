@@ -6,7 +6,6 @@ namespace Sapt\Sales\ViewModel;
 use Amasty\AdvancedReview\Block\Widget\ProductReviews\Form;
 use Magento\Catalog\Block\Product\Image;
 use Magento\Catalog\Block\Product\ImageBuilder;
-use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Checkout\Helper\Cart;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\View\Element\AbstractBlock;
@@ -172,7 +171,7 @@ class Product extends \Magento\Catalog\ViewModel\Product\OptionsData
             ->setTemplate('Magento_Review::form_mypage.phtml')
             ->setData('jsLayout', $component)
             ->setProduct($product)
-            ->setData('order_item_id',$orderItem->getId())
+            ->setData('order_item_id', $orderItem->getId())
             ->toHtml();
     }
 
@@ -209,5 +208,26 @@ class Product extends \Magento\Catalog\ViewModel\Product\OptionsData
     public function isActiveProduct($product)
     {
         return $product->isInStock() && $product->isVisibleInSiteVisibility();
+    }
+
+    /**
+     * Get total quantity include child bundle product
+     *
+     * @return int
+     */
+    public function getTotalQuantity($order)
+    {
+        $totalQuantity = 0;
+
+        foreach ($order->getAllItems() as $item) {
+            if ($item->getProductType() == 'bundle') {
+                continue;
+            }
+            if (($item->getParentItemId() && $item->getParentItem()->getProductType() == 'bundle') || !$item->getParentItemId()) {
+                $totalQuantity += $item->getQtyOrdered();
+            }
+
+        }
+        return $totalQuantity;
     }
 }
