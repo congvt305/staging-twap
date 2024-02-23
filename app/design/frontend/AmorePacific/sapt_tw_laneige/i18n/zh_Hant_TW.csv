@@ -1008,7 +1008,7 @@
 "MultiShipping","多件運輸"
 "Return History","退貨記錄"
 "Reviews List","評論清單"
-"My Orders View","我的訂單視圖"
+"My Orders View","我的訂單明細"
 "My Requisition View","我的請購單"
 "My Quotes View","我的行情視圖"
 "My Returns View","我的退貨視圖"
@@ -1235,3 +1235,4 @@
 "Recent Searches","最近搜尋"
 "Delete All","全部刪除"
 "We could not find anything for %1","很抱歉，找不到與 : 符合的商品 %1"
+" x QTY %1", " x %1 件"
