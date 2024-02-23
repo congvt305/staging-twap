@@ -43,6 +43,9 @@ $storeId = $viewModel->getStoreId();
             </div>
         </div>
     </div>
+        <?php if ($redemptionDetails->getData('is_popup_form')): ?>
+    <div id="popup_form_redemption" style="display:none">
+        <?php endif;?>
     <div class="block redemption-form">
         <div class="block-content">
             <form
@@ -184,6 +187,9 @@ $storeId = $viewModel->getStoreId();
             </form>
         </div>
     </div>
+        <?php if ($redemptionDetails->getData('is_popup_form')): ?>
+    </div>
+        <?php endif;?>
 </div>
 <div class="popup-container">
     <div id="popup-modal">
@@ -206,4 +212,29 @@ $storeId = $viewModel->getStoreId();
             }
         }
     }
+</script>
+<script type="text/javascript">
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                'type': 'popup',
+                'title': '<?php echo $redemptionDetails->getTitle() ?>',
+                'modalClass': 'popup_form_redemption',
+                'responsive': true,
+                'innerScroll': true,
+            };
+
+            $(document).ready(function(){
+                var popup = modal(options, $('#popup_form_redemption'));
+                $("#popup_form_redemption").modal("openModal");
+            });
+        }
+    );
 </script>
