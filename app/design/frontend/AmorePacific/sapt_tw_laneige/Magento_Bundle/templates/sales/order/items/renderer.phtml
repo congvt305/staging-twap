@@ -18,17 +18,6 @@ $index = 1;
 $prevOptionId = '';
 /** @var \Magento\Framework\Pricing\Helper\Data $priceHelper */
 $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
-if ($layoutHander == "sales_order_history") {
-    $orderItems = $_order->getAllVisibleItems();
-    $productItemsCount = 0;
-    foreach($orderItems as $orderItem) {
-        if ($orderItem->getRowTotal() == $orderItem->getDiscountAmount()) {
-            continue;
-        }
-        $productItemsCount++;
-    }
-    $orderGrandTotal = $_order->getGrandTotal();
-}
 ?>
 <?php if($product): ?>
 <tr id="order-item-row-<?= (int) $parentItem->getId() ?>" class="item-info">
@@ -43,19 +32,10 @@ if ($layoutHander == "sales_order_history") {
             <strong class="product-item-name">
                 <a href="<?= $block->escapeUrl($product->getUrlModel()->getUrl($product)) ?>"><?= $block->escapeHtml($product->getName()) ?></a>
             </strong>
-            <?php if($layoutHander == 'sales_order_history'): ?>
-                <?php if ($productItemsCount > 1): ?>
-                    <div class="total-items"><?= __("Total %1 items", $productItemsCount) ?></div>
-                <?php endif; ?>
-                <div class="order-grandtotal">
-                    <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
-                    <?= $priceHelper->currency($orderGrandTotal) ?>
-                </div>
-            <?php else: ?>
-                <div class="product-price">
-                    <?= $priceHelper->currency($parentItem->getRowTotal()) ?> <span class="product-qty-ordered"><?= __(' / ') ?> <?= __("QTY %1", (int)$parentItem->getQtyOrdered()) ?></span>
-                </div>
-            <?php endif; ?>
+            <div class="product-price">
+                <span
+                    class="price"><?= $priceHelper->currency($parentItem->getRowTotal(), true, false) ?><?= __(" x QTY %1", (int)$parentItem->getQtyOrdered()) ?></span>
+            </div>
         </div>
         <div class="bundle-detail-cart">
             <button class="bundle-button-toggle" type="button">
