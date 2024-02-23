@@ -51,14 +51,11 @@ $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
                     </dl>
                 <?php endif;?>
             <?php } ?>
-            <?php if ($_item->getRowTotal() == $_item->getDiscountAmount()): ?>
-                <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
-                <?= $priceHelper->currency(0) ?>
-            <?php else: ?>
-                <div class="product-price">
-                    <span class="price"><?= $priceHelper->currency($_item->getRowTotal(), true, false) ?><?= __(" x QTY %1", (int)$_item->getQtyOrdered()) ?></span>
-                </div>
-            <?php endif; ?>
+            <div class="product-price">
+                <span
+                    class="price"><?= $priceHelper->currency($_item->getRowTotal(), true, false) ?><?= __(" x QTY %1", (int)$_item->getQtyOrdered()) ?>
+                </span>
+            </div>
         </div>
     </td>
     <?php if (!$viewModel->isPromoItem($_item)): ?>
