@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sitemap" resource="default" engine="innodb" comment="XML Sitemap">
+        <column xsi:type="text" name="sitemap_exclude_urls" nullable="true" comment="Sitemap Exclude URLs"/>
+    </table>
+</schema>
