@@ -50,6 +50,32 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
     </p>
 <?php else: ?>
     <?php if ($block->showRangePrice()): ?>
+        <?php if ($schema): ?>
+            <?php if ($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $minimalPrice->getValue())): ?>
+                <span class="discount-label">
+                        <?= $discountedPrice ?>%
+                    </span>
+            <?php endif; ?>
+            <?php /* @escapeNotVerified */
+            echo $block->renderAmount($minimalPrice, [
+                'price_id' => $block->getPriceId('product-price-'),
+                'include_container' => true,
+                'price_type' => 'finalPrice',
+                'schema' => $schema
+            ]); ?>
+            <?php if ($minimalPrice < $minimalRegularPrice): ?>
+                <span class="old-price">
+                    <?php /* @escapeNotVerified */
+                    echo $block->renderAmount($minimalRegularPrice, [
+                        'display_label' => $block->escapeHtml(__('Regular Price')),
+                        'price_id' => $block->getPriceId('old-price-' . $idSuffix),
+                        'price_type' => 'oldPrice',
+                        'include_container' => true,
+                        'skip_adjustments' => true
+                    ]); ?>
+                </span>
+            <?php endif; ?>
+        <?php else: ?>
         <p class="price-from">
             <?php if ($minimalPrice < $minimalRegularPrice): ?>
                 <?php if($discountedPrice = $helper->getDiscountPriceForSapt($minimalRegularPrice->getValue(), $minimalPrice->getValue()) ):?>
@@ -72,13 +98,6 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
                 'price_type'        => 'minPrice',
                 'include_container' => true
             ]); ?>
-            <span class="final-price-bundle" style="display: none">
-                <?php /* @escapeNotVerified */ echo $block->renderAmount($maximalPrice, [
-                    'price_id'          => $block->getPriceId('to-'),
-                    'price_type'        => 'finalPriceBundle',
-                    'include_container' => true
-                ]); ?>
-            </span>
         </p>
         <p class="price-to">
 	        <span class="price-space"></span>
@@ -95,6 +114,7 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
                 'include_container' => true
             ]); ?>
         </p>
+        <?php endif; ?>
     <?php else: ?>
         <p class="bundle-regular-price">
         <?php if ($minimalPrice < $minimalRegularPrice): ?>

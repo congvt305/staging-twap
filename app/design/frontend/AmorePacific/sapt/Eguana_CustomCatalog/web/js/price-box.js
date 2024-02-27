@@ -50,9 +50,6 @@ define([
                             price.final = price.final * parseInt(qtyInput.val());
                         }
                         $('[data-price-type="' + priceCode + '"]', this.element).data('price-amount', price.final);
-                        $('[data-price-type="finalPriceBundle"]', this.element).html(priceTemplate({
-                            data: price
-                        }));
                         price.formatted = utils.formatPrice(price.final, priceFormat);
                     }
 
@@ -60,7 +57,6 @@ define([
                         data: price
                     }));
                     $('[data-price-type="minPrice"], [data-price-type="maxPrice"]').hide();
-                    $('[data-price-type="finalPriceBundle"]').closest('.final-price-bundle').show();
                 }, this);
             }
         });
