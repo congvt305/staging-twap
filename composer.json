@@ -48,6 +48,7 @@
         "amasty/module-banners-lite": ">=1.0.19",
         "amasty/module-cross-linking": "^1.3",
         "amasty/module-elastic-search-lite": "^1.22",
+        "amasty/module-facebook-pixel-pro-package": "^1.0",
         "amasty/module-google-rich-snippets": "^1.8",
         "amasty/module-improved-layered-navigation-page": "^2.8",
         "amasty/module-legacy-templates": "^1.0",
