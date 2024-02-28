@@ -152,7 +152,12 @@ class SmsSender
         if ($number) {
             try {
                 $message = $this->getMessage($counterId, $storeId);
-                $this->smsManagement->sendMessage($number, $message, $storeId);
+                $isSmsSent = $this->smsManagement->sendMessage($number, $message, $storeId);
+                if ($isSmsSent) {
+                    $this->logger->info(__('Redemption Sms has been sent on ' . $number));
+                } else {
+                    $this->logger->error(__('Please enter valid Api credentials'));
+                }
             } catch (NoSuchEntityException $e) {
                 $this->logger->critical($e->getMessage());
             } catch (LocalizedException $e) {
