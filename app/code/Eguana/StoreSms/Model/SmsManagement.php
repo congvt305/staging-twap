@@ -24,14 +24,21 @@ class SmsManagement implements \Eguana\StoreSms\Api\SmsManagementInterface
      */
     private $curl;
 
+    /**
+     * @var \Eguana\StoreSms\Logger\Logger 
+     */
+    protected $logger;
+
     public function __construct(
         \Eguana\StoreSms\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\HTTP\Client\Curl $curl
+        \Magento\Framework\HTTP\Client\Curl $curl,
+        \Eguana\StoreSms\Logger\Logger $logger
     ) {
         $this->helper = $helper;
         $this->storeManager = $storeManager;
         $this->curl = $curl;
+        $this->logger = $logger;
     }
 
     /**
@@ -70,8 +77,11 @@ class SmsManagement implements \Eguana\StoreSms\Api\SmsManagementInterface
             $this->curl->setOption(CURLOPT_HEADER, false);
             $this->curl->setOption(CURLOPT_POST, true);
             $this->curl->setOption(CURLOPT_POSTFIELDS, json_encode($param));
+            $this->logger->info("====START SENDING SMS REDEMPTION====");
+            $this->logger->info(__("Send request: %1", json_encode($param)));
             $this->curl->post($apiUrl, $param);
             $status = $this->curl->getStatus();
+            $this->logger->info(__("Response for " . $number . ":%1", $this->curl->getBody()));
 
             if ($status != 200) {
                 $result = false;
