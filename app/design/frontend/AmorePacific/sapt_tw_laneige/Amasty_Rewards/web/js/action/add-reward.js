@@ -73,6 +73,10 @@ define([
                             totals.isLoading(false);
                             errorProcessor.process(response, messageContainer);
                         });
+                    } else {
+                        fullScreenLoader.stopLoader();
+                        totals.isLoading(false);
+                        errorProcessor.process(response, messageContainer);
                     }
                 },
             });
