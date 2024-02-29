@@ -66,3 +66,5 @@ Mode,模式
 "first.","在進行購買"
 "Member points and other related rights will be included in the calculation after the goods are not returned 7 days after receipt","會員點數等相關權益將於收到貨品7日未退換後方納入計算，造成不便敬請見諒。"
 "Customer picked up the shipment in  GWLogistics Cvs Store.","顧客取貨"
+The shipping information was unable to be saved. Error: "%message",請確認出貨資訊："%message"
+"Cannot find the CVS store location. Please try to choose CVS store again if it still error, please contact our CS Center","請確認出貨資訊：無法找到相應的超商地址。若重新選擇超商後仍有異常，敬請聯繫客服。"
