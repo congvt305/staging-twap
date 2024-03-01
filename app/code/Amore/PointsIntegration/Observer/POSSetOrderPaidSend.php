@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Amore\PointsIntegration\Observer;
 
+use Amasty\Rewards\Model\Config\Source\Actions;
 use Amore\PointsIntegration\Logger\Logger as PointsLogger;
 use Amore\PointsIntegration\Model\PointUpdate;
 use Magento\Framework\Event\Observer;
@@ -32,6 +34,11 @@ class POSSetOrderPaidSend implements ObserverInterface
      * @var PointsLogger
      */
     private $logger;
+
+    /**
+     * @var int
+     */
+    private $_isUpdatedPoint = 0;
 
     /**
      * @param PointConfig $pointConfig
@@ -76,9 +83,20 @@ class POSSetOrderPaidSend implements ObserverInterface
         }
 
         $pointAmount = $order->getData('am_spent_reward_points') ?: 0;
-        if ($pointAmount && $order->getCustomerId()) {
+        if ($pointAmount && $order->getCustomerId() && !$this->_isUpdatedPoint) {
+            //this will avoid when update point, order will save relation and go to this function again
+            $this->_isUpdatedPoint = 1;
             try {
-                $this->pointUpdate->pointUpdate($order, $pointAmount, PointUpdate::POINT_REDEEM,PointUpdate::POINT_REASON_PURCHASE);
+                $comment = __('Order #%1', $order->getRealOrderId())->render();
+                $this->pointUpdate->pointUpdate(
+                    $order,
+                    $pointAmount,
+                    PointUpdate::POINT_REDEEM,
+                    PointUpdate::POINT_REASON_PURCHASE,
+                    $comment,
+                    Actions::REWARDS_SPEND_ACTION,
+                    true
+                );
             } catch (\Exception $exception) {
                 $this->logger->error($exception->getMessage());
             }

@@ -29,4 +29,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Amasty\Rewards\Model\Order\Creditmemo\RefundProcessor">
+        <arguments>
+            <argument name="actions" xsi:type="array">
+                <item name="refund" xsi:type="object">CJ\Rewards\Model\Order\Creditmemo\Action\Refund</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

@@ -23,7 +23,7 @@ use Magento\Sales\Api\OrderAddressRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Eguana\StoreLocator\Api\StoreInfoRepositoryInterface;
 use Magento\Email\Model\Template;
-use Psr\Log\LoggerInterface;
+use Eguana\StoreSms\Logger\Logger;
 
 /**
  * This class is used to send the sms to customers
@@ -64,7 +64,7 @@ class SmsSender
     private $storeManager;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
@@ -104,8 +104,8 @@ class SmsSender
      * @param OrderAddressRepositoryInterface $orderAddressRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreInfoRepositoryInterface $storeInfoRepository
-     * @param LoggerInterface $logger
-     * @param RedemptionRepositoryInterface $redemptionRepository
+     * @param Logger $logger
+     * @para RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         SmsManagementInterface          $smsManagement,
@@ -116,9 +116,9 @@ class SmsSender
         OrderAddressRepositoryInterface $orderAddressRepository,
         SearchCriteriaBuilder           $searchCriteriaBuilder,
         StoreInfoRepositoryInterface    $storeInfoRepository,
-        LoggerInterface                 $logger,
+        Logger                          $logger,
         RedemptionRepositoryInterface   $redemptionRepository
-    ) {
+    ){
         $this->smsManagement = $smsManagement;
         $this->redemptionConfig = $redemptionConfig;
         $this->templateFactory = $templateFactory;
@@ -152,7 +152,12 @@ class SmsSender
         if ($number) {
             try {
                 $message = $this->getMessage($counterId, $storeId);
-                $this->smsManagement->sendMessage($number, $message, $storeId);
+                $isSmsSent = $this->smsManagement->sendMessage($number, $message, $storeId);
+                if ($isSmsSent) {
+                    $this->logger->info(__('Redemption Sms has been sent on ' . $number));
+                } else {
+                    $this->logger->error(__('Please enter valid Api credentials to send Redemption Sms.'));
+                }
             } catch (NoSuchEntityException $e) {
                 $this->logger->critical($e->getMessage());
             } catch (LocalizedException $e) {
@@ -265,8 +270,7 @@ class SmsSender
                 $smsContent = str_replace('%name', $customerName, $smsContent);
                 if ($individualNumber) {
                     $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
-                }
-            }
+                }            }
             return $smsContent;
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());

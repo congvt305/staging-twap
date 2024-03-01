@@ -169,19 +169,6 @@ class Data extends AbstractHelper
     }
 
     /**
-     * Get Terms and Services policy CMS block id
-     *
-     * @return mixed
-     */
-    public function getPrivacyPolicyCMSBlockId()
-    {
-        return $this->scopeConfig->getValue(
-            self::PRIVACY_POLICY_CMS_BLOCK,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    /**
      * Get whether SMS verification is enabled on the website or not
      *
      * @return mixed

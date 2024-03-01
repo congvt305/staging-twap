@@ -11,9 +11,9 @@
 ?>
 <?php $_returns = $block->getReturns(); ?>
 <?php
-$viewModel = $block->getData('custom_name_view_model');
-$orderViewModel = $block->getData('order_item_model');
-$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+    $viewModel = $block->getData('custom_name_view_model');
+    $orderViewModel = $block->getData('order_item_model');
+    $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 ?>
 
 <?= $block->getChildHtml('info') ?>
@@ -60,7 +60,11 @@ $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
                                                     </dl>
                                                 <?php endif; ?>
 
-                                                <span class="cart-price"><?= $priceHelper->currency($_orderItem->getPrice()); ?></span>
+                                                    <span class="cart-price">
+                                                        <span class="price">
+                                                            <?= $priceHelper->currency($_orderItem->getPrice(), true, false) ?><?= __(" x QTY %1", (int)$_item->getQtyRequested()) ?>
+                                                        </span>
+                                                    </span>
 
                                                 <div class="return-status">
                                                     <?php if($_return->getStatus() == 'pending'):?>
