@@ -1,14 +1,12 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Copyright © CJONS
  */
 ?>
 
 <?php /** @var $block \Magento\Framework\Pricing\Render\Amount */ ?>
 
-<span class="price-container <?= $block->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>"
-        <?= false && $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer"' : '' ?>>
+<span class="price-container <?= $block->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>">
     <?php if ($block->getDisplayLabel()) :?>
         <span class="price-label"><?= $block->escapeHtml($block->getDisplayLabel()) ?></span>
     <?php endif; ?>
@@ -20,9 +18,5 @@
     ><?= $block->escapeHtml($block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()), ['span']) ?></span>
     <?php if ($block->hasAdjustmentsHtml()) :?>
         <?= $block->getAdjustmentsHtml() ?>
-    <?php endif; ?>
-    <?php if (false && $block->getSchema()) :?>
-        <meta itemprop="price" content="<?= $block->escapeHtmlAttr($block->getDisplayValue()) ?>" />
-        <meta itemprop="priceCurrency" content="<?= $block->escapeHtmlAttr($block->getDisplayCurrencyCode()) ?>" />
     <?php endif; ?>
 </span>

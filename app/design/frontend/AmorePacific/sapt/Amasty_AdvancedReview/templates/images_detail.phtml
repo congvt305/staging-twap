@@ -23,15 +23,15 @@ $collection = $block->getCollection();
     </div>
 
     <script>
-        require([
-            "jquery",
-            "Amasty_AdvancedReview/vendor/fancybox/jquery.fancybox.min"
-        ], function ($) {
-            $('[data-amreview-js="review-images"]').find('a').fancybox({
-                loop: true,
-                toolbar: false,
-                baseClass: 'amrev-fancybox-zoom'
-            });
-        });
+		require([
+			"jquery",
+			"Amasty_AdvancedReview/vendor/fancybox/jquery.fancybox.min"
+		], function ($) {
+			$('[data-amreview-js="review-images"]').find('a').fancybox({
+				loop: true,
+				toolbar: false,
+				baseClass: 'amrev-fancybox-zoom'
+			});
+		});
     </script>
 <?php endif;?>

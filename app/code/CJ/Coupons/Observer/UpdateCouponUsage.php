@@ -49,11 +49,6 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
     private $timesUsed = [];
 
     /**
-     * @var \CJ\Coupons\Logger\Logger
-     */
-    protected $logger;
-
-    /**
      * @var RuleFactory
      */
     protected $ruleCustomerFactory;
@@ -62,7 +57,6 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
         Coupon $coupon,
         Usage $couponUsage,
         CouponRenderer $couponRenderer,
-        \CJ\Coupons\Logger\Logger $logger,
         CouponFactory $couponFactory,
         \Magento\SalesRule\Model\Rule\CustomerFactory $ruleCustomerFactory
     ) {
@@ -70,7 +64,6 @@ class UpdateCouponUsage extends \Amasty\Coupons\Observer\UpdateCouponUsage
         $this->couponUsage = $couponUsage;
         $this->couponRenderer = $couponRenderer;
         $this->couponFactory = $couponFactory;
-        $this->logger = $logger;
         $this->ruleCustomerFactory = $ruleCustomerFactory;
     }
     public function execute(Observer $observer)

@@ -1,0 +1,16 @@
+{
+    "name": "cj/module-invoice",
+    "description": "CJ Invoice",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CJ\\Invoice\\": ""
+        }
+    }
+}

@@ -27,14 +27,6 @@
     <type name="Magento\Sales\Model\Order">
         <plugin name="before_cancel_order" type="CJ\NinjaVanShipping\Plugin\Magento\Sales\Model\Order"/>
     </type>
-    <type name="CJ\OrderCancel\Logger\Logger">
-        <arguments>
-            <argument name="name" xsi:type="string">OrderCancel</argument>
-            <argument name="handlers" xsi:type="array">
-                <item name="system" xsi:type="object">CJ\NinjaVanShipping\Logger\Handler</item>
-            </argument>
-        </arguments>
-    </type>
     <type name="Magento\Sales\Model\Service\CreditmemoService">
         <plugin name="before_refund" type="CJ\NinjaVanShipping\Plugin\Magento\Sales\Model\Service\CreditmemoService"/>
     </type>

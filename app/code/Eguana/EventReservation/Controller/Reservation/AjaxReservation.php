@@ -155,7 +155,7 @@ class AjaxReservation extends Action
                 try {
                     $counter = $this->counterRepository->getById($post['counter_id']);
                 } catch (\Exception $exception) {
-                    $this->logger->errot($exception->getMessage());
+                    $this->logger->error($exception->getMessage());
                     $response['message'] = __('This Counter doesn\'t exist.');
                     return $resultJson->setData($response);
                 }

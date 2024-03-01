@@ -195,6 +195,7 @@ class CounterSaveAjax extends Action
                 if (isset($post['last_name'])) {
                     $model->setData('last_name', $post['last_name']);
                 }
+
                 $model->setData('email', $post['email']);
                 $model->setData('telephone', $post['phone']);
 

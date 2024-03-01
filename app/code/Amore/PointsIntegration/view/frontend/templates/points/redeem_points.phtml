@@ -24,9 +24,9 @@ if ($blockId) {
 <div class="item title" data-role="collapsible">
     <a class="switch" data-toggle="trigger" href="#history-of-redemption-tab"><?= $block->escapeHtml(__('History of Redemption'))?></a>
 </div>
-<?php if ($blockId && $redemptionBlock): ?>
+<?php if ($blockId): ?>
     <div id="history-of-redemption-tab" class="item content" data-role="content">
-    <?= /* @noEscape */ $redemptionBlock; ?>
+        <?= /* @noEscape */ $redemptionBlock; ?>
     </div>
 <?php else: ?>
     <div id="history-of-redemption-tab" class="item content" data-role="content">
@@ -94,11 +94,11 @@ if ($blockId) {
                     </tr>
                     </thead>
                     <tbody class="redeem-points-list">
-                        <tr>
-                            <td class="empty" colspan="5">
-                                <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="empty" colspan="5">
+                            <span><?= $block->escapeHtml(__('Points Redemption History Does not Exist.')) ?></span>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

@@ -128,7 +128,7 @@ $isShowPrice = $block->getShowPriceInPopup();
                                        title="QTY Select"
                                        data-am-js="ampromo-qty-input"/>
                                 <?php if ($giftsCounter) : ?>
-                                <span class="ampromo-item-qty-left">
+                                    <span class="ampromo-item-qty-left">
                                     <span data-ampromo-js="qty-left-text">1</span><?= __(' left') ?>
                                 </span>
                                 <?php endif; ?>
@@ -139,7 +139,7 @@ $isShowPrice = $block->getShowPriceInPopup();
                                 <button class="action tocart primary"
                                         type="submit"
                                         title="<?= $block->escapeHtml($block->getAddButtonName()) ?>">
-                                        <?= $block->escapeHtml($block->getAddButtonName()) ?>
+                                    <?= $block->escapeHtml($block->getAddButtonName()) ?>
                                 </button>
                             </div>
                         <?php endif; ?>
@@ -148,17 +148,17 @@ $isShowPrice = $block->getShowPriceInPopup();
                         !== \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE
                     ) : ?>
                         <script>
-                            require([
-                                'jquery',
-                                'Amasty_Promo/js/price-updater'
-                            ], function ($) {
-                                $('[data-role=ampromo-overlay]').on('init.ampopup', function () {
-                                    $('.ampromo-items-content').ampromoPriceUpdater({
-                                        productId: <?= (int)$product->getId() ?>,
-                                        priceConfig: <?= $block->getJsonConfig($product) ?>
-                                    });
-                                });
-                            });
+							require([
+								'jquery',
+								'Amasty_Promo/js/price-updater'
+							], function ($) {
+								$('[data-role=ampromo-overlay]').on('init.ampopup', function () {
+									$('.ampromo-items-content').ampromoPriceUpdater({
+										productId: <?= (int)$product->getId() ?>,
+										priceConfig: <?= $block->getJsonConfig($product) ?>
+									});
+								});
+							});
                         </script>
                     <?php endif; ?>
                 </div>

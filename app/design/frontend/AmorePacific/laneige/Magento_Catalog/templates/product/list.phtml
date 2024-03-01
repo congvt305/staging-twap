@@ -23,7 +23,6 @@ $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
 $helper = $this->helper(\CJ\Catalog\Helper\Data::class);
 $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
-$isMembershipCategory = (int)$currentCategory->getData('is_membership');
 $getDefault = $block->getData('view_model');
 $gaEnhancedData = $block->getData('ga_enhanced');
 $page = $gaEnhancedData->getCurrentPage();
@@ -70,7 +69,7 @@ $apProductPosition = "";
                     <?php
                     if ($isEnabledGAEnhanced) {
                         $apProductName = $_product->getName();
-                        $apProductId = $_product->getSku();
+                        $apProductId = $_product->getId();
                         $apProductPrice = $_product->getPriceInfo()->getPrice('final_price')->getValue();
                         $apProductBrand = "laneige";
                         $apProductPosition = $_product->getCatIndexPosition() + ($page - 1) * $productPerPage + 1;
@@ -168,8 +167,6 @@ $apProductPosition = "";
                                             <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
                                                    value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                             <?= $block->getBlockHtml('formkey') ?>
-                                            <input type="hidden" name="is_point_redemption"
-                                                   value="<?=$isMembershipCategory?>">
                                             <button type="submit"
                                                     clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
                                                     formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"

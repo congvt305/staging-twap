@@ -15,7 +15,7 @@ define([
 
     templateLoader.loadTemplate(blockLoaderTemplatePath).done(function (blockLoaderTemplate) {
         loaderImageHref.done(function (loaderHref) {
-            blockLoader = template(blockLoaderTemplate.trim(), {
+            blockLoader = template($.trim(blockLoaderTemplate), {
                 loaderImageHref: loaderHref
             });
             blockLoader = $(blockLoader);

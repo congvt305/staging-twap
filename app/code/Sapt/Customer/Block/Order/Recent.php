@@ -12,8 +12,7 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use CJ\TotalInquiry\Helper\Data;
-use CJ\TotalInquiry\Model\ResourceModel\Order as OrderResourceModel;
+use Sapt\Customer\Model\ResourceModel\Order as OrderResourceModel;
 use \Magento\Rma\Model\ResourceModel\Rma\Grid\CollectionFactory as RmaCollectionFactory;
 
 /**
@@ -86,7 +85,6 @@ class Recent extends \Magento\Framework\View\Element\Template
      * @param \Magento\Sales\Model\Order\Config $orderConfig
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Checkout\Helper\Cart $_cartHelper
-     * @param Data $helper
      * @param OrderResourceModel $orderResource
      * @param RmaCollectionFactory $_collectionFactory
      * @param array $data
@@ -100,7 +98,6 @@ class Recent extends \Magento\Framework\View\Element\Template
         Config $orderConfig,
         ProductRepositoryInterface $productRepository,
         \Magento\Checkout\Helper\Cart $_cartHelper,
-        Data $helper,
         OrderResourceModel $orderResource,
         RmaCollectionFactory $collectionFactory,
         array $data = [],
@@ -114,7 +111,6 @@ class Recent extends \Magento\Framework\View\Element\Template
             ->get(StoreManagerInterface::class);
         $this->productRepository = $productRepository;
         $this->_cartHelper = $_cartHelper;
-        $this->helper = $helper;
         $this->orderResource = $orderResource;
         $this->_collectionFactory = $collectionFactory;
         parent::__construct($context, $data);

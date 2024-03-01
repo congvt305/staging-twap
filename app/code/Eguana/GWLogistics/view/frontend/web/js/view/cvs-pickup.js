@@ -191,6 +191,7 @@ define([
                 this
             );
             $('#delivery_message').val('');
+            pickupLocationsService.selectedLocation(ko.observable({}));
             this.selectShippingMethod(pickupShippingMethod);
         },
 

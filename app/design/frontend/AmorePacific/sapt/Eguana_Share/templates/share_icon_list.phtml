@@ -11,8 +11,8 @@ try {
 <?php if($result != false):
     $share_enabled = $helper->getShareIconEnabled();
     $url = $helper->getCurrentUrl();
-?>
-<?php if($share_enabled): ?>
+    ?>
+    <?php if($share_enabled): ?>
     <div class="info_shares_wrap">
         <div class="info_shares">
             <a href="javascript: void(0);" class="modal-share-button" type="button"><span><?= __('Show Button'); ?></span></a>

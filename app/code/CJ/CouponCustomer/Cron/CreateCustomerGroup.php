@@ -2,16 +2,13 @@
 
 namespace CJ\CouponCustomer\Cron;
 
-use Amore\PointsIntegration\Model\Source\Config;
-use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Magento\Customer\Model\GroupFactory;
-use CJ\Middleware\Model\PosRequest;
-use Magento\Framework\HTTP\Client\Curl;
+use Amore\PointsIntegration\Model\Connection\Request;
+use CJ\CouponCustomer\Logger\Logger;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;
-use Psr\Log\LoggerInterface;
 
-class CreateCustomerGroup extends PosRequest
+class CreateCustomerGroup
 {
     /**
      * Pos all customer grade type
@@ -23,6 +20,16 @@ class CreateCustomerGroup extends PosRequest
     protected $groupFactory;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * @var StoreManagerInterface
      */
     protected $storeManager;
@@ -32,29 +39,24 @@ class CreateCustomerGroup extends PosRequest
      */
     protected $helperData;
 
+
     /**
-     * @param Curl $curl
-     * @param MiddlewareHelper $middlewareHelper
-     * @param LoggerInterface $logger
-     * @param Config $config
      * @param GroupFactory $groupFactory
-     * @param Data $helperData
-     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        Curl $curl,
-        MiddlewareHelper $middlewareHelper,
-        LoggerInterface $logger,
-        Config $config,
-        GroupFactory $groupFactory,
-        Data $helperData,
+        GroupFactory          $groupFactory,
+        Request               $request,
+        Logger                $logger,
+        Data                  $helperData,
         StoreManagerInterface $storeManager
     ) {
         $this->groupFactory = $groupFactory;
+        $this->request = $request;
+        $this->logger = $logger;
         $this->storeManager = $storeManager;
         $this->helperData = $helperData;
-        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
+
 
     /**
      * todo cronjob create pos customer grade using api
@@ -96,7 +98,7 @@ class CreateCustomerGroup extends PosRequest
         try {
             $requestData = '';
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
-            $responseData = $this->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
+            $responseData = $this->request->sendRequest($requestData, $websiteId, self::POS_ALL_CUSTOMER_GRADE_TYPE);
             if (isset($responseData['data']['csmGradeData'])) {
                 $customerGrades = $responseData['data']['csmGradeData'];
             }

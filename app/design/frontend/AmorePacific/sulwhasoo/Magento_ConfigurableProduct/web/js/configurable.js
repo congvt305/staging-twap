@@ -5,7 +5,7 @@
 /**
  * @api
  */
-define([
+ define([
     'jquery',
     'underscore',
     'mage/template',
@@ -681,7 +681,7 @@ define([
             //         shouldBeShown = false;
             //     }
             // });
-          
+
             if (shouldBeShown &&
                 this.options.spConfig.optionPrices[optionId].oldPrice.amount !==
                 this.options.spConfig.optionPrices[optionId].finalPrice.amount

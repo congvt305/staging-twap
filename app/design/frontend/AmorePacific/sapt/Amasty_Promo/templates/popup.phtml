@@ -25,12 +25,12 @@ $promoAddBlock = $block->getPromoAddBlock();
     </div>
 </div>
 <?php $viewModel = $block->getData('check_cart_view_model');
- if (!$viewModel->isCartEmpty()): ?>
-<script type="text/x-magento-init">
-    {
-        "[data-role=ampromo-overlay]": {
-            "Amasty_Promo/js/popup": {
-                "sourceUrl": "<?= $promoAddBlock->escapeUrl($promoAddBlock->getUrl('amasty_promo/popup/reload')) ?>",
+if (!$viewModel->isCartEmpty()): ?>
+    <script type="text/x-magento-init">
+        {
+            "[data-role=ampromo-overlay]": {
+                "Amasty_Promo/js/popup": {
+                    "sourceUrl": "<?= $promoAddBlock->escapeUrl($promoAddBlock->getUrl('amasty_promo/popup/reload')) ?>",
                 "uenc":   "<?= $promoAddBlock->escapeUrl($promoAddBlock->getCurrentBase64Url()) ?>",
                 "slickSettings": {
                     "slidesToShow": 3,
@@ -62,8 +62,8 @@ $promoAddBlock = $block->getPromoAddBlock();
                 "selectionMethod": <?= (int)$promoAddBlock->getSelectionMethod() ?>,
                 "giftsCounter": <?= (int)$promoAddBlock->getGiftsCounter() ?>,
                 "autoOpenPopup": <?= $promoAddBlock->isOpenAutomatically() ? "true" : "false" ?>
-            }
         }
     }
-</script>
+}
+    </script>
 <?php endif;?>

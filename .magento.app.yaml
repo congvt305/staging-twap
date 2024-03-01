@@ -75,7 +75,7 @@ mounts:
     "pub/static": "shared:files/static"
 
 hooks:
-    # We run build hooks before your application has been packaged.
+      # We run build hooks before your application has been packaged.
     build: |
         set -e
         composer --no-ansi --no-interaction install --no-progress --prefer-dist --optimize-autoloader
@@ -84,11 +84,10 @@ hooks:
         php ./vendor/bin/ece-tools run scenario/build/transfer.xml
     # We run deploy hook after your application has been deployed and started.
     deploy: |
-        php ./vendor/bin/ece-tools run scenario/deploy.xml
-    # We run post deploy hook to clean and warm the cache. Available with ECE-Tools 2002.0.10.
+      php ./vendor/bin/ece-tools run scenario/deploy.xml
+  # We run post deploy hook to clean and warm the cache. Available with ECE-Tools 2002.0.10.
     post_deploy: |
-        php ./vendor/bin/ece-tools run scenario/post-deploy.xml
-        php ./vendor/bin/ece-tools post-deploy
+      php ./vendor/bin/ece-tools run scenario/post-deploy.xml
 
 # Default Magento 2 cron jobs
 crons:

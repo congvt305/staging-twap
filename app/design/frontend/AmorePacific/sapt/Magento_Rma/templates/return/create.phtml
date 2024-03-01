@@ -162,29 +162,29 @@
             "#rma_create_form": {
                 "fileElement": {},
                 "rmaCreate": {
-                    <?php $i = 0; ?>
+        <?php $i = 0; ?>
                     <?php if ($_data): ?>
             <?php $formDataPost = $_data->getItems(); ?>
             <?php if (is_array($formDataPost)): ?>
                     "formDataPost": <?= /* @noEscape */ json_encode($formDataPost) ?>,
                     <?php endif; ?>
         <?php endif; ?>
-                    "templateRegistrant": "#template-registrant",
-                    "registrantOptions": "#registrant-options",
-                    "addItemToReturn": "add-item-to-return",
-                    "btnRemove": "delete",
-                    "row": "#row",
-                    "addRow": "additional row",
-                    "qtyReqBlock": "#qty_requested_block",
-                    "remQtyBlock": "#remaining_quantity_block",
-                    "remQty": "#remaining_quantity",
-                    "reasonOtherRow": "#reason_other",
-                    "reasonOtherInput": "#items:reason_other",
-                    "radioItem": "#radio:item",
-                    "orderItemId": "#item:order_item_id",
-                    "itemsItem": "items:item",
-                    "itemsReason": "items:reason",
-                    "totalAvlQty": "<?= ($totalAvlQty) ? (int) $totalAvlQty : 0 ?>",
+        "templateRegistrant": "#template-registrant",
+        "registrantOptions": "#registrant-options",
+        "addItemToReturn": "add-item-to-return",
+        "btnRemove": "delete",
+        "row": "#row",
+        "addRow": "additional row",
+        "qtyReqBlock": "#qty_requested_block",
+        "remQtyBlock": "#remaining_quantity_block",
+        "remQty": "#remaining_quantity",
+        "reasonOtherRow": "#reason_other",
+        "reasonOtherInput": "#items:reason_other",
+        "radioItem": "#radio:item",
+        "orderItemId": "#item:order_item_id",
+        "itemsItem": "items:item",
+        "itemsReason": "items:reason",
+        "totalAvlQty": "<?= ($totalAvlQty) ? (int) $totalAvlQty : 0 ?>",
                     "firstItemId": "<?= (int) $firstItemId ?>",
                     "productType": "<?= $block->escapeJs($productType) ?>",
                     "shipmentType": "<?= $block->escapeJs($shipmentType) ?>",

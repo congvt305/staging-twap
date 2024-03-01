@@ -8,14 +8,13 @@
 <page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="footer-container">
-            <container name="footer.top" as="footer.top" label="Page Footer Top" htmlTag="div"
-                       htmlClass="footer content top" before="footer"/>
+            <container name="footer.top" as="footer.top" label="Page Footer Top" htmlTag="div" htmlClass="footer content top" before="footer"/>
         </referenceContainer>
         <move element="footer_links" destination="footer.top" before="-"/>
         <move element="footer" destination="footer-container" after="-"/>
         <referenceBlock name="header" remove="true"/>
         <move element="logo" destination="header.panel.wrapper"/>
-        <move element="navigation.sections" destination="header.container" after="header.panel.wrapper"/>
+        <move element="navigation.sections" destination="header.container" after="header.panel.wrapper" />
         <referenceContainer name="header-wrapper">
             <block class="Magento\Framework\View\Element\Html\Links" name="header.links" before="-">
                 <arguments>
@@ -25,8 +24,7 @@
         </referenceContainer>
         <referenceBlock name="page.main.title">
             <arguments>
-                <argument name="category_desc_view_model" xsi:type="object">CJ\Catalog\ViewModel\CategoryDescription
-                </argument>
+                <argument name="category_desc_view_model" xsi:type="object">CJ\Catalog\ViewModel\CategoryDescription</argument>
             </arguments>
         </referenceBlock>
     </body>

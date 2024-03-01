@@ -59,6 +59,7 @@ define(
                         return requiredFieldEntered;
                     }
                 }
+
                 const barCodeValue = $("input:text[id=line_pay_ecpay_cellphone_barcode]").val();
                 if (choosenEInvoice === 'cellphone-barcode-invoice') {
                     $.ajax({

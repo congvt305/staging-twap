@@ -10,7 +10,7 @@ if ($eventRegisterSuccess):
     $customer = $block->getCurrentCustomer();
     $gcid = hash('sha512', $customer->getId());
     $cid = $block->getCustomerIntegrationNumber($customer);
-    $registerType = $block->getCustomerRegisterType($customer);
+    $registerType = $customer->getRegisterType();
     $registerDate = $block->getCustomerRegisterDate($customer);
     ?>
     <script>

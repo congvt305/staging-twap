@@ -24,22 +24,11 @@ class CategoryList implements OptionSourceInterface
 
     public function toOptionArray()
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-atome-payment.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('start render exclude category');
-        try {
-            $arr = $this->toArray();
-            $ret = [];
-            foreach ($arr as $key => $value) {
-                $ret[] = ['value' => $key, 'label' => $value];
-            }
-
-            $logger->info('array category : ' . json_encode($arr));
-        } catch (\Exception $e) {
-            $logger->info($e->getMessage());
+        $arr = $this->toArray();
+        $ret = [];
+        foreach ($arr as $key => $value) {
+            $ret[] = ['value' => $key, 'label' => $value];
         }
-
         return $ret;
     }
 
@@ -51,18 +40,12 @@ class CategoryList implements OptionSourceInterface
 
     public function renderCategories($_categories)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/log-error-atome-payment.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $count = 0;
         $this->categoryList = [];
         foreach ($_categories as $category) {
             $i = 0;
             $this->categoryList[$category->getEntityId()] = __($category->getName());   // Main categories
             $this->renderSubCat($category, $i);
-            $count++;
         }
-        $logger->info('total count : ' . $count);
         return $this->categoryList;
     }
 

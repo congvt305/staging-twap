@@ -186,7 +186,6 @@ class Product extends MainProduct
      */
     private $gcrmConfig;
 
-    private $websiteCode = [];
     /**
      * @param TimezoneInterface $localeDate
      * @param Config $config
@@ -283,12 +282,10 @@ class Product extends MainProduct
     protected function _initStores()
     {
         foreach ($this->_storeManager->getStores(true) as $store) {
-            // phpstan:ignore "Access to an undefined property"
-            $this->_storeIdToCode[$store->getId()] = $store->getCode();
             //Customize get follow store config
             if ($this->gcrmConfig->getConfigValue(self::XML_PATH_ACTIVE_EXTENSION, $store->getId())) {
-               $websiteId = $this->_storeManager->getStore( $store->getId())->getWebsiteId();
-               $this->websiteCode[] = $this->_storeManager->getWebsite($websiteId)->getCode();
+                // phpstan:ignore "Access to an undefined property"
+                $this->_storeIdToCode[$store->getId()] = $store->getCode();
             }
         }
         // phpstan:ignore "Access to an undefined property"
@@ -362,7 +359,7 @@ class Product extends MainProduct
                 $this->_prepareEntityCollection($this->_entityCollectionFactory->create()),
                 $productIds
             );
-            ksort($rawData);
+
             foreach ($rawData as $productId => $productData) {
                 foreach ($productData as $storeId => $dataRow) {
                     if (isset($stockItemRows[$productId])) {
@@ -370,7 +367,7 @@ class Product extends MainProduct
                         $dataRow = array_merge($dataRow, $stockItemRows[$productId]);
                     }
                     $this->appendMultirowData($dataRow, $multirawData);
-                    if ($dataRow && isset($dataRow['_product_websites']) && in_array($dataRow['_product_websites'], $this->websiteCode)) {
+                    if ($dataRow) {
                         $exportData[] = $dataRow;
                     }
                 }

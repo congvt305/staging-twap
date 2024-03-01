@@ -20,7 +20,7 @@ $idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
 $schema = ($block->getZone() == 'item_view') ? true : false;
 $oldPrice = $priceModel->getAmount()->getValue();
 $discountedPrice = $finalPriceModel->getAmount()->getValue();
-$discountPercent = $oldPrice ? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
+$discountPercent = $oldPrice && ($oldPrice - $discountedPrice) > 0? ($oldPrice - $discountedPrice) * 100 / $oldPrice : false;
 ?>
 <p class="price-title configurable-price-title"><?= $block->escapeHtml(__('Price')) ?></p>
 <div>

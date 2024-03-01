@@ -15,9 +15,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-/** @var \CJ\Catalog\Helper\Data::class $customHelper */
-$customHelper = $this->helper(\CJ\Catalog\Helper\Data::class);
-$descriptionEnabled = $customHelper->getConfigHelper()->getDescriptionUnderNameEnabled();
+
 $currentCategory = $block->getLayer()->getCurrentCategory();
 $categoryName = $currentCategory->getName();
 $getDefault = $block->getData('view_model');
@@ -31,10 +29,12 @@ $getDefault = $block->getData('view_model');
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
         $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     } else {
         $viewMode = 'list';
         $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     }
     /**
@@ -93,12 +93,7 @@ $getDefault = $block->getData('view_model');
                                     <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                 </a>
                             </strong>
-                            <?php if ($descriptionEnabled) : ?>
-                                <div class="product description product-item-description">
-                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(),
-                                        'short_description') ?>
-                                </div>
-                            <?php endif; ?>
+
                             <?= /* @noEscape */ $block->getProductPrice($_product) ?>
                             <?php if ($_product->isAvailable()) :?>
                                 <?= $block->getProductDetailsHtml($_product) ?>
@@ -136,6 +131,14 @@ $getDefault = $block->getData('view_model');
                                         </div>
                                     <?php endif;?>
                                 </div>
+                                <?php if ($showDescription) :?>
+                                    <div class="product description product-item-description">
+                                        <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                                           title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                           class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

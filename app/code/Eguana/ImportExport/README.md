@@ -46,7 +46,7 @@ Order status column is included while exporting order items.
 
 Customer registration mobile number and shipping address mobile number columns are added in the print order item report.
 
-![mobile](https://nimbus-screenshots.s3.amazonaws.com/s/cc4605d20f6059ce5d3573f750fff6ec.png)
+![mobile](https://nimbus-screenshots.s3.amazonaws.com/s/33a0131abeb22e8678dec69da7d80c26.png)
 
 
 #### Note

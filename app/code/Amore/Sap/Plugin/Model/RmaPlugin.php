@@ -133,6 +133,7 @@ class RmaPlugin
         $availableStatus = 'authorized';
         $order = $subject->getOrder();
         $rmaSendCheck = $order->getData('sap_return_send_check');
+
         //handle case bundle item is missing
         $rmaItems = $subject->getItems();
         $needToUpdateStatus = false;

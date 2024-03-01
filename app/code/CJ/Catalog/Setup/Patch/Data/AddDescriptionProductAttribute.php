@@ -40,7 +40,7 @@ class AddDescriptionProductAttribute implements DataPatchInterface
     /**
      * @var string
      */
-    protected $attributeGroup = 'General';
+    protected $attributeGroup = 'Product Details';
 
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
