@@ -37,10 +37,10 @@ define([
                         if (price.final != oldPrice) {
                             var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
                             $('[data-price-type="oldPrice"]').closest('.old-price').show();
-                            $('.discount-label').show().text(discount+'%');
+                            $(this.element).closest('.product-info-main').find('.discount-label').show().text(discount+'%');
                         } else{
-                            $('[data-price-type="oldPrice"]').closest('.old-price').hide();
-                            $('.discount-label').hide();
+                            $(this.element).closest('.product-info-main').find('[data-price-type="oldPrice"]').closest('.old-price').hide();
+                            $(this.element).closest('.product-info-main').find('.discount-label').hide();
                         }
                     }
 
@@ -56,7 +56,6 @@ define([
                     $('[data-price-type="' + priceCode + '"]', this.element).html(priceTemplate({
                         data: price
                     }));
-                    $('[data-price-type="minPrice"], [data-price-type="maxPrice"]').hide();
                 }, this);
             }
         });
