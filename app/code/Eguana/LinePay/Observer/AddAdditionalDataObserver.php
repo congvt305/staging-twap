@@ -53,6 +53,7 @@ class AddAdditionalDataObserver implements ObserverInterface
             );
             $quote->getPayment()->save();
             $this->linePayLogger->addAPICallLog('LinePay additional data (Observer)', $additionalData);
+            $this->linePayLogger->addAPICallLog('Current Quote Reserved order ID: ' . $quote->getReservedOrderId(), []);
         }
     }
 }

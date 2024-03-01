@@ -10,6 +10,7 @@
 namespace Eguana\LinePay\Controller\Payment;
 
 use Eguana\LinePay\Model\Payment as LinepayPayment;
+use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Element\Template;
@@ -39,6 +40,7 @@ class Authorize extends Action
      * @var Data
      */
     private $helper;
+    private Session $checkoutSession;
 
     /**
      * Authorize constructor.
@@ -51,12 +53,14 @@ class Authorize extends Action
         Context $context,
         LinepayPayment $linepayPayment,
         PageFactory $resultPageFactory,
-        Data $helper
+        Data $helper,
+        Session $checkoutSession
     ) {
         parent::__construct($context);
         $this->linepayPayment                     = $linepayPayment;
         $this->resultPageFactory                  = $resultPageFactory;
         $this->helper                             = $helper;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -70,6 +74,7 @@ class Authorize extends Action
             $resultPage = $this->resultRedirectFactory->create();
             $transactionId = $this->getRequest()->getParam('transactionId');
             $orderId = $this->getRequest()->getParam('orderId');
+            $this->checkoutSession->setData('linepay_order_id', $orderId);
         } catch (\Exception $e) {
             throw $e;
         }

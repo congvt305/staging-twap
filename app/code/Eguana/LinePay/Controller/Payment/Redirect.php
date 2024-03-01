@@ -99,6 +99,7 @@ class Redirect extends Action implements HttpGetActionInterface
                 );
                 $quote->getPayment()->save();
                 $this->linePayLogger->addAPICallLog('LinePay additional data (Via mobile)', $additionalData);
+                $this->linePayLogger->addAPICallLog('Current Quote Reserved order ID: ' . $quote->getReservedOrderId(), []);
             }
             if ($result['status'] === 'missing' || !($result['status'] === 'Failure')) {
                 $this->_redirect($result['url']);
