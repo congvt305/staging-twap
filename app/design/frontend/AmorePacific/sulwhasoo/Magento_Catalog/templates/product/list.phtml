@@ -70,7 +70,7 @@ $apProductPosition = "";
                     <?php
                     if ($isEnabledGAEnhanced) {
                         $apProductName = $_product->getName();
-                        $apProductId = $_product->getSku();
+                        $apProductId = $_product->getId();
                         $apProductPrice = $_product->getPriceInfo()->getPrice('final_price')->getValue();
                         $apProductBrand = "sulwhasoo";
                         $apProductPosition = $_product->getCatIndexPosition() + ($page - 1) * $productPerPage + 1;

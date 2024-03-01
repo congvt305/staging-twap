@@ -10,11 +10,11 @@
 $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
 ?>
 <script>
-    var AP_REVIE_PRD = AP_PRD_NAME || '';
-    var AP_REVIE_PRDCODE = AP_PRD_CODE || '';
-    var AP_REVIE_RATING = AP_REVIE_RATING || '';
-    var AP_REVIE_PICTURE = AP_REVIE_PICTURE || '';
-    var AP_REVIE_CONTENT = AP_REVIE_CONTENT || '';
+	var AP_REVIE_PRD = AP_PRD_NAME || '';
+	var AP_REVIE_PRDCODE = AP_PRD_CODE || '';
+	var AP_REVIE_RATING = AP_REVIE_RATING || '';
+	var AP_REVIE_PICTURE = AP_REVIE_PICTURE || '';
+	var AP_REVIE_CONTENT = AP_REVIE_CONTENT || '';
 </script>
 <div class="block review-add" style="display:none">
     <div class="block-title"><strong><?= $block->escapeHtml(__('Write Your Own Review')) ?></strong></div>
@@ -103,17 +103,17 @@ $imageHelper = $this->helper(Magento\Cms\Helper\Wysiwyg\Images::class);
                 </div>
             </form>
             <script type="text/x-magento-init">
-{
-    "[data-role=product-review-form]": {
-        "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
-    },
-    "#review-form": {
-        "Magento_Review/js/error-placement": {},
-        "Magento_Review/js/validate-review": {},
-        "Magento_Review/js/submit-review": {}
-    }
-}
-</script>
+                {
+                    "[data-role=product-review-form]": {
+                        "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+                },
+                "#review-form": {
+                    "Magento_Review/js/error-placement": {},
+                    "Magento_Review/js/validate-review": {},
+                    "Magento_Review/js/submit-review": {}
+                }
+            }
+            </script>
         <?php else: ?>
             <div class="message info notlogged" id="review-form" style="display:none">
                 <div>

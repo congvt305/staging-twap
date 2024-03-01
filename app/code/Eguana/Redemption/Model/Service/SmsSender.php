@@ -105,7 +105,7 @@ class SmsSender
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreInfoRepositoryInterface $storeInfoRepository
      * @param LoggerInterface $logger
-     * @para RedemptionRepositoryInterface $redemptionRepository
+     * @param RedemptionRepositoryInterface $redemptionRepository
      */
     public function __construct(
         SmsManagementInterface          $smsManagement,
@@ -263,7 +263,9 @@ class SmsSender
                 $smsContent = str_replace('%counter', $counterName, $smsContent);
                 $smsContent = str_replace('%confirm', $link, $smsContent);
                 $smsContent = str_replace('%name', $customerName, $smsContent);
-                $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
+                if ($individualNumber) {
+                    $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
+                }
             }
             return $smsContent;
         } catch (\Exception $exception) {

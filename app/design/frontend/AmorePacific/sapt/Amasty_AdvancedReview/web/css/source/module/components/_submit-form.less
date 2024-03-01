@@ -15,125 +15,125 @@
 //  --------------------------------------------
 
 & when (@media-common = true) {
-    .review-field-image {
-        & {
-            .am-flex(none, center, wrap);
+  .review-field-image {
+    & {
+      .am-flex(none, center, wrap);
 
-            color: @amreview-input-text__color;
-            margin: 0;
-        }
-
-        > .label {
-            font-weight: 600;
-            margin: 0 0 @amrev__indent__xl 0;
-            width: 190px;
-        }
+      color: @amreview-input-text__color;
+      margin: 0;
     }
 
-    .review-field-rating {
-        & {
-            .am-flex(none, center);
-        }
+    > .label {
+      font-weight: 600;
+      margin: 0 0 @amrev__indent__xl 0;
+      width: 190px;
+    }
+  }
 
-        > .label {
-            & {
-                color: @amreview-input-text__color;
-                margin: 0;
-                min-width: 70px;
-            }
-
-            &:after {
-                color: #e02b27;
-                content: '*';
-                font-size: 1.2rem;
-                margin-left: 3px;
-            }
-        }
+  .review-field-rating {
+    & {
+      .am-flex(none, center);
     }
 
-    .review-field-summary > .label {
-        width: 100%;
+    > .label {
+      & {
+        color: @amreview-input-text__color;
+        margin: 0;
+        min-width: 70px;
+      }
+
+      &:after {
+        color: #e02b27;
+        content: '*';
+        font-size: 1.2rem;
+        margin-left: 3px;
+      }
+    }
+  }
+
+  .review-field-summary > .label {
+    width: 100%;
+  }
+
+  .amreview-recommend-wrap {
+    margin: 0 0 @amrev__indent 0;
+    position: relative;
+  }
+
+  .amreview-recommend-wrap,
+  .amreview-gdpr-wrap {
+    > .amreview-checkbox {
+      & {
+        -webkit-appearance: none;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        cursor: pointer;
+        display: inline-block;
+        height: 16px;
+        top: 3px;
+        width: 16px;
+        vertical-align: top;
+      }
+
+      &:not(.valid) + .mage-error[generated] + .amreview-checkboxlabel:before {
+        border: 1px solid #e02b27;
+      }
+
+      &:checked:after {
+        width: 14px;
+        line-height: 14px;
+        font-size: 10px;
+        margin: 0 0 2px 1px;
+      }
     }
 
-    .amreview-recommend-wrap {
-        margin: 0 0 @amrev__indent 0;
+    > .amreview-checkboxlabel {
+      & {
+        color: @amreview-input-text__color;
+        cursor: default;
+        display: inline-block;
+        font-weight: 600;
+        padding-right: 30px;
         position: relative;
+      }
+
+      .asterix {
+        color: #e02b27;
+        font-size: 1.2rem;
+        margin-left: 3px;
+      }
+    }
+  }
+
+  .form-default {
+    input[type="text"], input[type="password"],
+    input[type="url"], input[type="tel"],
+    input[type="search"], input[type="number"],
+    input[type="datetime"], input[type="email"], textarea {
+      height: 40px;
+      padding: 11px 16px 10px;
+      color: #222222;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.36;
+      border: 1px solid #dddddd;
     }
 
-    .amreview-recommend-wrap,
-    .amreview-gdpr-wrap {
-        > .amreview-checkbox {
-            & {
-                -webkit-appearance: none;
-                background-color: #ffffff;
-                border: 1px solid #dddddd;
-                cursor: pointer;
-                display: inline-block;
-                height: 16px;
-                top: 3px;
-                width: 16px;
-                vertical-align: top;
-            }
-
-            &:not(.valid) + .mage-error[generated] + .amreview-checkboxlabel:before {
-                border: 1px solid #e02b27;
-            }
-
-            &:checked:after {
-                width: 14px;
-                line-height: 14px;
-                font-size: 10px;
-                margin: 0 0 2px 1px;
-            }
-        }
-
-        > .amreview-checkboxlabel {
-            & {
-                color: @amreview-input-text__color;
-                cursor: default;
-                display: inline-block;
-                font-weight: 600;
-                padding-right: 30px;
-                position: relative;
-            }
-
-            .asterix {
-                color: #e02b27;
-                font-size: 1.2rem;
-                margin-left: 3px;
-            }
-        }
+    textarea {
+      min-height: 80px;
     }
 
-    .form-default {
-        input[type="text"], input[type="password"], 
-        input[type="url"], input[type="tel"], 
-        input[type="search"], input[type="number"], 
-        input[type="datetime"], input[type="email"], textarea {
-            height: 40px;
-            padding: 11px 16px 10px;
-            color: #222222;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.36;
-            border: 1px solid #dddddd;
-        }
-
-        textarea {
-            min-height: 80px;
-        }
-
-        .mage-error {
-            font-size: 12px;
-            color: #cc0000;
-            font-weight: 500;
-            margin-top: 4px;
-        }
-
-        input.mage-error, textarea.mage-error {
-            border-color: #cc0000;
-        }
+    .mage-error {
+      font-size: 12px;
+      color: #cc0000;
+      font-weight: 500;
+      margin-top: 4px;
     }
+
+    input.mage-error, textarea.mage-error {
+      border-color: #cc0000;
+    }
+  }
 }
 
 //

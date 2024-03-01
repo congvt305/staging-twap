@@ -53,7 +53,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
         return $result;
     }
-    /**
+     /**
      * @param float $price
      * @param float $finalPrice
      * @return int|false

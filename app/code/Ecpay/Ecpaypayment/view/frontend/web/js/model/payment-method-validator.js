@@ -34,7 +34,6 @@ define(
                         $("input:text[id=cellphone_barcode]").val(barCode);
                     }
                 }
-
                 if (choosenEInvoice == 'triplicate-invoice') {
 
                     let requiredFieldEntered = true;

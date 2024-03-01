@@ -233,7 +233,7 @@ class SmsSender implements SmsInterface
             $this->logger->info(__("Send request: %1", $this->json->serialize($param)));
             $this->curl->post($apiUrl, $this->json->serialize($param));
             $status = $this->curl->getStatus();
-            $this->logger->info(__("Response for " . $number . ":%1", $this->curl->getBody()));
+            $this->logger->info(__("Response for " . $number . ": %1", $this->curl->getBody()));
 
             if ($status != 200) {
                 return false;

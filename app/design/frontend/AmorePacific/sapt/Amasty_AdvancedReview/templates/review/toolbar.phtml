@@ -24,7 +24,7 @@ if ($block->isToolbarDisplayed()): ?>
                                class="amrev-input"
                                name="<?= $escaper->escapeHtml($key) ?>"
                                data-amreview-js="filter"
-                                <?= /* @noEscape */ $selected ? 'checked' : ''; ?>
+                            <?= /* @noEscape */ $selected ? 'checked' : ''; ?>
                                data-href="<?= $escaper->escapeUrl($block->generateUrl($key, !$selected)); ?>"
                                id="amreview-filter-<?= $escaper->escapeHtml($key) ?>">
                         <label class="amrev-label amrev-label" for="amreview-filter-<?= $escaper->escapeHtml($key); ?>">

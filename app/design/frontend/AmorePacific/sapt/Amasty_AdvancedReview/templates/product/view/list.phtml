@@ -2,7 +2,11 @@
 //rewrite file Magento_Review::product/view/list.phtml
 // phpcs:ignoreFile
 
-/** @var Magento\Review\Block\Product\View\ListView $block */
+/**
+ * @var Magento\Review\Block\Product\View\ListView $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
 $displayedCollection = $block->getReviewsCollection();
 $_items = $displayedCollection->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::MEDIUM;

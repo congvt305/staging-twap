@@ -10,10 +10,10 @@
 /** @var $viewModel Eguana\CustomRMA\ViewModel\CustomName */
 ?>
 <?php $_returns = $block->getReturns(); ?>
-<?php 
-    $viewModel = $block->getData('custom_name_view_model'); 
-    $orderViewModel = $block->getData('order_item_model');
-    $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+<?php
+$viewModel = $block->getData('custom_name_view_model');
+$orderViewModel = $block->getData('order_item_model');
+$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 ?>
 
 <?= $block->getChildHtml('info') ?>
@@ -36,43 +36,43 @@
                             <?php $items = $_return->getItems(); ?>
                             <table class="cart data table items">
                                 <tbody>
-                                    <?php foreach($items as $_item): ?>
-                                        <?php $_orderItem = $orderViewModel->getOrderItem($_item->getData('order_item_id')); ?>
-                                        <?php $product = $_orderItem->getProduct(); ?>
-                                        <tr class="item-info">
-                                            <td class="col item">
-                                                <span class="product-item-photo"><?= $orderViewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?></span>
-                                                <div class="product-item-details">
-                                                    <div class="shipping">
-                                                        <span class="in-delivery"><?= __('In Delivery') ?></span>
-                                                        <span class="method"><?= $_order->getShippingDescription() ?></span>
-                                                    </div>
-                                                    <strong class="product-item-name">
-                                                        <?= $block->escapeHtml($_item->getProductName()) ?>
-                                                    </strong>
-                                                    <?php $_options = json_decode($_item->getData('product_options')); ?>
-                                                    <?php if (!empty($_options->attributes_info)) : ?>
-                                                        <dl class="item-options">
-                                                            <?php foreach ($_options->attributes_info as $_option) : ?>
-                                                                <dt><?= $block->escapeHtml($_option->label); ?></dt>
-                                                                <dd><?= $block->escapeHtml($_option->value); ?></dd>
-                                                            <?php endforeach; ?>
-                                                        </dl>
-                                                    <?php endif; ?>
-
-                                                    <span class="cart-price"><?= $priceHelper->currency($_orderItem->getPrice()); ?></span>
-
-                                                    <div class="return-status">
-                                                        <?php if($_return->getStatus() == 'pending'):?>
-                                                            <?= $block->escapeHtml(__('Waiting for a refund')); ?>
-                                                        <?php else :?>
-                                                            <?= $block->escapeHtml($_return->getStatusLabel()) ?>
-                                                        <?php endif ?>
-                                                    </div>
+                                <?php foreach($items as $_item): ?>
+                                    <?php $_orderItem = $orderViewModel->getOrderItem($_item->getData('order_item_id')); ?>
+                                    <?php $product = $_orderItem->getProduct(); ?>
+                                    <tr class="item-info">
+                                        <td class="col item">
+                                            <span class="product-item-photo"><?= $orderViewModel->getImage($product, 'cart_page_product_thumbnail')->toHtml() ?></span>
+                                            <div class="product-item-details">
+                                                <div class="shipping">
+                                                    <span class="in-delivery"><?= __('In Delivery') ?></span>
+                                                    <span class="method"><?= $_order->getShippingDescription() ?></span>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach ?>
+                                                <strong class="product-item-name">
+                                                    <?= $block->escapeHtml($_item->getProductName()) ?>
+                                                </strong>
+                                                <?php $_options = json_decode($_item->getData('product_options')); ?>
+                                                <?php if (!empty($_options->attributes_info)) : ?>
+                                                    <dl class="item-options">
+                                                        <?php foreach ($_options->attributes_info as $_option) : ?>
+                                                            <dt><?= $block->escapeHtml($_option->label); ?></dt>
+                                                            <dd><?= $block->escapeHtml($_option->value); ?></dd>
+                                                        <?php endforeach; ?>
+                                                    </dl>
+                                                <?php endif; ?>
+
+                                                <span class="cart-price"><?= $priceHelper->currency($_orderItem->getPrice()); ?></span>
+
+                                                <div class="return-status">
+                                                    <?php if($_return->getStatus() == 'pending'):?>
+                                                        <?= $block->escapeHtml(__('Waiting for a refund')); ?>
+                                                    <?php else :?>
+                                                        <?= $block->escapeHtml($_return->getStatusLabel()) ?>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
                                 </tbody>
                             </table>
                         </div>

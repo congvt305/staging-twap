@@ -10,8 +10,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Config
 {
-    const XML_PATH_DESC_UNDER_NAME_ENABLE = 'cj_custom_catalog/custom_catalog/description_under_name_enabled';
-
     const XML_PATH_LIMIT = 'cj_custom_catalog/custom_catalog/limit';
 
     /**
@@ -34,26 +32,6 @@ class Config
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
-    }
-
-    /**
-     * If this setting is enabled then we will display
-     * the description of the product under its name.
-     * Otherwise, if this setting is disabled, the
-     * description will be hidden - not be displayed
-     * under product name.
-     * Noted that we are discussing on PLP
-     *
-     * @return bool
-     */
-    public function getDescriptionUnderNameEnabled(): bool
-    {
-        try {
-            $storeId = $this->getStoreId();
-            return $this->scopeConfig->isSetFlag(self::XML_PATH_DESC_UNDER_NAME_ENABLE, 'store', $storeId);
-        } catch (NoSuchEntityException $e) {
-            return false;
-        }
     }
 
     /**

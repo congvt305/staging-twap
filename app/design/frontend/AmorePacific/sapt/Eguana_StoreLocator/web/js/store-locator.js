@@ -1,6 +1,6 @@
 define([
-    'jquery',
-    'map-viewer'
+	'jquery',
+	'map-viewer'
 ], function ($) {
     return function (config) {
         $('.store-list').on('click', function () {
@@ -68,26 +68,26 @@ define([
             }
         });
 
-        /**
-         * set direction for source to destination
-         * @param longitude
-         * @param latitude
-         * @param link_with_destination
-         */
-        function setDirection(longitude, latitude, link_with_destination,element) {
-            let url = link_with_destination.split('||');
-            link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
-            element.attr('href', link_with_destination);
-        }
+		/**
+		 * set direction for source to destination
+		 * @param longitude
+		 * @param latitude
+		 * @param link_with_destination
+		 */
+		function setDirection(longitude, latitude, link_with_destination,element) {
+			let url = link_with_destination.split('||');
+			link_with_destination = url[0]+longitude  + ',' + latitude + '&destination='+url[1];
+			element.attr('href', link_with_destination);
+		}
 
-        /**
-         * expand map
-         */
-        $('.stores-map .expend').click(function () {
-            $(this).closest('.stores-map').toggleClass('active');
-        });
-        let x = window.matchMedia("(max-width: 991px)");
-        laodMobileView(x); // Call listener function at run time
-        x.addListener(laodMobileView); // Attach listener function on state changes
-    };
+		/**
+		 * expand map
+		 */
+		$('.stores-map .expend').click(function () {
+			$(this).closest('.stores-map').toggleClass('active');
+		});
+		let x = window.matchMedia("(max-width: 991px)");
+		laodMobileView(x); // Call listener function at run time
+		x.addListener(laodMobileView); // Attach listener function on state changes
+	};
 });

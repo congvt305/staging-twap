@@ -137,16 +137,11 @@ class Discount extends \Amasty\Rewards\Model\Calculation\Discount
      */
     public function calculateDiscount(array $quoteItems, Total $total, float $points): float
     {
-        //this function can be crun by cron Ex: hoolah_orders_cronjob so we need to get store from item
-        if (isset($quoteItems[0])) {
-            $storeId = (int)$quoteItems[0]->getStoreId();
-        } else {
-            $storeId = (int)$this->storeManager->getStore()->getId();
-        }
+        $storeId = (int)$this->storeManager->getStore()->getId();
         $rate = $this->rewardsConfig->getPointsRate($storeId);
         $items = $this->filterItems($quoteItems, $storeId);
         $allCartPrice = $this->getAllItemsPrice($items);
-        $isEnableShowListOptionRewardPoint = $this->rewardData->isEnableShowListOptionRewardPoint($storeId);
+        $isEnableShowListOptionRewardPoint = $this->rewardData->isEnableShowListOptionRewardPoint();
         if ($isEnableShowListOptionRewardPoint) {
             $listOptions = $this->rewardData->getListOptionRewardPoint();
             $amountDiscount = $listOptions[$points] ?? 0;

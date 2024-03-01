@@ -4,7 +4,7 @@
  */
 
 define([
-    'jquery'
+	'jquery'
 ], function ($) {
     'use strict';
 
@@ -46,16 +46,16 @@ define([
                 event.preventDefault();
                 anchor = $(this).attr('href').replace(/^.*?(#|$)/, '');
 
-                if (anchor == "reviews") {
-                    $('html, body').animate({
-                        scrollTop: $('.product-reviews-wrapper').offset().top
-                    }, 300);
-                } else {
-                    $('html, body').animate({
-                        scrollTop: $('.product-reviews-wrapper #' + anchor).offset().top
-                    }, 300);
-                }
-            });
-        });
-    };
+				if (anchor == "reviews") {
+					$('html, body').animate({
+						scrollTop: $('.product-reviews-wrapper').offset().top
+					}, 300);
+				} else {
+					$('html, body').animate({
+						scrollTop: $('.product-reviews-wrapper #' + anchor).offset().top
+					}, 300);
+				}
+			});
+		});
+	};
 });

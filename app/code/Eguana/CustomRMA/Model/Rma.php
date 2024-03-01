@@ -346,6 +346,7 @@ class Rma extends \Magento\Rma\Model\Rma
                 }
 
                 $itemModels[] = $itemModel;
+
                 if ($realItem = $order->getItemById($itemModel->getOrderItemId())) {
                     //Add children item of bundle product
                     if (!$itemModel->getEntityId() && $realItem->getProductType() === Type::TYPE_CODE) {
@@ -401,6 +402,7 @@ class Rma extends \Magento\Rma\Model\Rma
             $itemStatuses[] = $rmaItem->getData('status');
         }
         $this->setStatus($this->_statusFactory->create()->getStatusByItems($itemStatuses))->setIsUpdate(1);
+
         return $this->getItems();
     }
 
@@ -412,19 +414,12 @@ class Rma extends \Magento\Rma\Model\Rma
     private function getBundleChilds($item, $orderItemId)
     {
         $result = [];
-        $itemModel = $this->_rmaItemFactory->create();
-        $itemParentQtyReturn = $itemModel->getReturnableQty($this->getOrder()->getId(), $orderItemId);
         foreach ($this->getOrder()->getItems() as $orderItem) {
             if ($orderItem->getParentItemId() == $orderItemId) {
                 $itemModel = $this->_rmaItemFactory->create();
-                $itemChild = [
-                    'order_item_id' => $orderItem->getItemId(),
-                    'qty_requested' => ($itemModel->getReturnableQty($this->getOrder()->getId(), $orderItem->getItemId()) / $itemParentQtyReturn) * $item['qty_requested'],
-                    'reason' => $item['reason'],
-                    'condition' =>  $item['condition'],
-                    'resolution' => $item['resolution']
-                ];
-                $itemPost = $this->_preparePost($itemChild);
+                $item['order_item_id'] = $orderItem->getItemId();
+                $item['qty_requested'] = $itemModel->getReturnableQty($this->getOrder()->getId(), $orderItem->getItemId());
+                $itemPost = $this->_preparePost($item);
                 $key = 'bundle_child_'.$orderItem->getItemId();//Key using for matching $_FILES, this unique string is no-use
                 $itemModel->setData($itemPost)->prepareAttributes($itemPost, $key);
                 $result[] = $itemModel;

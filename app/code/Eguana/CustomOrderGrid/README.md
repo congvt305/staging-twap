@@ -28,7 +28,6 @@ Add After Plugin Which Removes the Store View Name from the information of order
 
 ![remove-store-name](https://nimbus-screenshots.s3.amazonaws.com/s/7ad19141cd81592911a6f1b8a6ae534d.png)
 
-
 ##BA Recruiter Code
 
 `Author` : Raheel Shaukat

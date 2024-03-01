@@ -5,7 +5,6 @@ namespace CJ\ShopBack\Controller\Gateway;
 use Hoolah\Hoolah\Controller\Main as HoolahMain;
 use Hoolah\Hoolah\Helper\API as HoolahAPI;
 use Hoolah\Hoolah\Model\Config\Source\OrderMode;
-use Magento\Framework\Api\SimpleDataObjectConverter;
 
 class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
 {
@@ -23,6 +22,9 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
 
         try
         {
+            if (!$quote->getShippingAddress()->getShippingMethod()) {
+                throw new \Exception('Shipping method is missing');
+            }
             if ($this->hdata->credentials_are_empty())
                 throw new \Exception('Merchant credentials are empty', 9999);
 
@@ -207,9 +209,10 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
             if ($coupons)
                 $order_data['voucherCode'] = $coupons;
 
-            $shipping_method = $quote->getShippingAddress()->getShippingMethod();
-            if ($shipping_method) {
-                switch ($shipping_method) {
+            $shipping_method = $quote->getShippingMethod();
+            if ($shipping_method)
+                switch($shipping_method)
+                {
                     case 'freeshipping_freeshipping':
                         $order_data['orderType'] = 'ONLINE';
                         $order_data['shippingMethod'] = 'FREE';
@@ -229,7 +232,7 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
                     //    );
                     //    break;
                 }
-            }
+
             //$originalAmount = 0;
             //$totalAmount = 0;
             //$discountAmount = 0;
@@ -367,35 +370,5 @@ class ValidateOrder extends \Hoolah\Hoolah\Controller\Gateway\ValidateOrder
             $jsonf->setHttpResponseCode(400);
 
         return $jsonf->setData($result);
-    }
-
-    /**
-     * Prevent update shippingMethod again
-     *
-     * @param $object
-     * @param $data
-     * @return void
-     */
-    protected function updateAddress($object, $data)
-    {
-        foreach ($data as $propertyName => $setterValue) {
-            $camelCaseProperty = SimpleDataObjectConverter::snakeCaseToUpperCamelCase($propertyName);
-            $setterName = 'set'.$camelCaseProperty;
-
-            if (in_array($setterName, array('setQuote', 'setExtensionAttributes', 'setShippingMethod'))) // ignore it
-                continue;
-
-            try
-            {
-                if (is_callable(array($object, $setterName)))
-                    $object->{$setterName}($setterValue);
-            }
-            catch (\Error $e)
-            {
-                $this->hlog->notice('hoolah updateAddress error - '.$e->getMessage().' - '.$e->getTraceAsString());
-            }
-        }
-
-        $object->save();
     }
 }

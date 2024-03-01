@@ -4,23 +4,23 @@
  */
 
 define([
-    'jquery',
-    'mage/mage'
+	'jquery',
+	'mage/mage'
 ], function ($) {
-    'use strict';
+	'use strict';
 
-    return function (config, element) {
-        $(element).mage('validation', {
-            /** @inheritdoc */
-            errorPlacement: function (error, el) {
+	return function (config, element) {
+		$(element).mage('validation', {
+			/** @inheritdoc */
+			errorPlacement: function (error, el) {
 
-                if (el.parents('.product-review-table').length) {
-                    $('.product-review-table').siblings(this.errorElement + '.' + this.errorClass).remove();
-                    $('.product-review-table').after(error);
-                } else {
-                    el.after(error);
-                }
-            }
-        });
-    };
+				if (el.parents('.product-review-table').length) {
+					$('.product-review-table').siblings(this.errorElement + '.' + this.errorClass).remove();
+					$('.product-review-table').after(error);
+				} else {
+					el.after(error);
+				}
+			}
+		});
+	};
 });

@@ -3,9 +3,9 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .video-board-list {
-        .lib-list-reset-styles();
-        font-size: 0;
+  .video-board-list {
+    .lib-list-reset-styles();
+    font-size: 0;
 
         .video-board-item {
             vertical-align: top;
@@ -129,11 +129,11 @@
         }
     }
 
-    .videoboard-detail-index {
-        .page-title-wrapper {
-            text-align: center;
-        }
+  .videoboard-detail-index {
+    .page-title-wrapper {
+      text-align: center;
     }
+  }
 }
 
 //
@@ -141,9 +141,9 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .video-board-list {
-        margin-left: -@layout__width-xs-indent;
-        margin-right: -@layout__width-xs-indent;
+  .video-board-list {
+    margin-left: -@layout__width-xs-indent;
+    margin-right: -@layout__width-xs-indent;
 
         .video-board-item {
             margin-bottom: @indent__l;
@@ -179,10 +179,10 @@
         }
     }
 
-    .video-iframe {
-        margin-left: -@layout__width-xs-indent;
-        margin-right: -@layout__width-xs-indent;
-    }
+  .video-iframe {
+    margin-left: -@layout__width-xs-indent;
+    margin-right: -@layout__width-xs-indent;
+  }
 }
 
 //
@@ -190,12 +190,12 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .video-board-list {
-        .video-board-item {
-            display: inline-block;
-            margin-left: @indent__base;
-            margin-bottom: 50px;
-            width: calc(~'(100% - @{indent__base}*2) / 3');
+  .video-board-list {
+    .video-board-item {
+      display: inline-block;
+      margin-left: @indent__base;
+      margin-bottom: 50px;
+      width: calc(~'(100% - @{indent__base}*2) / 3');
 
             &:nth-child(3n+1) {
                 margin-left: 0;
@@ -227,11 +227,11 @@
         }
     }
 
-    .videoboard-detail-index {
-        .page-title-wrapper {
-            .page-title {
-                margin-bottom: 0;
-            }
-        }
+  .videoboard-detail-index {
+    .page-title-wrapper {
+      .page-title {
+        margin-bottom: 0;
+      }
     }
+  }
 }

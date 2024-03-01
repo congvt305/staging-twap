@@ -4,7 +4,6 @@
     <default>
         <cj_custom_catalog>
             <custom_catalog>
-                <description_under_name_enabled>1</description_under_name_enabled>
                 <limit>30</limit>
             </custom_catalog>
         </cj_custom_catalog>

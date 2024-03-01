@@ -8,13 +8,13 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .block-reward-info {
-        .reward-rates,
-        .reward-limit,
-        .reward-expiring {
-            &:not(:last-child) {
-                margin-bottom: @indent__base;
-            }
+  .block-reward-info {
+    .reward-rates,
+    .reward-limit,
+    .reward-expiring {
+      &:not(:last-child) {
+        margin-bottom: @indent__base;
+      }
 
             .title {
                 display: block;
@@ -35,12 +35,12 @@
         }
     }
 
-    .block-reward-history {
-        .datetime {
-            display: block;
-            margin-bottom: @indent__xs;
-        }
+  .block-reward-history {
+    .datetime {
+      display: block;
+      margin-bottom: @indent__xs;
     }
+  }
 }
 
 //
@@ -48,11 +48,11 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .reward-settings {
-        + .actions-toolbar {
-            margin-top: 10px;
-        }
+  .reward-settings {
+    + .actions-toolbar {
+      margin-top: 10px;
     }
+  }
 }
 
 //
@@ -60,15 +60,15 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .reward-settings {
-        + .actions-toolbar {
-            margin-top: -32px;
-        }
+  .reward-settings {
+    + .actions-toolbar {
+      margin-top: -32px;
     }
+  }
 
-    .block-reward-info {
-        p, strong.title {
-            .lib-font-size(16);
-        }
+  .block-reward-info {
+    p, strong.title {
+      .lib-font-size(16);
     }
+  }
 }

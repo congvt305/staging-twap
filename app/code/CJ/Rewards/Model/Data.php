@@ -78,15 +78,14 @@ class Data
      */
     public function canUseRewardPoint($quote = null)
     {
-        if (!$quote) {
-            $quote = $this->session->getQuote();
-        }
-
-        if (!$this->amastyConfig->isEnabled($quote->getStoreId())) {
+        if (!$this->amastyConfig->isEnabled()) {
             return false;
         }
-        if ($this->config->isEnabledRewardsPointForOnlyBundle($quote->getStoreId())) {
+        if ($this->config->isEnabledRewardsPointForOnlyBundle()) {
             return true;
+        }
+        if (!$quote) {
+            $quote = $this->session->getQuote();
         }
 
         $isOnlyBundle = true;

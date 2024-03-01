@@ -153,7 +153,6 @@ class SaveSuccess implements ObserverInterface
     private $middlewareHelper;
 
     public function __construct(
-        Request $requestApi,
         RequestInterface $request,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,

@@ -19,7 +19,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 {
     const PURCHASE_DATA_REGISTRY_NAME = 'purchase_data';
     const FORMAT_DATE = 'Y-m-d';
-    const DEFAULT_AP_REGI_TYPE = 'DIRECT';
     /**
      * @var \Amore\GaTagging\Helper\Data
      */
@@ -825,18 +824,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getCustomerRegisterDate($customer) {
         $registerDate = $customer->getCreatedAt();
         return $this->dateTimeFactory->create()->gmtDate(self::FORMAT_DATE, $registerDate);
-    }
-
-    /**
-     * @param $customer
-     * @return string
-     */
-    public function getCustomerRegisterType($customer){
-        $customerRegisterType = $customer->getRegisterType();
-        if (!$customerRegisterType){
-            $customerRegisterType = self::DEFAULT_AP_REGI_TYPE;
-        }
-        return $customerRegisterType;
     }
 }
 

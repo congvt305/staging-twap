@@ -1,5 +1,7 @@
 <?php
 
-use Magento\Framework\Component\ComponentRegistrar;
-
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'CJ_AmastyCheckoutCore', __DIR__);
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'CJ_AmastyCheckoutCore',
+    __DIR__
+);

@@ -14,8 +14,6 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Boolean as SourceBoolean;
-use Psr\Log\LoggerInterface;
-
 class AddProductIsFreeGiftAttribute implements DataPatchInterface
 {
     /**
@@ -27,28 +25,16 @@ class AddProductIsFreeGiftAttribute implements DataPatchInterface
      */
     private $eavSetupFactory;
 
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
-     */
-    private $collectionFactory;
-
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
-        EavSetupFactory $eavSetupFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory,
-        \Magento\Framework\App\State $state,
-        LoggerInterface $logger
+        EavSetupFactory $eavSetupFactory
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;
-        $this->collectionFactory = $collectionFactory;
-        $this->state = $state;
-        $this->logger = $logger;
     }
 
     public function apply()
     {
-        $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_FRONTEND);
         $this->moduleDataSetup->startSetup();
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
@@ -83,7 +69,6 @@ class AddProductIsFreeGiftAttribute implements DataPatchInterface
         }
 
         $this->moduleDataSetup->endSetup();
-        $this->applyAttributeToOldProduct();
     }
 
     public static function getDependencies()
@@ -94,18 +79,5 @@ class AddProductIsFreeGiftAttribute implements DataPatchInterface
     public function getAliases()
     {
         return [];
-    }
-
-    public function applyAttributeToOldProduct()
-    {
-        $productCollection = $this->collectionFactory->create();
-        $productCollection->addAttributeToSelect('*')->load();
-        foreach ($productCollection as $product) {
-            try{
-                $product->save();
-            } catch(\Exception $e) {
-                $this->logger->critical('Update free gift for product error: '. $product->getId());
-            }
-        }
     }
 }

@@ -26,17 +26,17 @@
 </div>
 
 <script>
-    require([
-        'jquery'
-    ],function ($) {
-        $("#tab-label-reviews").click(function() {
-            $(".click_show.review").addClass("active");
-            $(".content_review").show();
-        });
+	require([
+		'jquery'
+	],function ($) {
+		$("#tab-label-reviews").click(function() {
+			$(".click_show.review").addClass("active");
+			$(".content_review").show();
+		});
 
-        $(".click_show.review").click(function(){
-            $(this).toggleClass("active");
-            $(".content_review").slideToggle();
-        });
-    });
+		$(".click_show.review").click(function(){
+			$(this).toggleClass("active");
+			$(".content_review").slideToggle();
+		});
+	});
 </script>

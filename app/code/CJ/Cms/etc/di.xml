@@ -13,18 +13,4 @@
             <argument name="logger" xsi:type="object">MigradtionCmsLog</argument>
         </arguments>
     </type>
-    <type name="CJ\Cms\Helper\Request">
-        <arguments>
-            <argument name="logger" xsi:type="object">MigradtionCmsLog</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Framework\Console\CommandListInterface">
-        <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="cj_migrate_cms_page_data" xsi:type="object">CJ\Cms\Console\MigrateCmsPageData</item>
-                <item name="cj_migrate_cms_block_data" xsi:type="object">CJ\Cms\Console\MigrateCmsBlockData</item>
-                <item name="cj_migrate_widget_data" xsi:type="object">CJ\Cms\Console\MigrateWidgetsData</item>
-            </argument>
-        </arguments>
-    </type>
 </config>

@@ -101,11 +101,6 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 //        }
 //        return $this;
 //    }
-
-    /**
-     * @param $regionId
-     * @return $this
-     */
     public function addRegionIdFilter($regionId)
     {
         if (!empty($regionId)) {

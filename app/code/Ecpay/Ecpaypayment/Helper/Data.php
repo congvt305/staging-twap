@@ -108,7 +108,7 @@ class Data extends AbstractHelper
         OrderRepositoryInterface $orderRepository,
         \Psr\Log\LoggerInterface $logger,
         StateInterface $inlineTranslation,
-        TransportBuilder $transportBuilder,
+        TransportBuilder $transportBuilder
     ) {
         $this->_ecpayOrderModel = $ecpayOrderModel;
         $this->_ecpayPaymentModel = $ecpayPaymentModel;
@@ -387,6 +387,7 @@ class Data extends AbstractHelper
 
         if ($error !== '') {
 
+            $this->logger->error('EcPay error: ' . json_encode($error));
             if (is_null($orderId) === false) {
 
                 $status = $this->getEcpayConfig('failed_status');

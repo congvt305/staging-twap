@@ -24,7 +24,7 @@ if ($blockId) {
 <div class="item title" data-role="collapsible">
     <a class="switch" data-toggle="trigger" href="#history-of-point-reward-tab"><?= $block->escapeHtml(__('History of Point Reward'))?></a>
 </div>
-<?php if ($blockId && $pointsBlock): ?>
+<?php if ($blockId): ?>
     <div id="history-of-point-reward-tab" class="item content" data-role="content">
         <?= /* @noEscape */ $pointsBlock; ?>
     </div>
@@ -107,11 +107,11 @@ if ($blockId) {
                     </tr>
                     </thead>
                     <tbody class="points-history-list">
-                        <tr>
-                            <td class="empty" colspan="4">
-                                <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="empty" colspan="4">
+                            <span><?= $block->escapeHtml(__('Points History Does not Exist.')) ?></span>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -125,4 +125,3 @@ if ($blockId) {
         }
     </script>
 <?php endif; ?>
-

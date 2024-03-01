@@ -462,13 +462,7 @@ class MassReport extends Action
     }
 
 
-    /**
-     * Get datetime base on store
-     *
-     * @param $dateTime
-     * @param $storeId
-     * @return string
-     */
+
     private function formatDateForStore($dateTime, $storeId) {
         $defaultTimeZone = $this->timezone->getConfigTimezone(ScopeInterface::SCOPE_STORE, $storeId);
         return $this->timezone->formatDate(
