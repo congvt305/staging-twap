@@ -6,7 +6,7 @@ index f5224abbc..ccf1fcbd4 100644
       */
      public function setReservedOrderId($reservedOrderId)
      {
-+        if (($this->getReservedOrderId() && $this->getReservedOrderId() != $reservedOrderId) || !$reservedOrderId) {
++        if ((!$this->getReservedOrderId() && $this->getReservedOrderId() != $reservedOrderId) || !$reservedOrderId) {
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/linepay.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
