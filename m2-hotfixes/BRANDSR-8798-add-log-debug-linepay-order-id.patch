@@ -66,3 +66,27 @@ index 60cd1c9b7..d3566d8e0 100644
          if ($quote->isVirtual()) {
              $this->dataObjectHelper->mergeDataObjects(
                  OrderInterface::class,
+
+diff --git a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
+index 155a20529..c89baeea3 100644
+--- a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
++++ b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
+@@ -427,6 +427,18 @@ abstract class AbstractDb extends AbstractResource
+                                 $logger->crit('Customer data after: ' . json_encode($object->getData()));
+                             }
+                         }
++                        if ($object instanceof \Magento\Quote\Model\Quote && !$object->getData('reserved_order_id') && $object->getPayment()->getMethod() == 'linepay_payment') {
++                            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/linepay.log');
++                            $logger = new \Zend_Log();
++                            $logger->addWriter($writer);
++                            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
++                            $logger->crit('Error save reserved order id: ');
++                            $backTrace = '';
++                            foreach ($debugBackTrace as $debug) {
++                                $backTrace .= @$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function'] . '|';
++                            }
++                            $logger->crit($backTrace);
++                        }
+                     } catch (\Throwable $exception) {
+                         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
+                         $logger = new \Zend_Log();
