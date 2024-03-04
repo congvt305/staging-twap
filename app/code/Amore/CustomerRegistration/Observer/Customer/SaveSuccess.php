@@ -152,7 +152,31 @@ class SaveSuccess implements ObserverInterface
      */
     private $middlewareHelper;
 
+    /**
+     * @param Request $requestApi
+     * @param RequestInterface $request
+     * @param RegionFactory $regionFactory
+     * @param RegionResourceModel $regionResourceModel
+     * @param \Eguana\Directory\Helper\Data $cityHelper
+     * @param Sequence $sequence
+     * @param Data $config
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param SubscriberFactory $subscriberFactory
+     * @param POSLogger $logger
+     * @param POSSystem $POSSystem
+     * @param AddressRepositoryInterface $addressRepository
+     * @param AddressInterfaceFactory $addressDataFactory
+     * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
+     * @param GroupRepositoryInterface $groupRepository
+     * @param SearchCriteriaBuilder $searchCriteria
+     * @param ManagerInterface $eventManager
+     * @param \Magento\Framework\App\State $state
+     * @param \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
+     * @param MiddlewareHelper $middlewareHelper
+     */
     public function __construct(
+        Request $requestApi,
         RequestInterface $request,
         RegionFactory $regionFactory,
         RegionResourceModel $regionResourceModel,
