@@ -19,7 +19,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-
+$amoreHelper = $this->helper(Amore\GaTagging\Helper\Data::class);
 $getDefault = $block->getData('view_model');
 ?>
 <?php if (!$_productCollection->count()) :?>
@@ -46,26 +46,41 @@ $getDefault = $block->getData('view_model');
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
         <ol class="products list items product-items">
+            <?php $index = 1;?>
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product) :?>
-                <li class="item product product-item">
-                    <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
-                        <?php /* @noEscape */ $productName = $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
-                        <?php /* @noEscape */ $productSku = $_product->getSku() ?>
-                        <?php
-                        $productImage = $block->getImage($_product, $imageDisplayArea);
-                        if ($pos != null) {
-                            $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                                . 'top:' . $productImage->getHeight() . 'px;"';
-                        }
-                        ?>
-                        <?php // Product Image ?>
-                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                           class="product photo product-item-photo"
-                           tabindex="-1"
-                           ap-click-area="product"
-                           ap-click-name="prd click"
-                           ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                <?php
+                $productName = $_helper->productAttribute($_product, $_product->getName(), 'name');
+                $productSku = $_product->getSku();
+                $originalPrice = $amoreHelper->getProductOriginalPrice($_product);
+                $finalPrice = $amoreHelper->getProductDiscountedPrice($_product);
+                $discountPrice = $finalPrice - $originalPrice;
+                ?>
+            <li class="item product product-item"
+                data-ap-cate="<?= $amoreHelper->getProductCategory($_product);?>"
+                data-ap-index="<?= $index ?>"
+                data-ap-code="<?= $productSku ?>"
+                data-ap-apg-code="<?= $block->escapeHtmlAttr($amoreHelper->getApgBrandCode($productSku)) ?>"
+                data-ap-name="<?= $block->escapeHtmlAttr($_product->getName()) ?>"
+                data-ap-site-name="<?= $block->escapeHtmlAttr($amoreHelper->getSiteName()) ?>"
+                data-ap-org-price="<?= $block->escapeHtmlAttr($originalPrice) ?>"
+                data-ap-discount="<?= $block->escapeHtmlAttr($discountPrice) ?>"
+                data-ap-final-price="<?= $block->escapeHtmlAttr($finalPrice) ?>">
+                <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                       class="product photo product-item-photo"
+                       tabindex="-1"
+                       ap-click-area="product"
+                       ap-click-name="prd click"
+                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
                         <span class="flags">
                         <?php if($_product->getData('new')):?>
                             <span class="flag new"><?= $block->escapeHtml($_product->getResource()->getAttribute('new')->getStoreLabel());?></span>
@@ -101,48 +116,49 @@ $getDefault = $block->getData('view_model');
 
                             <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
 
-                            <div class="product-item-inner">
-                                <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                    <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                        <?php if ($_product->isSaleable()) :?>
-                                            <?php $postParams = $block->getAddToCartPostParams($_product); ?>
-                                            <form data-role="tocart-form"
-                                                  data-product-sku="<?= $block->escapeHtmlAttr($_product->getSku()) ?>"
-                                                  action="<?= $block->escapeUrl($postParams['action']) ?>"
-                                                  method="post">
-                                                <input type="hidden"
-                                                       name="product"
-                                                       value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
-                                                <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
-                                                       value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
-                                                <?= $block->getBlockHtml('formkey') ?>
-                                                <button type="submit"
-                                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                                        class="action tocart primary">
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
-                                    <?php if(!$_product->getData('offline')):?>
-                                        <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                            <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
-                                                <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endif;?>
+                        <div class="product-item-inner">
+                            <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                    <?php if ($_product->isSaleable()) :?>
+                                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form"
+                                              data-product-sku="<?= $block->escapeHtmlAttr($_product->getSku()) ?>"
+                                              action="<?= $block->escapeUrl($postParams['action']) ?>"
+                                              method="post">
+                                            <input type="hidden"
+                                                   name="product"
+                                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                            <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                   value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit"
+                                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                    class="action tocart primary">
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
-                                <?php if ($showDescription) :?>
-                                    <div class="product description product-item-description">
-                                        <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                                           title="<?= /* @noEscape */ $_productNameStripped ?>"
-                                           class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
-                                    </div>
-                                <?php endif; ?>
+                                <?php if(!$_product->getData('offline')):?>
+                                <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                    <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
+                                        <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
+                                    <?php endif; ?>
+                                </div>
+                                <?php endif;?>
                             </div>
+                            <?php if ($showDescription) :?>
+                                <div class="product description product-item-description">
+                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                                       title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                       class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
-                </li>
+                </div>
+            </li>
+            <?php $index++;?>
             <?php endforeach; ?>
         </ol>
     </div>
@@ -158,4 +174,14 @@ $getDefault = $block->getData('view_model');
         }
         </script>
     <?php endif; ?>
+    <script type="text/x-magento-init">
+        {
+            ".products.wrapper": {
+                "Amore_GaTagging/js/ap-select-item": {
+                    "searchItemElement": ".product-item",
+                    "listItemName": "<?= $block->escapeJs(\Amore\GaTagging\Model\CommonVariable::SEARCH_ITEM_LIST_NAME) ?>"
+                }
+            }
+        }
+    </script>
 <?php endif; ?>

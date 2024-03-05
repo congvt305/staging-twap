@@ -9,6 +9,7 @@
 namespace Amore\GaTagging\CustomerData;
 
 
+use Amore\GaTagging\Model\CommonVariable;
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -75,12 +76,12 @@ class ApData implements SectionSourceInterface
     {
         if (!$this->customerSession->isLoggedIn()) {
             return [
-                'AP_DATA_GCID' => 'undefined',
-                'AP_DATA_ISLOGIN' => 'N',
-                'AP_DATA_LOGINTYPE' => 'undefined',
-                'AP_DATA_CD' => 'undefined',
-                'AP_DATA_CG' => 'undefined',
-                'AP_DATA_CT' => 'undefined'
+                'AP_DATA_GCID' => '',
+                'AP_DATA_ISLOGIN' => CommonVariable::VALUE_NO,
+                'AP_DATA_LOGINTYPE' => '',
+                'AP_DATA_CD' => '',
+                'AP_DATA_CG' => '',
+                'AP_DATA_CT' => ''
             ];
         }
 
@@ -92,10 +93,11 @@ class ApData implements SectionSourceInterface
         if (isset($coreSession->getData()['socialmedia_type'])) {
             $loginType = $coreSession->getData()['socialmedia_type'];
         }
-        $genderOptions = $this->eavConfig->getAttribute('customer','gender')->getSource()->getAllOptions();
+
         $genderLabel = '';
         $gender = '';
         if ($customer->getGender()) {
+            $genderOptions = $this->eavConfig->getAttribute('customer','gender')->getSource()->getAllOptions();
             foreach ($genderOptions as $genderOption) {
                 if ($genderOption['value'] == $customer->getGender()) {
                     $genderLabel = $genderOption['label'];
@@ -113,7 +115,7 @@ class ApData implements SectionSourceInterface
             'AP_DATA_GCID' => hash('sha512', $customer->getId()),
             'AP_DATA_CID' => $this->getCustomerIntegrationNumber($customer),
             'AP_DATA_ISMEMBER' => $this->getCustomerIntegrationNumber($customer) !== 'X' ? 'O' : 'X',
-            'AP_DATA_ISLOGIN' => 'Y',
+            'AP_DATA_ISLOGIN' => CommonVariable::VALUE_YES,
             'AP_DATA_LOGINTYPE' => $loginType,
             'AP_DATA_CA' => $customer->getDob() ? $this->getCustomerAge($customer->getDob()) : '',
             'AP_DATA_CD' => $customer->getDob() ? $this->getCustomerBirthYear($customer->getDob()) : '',

@@ -1,20 +1,10 @@
+<?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account_page_type"/>
     <body>
         <referenceContainer name="content">
             <block name="account_datalayer" class="Amore\GaTagging\Block\GaTagging" after="-"
                    ifconfig="amore_gatagging/tagmanager/event_landing_after_join_enabled" template="Amore_GaTagging::account/datalayer.phtml" />
-        </referenceContainer>
-        <!-- PAGE SPECIFIC AP -->
-        <referenceContainer name="after.body.start">
-            <block class="Amore\GaTagging\Block\GaTagging"
-                   ifconfig="amore_gatagging/tagmanager/active"
-                   name="ap_customer_page_type"
-                   after="amore_gatagging_common_ap"
-                   template="Amore_GaTagging::common/ap-pagetype.phtml" >
-                <arguments>
-                    <argument name="page_type" xsi:type="string">MY</argument>
-                </arguments>
-            </block>
         </referenceContainer>
     </body>
 </page>

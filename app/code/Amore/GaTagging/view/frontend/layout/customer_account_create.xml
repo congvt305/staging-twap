@@ -4,6 +4,16 @@
         <!-- 2.3 주요페이지 로그인 가입버튼 AP & 이벤트 트리거 -->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
+                   name="ap_register_page"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   cacheable="false"
+                   after="amore_gatagging_common_ap"
+                   template="Amore_GaTagging::common/ap-pagetype.phtml">
+                <arguments>
+                    <argument name="page_type" xsi:type="string">MY_REGISTRATION</argument>
+                </arguments>
+            </block>
+            <block class="Amore\GaTagging\Block\GaTagging"
                    name="ap_customer_register"
                    ifconfig="amore_gatagging/tagmanager/active"
                    after="amore_gatagging_common_ap"

@@ -131,7 +131,7 @@ class Ap
         $productInfo['promotion'] = '';
         $productInfo['cate'] = $this->helper->getProductCategory($product);
         $productInfo['catecode'] = '';
-        $productInfo['apg_brand_code'] = substr($product->getSku(), 0, 5);
+        $productInfo['apg_brand_code'] = $this->helper->getApgBrandCode($product->getSku());
         $productInfo['price'] = $price;
         $productInfo['url'] = $product->getProductUrl();
         $productInfo['img_url'] = $this->catalogProductHelper->getThumbnailUrl($product);
@@ -161,7 +161,7 @@ class Ap
         $productInfo['variant'] = '';
         $productInfo['promotion'] = '';
         $productInfo['cate'] = $this->helper->getProductCategory($product);
-        $productInfo['apg_brand_code'] = substr($product->getSku(), 0, 5);
+        $productInfo['apg_brand_code'] = $this->helper->getApgBrandCode($product->getSku());
         $productInfo['catecode'] = '';
         $productInfo['price'] = $price;
         $productInfo['url'] = $product->getProductUrl();
@@ -177,16 +177,7 @@ class Ap
      */
     public function getProductOriginalPrice($currentProduct)
     {
-        $productType = $currentProduct->getTypeId();
-        if ($productType == 'bundle') {
-            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue());
-        } else if ($productType == 'configurable') {
-            $originalPrice = intval($currentProduct->getPriceInfo()->getPrice('regular_price')->getMinRegularAmount()->getValue());
-        } else {
-            $originalPrice = intval($currentProduct->getPrice());
-        }
-
-        return $originalPrice;
+        return $this->helper->getProductOriginalPrice($currentProduct);
     }
 
     /**
@@ -195,16 +186,7 @@ class Ap
      */
     public function getProductDiscountedPrice($currentProduct)
     {
-        $productType = $currentProduct->getTypeId();
-        if ($productType == 'bundle') {
-            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
-        } elseif ($productType == 'configurable'){
-            $price = intval($currentProduct->getPriceInfo()->getPrice('final_price')->getValue());
-        } else {
-            $price = intval($currentProduct->getFinalPrice());
-        }
-
-        return $price;
+        return $this->helper->getProductDiscountedPrice($currentProduct);
     }
 
 }

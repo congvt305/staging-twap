@@ -8,6 +8,8 @@
 
 namespace Amore\GaTagging\Helper;
 
+use Amore\GaTagging\Model\CommonVariable;
+use Magento\Catalog\Model\Category;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
@@ -19,6 +21,7 @@ class Data extends AbstractHelper
     const XML_PATH_CONTAINER_ID = 'amore_gatagging/tagmanager/container_id';
     const XML_PATH_ADDITIONAL_CONTAINER_ID = 'amore_gatagging/tagmanager/additional_container_id';
     const XML_PATH_ADDITIONAL_CONTAINER_ENABLED = 'amore_gatagging/tagmanager/additional_container_enabled';
+    const XML_PATH_DATA_ENV = 'amore_gatagging/tagmanager/data_env';
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
@@ -26,9 +29,9 @@ class Data extends AbstractHelper
     protected $storeManager;
 
     /**
-     * @var \Magento\Catalog\Model\CategoryFactory
+     * @var \Magento\Catalog\Model\ResourceModel\Category\Tree
      */
-    protected $categoryFactory;
+    protected $categoryTree;
 
     /**
      * @var \Magento\Catalog\Api\CategoryRepositoryInterface
@@ -38,17 +41,17 @@ class Data extends AbstractHelper
     /**
      * @param Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Catalog\Model\CategoryFactory $categoryFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\Tree $categoryTree
      * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Model\CategoryFactory $categoryFactory,
+        \Magento\Catalog\Model\ResourceModel\Category\Tree $categoryTree,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
     ) {
         $this->storeManager = $storeManager;
-        $this->categoryFactory = $categoryFactory;
+        $this->categoryTree = $categoryTree;
         $this->categoryRepository = $categoryRepository;
         parent::__construct($context);
     }
@@ -92,6 +95,16 @@ class Data extends AbstractHelper
         );
     }
 
+    /**
+     * @return string
+     */
+    public function getDataEnvironment()
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_DATA_ENV,
+            ScopeInterface::SCOPE_WEBSITE
+        ) ?? CommonVariable::ENV_STG;
+    }
 
     /**
      * @param $product
@@ -101,36 +114,42 @@ class Data extends AbstractHelper
     public function getProductCategory($product)
     {
         $categoryName = "";
-        $categoryIds = $product->getCategoryIds();
-        foreach ($categoryIds as $categoryId) {
-            $nearRootCategoryId = $this->nearRootCategoryId($categoryId);
-            if ($nearRootCategoryId) {
-                $category = $this->categoryRepository->get($nearRootCategoryId);
-                $categoryName = $category->getName();
-                break;
+        $store = $product->getStore();
+        $categoriesCollection = $product->getCategoryCollection()
+            ->addIsActiveFilter()
+            ->addNameToResult()
+            ->setStoreId($store->getId());
+        $categoriesCollection
+            ->addPathsFilter(Category::TREE_ROOT_ID . '/' . $store->getRootCategoryId())
+            ->getSelect()
+            ->order('LENGTH(path) DESC');
+        $category = $categoriesCollection->getFirstItem();
+
+        if ($category->getId()) {
+            $category = $this->categoryRepository->get($category->getId(), $store->getId());
+            $categoryTree = $this->categoryTree->setStoreId($store->getId())
+                ->loadBreadcrumbsArray($category->getPath());
+
+            $categoryTreeNames = [];
+            foreach ($categoryTree as $category) {
+                if (empty(($category['name']))) {
+                    continue;
+                }
+                $categoryTreeNames[] = __($category['name']);
             }
+            $categoryName = implode('/', $categoryTreeNames);
         }
         return $categoryName;
     }
 
     /**
-     * @param $categoryId
-     * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @param $productSku
+     * @return string
      */
-    function nearRootCategoryId($categoryId)
+    public function getApgBrandCode($productSku)
     {
-        $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
-        $category = $this->categoryFactory->create()->load($categoryId);
-        $parentCategories = $category->getParentCategories();
-        foreach ($parentCategories as $parentCategory) {
-            if ($parentCategory->getParentId() == $rootCategoryId) {
-                return $parentCategory->getId();
-            }
-        }
-        return 0;
+        return !empty($productSku) ? substr($productSku, 0, 5) : '';
     }
-
 
     /**
      * @param $currentProduct

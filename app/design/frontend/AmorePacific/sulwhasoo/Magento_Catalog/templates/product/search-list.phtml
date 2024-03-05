@@ -49,11 +49,22 @@ $getDefault = $block->getData('view_model');
             <?php $index = 1;?>
             <?php /** @var $_product \Magento\Catalog\Model\Product */?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php /* @noEscape */ $productSku = $_product->getSku();
+                <?php
+                    $productSku = $_product->getSku();
                     $originalPrice = $amoreHelper->getProductOriginalPrice($_product);
                     $finalPrice = $amoreHelper->getProductDiscountedPrice($_product);
+                    $discountPrice = $finalPrice - $originalPrice;
                 ?>
-                <li class="item product product-item">
+                <li class="item product product-item"
+                    data-ap-cate="<?= $amoreHelper->getProductCategory($_product);?>"
+                    data-ap-index="<?= $index ?>"
+                    data-ap-code="<?= $productSku ?>"
+                    data-ap-apg-code="<?= $block->escapeHtmlAttr($amoreHelper->getApgBrandCode($productSku)) ?>"
+                    data-ap-name="<?= $block->escapeHtmlAttr($_product->getName()) ?>"
+                    data-ap-site-name="<?= $block->escapeHtmlAttr($amoreHelper->getSiteName()) ?>"
+                    data-ap-org-price="<?= $block->escapeHtmlAttr($originalPrice) ?>"
+                    data-ap-discount="<?= $block->escapeHtmlAttr($discountPrice) ?>"
+                    data-ap-final-price="<?= $block->escapeHtmlAttr($finalPrice) ?>">
                     <?php if( $viewMode == 'list' ):?>
                         <strong class="product name product-item-name">
                             <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
@@ -177,33 +188,15 @@ $getDefault = $block->getData('view_model');
         }
         </script>
     <?php endif; ?>
-    <script type="text/javascript">
-        require([
-            "jquery"
-        ], function ($) {
-            $('.product-item-photo,.product-item-link,.todetail').on('click', function () {
-                var data = $(this).attr('ap-click-data').split("/"),
-                    finalPrice =  $(this).data('final-price'),
-                    oldPrice = $(this).data('org-price'),
-                    discount = oldPrice - finalPrice;
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'select_item',
-                    'prdInfo': {
-                        'code': data[data.length - 1],
-                        'name': data[data.length - 2],
-                        'brand': '<?=$amoreHelper->getSiteName()?>',
-                        'cate': $(this).data('cate'),
-                        'apg_brand_code': data[data.length - 1].substring(0, 5),
-                        'index': $(this).data('index'),
-                        'item_list_name': 'SEARCH_RESULT',
-                        'price': finalPrice,
-                        'discount': discount,
-                        'prdprice': oldPrice
-                    }
-                })
-            })
-        })
+    <script type="text/x-magento-init">
+        {
+            ".products.wrapper": {
+                "Amore_GaTagging/js/ap-select-item": {
+                    "searchItemElement": ".product-item",
+                    "listItemName": "<?= $block->escapeJs(\Amore\GaTagging\Model\CommonVariable::SEARCH_ITEM_LIST_NAME) ?>"
+                }
+            }
+        }
     </script>
 <?php endif; ?>
 

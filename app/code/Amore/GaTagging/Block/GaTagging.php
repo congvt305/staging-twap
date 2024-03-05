@@ -8,6 +8,7 @@
 
 namespace Amore\GaTagging\Block;
 
+use Amore\GaTagging\Model\CommonVariable;
 use Magento\Bundle\Model\Product\Price;
 use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -20,6 +21,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 {
     const PURCHASE_DATA_REGISTRY_NAME = 'purchase_data';
     const FORMAT_DATE = 'Y-m-d';
+    const DEFAULT_SEARCH_TYPE = '직접입력';
+    const DEFAULT_REFUND_CONTENT = '단순변심';
+
     /**
      * @var \Amore\GaTagging\Helper\Data
      */
@@ -238,6 +242,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $index = 1;
         /** @var \Magento\Catalog\Model\Product $product */
         foreach ($this->_productCollection as $product) {
+            $regularPrice = $this->helper->getProductOriginalPrice($product);
+            $finalPrice = $this->helper->getProductDiscountedPrice($product);
+            $discountAmount = $regularPrice - $finalPrice;
 
             $productData[] = [
                 'code' => $product->getSku(),
@@ -245,15 +252,14 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 'brand' => $this->helper->getSiteName(),
                 'cate' => $this->helper->getProductCategory($product),
                 'index' => $index++,
-                'item_list_name' => 'SEARCH_RESULT',
-                'apg_brand_code' => substr($product->getSku(), 0, 5),
-                'price' => intval($product->getFinalPrice()),
-                'discount' => intval($product->getPrice() - $product->getFinalPrice()),
-                'prdprice' => intval($product->getPrice())
+                'item_list_name' => CommonVariable::SEARCH_ITEM_LIST_NAME,
+                'apg_brand_code' => $this->helper->getApgBrandCode($product->getSku()),
+                'price' => $finalPrice,
+                'discount' => $discountAmount,
+                'prdprice' => $regularPrice
             ];
         }
         return $this->jsonSerializer->serialize($productData);
-
     }
 
     public function getSearchNumber()
@@ -267,7 +273,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
     public function getSearchType()
     {
-        return '직접입력';
+        return $this->getRequest()->getCookie('ap_search_type') ?? self::DEFAULT_SEARCH_TYPE;
     }
 
     public function getJoinName()
@@ -420,9 +426,9 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['url'] = $item->getProduct()->getProductUrl();
             $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($currentProduct);
             $product['catecode'] = '';
-            $product['apg_brand_code'] = substr($item->getSku(), 0, 5);
-            $product['prdprice'] = $item->getRowTotal();
-            $product['discount'] = $item->getDiscountAmount();
+            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getSku());
+            $product['prdprice'] = (float) $item->getRowTotal();
+            $product['discount'] = (float) $item->getDiscountAmount();
             if ($item->getProductType() === 'configurable') {
                 $nameArr = explode(' ', $item->getName());
                 $product['variant'] = $nameArr[(count($nameArr) - 1)];
@@ -544,10 +550,14 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $orderData['AP_PURCHASE_CURRENCY'] = $this->getCurrentCurrencyCode();
         $orderData['AP_PURCHASE_DATE'] = $this->dateTimeFactory->create()->gmtDate(self::FORMAT_DATE, $order->getCreatedAt());
         $ruleData = $this->getRuleName($order->getAppliedRuleIds());
-        $orderData['AP_PURCHASE_COUPONNAME'] = isset($ruleData['name']) ? $ruleData['name'] :'';
-        $orderData['AP_PURCHASE_COUPONNO'] = isset($ruleData['coupon']) ? $ruleData['coupon'] :'';
+        $orderData['AP_PURCHASE_COUPONNAME'] = $ruleData['name'] ?? '';
+        $orderData['AP_PURCHASE_COUPONNO'] = $ruleData['coupon'] ?? '';
         $orderData['AP_PURCHASE_TAX'] = $order->getTaxAmount();
-        $orderData['AP_PURCHASE_TYPE'] = $order->getPayment()->getMethod();
+        try {
+            $orderData['AP_PURCHASE_TYPE'] = $order->getPayment()->getMethodInstance()->getTitle();
+        } catch (\Exception $e) {
+            $orderData['AP_PURCHASE_TYPE'] = $order->getPayment()->getMethod() ?? '';
+        }
         return $orderData;
     }
 
@@ -575,12 +585,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $parentProduct = $parentItem->getProduct();
                 $product['name'] = $parentProduct->getData('name');
                 $product['code'] = $parentProduct->getData('sku');
-                $product['apg_brand_code'] = substr($parentProduct->getData('sku'), 0, 5);
+                $product['apg_brand_code'] = $this->helper->getApgBrandCode($parentProduct->getData('sku'));
                 $product['sapcode'] = $parentProduct->getData('sku');
                 $product['brand'] = $this->helper->getSiteName() ?? '';
                 $product['quantity'] = intval($parentItem->getQtyOrdered());
                 $product['variant'] = '';
-                $product['promotion'] = '';
                 $product['cate'] = $this->helper->getProductCategory($parentProduct);
                 $product['catecode'] = '';
                 $product['url'] = $parentItem->getProduct()->getProductUrl();
@@ -588,22 +597,16 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 if ($parentItem->getProductType() === 'bundle') {
                     $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
                     $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
-
-                }
-
-                if ($parentItem->getAppliedRuleIds()) {
-                    $ruleData =  $this->getRuleName($parentItem->getAppliedRuleIds());
-                    $product['promotion'] = $ruleData['name'];
-                    $product['promotion_code'] = $ruleData['coupon'];
-                }
-
-                if ($parentItem->getProductType() === 'configurable') {
+                } elseif ($parentItem->getProductType() === 'configurable') {
                     $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
                     $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getValue()) ?? 0;
-                    // $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getValue()) ?? 0;
                     $nameArr = explode(' ', $item->getName());
                     $product['variant'] = $nameArr[(count($nameArr) - 1)];
                 }
+
+                $ruleData = $this->getRuleName($parentItem->getAppliedRuleIds());
+                $product['promotion'] = $ruleData['name'];
+                $product['promotion_code'] = $ruleData['coupon'];
                 $product['discount'] = $product['prdprice'] - $product['price'];
                 $products[] = $product;
                 $parentSku = $parentItem->getSku();
@@ -612,12 +615,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 if ($item->getProductType() == 'simple') {
                     $product['name'] = $item->getName();
                     $product['code'] = $item->getSku();
-                    $product['apg_brand_code'] = substr($item->getData('sku'), 0, 5);
+                    $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getData('sku'));
                     $product['sapcode'] = $item->getSku();
                     $product['brand'] = $this->helper->getSiteName() ?? '';
-                    $product['prdprice'] = $item->getPrice();
+                    $product['prdprice'] = $item->getRowTotal();
                     $product['discount'] = $item->getDiscountAmount();
-                    $product['price'] =  ($product['prdprice'] *  intval($item->getQty())) - $product['discount'];
+                    $product['price'] = $product['prdprice'] - $product['discount'];
                     $product['quantity'] = intval($item->getQtyOrdered());
                     $product['variant'] =  '';
                     $ruleData = $this->getRuleName($item->getAppliedRuleIds());
@@ -663,9 +666,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             return false;
         }
         $canceledOrderData = [
+            'ORDER_ID' => $orderId,
+            'AP_ECOMM_CURRENCY' => $order->getStore()->getCurrentCurrencyCode(),
             'AP_REFUND_PRICE' => 0,
             'AP_REFUND_ORDERNUM' => 0,
-            'AP_REFUND_CONTENT' => 0,
+            'AP_REFUND_CONTENT' => self::DEFAULT_REFUND_CONTENT,
             'AP_REFUND_PRDS' => []
         ];
         $allItems = $order->getAllItems();
@@ -680,7 +685,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         }
         $canceledOrderData['AP_REFUND_PRICE'] = intval($order->getTotalRefunded());
         $canceledOrderData['AP_REFUND_ORDERNUM'] = intval($order->getGrandTotal());
-        $canceledOrderData['AP_REFUND_CONTENT'] = '단순변심';
         return $canceledOrderData;
     }
 
@@ -729,7 +733,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     public function getProductOriginalPrice($product)
     {
-        return $this->ap->getProductOriginalPrice($product);
+        return $this->helper->getProductOriginalPrice($product);
     }
 
     /**
@@ -738,7 +742,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     public function getProductDiscountedPrice($product)
     {
-        return $this->ap->getProductDiscountedPrice($product);
+        return $this->helper->getProductDiscountedPrice($product);
     }
 
     /**
@@ -815,23 +819,44 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @param $ruleIds
      * @return array
      */
-    public function getRuleName($ruleIds = '') {
+    public function getRuleName($ruleIds = '')
+    {
         if (!$ruleIds) {
-            return [];
+            return [
+                'name' => '',
+                'coupon' => ''
+            ];
         }
         $ruleName = [];
         $couponCode = [];
         $collection = $this->ruleCollectionFactory->create();
         $collection->addFieldToFilter('rule_id', ['in' => $ruleIds]);
-        foreach($collection as $rule) {
+        foreach ($collection as $rule) {
             $ruleName[] = $rule->getName();
             $couponCode[] = $rule->getCode();
         }
-        $ruleData = [
+        return [
             'name' =>  implode('|', $ruleName),
             'coupon' => implode('|', $couponCode)
         ];
-        return $ruleData;
+    }
+
+    /**
+     * Get AP site name from config
+     *
+     * @return string|null
+     */
+    public function getSiteName()
+    {
+        return $this->helper->getSiteName() ?? '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataEnvironment()
+    {
+        return $this->helper->getDataEnvironment();
     }
 }
 
