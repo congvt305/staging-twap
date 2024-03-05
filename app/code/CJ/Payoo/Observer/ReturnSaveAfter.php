@@ -67,10 +67,16 @@ class ReturnSaveAfter implements ObserverInterface
                 $this->logger->info(PayooLogger::TYPE_LOG_RETURN, ['message' => 'Start Return Payoo']);
                 $invoice = $order->getInvoiceCollection()->getFirstItem();
                 $invoicedata = $this->invoice->loadByIncrementId($invoice->getIncrementId());
-                $creditmemo = $this->creditmemoFactory->createByOrder($order);
                 if ($return->getPartialTotalAmount()) {
+                    $dataQty['qtys'] = [];
+                    foreach($return->getItems() as $item) {
+                        $dataQty['qtys'][$item->getOrderItemId()] = $item->getQtyRequested();
+                    }
+                    $creditmemo = $this->creditmemoFactory->createByOrder($order, $dataQty);
                     $creditmemo->setBaseGrandTotal($return->getPartialTotalAmount());
                     $creditmemo->setBaseSubtotal($return->getPartialTotalAmount());
+                } else {
+                    $creditmemo = $this->creditmemoFactory->createByOrder($order);
                 }
                 $creditmemo->setInvoice($invoicedata);
                 if (!$order->getTotalRefunded()) {
