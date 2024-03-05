@@ -2,7 +2,7 @@ diff --git a/vendor/magento/module-quote/Model/Quote.php b/vendor/magento/module
 index f5224abbc..ccf1fcbd4 100644
 --- a/vendor/magento/module-quote/Model/Quote.php
 +++ b/vendor/magento/module-quote/Model/Quote.php
-@@ -696,6 +696,18 @@ class Quote extends AbstractExtensibleModel implements \Magento\Quote\Api\Data\C
+@@ -696,6 +696,20 @@ class Quote extends AbstractExtensibleModel implements \Magento\Quote\Api\Data\C
       */
      public function setReservedOrderId($reservedOrderId)
      {
@@ -10,13 +10,15 @@ index f5224abbc..ccf1fcbd4 100644
 +            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/linepay.log');
 +            $logger = new \Zend_Log();
 +            $logger->addWriter($writer);
-+            $logger->crit('Re-set Reserved Order Id for Quote:' . $this->getIncrementId() . ' with payment: ' . $this->getPayment()->getMethod());
++            $logger->crit('Re-set Reserved Order Id for Quote:' . $this->getId() . ' with payment: ' . $this->getPayment()->getMethod());
++            $logger->crit('Reserved order id to set: ' . $reservedOrderId . ' , current reserved id: ' . $this->getReservedOrderId());
 +            $debugBackTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 +            $backTrace = '';
 +            foreach ($debugBackTrace as $debug) {
 +                $backTrace .= @$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function'];
 +            }
 +           $logger->crit('Back trace: ' . $backTrace);
++           $logger->crit('Current Quote: ' . json_encode($this->getData()));
 +        }
          return $this->setData(self::KEY_RESERVED_ORDER_ID, $reservedOrderId);
      }
@@ -71,11 +73,11 @@ diff --git a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php b/ve
 index 155a20529..c89baeea3 100644
 --- a/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
 +++ b/vendor/magento/framework/Model/ResourceModel/Db/AbstractDb.php
-@@ -427,6 +427,18 @@ abstract class AbstractDb extends AbstractResource
+@@ -427,6 +427,20 @@ abstract class AbstractDb extends AbstractResource
                                  $logger->crit('Customer data after: ' . json_encode($object->getData()));
                              }
                          }
-+                        if ($object instanceof \Magento\Quote\Model\Quote && !$object->getData('reserved_order_id') && $object->getPayment()->getMethod() == 'linepay_payment') {
++                        if ($object instanceof \Magento\Quote\Model\Quote && $object->getPayment()->getMethod() == 'linepay_payment') {
 +                            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/linepay.log');
 +                            $logger = new \Zend_Log();
 +                            $logger->addWriter($writer);
@@ -86,6 +88,8 @@ index 155a20529..c89baeea3 100644
 +                                $backTrace .= @$debug['class'] . ':' . @$debug['line'] . @$debug['type'] . @$debug['function'] . '|';
 +                            }
 +                            $logger->crit($backTrace);
++                            $logger->crit('Previous Quote data: ' . json_encode($object->getOrigData()));
++                            $logger->crit('Current Quote data: ' . json_encode($object->getData()));
 +                        }
                      } catch (\Throwable $exception) {
                          $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/debug-ticket-BRANDSR-6495.log');
