@@ -63,6 +63,7 @@ define([
                     lastname = $(cvsFormSelector + ' input[name=lastname]').val(),
                     mobile = $(cvsFormSelector + ' input[name=mobile_number]').val(),
                     shippingAddress,
+                    paymentMethod = quote.paymentMethod(),
                     selectedLocation = pickupLocationService.selectedLocation();
 
                 if (!selectedLocation) {
@@ -91,7 +92,9 @@ define([
                     validateShippingAddressResult = true;
                     shippingAddress = addressConverter.quoteAddressToFormAddressData(quote.shippingAddress());
                     checkoutData.setShippingAddressFromData(shippingAddress);
-                    setShippingInformationAction();
+                    if (paymentMethod.method != 'linepay_payment') {
+                        setShippingInformationAction();
+                    }
                 }
                 if (!validateShippingAddressResult) {
                     message = $t('Please check the shipping address information.');
