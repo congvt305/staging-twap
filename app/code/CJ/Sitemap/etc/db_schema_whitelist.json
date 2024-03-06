@@ -1,0 +1,7 @@
+{
+    "sitemap": {
+        "column": {
+            "sitemap_exclude_urls": true
+        }
+    }
+}
