@@ -26,6 +26,7 @@
                     <argument name="path" xsi:type="string">ugc-terms-and-conditions</argument>
                 </arguments>
             </block>
+            <referenceBlock name="amseohtmlsitemap" remove="true"/>
         </referenceBlock>
         <referenceBlock name="privacy-policy-link">
             <arguments>
