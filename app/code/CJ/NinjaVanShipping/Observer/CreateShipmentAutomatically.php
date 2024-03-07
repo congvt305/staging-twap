@@ -214,6 +214,7 @@ class CreateShipmentAutomatically implements ObserverInterface
                     throw new \Exception(__("Cannot Create delivery order: {$order->getIncrementId()}"));
                 }
 
+                $this->setQtyShipToOrderItem($order);
                 $order->setState('processing');
                 $order->setStatus('processing_with_shipment');
                 $order->setData('sent_to_ninjavan', 1);
@@ -240,6 +241,23 @@ class CreateShipmentAutomatically implements ObserverInterface
     {
         $orderPrefix = self::TRACKING_NUMBER_FREFIX;
         return $orderPrefix.substr($order->getIncrementId(), -6);
+    }
+    /**
+     * @param $order \Magento\Sales\Model\Order
+     */
+    public function setQtyShipToOrderItem($order)
+    {
+        if ($order->hasInvoices()) {
+            $orderItems = $order->getAllItems();
+            foreach ($orderItems as $item) {
+                if (empty($item->getQtyToShip()) || $item->getIsVirtual()) {
+                    continue;
+                }
+                $item->setQtyShipped($item->getQtyInvoiced());
+                $item->save();
+            }
+            $order->save();
+        }
     }
 
     /**
