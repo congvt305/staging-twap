@@ -83,15 +83,6 @@ $schema = ($block->getZone() == 'item_view') ? true : false;
                         <?= $discountedPrice?>%
                     </span>
                 <?php endif;?>
-                <span class="old-price">
-                    <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalRegularPrice, [
-                        'display_label'     => $block->escapeHtml(__('Regular Price')),
-                        'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
-                        'price_type'        => 'oldPrice',
-                        'include_container' => true,
-                        'skip_adjustments'  => true
-                    ]); ?>
-                </span>
             <?php endif ?>
             <?php /* @escapeNotVerified */ echo $block->renderAmount($minimalPrice, [
                 'price_id'          => $block->getPriceId('from-'),
