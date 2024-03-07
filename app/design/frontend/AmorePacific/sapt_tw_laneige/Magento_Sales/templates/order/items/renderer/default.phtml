@@ -14,6 +14,7 @@ $product = $_item->getProduct();
 $_order = $_item->getOrder();
 $layoutHander = $block->getRequest()->getFullActionName();
 $viewModel = $block->getData('view_model');
+$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
 ?>
 <tr id="order-item-row-<?= (int) $_item->getId() ?>" class="item-info<?php if ($viewModel->isPromoItem($_item)): ?> gift-item<?php endif; ?>">
     <td class="col item"
@@ -50,15 +51,11 @@ $viewModel = $block->getData('view_model');
                     </dl>
                 <?php endif;?>
             <?php } ?>
-            <?php if ($_item->getRowTotal() == $_item->getDiscountAmount()): ?>
-                <?php $priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
-                <?= $priceHelper->currency(0) ?>
-            <?php else: ?>
-                <?= $block->getItemPriceHtml() ?><span class="product-qty-ordered">
-                <?php if($layoutHander == 'sales_order_view'): ?>
-                    <?= __(' / ') ?> <?= __("QTY %1", (int)$_item->getQtyOrdered()) ?></span>
-                <?php endif; ?>
-            <?php endif; ?>
+            <div class="product-price">
+                <span
+                    class="price"><?= $priceHelper->currency($_item->getRowTotal(), true, false) ?><?= __(" x QTY %1", (int)$_item->getQtyOrdered()) ?>
+                </span>
+            </div>
         </div>
     </td>
     <?php if (!$viewModel->isPromoItem($_item)): ?>
