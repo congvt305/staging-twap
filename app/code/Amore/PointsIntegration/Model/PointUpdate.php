@@ -89,10 +89,15 @@ class PointUpdate
 
     /**
      * @param MagentoOrder $order
+     * @param string $pointAmount
      * @param string $pointType
      * @param string $useReason
-     * @param $pointAmount
+     * @param string $comment
+     * @param string $actionType
+     * @param bool $isVisibleForCustomer
      * @return void
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
@@ -100,7 +105,10 @@ class PointUpdate
         MagentoOrder $order,
         $pointAmount,
         string $pointType = self::POINT_EARN,
-        string $useReason = self::POINT_REASON_PURCHASE
+        $useReason = self::POINT_REASON_PURCHASE,
+        $comment = 'Updated from POS',
+        $actionType = Actions::SYSTEM_REWARDS_SYNC,
+        $isVisibleForCustomer = false
     ) {
         $dash = '====================';
         $this->logger->info($dash);
@@ -148,7 +156,7 @@ class PointUpdate
                         $type = Actions::ACTION_DEDUCT_POINT;
                     }
                     if ($pointUpdate != 0) {
-                        $this->updatePoints($order->getCustomerId(), abs($pointUpdate), $type);
+                        $this->updatePoints($order->getCustomerId(), abs($pointUpdate), $type, $comment, $actionType, $isVisibleForCustomer);
                     }
                 }
 
@@ -157,13 +165,12 @@ class PointUpdate
                 } else {
                     $order->setData('pos_order_return_point_resend', false);
                 }
-                $this->orderRepository->save($order);
                 $message = null;
             }
+            $this->orderRepository->save($order);
             if ($message) {
                 $this->logger->error('MESSAGE: ' . $message);
                 $this->logger->info($dash);
-                $this->orderRepository->save($order);
                 throw new Exception($message);
             }
         } catch (Exception $exception) {
@@ -197,20 +204,28 @@ class PointUpdate
     /**
      * Set data and update point to DB
      *
-     * @param $customerId
-     * @param $points
-     * @param $action
-     * @param $comment
+     * @param int $customerId
+     * @param string|int|float $points
+     * @param string $action
+     * @param string $comment
+     * @param string $actionType
+     * @param bool $isVisibleForCustomer
      * @return void
      */
-    public function updatePoints($customerId, $points, $action = Actions::ACTION_ADD_POINT, $comment = 'Updated from POS')
-    {
+    public function updatePoints(
+        $customerId,
+        $points,
+        $action = Actions::ACTION_ADD_POINT,
+        $comment = 'Updated from POS',
+        $actionType = Actions::SYSTEM_REWARDS_SYNC,
+        $isVisibleForCustomer = false
+    ) {
         $modelRewards = $this->rewardsRepository->getEmptyModel();
         $modelRewards->setCustomerId((int)$customerId);
         $modelRewards->setAmount((float)$points);
         $modelRewards->setComment($comment);
-        $modelRewards->setAction(Actions::SYSTEM_REWARDS_SYNC);
-        $modelRewards->setVisibleForCustomer(false);
+        $modelRewards->setAction($actionType);
+        $modelRewards->setVisibleForCustomer($isVisibleForCustomer);
         if ($modelRewards->getAmount() > 0) {
             if ($action == Actions::ACTION_DEDUCT_POINT) {
                 $this->rewardsProvider->deductRewardPoints($modelRewards);

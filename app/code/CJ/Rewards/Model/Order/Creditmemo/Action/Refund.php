@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace CJ\Rewards\Observer;
+namespace CJ\Rewards\Model\Order\Creditmemo\Action;
 
 use Amasty\Rewards\Block\Adminhtml\Sales\Creditmemo as CreditmemoBlock;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
+use Amasty\Rewards\Model\Config\Source\Actions;
+use Amasty\Rewards\Model\Order\Creditmemo\ActionInterface;
+use Amore\PointsIntegration\Model\PointUpdate;
 use Magento\Framework\Message\Manager as MessageManager;
 use Magento\Sales\Model\Order\Creditmemo;
-use Amore\PointsIntegration\Model\PointUpdate;
-class UpdatePointToPos implements ObserverInterface
+
+class Refund implements ActionInterface
 {
     /**
      * @var PointUpdate
@@ -33,13 +34,13 @@ class UpdatePointToPos implements ObserverInterface
     }
 
     /**
-     * @param Observer $observer
+     * Update point to POS and magento
+     *
+     * @param Creditmemo $creditmemo
+     * @return void
      */
-    public function execute(Observer $observer)
+    public function execute(Creditmemo $creditmemo): void
     {
-
-        /** @var Creditmemo $creditmemo */
-        $creditmemo = $observer->getEvent()->getCreditmemo();
         $order = $creditmemo->getOrder();
         $refundPoint = $creditmemo->getData(CreditmemoBlock::REFUND_KEY);
         if ($refundPoint || $order->getData('am_spent_reward_points')) {
@@ -47,7 +48,16 @@ class UpdatePointToPos implements ObserverInterface
             $order = $creditmemo->getOrder();
             if ($order->getCustomerId()) {
                 try {
-                    $this->pointUpdate->pointUpdate($order, $refundPoint);
+                    $comment =  __('Refund #%1 for Order #%2', $creditmemo->getIncrementId(), $order->getIncrementId())->render();
+                    $this->pointUpdate->pointUpdate(
+                        $order,
+                        $refundPoint,
+                        PointUpdate::POINT_EARN,
+                        PointUpdate::POINT_REASON_PURCHASE,
+                        $comment,
+                        Actions::REFUND_ACTION,
+                        true
+                    );
                 } catch (\Exception $exception) {
                     $this->messageManager->addErrorMessage($exception->getMessage());
                 }
