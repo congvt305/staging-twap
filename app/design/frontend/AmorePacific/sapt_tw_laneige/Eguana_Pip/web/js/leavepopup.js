@@ -25,6 +25,14 @@ require([
             content: line2 + line3 + line4 + "<br>" + line5,
             actions: {
                 confirm: function () {
+                    if (window.dataLayer) {
+                        window.dataLayer.push({
+                            'event': 'withdrawal_complete',
+                            'event_category': 'withdrawal',
+                            'event_action': 'withdrawal complete',
+                            'event_label': ''
+                        });
+                    }
                     window.location.href = accountLeaveUrl;
                 },
                 cancel: function () {

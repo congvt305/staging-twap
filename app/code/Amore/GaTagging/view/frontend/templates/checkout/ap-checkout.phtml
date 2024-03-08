@@ -14,6 +14,7 @@ $orderData = $block->getOrderData();
 <?php if ($orderData && is_array($orderData)) : ?>
 <script>
     //카트  todo additional AP
+    var AP_DATA_PAGETYPE = "<?= /* @noEscape */ $block->getPageType()?>";
     var AP_ORDER_PRICE = <?= $block->escapeHtml($orderData['AP_ORDER_PRICE'])?>;
     var AP_ORDER_PRDPRICE = <?= $block->escapeHtml($orderData['AP_ORDER_PRDPRICE'])?>;
     var AP_ORDER_DISCOUNT = <?= $block->escapeHtml($orderData['AP_ORDER_DISCOUNT'])?>;

@@ -14,6 +14,7 @@ $cartData = $block->getCartData();
 <?php if ($cartData) : ?>
 <script>
     //카트  todo additional AP
+    var AP_ECOMM_CURRENCY = '<?= $block->escapeHtml($cartData['AP_ECOMM_CURRENCY'])?>';
     var AP_CART_PRICE = '<?= $block->escapeHtml($cartData['AP_CART_PRICE'])?>';
     var AP_CART_PRDPRICE = '<?= $block->escapeHtml($cartData['AP_CART_PRDPRICE'])?>';
     var AP_CART_DISCOUNT = '<?= $block->escapeHtml($cartData['AP_CART_DISCOUNT'])?>';

@@ -8,6 +8,13 @@
 
 /** @var \Magento\Review\Block\Form $block */
 ?>
+<script>
+    var AP_REVIEW_PRD = AP_PRD_NAME || '';
+    var AP_REVIEW_PRDCODE = AP_PRD_CODE || '';
+    var AP_REVIEW_RATING = AP_REVIEW_RATING || '';
+    var AP_REVIEW_PICTURE = AP_REVIEW_PICTURE || '';
+    var AP_REVIEW_CONTENT = AP_REVIEW_CONTENT || '';
+</script>
 <div class="block review-add">
     <div class="block-title"><strong><?= $block->escapeHtml(__('Write Your Own Review')) ?></strong></div>
     <div class="block-content">
@@ -36,6 +43,7 @@
                                                         value="<?= $block->escapeHtmlAttr($_option->getId()) ?>"
                                                         class="radio"
                                                         data-validate="{'rating-required':true}"
+                                                        data-star-value="<?=$block->escapeHtmlAttr($iterator)?>"
                                                         aria-labelledby="<?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_rating_label <?= $block->escapeHtmlAttr($_rating->getRatingCode()) ?>_<?= $block->escapeHtmlAttr($_option->getValue()) ?>_label" />
                                                     <label
                                                         class="rating-<?= $block->escapeHtmlAttr($iterator) ?>"

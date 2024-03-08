@@ -77,10 +77,16 @@ class Cart
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
-                    $result['items'][$key]['product_original_price'] = $item->getProduct()->getPrice();
+                    $result['items'][$key]['product_original_price'] = $this->data->getProductOriginalPrice($item->getProduct());
+                    $result['items'][$key]['price'] = $this->data->getProductDiscountedPrice($item->getProduct());
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
                     $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
+                    $result['items'][$key]['apg_brand_code'] = $this->data->getApgBrandCode($item->getProduct()->getSku());
+
+                    $price = $result['items'][$key]['price'] ?? 0;
+                    $originalPrice = $result['items'][$key]['product_original_price'] ?? 0;
+                    $result['items'][$key]['discount_price'] = $originalPrice > $price ? ($originalPrice - $price) : 0;
                 }
             }
         }
