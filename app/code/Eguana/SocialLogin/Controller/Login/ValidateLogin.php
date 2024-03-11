@@ -23,7 +23,6 @@ use Magento\Framework\Controller\ResultInterface as ResultInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Customer\Model\ResourceModel\CustomerRepository;
 
 /**
  * Class ValidateLogin
@@ -32,8 +31,6 @@ use Magento\Customer\Model\ResourceModel\CustomerRepository;
  */
 class ValidateLogin extends Action
 {
-    const LINE = 'line';
-
     /** @var  Page */
     private $resultPageFactory;
 
@@ -58,14 +55,14 @@ class ValidateLogin extends Action
     private $resultJsonFactory;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var Helper
      */
     private $helper;
-
-    /**
-     * @var CustomerRepository
-     */
-    private $customerRepository;
 
     /**
      * ValidateLogin constructor.
@@ -75,8 +72,8 @@ class ValidateLogin extends Action
      * @param SocialLoginModel $socialLoginModel
      * @param StoreManagerInterface $storemanager
      * @param JsonFactoryAlias $resultJsonFactory
+     * @param LoggerInterface $logger
      * @param Helper $helper
-     * @param CustomerRepository $customerRepository
      */
     public function __construct(
         Context $context,
@@ -85,16 +82,16 @@ class ValidateLogin extends Action
         SocialLoginModel $socialLoginModel,
         StoreManagerInterface $storemanager,
         JsonFactoryAlias $resultJsonFactory,
-        Helper $helper,
-        CustomerRepository $customerRepository
+        LoggerInterface $logger,
+        Helper $helper
     ) {
         $this->resultPageFactory               = $resultPageFactory;
         $this->customerSession                 = $session;
         $this->socialLoginModel                = $socialLoginModel;
         $this->storemanager                    = $storemanager;
         $this->resultJsonFactory               = $resultJsonFactory;
+        $this->logger                          = $logger;
         $this->helper                          = $helper;
-        $this->customerRepository              = $customerRepository;
         parent::__construct($context);
     }
 
@@ -127,24 +124,14 @@ class ValidateLogin extends Action
                 return $resultJson->setData($response);
             }
         } elseif ($this->socialLoginModel->getCoreSession()->getSocialCustomerId()) {
-            $data = $this->socialLoginModel->getCoreSession()->getSocialmediaId();
             try {
-                $customer = $this->customerSession->getCustomer();
                 $customerId = $this->socialLoginModel->getCoreSession()->getSocialCustomerId();
                 $this->customerSession->loginById($customerId);
+                $customer = $this->customerSession->getCustomer();
                 $this->customerSession->setUsername($customer->getEmail());
-                if ($this->socialLoginModel->getCoreSession()->getSocialmediaType() == self::LINE) {
-                    $customer = $this->customerRepository->getById($customerId);
-                    $customer->setCustomAttribute(
-                        'line_id',
-                        $this->socialLoginModel->getCoreSession()->getSocialmediaId()
-                    );
-                    $this->customerRepository->save($customer);
-                }
+                $this->customerSession->setEventSocialLoginSuccess(1);
             } catch (\Exception $e) {
-                $this->messageManager->addErrorMessage(
-                    __('We can not save LINE Information.') . $e->getMessage()
-                );
+                $this->logger->error($e->getMessage());
             }
             $this->socialLoginModel->getCoreSession()->unsSocialCustomerId();
             $url = $this->_url->getUrl('customer/account/index');

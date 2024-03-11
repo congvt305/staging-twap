@@ -61,28 +61,10 @@ define([
 
         getBundleProductData: function (product) {
             var productInfosArr = window.PRD_DATA;
-            if (typeof productInfosArr != 'undefined') {
-                productInfosArr.forEach(function (productInfo) {
-                    productInfo.price = parseInt(product.product_price_value * productInfo.rate);
-                    productInfo.quantity = parseInt(productInfo.quantity * product.qty);
-                    delete productInfo.rate;
-                });
-            } else {
-                return [{
-                    'name': product.product_name,
-                    'code': product.product_sku,
-                    'v2code': product.product_id,
-                    'sapcode': product.product_sku,
-                    'brand': product.product_brand,
-                    'price': product.product_price_value,
-                    'prdprice': parseInt(product.product_original_price),
-                    'variant': '',
-                    'promotion': '',
-                    'cate': '',
-                    'catecode': '',
-                    'quantity': product.qty,
-                }];
-            }
+            productInfosArr.forEach(function (productInfo) {
+                productInfo.quantity = parseInt(product.qty);
+                delete productInfo.rate;
+            });
             return productInfosArr;
         },
         getSimpleProductData: function (product) {
@@ -95,8 +77,11 @@ define([
                 'brand': product.product_brand,
                 'price': product.product_price_value,
                 'prdprice': parseInt(product.product_original_price),
+                'discount': parseInt(product.discount_price),
+                'apg_brand_code': product.apg_brand_code,
                 'variant': '',
-                'promotion': '',
+                'promotion': undefined,
+                'promotion_code': undefined,
                 'cate': '',
                 'catecode': '',
                 'quantity': product.qty,
@@ -108,12 +93,9 @@ define([
             var productInfosArr = window.PRD_DATA;
             var selectedProductInfo = [];
             productInfosArr.forEach(function (productInfo) {
-                if (productInfo.code === product.product_sku) {
-                    productInfo.quantity = parseInt(product.qty);
-                    productInfo.variant = productInfo.name.replace(product.product_name, '');
-                    selectedProductInfo.push(productInfo);
-
-                }
+                productInfo.quantity = parseInt(product.qty);
+                productInfo.variant = productInfo.name.replace(product.product_name, '');
+                selectedProductInfo.push(productInfo);
             });
             return selectedProductInfo;
         },

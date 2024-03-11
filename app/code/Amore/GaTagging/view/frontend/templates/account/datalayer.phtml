@@ -22,3 +22,19 @@ if ($eventRegisterSuccess):
         window.dataLayer.push({'event': 'landingAfterJoin'})
     </script>
 <?php endif; ?>
+<?php
+$eventSocialLoginSuccess = $block->getEventSocialLoginSuccess();
+if ($eventSocialLoginSuccess):
+    $block->setEventSocialLoginSuccess(null);
+    $loginType = $block->getSocialTypeLogin();
+?>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'login_complete',
+            'event_category': 'login',
+            'event_action': 'login - complete',
+            'event_label': "<?=$loginType?>"
+        });
+    </script>
+<?php endif ?>
