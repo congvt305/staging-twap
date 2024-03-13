@@ -13,28 +13,30 @@
 $viewModel = $block->getData('detail_view_model');
 $eventDetail = $viewModel->getEventManager();
 ?>
-<div class="event-detail-wrapper event-manager">
-    <div class="event-detail-content">
-        <div class="event-detail-item">
-            <div class="event-detail-period">
-                <span class="event-detail-start-date">
-                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getStartDate()));?>
-                </span>
-                <span>~</span>
-                <span class="event-detail-end-date">
-                    <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getEndDate()));?>
-                </span>
+<?php if ($eventDetail->getId()):?>
+    <div class="event-detail-wrapper event-manager">
+        <div class="event-detail-content">
+            <div class="event-detail-item">
+                <div class="event-detail-period">
+                    <span class="event-detail-start-date">
+                        <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getStartDate()));?>
+                    </span>
+                    <span>~</span>
+                    <span class="event-detail-end-date">
+                        <?= $block->escapeHtml($viewModel->changeDateFormat($eventDetail->getEndDate()));?>
+                    </span>
+                </div>
+                <div class="event-detail-description">
+                    <?= /* @noEscape */  $viewModel->contentFiltering($eventDetail->getDescription()); ?>
+                </div>
             </div>
-            <div class="event-detail-description">
-                <?= /* @noEscape */  $viewModel->contentFiltering($eventDetail->getDescription()); ?>
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <a class="action primary" href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
+                    <span><?= $block->escapeHtml(__('Back to list'));?></span>
+                </a>
             </div>
         </div>
     </div>
-    <div class="actions-toolbar">
-        <div class="primary">
-            <a class="action primary" href="<?= $block->escapeUrl($block->getBaseUrl().'events')?>">
-                <span><?= $block->escapeHtml(__('Back to list'));?></span>
-            </a>
-        </div>
-    </div>
-</div>
+<?php endif;?>
