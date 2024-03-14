@@ -4,6 +4,7 @@
  * See COPYING.txt for license details.
  */
 use Magento\Framework\App\Action\Action;
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 
 // @codingStandardsIgnoreFile
 
@@ -119,11 +120,20 @@ $getDefault = $block->getData('view_model');
                                                     <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
                                                     <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
                                                     <?= $block->getBlockHtml('formkey') ?>
-                                                    <button type="submit"
-                                                            title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                                            class="action tocart primary">
-                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                                    </button>
+                                                    <?php if ($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
+		                                                <button type="button"
+		                                                        title="<?= $block->escapeHtmlAttr($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+		                                                        class="action coming-soon"
+		                                                        id="product-comming-soon-button">
+			                                                <span><?= $_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT) ?></span>
+		                                                </button>
+                                                    <?php else: ?>
+	                                                    <button type="submit"
+	                                                            title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+	                                                            class="action tocart primary">
+	                                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+	                                                    </button>
+	                                                <?php endif; ?>
                                                 </form>
                                             <?php endif; ?>
                                         </div>

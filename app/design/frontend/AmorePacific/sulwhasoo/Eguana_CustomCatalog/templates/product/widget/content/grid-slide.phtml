@@ -3,16 +3,12 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 use Magento\Framework\App\Action\Action;
 use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 
 // @codingStandardsIgnoreFile
 
 /** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
-
-// phpcs:disable Generic.Files.LineLength.TooLong
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 ?>
 <?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
     <?php
@@ -40,10 +36,8 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
             <div class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
                 <ol class="product-items <?= /* @noEscape */ $type ?>">
                     <?php $iterator = 1; ?>
-                    <?php
-                    foreach ($items as $_item) :
-                        $productSku = $_item->getSku();
-                    ?>
+                    <?php foreach ($items as $_item) : ?>
+                        <?php /* @noEscape */ $productSku = $_item->getSku() ?>
                         <?= /* @noEscape */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
                         <div class="product-item-wrapper">
                             <div class="product-item-info">
@@ -51,7 +45,7 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
                                    class="product-item-photo"
                                    ap-click-area="product"
                                    ap-click-name="prd click"
-                                   ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                                   ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                                     <?= $block->getImage($_item, $image)->toHtml() ?>
                                 </a>
                                 <div class="product-item-details">
@@ -67,7 +61,7 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
                                            class="product-item-link"
                                            ap-click-area="product"
                                            ap-click-name="prd click"
-                                           ap-click-data="<?= $block->escapeHtmlAttr($block->getProductDefaultName($productSku) . '/' . $productSku); ?>">
+                                           ap-click-data="<?= /* @noEscape */ $block->getProductDefaultName($productSku) . '/' . $productSku; ?>">
                                             <?= $block->escapeHtml($_item->getName()) ?>
                                         </a>
                                     </strong>
@@ -108,24 +102,22 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
                                                     <?php endif; ?>
                                                 <?php endif?>
                                             </div>
-                                            <?php if(!$_item->getData('offline')):?>
-                                                <?php if ($showWishlist || $showCompare || $showCart): ?>
-                                                    <?php if ($showWishlist || $showCompare): ?>
-                                                        <div class="actions-secondary" data-role="add-to-links">
-                                                            <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
-                                                                <a href="#"
-                                                                   data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
-                                                                    <span><?= $block->escapeHtml(__('Add to Wishlist')) ?></span>
-                                                                </a>
-                                                            <?php endif; ?>
-                                                            <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
-                                                                <?php $compareHelper = $this->helper(Magento\Catalog\Helper\Product\Compare::class);?>
-                                                                <a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
-                                                                    <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
-                                                                </a>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    <?php endif; ?>
+                                            <?php if ($showWishlist || $showCompare || $showCart): ?>
+                                                <?php if ($showWishlist || $showCompare): ?>
+                                                    <div class="actions-secondary" data-role="add-to-links">
+                                                        <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
+                                                            <a href="#"
+                                                               data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
+                                                                <span><?= $block->escapeHtml(__('Add to Wishlist')) ?></span>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
+                                                            <?php $compareHelper = $this->helper(Magento\Catalog\Helper\Product\Compare::class);?>
+                                                            <a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
+                                                                <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
@@ -141,13 +133,4 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
             <?= $block->getPagerHtml() ?>
         </div>
     </div>
-    <?php if($block->getBlockHtml('formkey')): ?>
-        <script type="text/x-magento-init">
-    {
-        ".block.widget [data-role=tocart-form]": {
-            "Magento_Catalog/js/validate-product": {}
-        }
-    }
-    </script>
-    <?php endif;?>
 <?php endif;?>

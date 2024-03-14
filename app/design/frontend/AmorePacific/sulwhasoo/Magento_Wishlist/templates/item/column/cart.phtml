@@ -5,6 +5,7 @@
  */
 
 // @codingStandardsIgnoreFile
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
 
@@ -38,9 +39,21 @@ try {
             <?php if ($product->isSaleable()): ?>
                 <div class="product-item-actions">
                     <div class="actions-primary">
-                        <button type="button" data-role="tocart" data-post='<?= /* @noEscape */ $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>" data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
-                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                        </button>
+                        <?php if ($item->getProduct()->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)): ?>
+                            <button type="button"
+                                    title="<?= $block->escapeHtmlAttr($item->getProduct()->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+                                    class="action coming-soon">
+                                <span><?= $item->getProduct()->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT); ?></span>
+                            </button>
+                        <?php else: ?>
+                            <button type="button" data-role="tocart" data-post='<?= /* @noEscape */
+                            $block->getItemAddToCartParams($item) ?>'
+                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                    data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>"
+                                    class="action tocart primary">
+                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php else: ?>
