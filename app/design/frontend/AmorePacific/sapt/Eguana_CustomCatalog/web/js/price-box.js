@@ -36,7 +36,11 @@ define([
                         var oldPrice = this.cache.displayPrices.oldPrice.amount;
                         if (price.final != oldPrice) {
                             var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
-                            $('.discount-label').text(discount+'%');
+                            $('[data-price-type="oldPrice"]').closest('.old-price').show();
+                            $(this.element).closest('.product-info-main').find('.discount-label').show().text(discount+'%');
+                        } else{
+                            $(this.element).closest('.product-info-main').find('[data-price-type="oldPrice"]').closest('.old-price').hide();
+                            $(this.element).closest('.product-info-main').find('.discount-label').hide();
                         }
                     }
 
