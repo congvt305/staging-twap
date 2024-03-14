@@ -1123,10 +1123,6 @@
         }
         .table-wrapper{
             table{
-                &:not(.table-point) {
-                    display: none !important;
-                }
-
                 &.mobile{
                     overflow: scroll !important;
                     display: table !important;
@@ -1384,5 +1380,82 @@
         background-repeat: no-repeat;
         background-position: center;
         vertical-align: text-bottom;
+    }
+}
+
+.customercoupon-coupon-index {
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+}
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .customercoupon-coupon-index {
+        th:first-child,
+        td:first-child {
+            width: 40% !important;
+        }
+    }
+
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .customercoupon-coupon-index {
+        .table-coupon-child {
+            display: block !important;
+        }
+        .table-coupon {
+            overflow-x: auto;
+        }
+        tbody {
+            display: flex !important;
+            flex-direction: row;
+        }
+        tr {
+            display: flex !important;
+            flex-direction: column;
+            min-width: fit-content !important;
+            padding: 0 !important;
+            justify-content: space-between;
+            border-left: 1px solid #ddd;
+        }
+        tr:first-child {
+            background: #fafafa;
+        }
+        td {
+            padding: 20px 10px !important;
+            text-align: left !important;
+            border-top: 1px solid #ddd;
+            .coupon-button {
+                min-width: fit-content;
+                float: left !important;
+                line-height: 20px;
+            }
+            &:first-child {
+                border:none;
+            }
+        }
+        tr:first-child {
+            min-width: 150px !important;
+        }
+        th {
+            position: sticky !important;
+            left: 0;
+            min-width: 150px !important;
+            text-align: left !important;
+            padding: 21px 10px !important;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
     }
 }

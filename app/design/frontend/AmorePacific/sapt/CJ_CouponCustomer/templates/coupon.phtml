@@ -8,16 +8,14 @@ $items = $coupons->getItems();
 <div class="block-title">
     <strong><?= $block->escapeHtml(__('Coupon List')); ?></strong>
 </div>
-<div class="table-wrapper">
-    <table class="data table">
-        <thead>
-        <tr>
-            <th><?= __('Coupon name') ?></th>
-            <th><?= __('The expiration date') ?></th>
-            <th><?= __('Code') ?></th>
-        </tr>
-        </thead>
+<div class="table-wrapper table-coupon">
+    <table class="data table table-coupon-child">
         <tbody>
+        <tr>
+            <th class="col-title"><?= __('Coupon name') ?></th>
+            <th class="col-title"><?= __('The expiration date') ?></th>
+            <th class="col-title"><?= __('Code') ?></th>
+        </tr>
         <?php foreach ($items as $coupon) : ?>
             <tr>
                 <td>
@@ -33,47 +31,6 @@ $items = $coupons->getItems();
                 </td>
             </tr>
         <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <table class="data table mobile">
-        <tbody>
-        <?php for($i = 0; $i < 4; $i++) { ?>
-            <tr>
-            <?php
-            switch ($i) {
-                case 0:
-                    echo '<td class="col-title">' . __('Coupon name') . '</td>';
-                    break;
-                case 2:
-                    echo '<td class="col-title">' . __('The expiration date') . '</td>';
-                    break;
-                case 3:
-                    echo '<td class="col-title">' . __('Code') . '</td>';
-                    break;
-            }
-            ?>
-            <?php foreach ($items as $coupon) : ?>
-                <?php
-                $value = '';
-                switch ($i) {
-                    case 0:
-                        $value = $coupon['name'];
-                        break;
-                    case 2:
-                        $value = $coupon['to_date'] == null ? 'none' : $coupon['to_date'];
-                        break;
-                    case 3:
-                        $value = '<div class="coupon-button">
-                            <button id="' . $coupon['code'] . '"> ' . $block->escapeHtml(__('copy')) . '</button>
-                        </div>';
-                        break;
-                }
-                ?>
-                <td><?= $value ?></td>
-            <?php endforeach; ?>
-            </tr>
-        <?php } ?>
         </tbody>
     </table>
 </div>
