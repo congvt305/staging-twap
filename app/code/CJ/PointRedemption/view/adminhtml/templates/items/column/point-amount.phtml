@@ -1,0 +1,9 @@
+<?php
+/**
+ * @var $block \CJ\PointRedemption\Block\Adminhtml\Items\Column\PointAmount
+ */
+
+$_item = $block->getItem();
+$pointAmount = $_item->getData('point_redemption_amount') ?? 0;
+?>
+<?= $pointAmount; ?>

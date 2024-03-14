@@ -1,0 +1,20 @@
+{
+    "name": "cj/module-total-inquiry",
+    "version": "1.0.0",
+    "description": "Use controller to get order status: 'new', 'process', 'shipping', 'complete'. The result value is returned only to the logged-in user.",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*"
+    },
+    "license": [
+        "Proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CJ\\TotalInquiry\\": ""
+        }
+    }
+}

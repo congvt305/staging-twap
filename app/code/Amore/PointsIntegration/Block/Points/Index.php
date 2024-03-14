@@ -65,7 +65,7 @@ class Index extends AbstractPointsBlock
             $this->logger->debug($this->json->serialize($customerPointsInfo));
         }
 
-        if ($this->customerPointsSearch->responseValidation($customerPointsInfo, $customer->getWebsiteId())) {
+        if ($this->customerPointsSearch->responseValidation($customerPointsInfo)) {
             return $customerPointsInfo['data'];
         } else {
             return [];

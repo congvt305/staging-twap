@@ -6,6 +6,8 @@
 
 // @codingStandardsIgnoreFile
 
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
+
 /** @var $block \Magento\Catalog\Block\Product\View */
 /** @var $helper \Eguana\Share\Helper\Data */
 $helper = $this->helper('Eguana\EcommerceStatus\Helper\Data');
@@ -61,18 +63,27 @@ if ($block->getData('disable_addtocart_bundle')) {
                         <span><?php /* @escapeNotVerified */ echo __('Out of stock'); ?></span>
                     </button>
                 <?php else: ?>
-                    <button type="submit"
-                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
-                            class="action primary tocart"
-                            id="product-addtocart-button">
-                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
-                    </button>
-                    <button type="submit"
-                            title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
-                            class="action primary tocheckout"
-                            id="product-addtocheckout-button" onclick="return setCheckoutURL()">
-                        <span><?php /* @escapeNotVerified */ echo __('Go to shopping cart'); ?></span>
-                    </button>
+	                <?php if ($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)):?>
+		                <button type="button"
+		                        title="<?= $block->escapeHtmlAttr($_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT)) ?>"
+		                        class="action coming-soon"
+		                        id="product-coming-soon-button">
+			                <span><?= $_product->getData(AddProductDateLaunchAttribute::PROMOTION_TEXT) ?></span>
+		                </button>
+	                <?php else: ?>
+	                    <button type="submit"
+	                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+	                            class="action primary tocart"
+	                            id="product-addtocart-button">
+	                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+	                    </button>
+	                    <button type="submit"
+	                            title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+	                            class="action primary tocheckout"
+	                            id="product-addtocheckout-button" onclick="return setCheckoutURL()">
+	                        <span><?php /* @escapeNotVerified */ echo __('Go to shopping cart'); ?></span>
+	                    </button>
+	                <?php endif; ?>
                 <?php endif; ?>
                 <?= $block->getChildHtml('', true) ?>
             </div>

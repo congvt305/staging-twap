@@ -11,14 +11,12 @@ namespace Amore\Sap\Plugin\Model;
 use Amore\Sap\Exception\RmaSapException;
 use Amore\Sap\Exception\RmaTrackNoException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
-use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderReturnData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Rma\Model\Rma;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Status\HistoryFactory;
@@ -42,11 +40,7 @@ class RmaPlugin
      */
     private $config;
     /**
-     * @var Json
-     */
-    private $json;
-    /**
-     * @var Request
+     * @var SapRequest
      */
     private $request;
     /**
@@ -92,22 +86,22 @@ class RmaPlugin
      */
     private $rmaItemCollectionFactory;
 
+
     /**
-     * @param Json $json
-     * @param Request $request
+     * @param SapRequest $request
      * @param Config $config
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderReturnData $sapOrderReturnData
      * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
+     * @param MiddlewareHelper $middlewareHelper
      * @param RmaDataMapper $rmaDataMapper
      * @param Status $rmaSourceStatus
      * @param RmaItemCollectionFactory $rmaItemCollectionFactory
      */
     public function __construct(
-        Json $json,
-        Request $request,
+        SapRequest $request,
         Config $config,
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
@@ -119,7 +113,6 @@ class RmaPlugin
         Status $rmaSourceStatus,
         RmaItemCollectionFactory $rmaItemCollectionFactory
     ) {
-        $this->json = $json;
         $this->request = $request;
         $this->config = $config;
         $this->logger = $logger;
@@ -190,32 +183,35 @@ class RmaPlugin
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Send Data");
-                        $this->logger->info($this->json->serialize($orderRmaData));
+                        $this->logger->info($this->middlewareHelper->serializeData($orderRmaData));
                     }
 
-                    $result = $this->request->postRequest($this->json->serialize($orderRmaData), $order->getStoreId());
+                    $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderRmaData), $order->getStoreId(), 'confirm');
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Order RMA Result Data");
-                        $this->logger->info($this->json->serialize($result));
+                        $this->logger->info($this->middlewareHelper->serializeData($result));
                     }
 
                     $this->eventManager->dispatch(
-                        "eguana_bizconnect_operation_processed",
+                        \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                         [
                             'topic_name' => 'amore.sap.return.request',
                             'direction' => 'outgoing',
                             'to' => "SAP",
-                            'serialized_data' => $this->json->serialize($orderRmaData),
+                            'serialized_data' => $this->middlewareHelper->serializeData($orderRmaData),
                             'status' => 1,
-                            'result_message' => $this->json->serialize($result)
+                            'result_message' => $this->middlewareHelper->serializeData($result)
                         ]
                     );
-                    $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+                    $responseHandled = $this->request->handleResponse($result);
                     if ($responseHandled === null) {
                         throw new RmaSapException(__('Something went wrong while sending order data to SAP. No response'));
                     } else {
-                        $outData = $responseHandled['data']['output']['outdata'];
+                        $outData = [];
+                        if (isset($responseHandled['data']['output']['outdata'])){
+                            $outData = $responseHandled['data']['output']['outdata'];
+                        }
                         if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                             foreach ($outData as $data) {
                                 if ($data['retcod'] == 'S') {
@@ -251,8 +247,8 @@ class RmaPlugin
                     if ($resultSize > 0) {
                         $isSuccess = false;
                         $outdata = isset($result['data']['response']['output']['outdata']) ? $result['data']['response']['output']['outdata'] : [];
-                        $isNewMiddleware = $this->middlewareHelper->isNewMiddlewareEnabled('store', $order->getStoreId());
-                        if ($isNewMiddleware || (!$isNewMiddleware && $result['code'] == '0000')) {
+                        $isMiddlewareEnabled = $this->middlewareHelper->isMiddlewareEnabled('store', $order->getStoreId());
+                        if ($isMiddlewareEnabled || (!$isMiddlewareEnabled && $result['code'] == '0000')) {
                             foreach ($outdata as $data) {
                                 if ($data['retcod'] == 'S') {
                                     if ($rmaSendCheck == 0 || $rmaSendCheck == 2) {

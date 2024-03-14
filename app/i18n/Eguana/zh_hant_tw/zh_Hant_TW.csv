@@ -1154,7 +1154,7 @@
 "Delete","刪除",module,Magento_Banner
 "Are you sure you want to delete these banners?","確實要刪除這些橫幅嗎？",module,Magento_Banner
 "Related Banners","相關橫幅",module,Magento_Banner
-"Position","位置",module,Magento_Banner
+"Position","預設",module,Magento_Banner
 "This rule no longer exists.","此規則不再存在。",module,Magento_Banner
 "This banner does not exist.","這面橫幅不存在。",module,Magento_Banner
 "You deleted the banner.","你刪除了橫幅。",module,Magento_Banner
@@ -3418,7 +3418,7 @@ Time in seconds between the widget updates.,module,Magento_CatalogWidget
 "The shipping method is missing. Select the shipping method and try again.","請選擇出貨方式，謝謝。",module,Magento_Checkout
 "Show Cross-sell Items in the Shopping Cart","Show Cross-sell Items in the Shopping Cart",module,Magento_Checkout
 "Unable to place order. Please try again later.","無法下訂單。 請稍後再試。",module,Magento_Checkout
-"Please specify a regionId in shipping address.",""請勾選收件人資訊",module,Magento_Checkout
+"Please specify a regionId in shipping address.","請勾選收件人資訊",module,Magento_Checkout
 "Terms and Conditions","Terms and Conditions",module,Magento_CheckoutAgreements
 "Add New Condition","Add New Condition",module,Magento_CheckoutAgreements
 "Save Condition","Save Condition",module,Magento_CheckoutAgreements
@@ -3959,7 +3959,7 @@ and use other B2B features.",module,Magento_Company
 "Your account type has been changed from Company Admin to a regular user account. If you think this is a mistake, please contact your manager for details.","Your account type has been changed from Company Admin to a regular user account. If you think this is a mistake, please contact your manager for details.",module,Magento_Company
 "%name,","%name,",module,Magento_Company
 "You have been assigned to %company_name as the Sales Representative.","You have been assigned to %company_name as the Sales Representative.",module,Magento_Company
-"When you sign in to your account, you will be able to:","登錄帳戶後，您將能夠:",module,Magento_Company
+"When you sign in to your account, you will be able to:","登入會員中心你可以:",module,Magento_Company
 "* View and manage company quotes in Admin Panel","* View and manage company quotes in Admin Panel",module,Magento_Company
 "* View and edit company profile in Admin Panel","* View and edit company profile in Admin Panel",module,Magento_Company
 "Your company account <strong>%company_name</strong> has been blocked.,module,Magento_Company
@@ -5098,7 +5098,7 @@ new products will be created. Use this step to customize images and price for yo
 "When you sign in to your account, you will be able to:","登入會員中心你可以:",module,Magento_Customer
 "Proceed through checkout faster","查詢會員點數",module,Magento_Customer
 "Check the status of orders","查詢歷史消費資訊",module,Magento_Customer
-"View past orders","查看歷史訂單",module,Magento_Customer
+"View past orders","客服中心服務",module,Magento_Customer
 "Store alternative addresses (for shipping to multiple family members and friends)","修改個人資訊",module,Magento_Customer
 "Please confirm your %store_name account","Please confirm your %store_name account",module,Magento_Customer
 "You must confirm your %customer_email email before you can sign in (link is only valid once):","You must confirm your %customer_email email before you can sign in (link is only valid once):",module,Magento_Customer
@@ -16475,20 +16475,20 @@ Multiple,多重
 sample,樣本
 "Select all","全選"
 "Unselect all","全部取消選擇"
+"Please select delivery method : home delivery / cvs delivery. Thanks","請選擇商品配送方式 : 宅配 / 超取。謝謝"
 "with %1 stars | ", "%1 顆星 | "
 "Show All", "所有評論"
-"Please select delivery method : home delivery / cvs delivery. Thanks","請選擇商品配送方式 : 宅配 / 超取。謝謝"
 "There are some out of stock product < %1 >","對不起，目前部分商品已無庫存 : < %1 >"
 "You cannot purchase this product now. You have to delete the product <br> If you want to delete the products right now. Please click confirm button","系統將會在您按下“確認刪除”後自動更新購物車商品<br>繼續購物請按“確認刪除” 或關閉彈窗之後再購買，謝謝。"
 "I confirm to delete","確認刪除"
 "Items has been deleted","已成功刪除缺貨商品"
 "Items cannot be deleted. Please try again","無法刪除缺貨商品，請重新再試一次**"
 "The order cannot be cancelled at this time because the system has already arranged for shipment. If you need to cancel your order, please use the return process, thank you!","因系統已安排出貨，目前無法取消訂單。如有需要取消訂單請使用退貨流程，謝謝!"
-"The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you","已超過每日最高發送%1次之限制，敬請隔日再次嘗試，謝謝"
 "Apply Rewards","使用點數折現"
 "You Have <strong>%1</strong> points left","目前剩餘總點數: <strong>%1</strong>點"
 "Maximum point: <strong>%1</strong>","本次可用點數: <strong>%1</strong>點"
 "Deducted amount: <strong>%1</strong>","等於折抵金額: <strong>%1</strong>元"
+"The maximum limit %1 times per day has been exceeded, please try again tomorrow, thank you","已超過每日最高發送%1次之限制，敬請隔日再次嘗試，謝謝"
 "Point discount function is under maintenance, you can't use this now, thanks","點數折抵功能維護中，暫時無法使用，謝謝"
 "Up to %1 discount","可折抵%1元"
 "%1 points available","共有點數%1點，"

@@ -28,6 +28,7 @@ use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Event\ManagerInterface as ManagerInterfaceAlias;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Controller\Result\Redirect;
@@ -112,6 +113,11 @@ class CreateTicket extends Action
     private $logger;
 
     /**
+     * @var ManagerInterfaceAlias
+     */
+    private $eventManager;
+
+    /**
      * CreateTicket constructor.
      * @param Context $context
      * @param RedirectFactory $redirectFactory
@@ -140,7 +146,8 @@ class CreateTicket extends Action
         Validator $formKeyValidator,
         PageFactory $pageFactory,
         StoreManagerInterface $storeManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ManagerInterfaceAlias $eventManager
     ) {
         $this->formKeyValidator  = $formKeyValidator;
         $this->ticketRepository  = $ticketRepository;
@@ -155,6 +162,7 @@ class CreateTicket extends Action
         $this->storeManager = $storeManager;
         $this->messageManager = $context->getMessageManager();
         $this->logger = $logger;
+        $this->eventManager = $eventManager;
         parent::__construct($context);
     }
     /**
@@ -197,7 +205,14 @@ class CreateTicket extends Action
                 try {
                     $this->ticketRepository->save($model);
                     $this->changeReadStatus($model->getData('ticket_id'));
+                    $ticketID = $model->getData('ticket_id');
                     $this->messageManager->addSuccessMessage(__("Your Ticket has been created!"));
+                    $this->eventManager->dispatch(
+                        "gcrm_customer_bulletin_data_export",
+                        [
+                            'ticketID' => $ticketID
+                        ]
+                    );
                 } catch (\Exception $e) {
                     $this->messageManager->addExceptionMessage(
                         $e,

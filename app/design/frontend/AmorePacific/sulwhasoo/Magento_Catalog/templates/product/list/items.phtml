@@ -4,6 +4,8 @@
  * See COPYING.txt for license details.
  */
 
+use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
+
 // @codingStandardsIgnoreFile
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
@@ -299,7 +301,7 @@ $_item = null;
                                             <div class="product-item-inner">
                                                 <div class="product actions product-item-actions fff">
                                                     <?php if ($showAddTo || $showCart): ?>
-                                                        <div class="actions-primary">
+			                                            <div class="actions-primary">
                                                             <?php if ($_item->isSaleable()): ?>
                                                                 <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
                                                                     <?php if ($type == 'crosssell'): ?>

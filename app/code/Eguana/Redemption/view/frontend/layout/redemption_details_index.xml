@@ -11,6 +11,16 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceBlock name="head.additional">
+            <container name="canonical.url.cms.page.container">
+                <block class="Magento\Framework\View\Element\Text" name="canonical.url.redemption.page">
+                    <arguments>
+                        <argument name="label" xsi:type="string">Adding canonical link with base URL</argument>
+                        <argument name="text" xsi:type="helper" helper="Eguana\Redemption\Helper\Canonical::getCanonicalForAllRedemption"/>
+                    </arguments>
+                </block>
+            </container>
+        </referenceBlock>
         <referenceContainer name="content">
             <block class="Eguana\Redemption\Block\RedemptionDetails" name="redemption.details.cms.block" template="Eguana_Redemption::redemption-cms-block.phtml" before="-">
                 <arguments>

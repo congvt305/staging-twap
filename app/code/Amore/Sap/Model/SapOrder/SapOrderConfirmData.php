@@ -54,11 +54,6 @@ class SapOrderConfirmData extends AbstractSapOrder
     private $timezoneInterface;
 
     /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
      * @var StoreManagerInterface
      */
     private $storeManager;
@@ -92,7 +87,6 @@ class SapOrderConfirmData extends AbstractSapOrder
      * @param CustomerRepositoryInterface $customerRepository
      * @param TimezoneInterface $timezoneInterface
      * @param QuoteCvsLocationRepository $quoteCvsLocationRepository
-     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param AttributeRepositoryInterface $eavAttributeRepositoryInterface
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
@@ -111,7 +105,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         CustomerRepositoryInterface $customerRepository,
         TimezoneInterface $timezoneInterface,
         QuoteCvsLocationRepository $quoteCvsLocationRepository,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $eavAttributeRepositoryInterface,
         Logger $logger,
         StoreManagerInterface $storeManager,
@@ -124,7 +117,6 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->invoiceRepository = $invoiceRepository;
         $this->customerRepository = $customerRepository;
         $this->timezoneInterface = $timezoneInterface;
-        $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->dataHelper = $helper;
         $this->middlewareHelper = $middlewareHelper;
@@ -201,7 +193,6 @@ class SapOrderConfirmData extends AbstractSapOrder
                 ]);
                 throw $exception;
             }
-
             $source = $this->config->getSourceByStore('store', $sampleOrder->getStoreId());
         }
 
@@ -325,7 +316,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             $isMileageOrder = ($slamt == $mileageUsedAmount && $slamt > 0);
             $cvsShippingCheck = $this->cvsShippingCheck($orderData);
             $telephone = $this->getTelephone($shippingAddress->getTelephone());
-            $salesOrg = $this->config->getSalesOrg('store', $storeId);
+            $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
             $client = $this->config->getClient('store', $storeId);
 
             $bindData[] = [
@@ -396,6 +387,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                 }
             }
         }
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
 
         return $bindData;
     }
@@ -525,6 +517,7 @@ class SapOrderConfirmData extends AbstractSapOrder
                     $itemNetwr = $this->orderData->roundingPrice($orderItem->getData('sap_item_netwr'), $isDecimalFormat);
                     $redemptionFlag = 'N';
                     $rewardPoints = 0;
+
                     if($isEnableRewardsPoint) {
                         if ($mileageUsedAmountExisted > $itemMiamt) {
                             $mileageUsedAmountExisted -= $itemMiamt;
@@ -534,9 +527,8 @@ class SapOrderConfirmData extends AbstractSapOrder
                         }
 
                         if ($orderItem->getData('sap_item_reward_point')) {
-                            $rewardPoints = $this->orderData->roundingPrice($orderItem->getData('sap_item_reward_point'), $isDecimalFormat);;
+                            $rewardPoints = $orderItem->getData('sap_item_reward_point');
                         }
-
                         $discountFromPoints = $rewardPoints / $spendingRate;
                         if ($discountFromPoints == $itemNsamt) {
                             $redemptionFlag = 'Y';
@@ -601,7 +593,7 @@ class SapOrderConfirmData extends AbstractSapOrder
         $this->orderItemData = $this->correctPriceOrderItemData($this->orderItemData,
             $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
         );
-
+        array_walk_recursive($this->orderItemData, [$this, 'convertNumberToString']);
         return $this->orderItemData;
     }
 
@@ -674,11 +666,9 @@ class SapOrderConfirmData extends AbstractSapOrder
             $itemId = $bundleChild->getItemId();
         }
 
-        $product = $this->productRepository->get($sku, false, $order->getStoreId());
-        $meins = $product->getData('meins');
         $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = ($itemSlamt == $itemMiamt && $itemSlamt > 0);
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->orderItemData[] = [
@@ -689,7 +679,7 @@ class SapOrderConfirmData extends AbstractSapOrder
             'itemMatnr' => $sku,
             'itemMenge' => intval($itemMenge),
             // 아이템 단위, Default : EA
-            'itemMeins' => $this->getMeins($meins),
+            'itemMeins' => 'EA',
             'itemNsamt' => $itemNsamt,
             'itemDcamt' => $itemDcamt,
             'itemSlamt' => $itemSlamt,

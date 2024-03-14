@@ -129,6 +129,7 @@ class ValidateLogin extends Action
                 $this->customerSession->loginById($customerId);
                 $customer = $this->customerSession->getCustomer();
                 $this->customerSession->setUsername($customer->getEmail());
+                $this->customerSession->setEventSocialLoginSuccess(1);
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
             }

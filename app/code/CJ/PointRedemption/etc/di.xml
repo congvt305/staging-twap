@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Catalog\Block\Product\ImageFactory" type="CJ\PointRedemption\Block\Product\ImageFactory"/>
+    <type name="Magento\Framework\Pricing\Render\RendererPool">
+        <plugin name="cj_point_redemption_price_render" type="CJ\PointRedemption\Plugin\PriceRender"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="custom_attribute_quote_to_order_item"
+                type="CJ\PointRedemption\Plugin\AttributesQuoteItemToOrderItem"/>
+    </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="cj_point_redemption_point_balance_validation" type="CJ\PointRedemption\Plugin\PointValidation"/>
+        <plugin name="cj_point_redemption_add_custom_option" type="CJ\PointRedemption\Plugin\CustomOption"/>
+    </type>
+    <type name="Magento\Quote\Model\ValidationRules\QuoteValidationComposite">
+        <arguments>
+            <argument name="validationRules" xsi:type="array">
+                <item name="PointAmountValidationRule" xsi:type="object">
+                    CJ\PointRedemption\Model\ValidationRules\PointAmountValidationRule
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="CJ\PointRedemption\Model\ValidationRules\PointAmountValidationRule">
+        <arguments>
+            <argument name="generalMessage" xsi:type="string" translatable="true">Your point balance is insufficient. Please check again.</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Url">
+        <plugin name="cj_point_redemption_product_url" type="CJ\PointRedemption\Plugin\ProductUrl"/>
+    </type>
+</config>

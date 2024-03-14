@@ -10,7 +10,7 @@ use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Canonical
- * @package [Namespace]\[Module]\Helper
+ *
  */
 class Canonical extends AbstractHelper
 {

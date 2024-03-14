@@ -18,7 +18,9 @@ define([
     'Eguana_GWLogistics/js/model/shipping-rate-processor/cvs-pickup-address',
     // 'Eguana_GWLogistics/js/model/cvs-location',
     'Eguana_GWLogistics/js/model/cvs-location-service',
-    'Magento_Customer/js/model/customer'
+    'Magento_Customer/js/model/customer',
+    'Magento_Checkout/js/model/checkout-data-resolver',
+    'Magento_Checkout/js/action/select-shipping-address'
 ], function (
     Component,
     _,
@@ -34,7 +36,9 @@ define([
     shippingRateProcessor,
     // cvsLocation,
     pickupLocationsService,
-    customer
+    customer,
+    checkoutDataResolver,
+    selectShippingAddress
 ) {
     'use strict';
 
@@ -45,7 +49,7 @@ define([
             deliveryMethodMessageTemplate: 'Eguana_GWLogistics/delivery-method-message',
             isVisible: false,
             isAvailable: false,
-            isCvsPickupSelected: false,
+            isCvsPickupSelected:  ko.observable(false),
             rate: {
                 'carrier_code': 'gwlogistics',
                 'method_code': 'CVS'
@@ -172,9 +176,22 @@ define([
                     );
                 },
                 this
-            );
+            ),
+                nonPickupShippingAddress;
 
+            checkoutData.setSelectedShippingAddress(this.lastSelectedNonPickUpShippingAddress);
             this.selectShippingMethod(nonPickupShippingMethod);
+
+            if (this.isCvsPickupAddress(quote.shippingAddress())) {
+                nonPickupShippingAddress = checkoutDataResolver.getShippingAddressFromCustomerAddressList();
+
+                if (nonPickupShippingAddress) {
+                    selectShippingAddress(nonPickupShippingAddress);
+                    checkoutData.setSelectedShippingAddress(
+                        quote.shippingAddress().getKey()
+                    );
+                }
+            }
 
         },
 
@@ -191,6 +208,7 @@ define([
                 this
             );
             $('#delivery_message').val('');
+            this.lastSelectedNonPickUpShippingAddress = checkoutData.getSelectedShippingAddress();
             this.selectShippingMethod(pickupShippingMethod);
         },
 

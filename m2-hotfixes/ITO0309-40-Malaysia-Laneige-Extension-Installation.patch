@@ -1,0 +1,61 @@
+From 6bb0c0baed5767773ce2652fec380aced03f43ee Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Mon, 27 Feb 2023 13:55:03 +0700
+Subject: [PATCH] ITO0309-40 Malaysia Laneige Extension Installation Request
+
+---
+ vendor/amasty/groupcat/Model/ResourceModel/Rule/Collection.php | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/vendor/amasty/groupcat/Model/ResourceModel/Rule/Collection.php b/vendor/amasty/groupcat/Model/ResourceModel/Rule/Collection.php
+index d540ccc..f1fed64 100644
+--- a/vendor/amasty/groupcat/Model/ResourceModel/Rule/Collection.php
++++ b/vendor/amasty/groupcat/Model/ResourceModel/Rule/Collection.php
+@@ -18,6 +18,10 @@ use Magento\Framework\DB\Select;
+  */
+ class Collection extends \Magento\Rule\Model\ResourceModel\Rule\Collection\AbstractCollection
+ {
++    /**
++     * @var array
++     */
++    private $mainTableFields;
+
+     /**
+      * @var \Amasty\Base\Model\Serializer
+@@ -37,6 +41,7 @@ class Collection extends \Magento\Rule\Model\ResourceModel\Rule\Collection\Abstr
+         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
+         $this->_associatedEntitiesMap = $associatedEntityMap->getData();
+         $this->serializer = $serializer;
++        $this->mainTableFields = array_keys($this->getConnection()->describeTable($this->getMainTable()));
+     }
+
+     protected function _construct()
+@@ -116,6 +121,8 @@ class Collection extends \Magento\Rule\Model\ResourceModel\Rule\Collection\Abstr
+             return $this->addCustomerGroupFilter($condition);
+         }
+
++        $field = $this->prepareField($field);
++
+         parent::addFieldToFilter($field, $condition);
+         return $this;
+     }
+@@ -291,4 +298,16 @@ class Collection extends \Magento\Rule\Model\ResourceModel\Rule\Collection\Abstr
+         $this->getSelect()->group('main_table.' . $this->getResource()->getIdFieldName());
+         return parent::getAllIds();
+     }
++
++    private function prepareField(string $field): string
++    {
++        if (is_string($field)
++            && in_array($field, $this->mainTableFields)
++            && (strpos($field, '.') === false)
++        ) {
++            $field = sprintf('main_table.%s', $field);
++        }
++
++        return $field;
++    }
+ }
+--
+2.34.1
+

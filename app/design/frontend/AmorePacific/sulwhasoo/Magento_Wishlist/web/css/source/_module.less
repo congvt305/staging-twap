@@ -433,6 +433,12 @@
         .empty + .actions-toolbar {
             margin-top: @indent__base;
         }
+
+        .actions-primary {
+            .coming-soon {
+                display: none;
+            }
+        }
     }
 }
 
@@ -534,6 +540,25 @@
         .product-item-actions {
             > div {
                 &:extend(.abs-blocks-2columns all);
+            }
+        }
+    }
+
+    .form-wishlist-items {
+        .actions-primary {
+            .coming-soon {
+                &:extend(.abs-button-l all);
+                border: 1px solid #e86c01;
+                background: #e86c01;
+                color: white;
+                line-height: 3.8rem;
+                margin-bottom: 10px;
+
+                &:hover {
+                    color: #191919;
+                    background: #f0b18e;
+                    border-color: unset;
+                }
             }
         }
     }

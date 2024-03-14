@@ -17,7 +17,7 @@
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::search/ap-search-result.phtml" >
                 <arguments>
-                    <argument name="page_type" xsi:type="string">search</argument>
+                    <argument name="page_type" xsi:type="string">SEARCH_RESULT</argument>
                 </arguments>
             </block>
         </referenceContainer>
