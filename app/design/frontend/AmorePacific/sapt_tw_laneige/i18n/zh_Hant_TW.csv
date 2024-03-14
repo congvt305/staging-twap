@@ -1060,7 +1060,7 @@
 "Get Code","取得驗證碼"
 "Verify","驗證"
 "Verify Registration","註冊"
-"Code","驗證碼"
+"Code","優惠碼"
 "Code has been verified please move to the next step","驗證成功"
 "I'm LANEIGE","《I'm LANEIGE》雜誌"
 "Privacy Policy","隱私權政策"
@@ -1232,3 +1232,4 @@
 "characters. The only special symbols that are allowed in the file name are dash (-) and underscore (_).","字且不能包含特殊符號"
 "Close button","關閉"
 " x QTY %1", " x %1 件"
+"Copy","複製"
