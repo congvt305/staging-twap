@@ -61,8 +61,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getDiscountPrice($price, $finalPrice)
     {
         $discount =  $price - $finalPrice ;
-        if ($discount > 0 && $price > 0 )
-        {
+        if ($discount > 0 && $price > 0 ) {
             return round($discount/$price * 100);
         }
         return false;

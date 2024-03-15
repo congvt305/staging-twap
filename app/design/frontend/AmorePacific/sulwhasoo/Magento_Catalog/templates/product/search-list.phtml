@@ -20,7 +20,7 @@ use CJ\Catalog\Setup\Patch\Data\AddProductDateLaunchAttribute;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-
+$amoreHelper = $this->helper(Amore\GaTagging\Helper\Data::class);
 $getDefault = $block->getData('view_model');
 ?>
 <?php if (!$_productCollection->count()): ?>
@@ -47,10 +47,25 @@ $getDefault = $block->getData('view_model');
     ?>
     <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
         <ol class="products list items product-items">
-            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php $index = 1;?>
+            <?php /** @var $_product \Magento\Catalog\Model\Product */?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php /* @noEscape */ $productSku = $_product->getSku() ?>
-                <li class="item product product-item">
+                <?php
+                    $productSku = $_product->getSku();
+                    $originalPrice = $amoreHelper->getProductOriginalPrice($_product);
+                    $finalPrice = $amoreHelper->getProductDiscountedPrice($_product);
+                    $discountPrice = $finalPrice - $originalPrice;
+                ?>
+                <li class="item product product-item"
+                    data-ap-cate="<?= $amoreHelper->getProductCategory($_product);?>"
+                    data-ap-index="<?= $index ?>"
+                    data-ap-code="<?= $productSku ?>"
+                    data-ap-apg-code="<?= $block->escapeHtmlAttr($amoreHelper->getApgBrandCode($productSku)) ?>"
+                    data-ap-name="<?= $block->escapeHtmlAttr($_product->getName()) ?>"
+                    data-ap-site-name="<?= $block->escapeHtmlAttr($amoreHelper->getSiteName()) ?>"
+                    data-ap-org-price="<?= $block->escapeHtmlAttr($originalPrice) ?>"
+                    data-ap-discount="<?= $block->escapeHtmlAttr($discountPrice) ?>"
+                    data-ap-final-price="<?= $block->escapeHtmlAttr($finalPrice) ?>">
                     <?php if( $viewMode == 'list' ):?>
                         <strong class="product name product-item-name">
                             <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
@@ -74,7 +89,12 @@ $getDefault = $block->getData('view_model');
                                tabindex="-1"
                                ap-click-area="product"
                                ap-click-name="prd click"
-                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                               ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
+                               data-cate="<?= /* @noEscape */ $amoreHelper->getProductCategory($getDefault->getProductByDefault($productSku));?>"
+                               data-index="<?=$index?>"
+                               data-org-price="<?=$originalPrice?>"
+                               data-final-price="<?=$finalPrice?>"
+                            >
                                 <?= $productImage->toHtml() ?>
                             </a>
                             <div class="product details product-item-details">
@@ -86,7 +106,12 @@ $getDefault = $block->getData('view_model');
                                        href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
                                        ap-click-area="product"
                                        ap-click-name="prd click"
-                                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                       ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
+                                       data-cate="<?= /* @noEscape */ $amoreHelper->getProductCategory($getDefault->getProductByDefault($productSku));?>"
+                                       data-index="<?=$index?>"
+                                       data-org-price="<?=$originalPrice?>"
+                                       data-final-price="<?=$finalPrice?>"
+                                    >
                                         <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                     </a>
                                 </strong>
@@ -110,7 +135,12 @@ $getDefault = $block->getData('view_model');
                                                    type="button"
                                                    ap-click-area="product"
                                                    ap-click-name="prd click"
-                                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>">
+                                                   ap-click-data="<?= /* @noEscape */ $getDefault->getProductByDefault($productSku)->getName() . '/' . $productSku ?>"
+                                                   data-cate="<?= /* @noEscape */ $amoreHelper->getProductCategory($getDefault->getProductByDefault($productSku));?>"
+                                                   data-index="<?=$index?>"
+                                                   data-org-price="<?=$originalPrice?>"
+                                                   data-final-price="<?=$finalPrice?>"
+                                                >
                                                     <span><?= $block->escapeHtml(__('View')) ?></span>
                                                 </a>
                                             <?php endif;?>
@@ -152,6 +182,7 @@ $getDefault = $block->getData('view_model');
                     </div>
                     <?php endif;?>
                 </li>
+                <?php $index++;?>
             <?php endforeach; ?>
         </ol>
     </div>
@@ -167,4 +198,15 @@ $getDefault = $block->getData('view_model');
         }
         </script>
     <?php endif; ?>
+    <script type="text/x-magento-init">
+        {
+            ".products.wrapper": {
+                "Amore_GaTagging/js/ap-select-item": {
+                    "searchItemElement": ".product-item",
+                    "listItemName": "<?= $block->escapeJs(\Amore\GaTagging\Model\CommonVariable::SEARCH_ITEM_LIST_NAME) ?>"
+                }
+            }
+        }
+    </script>
 <?php endif; ?>
+

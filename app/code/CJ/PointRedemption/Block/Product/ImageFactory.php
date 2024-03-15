@@ -38,6 +38,8 @@ class ImageFactory extends \Magento\Catalog\Block\Product\ImageFactory
      */
     private $viewAssetPlaceholderFactory;
 
+    protected $redeemableLabel;
+
     /**
      * @param ObjectManagerInterface $objectManager
      * @param ConfigInterface $presentationConfig
@@ -47,16 +49,18 @@ class ImageFactory extends \Magento\Catalog\Block\Product\ImageFactory
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        ConfigInterface $presentationConfig,
-        AssetImageFactory $viewAssetImageFactory,
-        PlaceholderFactory $viewAssetPlaceholderFactory,
-        ParamsBuilder $imageParamsBuilder
+        ConfigInterface        $presentationConfig,
+        AssetImageFactory      $viewAssetImageFactory,
+        PlaceholderFactory     $viewAssetPlaceholderFactory,
+        ParamsBuilder          $imageParamsBuilder,
+        \CJ\PointRedemption\Block\RedeemableLabel $redeemableLabel
     ) {
         $this->objectManager = $objectManager;
         $this->presentationConfig = $presentationConfig;
         $this->viewAssetPlaceholderFactory = $viewAssetPlaceholderFactory;
         $this->viewAssetImageFactory = $viewAssetImageFactory;
         $this->imageParamsBuilder = $imageParamsBuilder;
+        $this->redeemableLabel = $redeemableLabel;
     }
 
     /**
@@ -165,6 +169,9 @@ class ImageFactory extends \Magento\Catalog\Block\Product\ImageFactory
                 'promotion_text' => $product->getData('promotion_text')
             ],
         ];
+
+        $this->redeemableLabel->setProduct($product);
+        $data['data']['redemption_label_image'] = $this->redeemableLabel->getRedemptionLabelImage() ?? '';
 
         return $this->objectManager->create(ImageBlock::class, $data);
     }

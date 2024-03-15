@@ -5,35 +5,25 @@ namespace Amore\PointsIntegration\Model;
 
 use Amasty\Rewards\Api\Data\SalesQuote\EntityInterface;
 use Amasty\Rewards\Model\RewardsProvider;
-use Amore\PointsIntegration\Model\Connection\Request as PointRequest;
-use Amore\PointsIntegration\Logger\Logger as PointsLogger;
+use Amore\PointsIntegration\Model\Source\Config;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use CJ\Middleware\Model\PosRequest;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\DB\Select;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Exception;
 use Amasty\Rewards\Model\Repository\RewardsRepository;
 use Amore\PointsIntegration\Model\Config\Source\Actions;
 use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Psr\Log\LoggerInterface as Logger;
 
-class PointUpdate
+class PointUpdate extends PosRequest
 {
     const POINT_EARN = 'EARN';
     const POINT_REDEEM = 'REDEEM';
-
     const POINT_REASON_PURCHASE = '000010';
-    const POINT_REASON_REDEMPTION = '000020';
-    const POINT_REASON_EVENT = '000030';
-
-    /**
-     * @var PointsLogger
-     */
-    private $logger;
-
-    /**
-     * @var PointRequest
-     */
-    private $request;
 
     /**
      * @var CustomerRepositoryInterface
@@ -61,30 +51,33 @@ class PointUpdate
     private $orderCollectionFactory;
 
     /**
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param Logger $logger
+     * @param Config $config
      * @param RewardsRepository $rewardsRepository
-     * @param PointsLogger $logger
-     * @param PointRequest $request
      * @param CustomerRepositoryInterface $customerRepositoryInterface
      * @param OrderRepository $orderRepository
      * @param RewardsProvider $rewardsProvider
      * @param CollectionFactory $orderCollectionFactory
      */
     public function __construct(
+        Curl $curl,
+        MiddlewareHelper $middlewareHelper,
+        Logger $logger,
+        Config $config,
         RewardsRepository $rewardsRepository,
-        PointsLogger $logger,
-        PointRequest $request,
         CustomerRepositoryInterface $customerRepositoryInterface,
         OrderRepository $orderRepository,
         RewardsProvider $rewardsProvider,
         CollectionFactory $orderCollectionFactory
     ) {
         $this->rewardsRepository = $rewardsRepository;
-        $this->logger = $logger;
-        $this->request = $request;
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->orderRepository = $orderRepository;
         $this->rewardsProvider = $rewardsProvider;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
     /**
@@ -135,13 +128,13 @@ class PointUpdate
             } else {
                 $order->setData('pos_order_return_point_resend', true);
             }
-            $dataResponse = $this->request->sendRequest(
+            $dataResponse = $this->sendRequest(
                 $dataRequest,
                 $order->getStore()->getWebsiteId(),
                 'pointUpdate'
             );
 
-            $data = $this->responseValidation($dataResponse);
+            $data = $this->handleResponse($dataResponse, 'pointUpdate');
 //            $data['availablePoint'] = 1000000;
             $this->logger->info('POINT UPDATE RESPONSE', $dataResponse);
             $message = 'Something when wrong while updating point.';
@@ -181,24 +174,6 @@ class PointUpdate
         }
         $this->logger->info($dash);
 
-    }
-
-    /**
-     * @param array $response
-     * @return false|array
-     */
-    private function responseValidation(array $response)
-    {
-        $data = $response['data'] ?? null;
-
-        if (!$data) {
-            return false;
-        }
-        $message = $data['statusCode'] ?? null;
-        if (($message == 'S') || ($message == 'E' && $data['statusMessage'] == 'The points have already been reflected.')) {
-            return $data;
-        }
-        return false;
     }
 
     /**

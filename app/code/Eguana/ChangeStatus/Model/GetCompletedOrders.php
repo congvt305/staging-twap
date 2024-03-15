@@ -10,12 +10,11 @@
 
 namespace Eguana\ChangeStatus\Model;
 
-use Amore\PointsIntegration\Logger\Logger;
-use Eguana\ChangeStatus\Model\Source\Config;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 use Eguana\GWLogistics\Model\ResourceModel\StatusNotification\CollectionFactory as NotificationCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -23,8 +22,10 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use CJ\Middleware\Model\PosRequest;
+use Eguana\ChangeStatus\Model\Source\Config as ChangeStatusConfig;
 
-class GetCompletedOrders
+class GetCompletedOrders extends PosRequest
 {
     const BLACK_CAT_ORDER_ARRIVED_STATUS = '00003';
 
@@ -49,42 +50,27 @@ class GetCompletedOrders
      * @var DateTime
      */
     private $dateTime;
-    /**
-     * @var Config
-     */
-    private $config;
+
     /**
      * @var StoreManagerInterface
      */
     private $storeManagerInterface;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+
     /**
      * @var \Amore\PointsIntegration\Model\PosOrderData
      */
     private $posOrderData;
-    /**
-     * @var \Amore\PointsIntegration\Model\Connection\Request
-     */
-    private $request;
+
     /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
     private $eventManager;
-    /**
-     * @var Json
-     */
-    private $json;
+
     /**
      * @var \Amore\PointsIntegration\Model\Source\Config
      */
     private $PointsIntegrationConfig;
-    /**
-     * @var Logger
-     */
-    private $pointsIntegrationLogger;
+
 
     /**
      * @var OrderCollectionFactory
@@ -107,72 +93,73 @@ class GetCompletedOrders
     private $orderFactory;
 
     /**
+     * @var ChangeStatusConfig
+     */
+    private $changeStatusConfig;
+
+    /**
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param LoggerInterface $logger
+     * @param \Amore\PointsIntegration\Model\Source\Config $config
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param DateTime $dateTime
-     * @param Config $config
      * @param StoreManagerInterface $storeManagerInterface
-     * @param LoggerInterface $logger
      * @param TimezoneInterface $timezone
      * @param \Amore\PointsIntegration\Model\PosOrderData $posOrderData
-     * @param \Amore\PointsIntegration\Model\Connection\Request $request
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param Json $json
      * @param \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig
-     * @param Logger $pointsIntegrationLogger
      * @param OrderCollectionFactory $orderCollectionFactory
      * @param NotificationCollectionFactory $statusNotificationCollection
      * @param \Magento\Framework\Filesystem\Io\Sftp $sftp
      * @param \Magento\Sales\Model\OrderFactory $orderFactory
+     * @param ChangeStatusConfig $changeStatusConfig
      */
     public function __construct(
+        Curl $curl,
+        MiddlewareHelper $middlewareHelper,
+        LoggerInterface $logger,
+        \Amore\PointsIntegration\Model\Source\Config $config,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrderRepositoryInterface $orderRepository,
         DateTime $dateTime,
-        Config $config,
         StoreManagerInterface $storeManagerInterface,
-        LoggerInterface $logger,
         TimezoneInterface $timezone,
         \Amore\PointsIntegration\Model\PosOrderData $posOrderData,
-        \Amore\PointsIntegration\Model\Connection\Request $request,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        Json $json,
         \Amore\PointsIntegration\Model\Source\Config $PointsIntegrationConfig,
-        Logger $pointsIntegrationLogger,
         OrderCollectionFactory $orderCollectionFactory,
         NotificationCollectionFactory $statusNotificationCollection,
         \Magento\Framework\Filesystem\Io\Sftp $sftp,
-        \Magento\Sales\Model\OrderFactory $orderFactory
+        \Magento\Sales\Model\OrderFactory $orderFactory,
+        ChangeStatusConfig $changeStatusConfig
     ) {
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderRepository = $orderRepository;
         $this->dateTime = $dateTime;
-        $this->config = $config;
         $this->storeManagerInterface = $storeManagerInterface;
-        $this->logger = $logger;
         $this->timezone = $timezone;
         $this->posOrderData = $posOrderData;
-        $this->request = $request;
         $this->eventManager = $eventManager;
-        $this->json = $json;
         $this->PointsIntegrationConfig = $PointsIntegrationConfig;
-        $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->statusNotificationCollection = $statusNotificationCollection;
         $this->sftp = $sftp;
         $this->orderFactory = $orderFactory;
+        $this->changeStatusConfig = $changeStatusConfig;
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
     public function getCompletedOrder($storeId)
     {
-        $toBeCompletedDays = is_null($this->config->getAvailableReturnDays($storeId)) ? 7 : $this->config->getAvailableReturnDays($storeId);
+        $toBeCompletedDays = is_null($this->changeStatusConfig->getAvailableReturnDays($storeId)) ? 7 : $this->changeStatusConfig->getAvailableReturnDays($storeId);
         $gmtDate = $this->dateTime->gmtDate();
         $timezone = $this->timezone->getConfigTimezone('store', $storeId);
         $storeTime = $this->timezone->formatDateTime($gmtDate, 3, 3, null, $timezone);
-        $isCronChangeOrderStatusForBlackCat = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+        $isCronChangeOrderStatusForBlackCat = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
         $store = $this->storeManagerInterface->getStore($storeId);
         $currentTimezoneDate = date('Y-m-d H:i:s', strtotime($storeTime));
-        $settledTimezoneDate = date('Y-m-d H:i:s', strtotime($currentTimezoneDate . "-" . $toBeCompletedDays . ' days'));
 
         $coveredDate = $this->dateTime->date('Y-m-d H:i:s', strtotime('now -' . $toBeCompletedDays . ' days'));
 
@@ -195,7 +182,7 @@ class GetCompletedOrders
             $payment = $order->getPayment();
             $eInvoiceData = null;
             if ($payment->getAdditionalData()) {
-                $eInvoiceData = json_decode($payment->getAdditionalData(), true);
+                $eInvoiceData = $this->middlewareHelper->serializeData($payment->getAdditionalData());
             }
 
             if (in_array($payment->getMethod(), ['ecpay_ecpaypayment', 'linepay_payment'])) {
@@ -215,7 +202,7 @@ class GetCompletedOrders
         $stores = $this->storeManagerInterface->getStores();
         try {
             foreach ($stores as $store) {
-                $isCustomOrderActive = $this->config->getChangeOrderStatusActive($store->getId());
+                $isCustomOrderActive = $this->changeStatusConfig->getChangeOrderStatusActive($store->getId());
                 if ($isCustomOrderActive) {
                     $orderList = $this->getCompletedOrder($store->getId());
                     foreach ($orderList as $order) {
@@ -231,6 +218,21 @@ class GetCompletedOrders
         }
     }
 
+    public function logging($sendData, $responseData, $status)
+    {
+        $this->eventManager->dispatch(
+            "eguana_bizconnect_operation_processed",
+            [
+                'topic_name' => 'amore.pos.points-integration.order.auto',
+                'direction' => 'outgoing',
+                'to' => "POS",
+                'serialized_data' => $this->middlewareHelper->serializeData($sendData),
+                'status' => $status,
+                'result_message' => $this->middlewareHelper->serializeData($responseData)
+            ]
+        );
+    }
+
     /**
      * Get orders list having status "Shipment Processing" 24 hours ago
      *
@@ -241,7 +243,7 @@ class GetCompletedOrders
     {
         $completeOrderList = [];
         try {
-            $isCronChangeOrderStatusForBlackCat = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+            $isCronChangeOrderStatusForBlackCat = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
             $store = $this->storeManagerInterface->getStore($storeId);
             $orderCollection = $this->orderCollectionFactory->create();
             $orderCollection->addFieldToFilter('status', ['eq' => 'shipment_processing']);
@@ -255,7 +257,7 @@ class GetCompletedOrders
             }
 
             $orderList       = $orderCollection->getItems();
-            $updateAfterDays = (int)$this->config->getDaysUpdateNinjaVanOrderToDeliveryComplete($storeId);
+            $updateAfterDays = (int)$this->changeStatusConfig->getDaysUpdateNinjaVanOrderToDeliveryComplete($storeId);
             foreach ($orderList as $order) {
                 if ($order->getShippingMethod() == 'gwlogistics_CVS') {
                     $notificationCollection = $this->statusNotificationCollection->create();
@@ -299,7 +301,7 @@ class GetCompletedOrders
         $result = false;
         $stores = $this->storeManagerInterface->getStores();
         foreach ($stores as $store) {
-            $isChangeOrderActive = $this->config->getChangeOrderToDeliveryCompleteActive($store->getId());
+            $isChangeOrderActive = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteActive($store->getId());
             if ($isChangeOrderActive) {
                 $orderList = $this->getShipmentProcessingOrders($store->getId());
                 /** @var Order $order */
@@ -332,9 +334,9 @@ class GetCompletedOrders
         try {
             $this->sftp->open(
                 [
-                    'host' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatUrl(),
-                    'username' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatUsername(),
-                    'password' => $this->config->getChangeOrderToDeliveryCompleteForBlackCatPassword(),
+                    'host' => $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatUrl(),
+                    'username' => $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatUsername(),
+                    'password' => $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatPassword(),
                 ]
             );
         } catch (\Exception $e) {
@@ -368,10 +370,10 @@ class GetCompletedOrders
      */
     public function changeStatusToDeliveryCompleteForBlackCat()
     {
-        $isChangeOrderActive = $this->config->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
-        $host = $this->config->getChangeOrderToDeliveryCompleteForBlackCatUrl();
-        $username = $this->config->getChangeOrderToDeliveryCompleteForBlackCatUsername();
-        $password =  $this->config->getChangeOrderToDeliveryCompleteForBlackCatPassword();
+        $isChangeOrderActive = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForTWBlackCatActive();
+        $host = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatUrl();
+        $username = $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatUsername();
+        $password =  $this->changeStatusConfig->getChangeOrderToDeliveryCompleteForBlackCatPassword();
         if ($isChangeOrderActive && $host && $username && $password) {
             $orderNeedToCheck = $this->getOrderNeedToChangeStatusToDeliveryCompleteForBlackCat();
             foreach ($orderNeedToCheck as $orderData) {

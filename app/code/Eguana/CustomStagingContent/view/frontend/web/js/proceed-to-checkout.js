@@ -24,6 +24,7 @@ define([
                 config.checkoutUrl = requestUrl;
             }
 
+            window.dataLayer.push({'event': 'purchasecartbtn'});
             location.href = config.checkoutUrl;
         });
 

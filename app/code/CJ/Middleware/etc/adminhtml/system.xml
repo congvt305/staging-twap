@@ -1,14 +1,17 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
+        <tab id="amore_extensions_tab" translate="label" sortOrder="2000">
+            <label>Amore Extensions</label>
+        </tab>
         <section id="middleware" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Middleware Common Settings</label>
-            <tab>amore_extensions_tab</tab>
+            <tab>cj_extensions_tab</tab>
             <resource>Amore_Sap::sap</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enabled New Middleware System</label>
+                    <label>Enabled Middleware System</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="url" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -25,6 +28,12 @@
                 </field>
                 <field id="sales_office_code" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Sales Office Code</label>
+                </field>
+                <field id="mall_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Mall Id</label>
+                </field>
+                <field id="partner_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1">
+                    <label>Partner ID</label>
                 </field>
                 <field id="is_decimal_format" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Decimal Format</label>

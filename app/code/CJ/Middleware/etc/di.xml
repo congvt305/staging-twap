@@ -1,12 +1,42 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Amore\Sap\Model\SapOrder\SapOrderConfirmData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestForNewMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderConfirmDataPlugin"/>
+    <!--POS Logger-->
+    <virtualType name="CJ\Middleware\Logger\PosHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/pos.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PosHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\PosHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CJ\Middleware\Model\PosRequest">
+        <arguments>
+            <argument name="logger" xsi:type="object">PosHandler</argument>
+        </arguments>
     </type>
-    <type name="Amore\Sap\Model\SapOrder\SapOrderReturnData">
-        <plugin sortOrder="100" name="CJ_Middleware::CustomRequestReturnForNewMiddleware"
-                type="CJ\Middleware\Plugin\Model\SapOrder\SapOrderReturnDataPlugin"/>
+
+
+    <!--SAP Logger-->
+    <virtualType name="CJ\Middleware\Logger\SapHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/middleware/sap.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SapHandler" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">CJ\Middleware\Logger\SapHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CJ\Middleware\Model\SapRequest">
+        <arguments>
+            <argument name="logger" xsi:type="object">SapHandler</argument>
+        </arguments>
     </type>
 </config>

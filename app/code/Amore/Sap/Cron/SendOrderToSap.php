@@ -4,13 +4,15 @@ namespace Amore\Sap\Cron;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request as SapRequest;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
-use Amore\Sap\Model\Source\Config;
+use Amore\Sap\Model\Source\Config as SapConfig;
 use Eguana\BizConnect\Model\OperationLogRepository;
 use Exception;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderRepository;
@@ -20,96 +22,95 @@ use Amore\Sap\Controller\Adminhtml\SapOrder\MassSend as OrderMassSend;
 use CJ\NinjaVanShipping\Api\GetTrackUrlByOrderInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoresConfig;
+use Psr\Log\LoggerInterface;
 
-class SendOrderToSap
+class SendOrderToSap extends SapRequest
 {
     /**
      * @var OrderCollectionFactory
      */
-    private OrderCollectionFactory $orderCollectionFactory;
+    protected $orderCollectionFactory;
     /**
      * @var Logger
      */
-    private Logger $logger;
+    protected $logger;
     /**
      * @var SapOrderConfirmData
      */
-    private SapOrderConfirmData $sapOrderConfirmData;
+    protected $sapOrderConfirmData;
     /**
      * @var OrderRepository
      */
-    private OrderRepository $orderRepository;
+    protected $orderRepository;
+
     /**
-     * @var Config
+     * @var \Amore\PointsIntegration\Model\Source\Config
      */
-    protected Config $config;
+    protected $config;
     /**
      * @var OrderMassSend
      */
-    protected OrderMassSend $orderMassSend;
-    /**
-     * @var SapRequest
-     */
-    protected SapRequest $sapRequest;
+    protected $orderMassSend;
+
     /**
      * @var OperationLogRepository
      */
-    private OperationLogRepository $operationLogRepository;
+    protected $operationLogRepository;
     /**
      * @var Json
      */
-    private Json $json;
+    protected $json;
     /**
      * @var GetTrackUrlByOrderInterface
      */
-    private GetTrackUrlByOrderInterface $getTrackUrlByOrder;
+    protected $getTrackUrlByOrder;
     /**
      * @var StoresConfig
      */
     protected $storesConfig;
 
     /**
+     * @param Curl $curl
+     * @param MiddlewareHelper $middlewareHelper
+     * @param LoggerInterface $logger
+     * @param \Amore\PointsIntegration\Model\Source\Config $config
      * @param OrderCollectionFactory $orderCollectionFactory
-     * @param Logger $logger
      * @param SapOrderConfirmData $sapOrderConfirmData
      * @param OrderRepository $orderRepository
-     * @param Config $config
      * @param OrderMassSend $orderMassSend
-     * @param SapRequest $sapRequest
-     * @param OperationLogRepository $operationLogRepository
-     * @param Json $json
      * @param GetTrackUrlByOrderInterface $getTrackUrlByOrder
      * @param StoresConfig $storesConfig
+     * @param OperationLogRepository $operationLogRepository
+     * @param SapConfig $sapConfig
      */
     public function __construct(
+        Curl $curl,
+        MiddlewareHelper $middlewareHelper,
+        LoggerInterface $logger,
+        \Amore\PointsIntegration\Model\Source\Config $config,
         OrderCollectionFactory $orderCollectionFactory,
-        Logger $logger,
         SapOrderConfirmData $sapOrderConfirmData,
         OrderRepository $orderRepository,
-        Config $config,
         OrderMassSend $orderMassSend,
-        SapRequest $sapRequest,
-        OperationLogRepository $operationLogRepository,
-        Json $json,
         GetTrackUrlByOrderInterface $getTrackUrlByOrder,
-        StoresConfig $storesConfig
+        StoresConfig $storesConfig,
+        OperationLogRepository $operationLogRepository,
+        SapConfig $sapConfig
     ) {
         $this->orderCollectionFactory = $orderCollectionFactory;
-        $this->logger                 = $logger;
-        $this->sapOrderConfirmData    = $sapOrderConfirmData;
-        $this->orderRepository        = $orderRepository;
-        $this->config                 = $config;
-        $this->orderMassSend          = $orderMassSend;
-        $this->sapRequest             = $sapRequest;
+        $this->sapOrderConfirmData = $sapOrderConfirmData;
+        $this->orderRepository = $orderRepository;
+        $this->orderMassSend = $orderMassSend;
+        $this->getTrackUrlByOrder = $getTrackUrlByOrder;
+        $this->storesConfig = $storesConfig;
         $this->operationLogRepository = $operationLogRepository;
-        $this->json                   = $json;
-        $this->getTrackUrlByOrder     = $getTrackUrlByOrder;
-        $this->storesConfig           = $storesConfig;
+        $this->sapConfig = $sapConfig;
+        parent::__construct($curl, $middlewareHelper, $logger, $config);
     }
 
     public function execute()
     {
-        $sapCronEnables = $this->storesConfig->getStoresConfigByPath(Config::SAP_CRON_ENABLE);
+        $sapCronEnables = $this->storesConfig->getStoresConfigByPath(SapConfig::SAP_CRON_ENABLE);
         foreach ($sapCronEnables as $storeId => $cronEnable) {
             if ($cronEnable) {
                 $allowOrderStatuses = [
@@ -120,7 +121,7 @@ class SendOrderToSap
                 $orderCollection = $this->orderCollectionFactory->create();
                 $orderCollection->addFieldToFilter('store_id', $storeId)
                     ->addFieldToFilter('status', ['in' => $allowOrderStatuses]);
-                $orderLimitation = $this->config->getValue(Config::SAP_CRON_LIMITATION, ScopeInterface::SCOPE_STORE, $storeId);
+                $orderLimitation = $this->config->getValue(SapConfig::SAP_CRON_LIMITATION, ScopeInterface::SCOPE_STORE, $storeId);
                 if (!$orderLimitation) {
                     $orderLimitation = 10;
                 }
@@ -165,26 +166,26 @@ class SendOrderToSap
                 $orderItemDataList = array_merge($orderItemDataList, $orderItemData);
             } catch (ShipmentNotExistException $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
-                if ($this->config->getLoggingCheck()) {
+                if ($this->sapConfig->getLoggingCheck()) {
                     $this->logger->info("MASS ORDER DATA NO SHIPMENT EXCEPTION");
                     $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
                 }
             } catch (NoSuchEntityException $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
-                if ($this->config->getLoggingCheck()) {
+                if ($this->sapConfig->getLoggingCheck()) {
                     $this->logger->info("MASS ORDER DATA NO SUCH ENTITY EXCEPTION");
                     $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
                 }
             } catch (Exception $e) {
                 $orderStatusError[] = $order->getIncrementId() . ' : ' . $e->getMessage();
-                if ($this->config->getLoggingCheck()) {
+                if ($this->sapConfig->getLoggingCheck()) {
                     $this->logger->info("MASS ORDER DATA EXCEPTION");
                     $this->logger->info($order->getIncrementId() . ' : ' . $e->getMessage());
                 }
             }
         }
 
-        if ($this->config->getLoggingCheck()) {
+        if ($this->sapConfig->getLoggingCheck()) {
             $this->logger->info("ORDER List Data");
             $this->logger->info('', $orderDataList);
             $this->logger->info("ORDER Item List Data");
@@ -202,15 +203,15 @@ class SendOrderToSap
             if ($orderCount > 0) {
                 $storeIdUnique = array_unique($storeIdList);
                 $sendData = $this->sapOrderConfirmData->massSendOrderData($orderDataList, $orderItemDataList);
-                if ($this->config->getLoggingCheck()) {
+                if ($this->sapConfig->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND DATA");
                     $this->logger->info('', $sendData);
                 }
 
-                $result = $this->sapRequest->postRequest($sendData, array_shift($storeIdUnique));
+                $result = $this->sendRequest($sendData, array_shift($storeIdUnique), 'confirm');
 
 
-                if ($this->config->getLoggingCheck()) {
+                if ($this->sapConfig->getLoggingCheck()) {
                     $this->logger->info("ORDER MASS SEND RESULT");
                     if (is_array($result)) {
                         $this->logger->info('', $result);

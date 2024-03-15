@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <custom_amasty_review>
+            <general>
+                <custom_display_review>0</custom_display_review>
+            </general>
+        </custom_amasty_review>
+    </default>
+    <websites>
+        <my_sulwhasoo_website>
+            <custom_amasty_review>
+                <general>
+                    <custom_display_review>1</custom_display_review>
+                </general>
+            </custom_amasty_review>
+        </my_sulwhasoo_website>
+    </websites>
+</config>

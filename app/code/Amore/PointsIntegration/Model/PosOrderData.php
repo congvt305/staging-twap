@@ -359,7 +359,7 @@ class PosOrderData extends AbstractPosOrder
             $comment = __('Send canceled info to POS successfully');
             $order->addCommentToStatusHistory($comment);
             $this->orderRepository->save($order);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->pointsIntegrationLogger->error($exception->getMessage());
         }
     }
@@ -530,8 +530,8 @@ class PosOrderData extends AbstractPosOrder
         }
 
         $orderData = [
-            'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
-            'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
+            'salOrgCd' => $this->middlewareConfig->getSalesOrganizationCode('store', $websiteId),
+            'salOffCd' => $this->middlewareConfig->getSalesOfficeCode('store', $websiteId),
             'saledate' => $saleDate,
             'orderID' => $orderId,
             'rcptNO' => 'I' . $invoice->getIncrementId(),

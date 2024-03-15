@@ -1,0 +1,21 @@
+{
+  "name": "cj/module-amasty-checkout-core",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "amasty/module-one-step-checkout-core": "1.2.*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "CJ\\AmastyCheckoutCore\\": ""
+    }
+  }
+}

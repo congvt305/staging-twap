@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var \Magento\NegotiableQuote\Block\Quote\Info $block */ ?>
+<div class="quote-info">
+    <?php if ($block->getQuoteName()): ?>
+        <span class="quote-name"><?= $block->escapeHtml($block->getQuoteName()) ?></span>
+    <?php endif; ?>
+    <span id="quote-status-field" class="quote-status"><?= $block->escapeHtml($block->getQuoteStatusLabel()) ?></span>
+    <?= $block->getChildHtml();?>
+</div>

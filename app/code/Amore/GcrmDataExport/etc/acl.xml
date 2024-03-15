@@ -16,7 +16,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Amore_Base::config" title="Enable Logging">
+                            <resource id="CJ_Middleware::configuration" title="Enable Logging">
                                 <resource id="Amore_GcrmDataExport::config" title="GCRM Integration" translate="title"/>
                             </resource>
                         </resource>

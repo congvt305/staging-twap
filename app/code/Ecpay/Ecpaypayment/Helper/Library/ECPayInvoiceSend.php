@@ -85,6 +85,7 @@ class ECPayInvoiceSend
 
         $szResult = $this->ECPayIO->ServerPost($arParameters, $ServiceURL);
 
+        $this->logger->info('einvoice | szResult', [$szResult]);
         // 回傳資訊處理
         $arParameters_Return = $this->process_return($szResult, $HashKey, $HashIV, $Invoice_Method);
         $this->logger->info('einvoice | response for create invoice', $arParameters_Return);

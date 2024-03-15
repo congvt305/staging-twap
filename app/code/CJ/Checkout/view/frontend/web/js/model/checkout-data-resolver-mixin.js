@@ -8,13 +8,17 @@ define([
     'Magento_Checkout/js/checkout-data',
     'Magento_Checkout/js/action/select-shipping-address',
     'Magento_Checkout/js/model/address-converter',
-    'Eguana_GWLogistics/js/model/cvs-location-service'
+    'Eguana_GWLogistics/js/model/cvs-location-service',
+    'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/action/select-billing-address'
 ], function (
     wrapper,
     checkoutData,
     selectShippingAddress,
     addressConverter,
-    pickupLocationsService
+    pickupLocationsService,
+    quote,
+    selectBillingAddress
 ) {
     'use strict';
 
@@ -35,7 +39,26 @@ define([
                 }
                 this._super();
             });
+        checkoutDataResolver.applyBillingAddress = wrapper.wrapSuper(
+            checkoutDataResolver.applyBillingAddress,
+            function() {
+                var shippingAddress
 
+                if (quote.billingAddress()) {
+                    selectBillingAddress(quote.billingAddress());
+
+                    return;
+                }
+                shippingAddress = quote.shippingAddress();
+                if (shippingAddress &&
+                    shippingAddress.canUseForBilling() &&
+                    (shippingAddress.isDefaultShipping() || !quote.isVirtual())
+                ) {
+                    //set billing address same as shipping by default if it is not empty
+                    selectBillingAddress(quote.shippingAddress());
+                }
+            }
+        )
         return checkoutDataResolver;
     };
 });

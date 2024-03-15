@@ -8,98 +8,29 @@ $items = $coupons->getItems();
 <div class="block-title">
     <strong><?= $block->escapeHtml(__('Coupon List')); ?></strong>
 </div>
-<div class="table-wrapper">
-    <table class="data table">
-        <thead>
-        <tr>
-            <th><?= __('Coupon name') ?></th>
-            <th><?= __('Information') ?></th>
-            <th><?= __('The expiration date') ?></th>
-            <th><?= __('Code') ?></th>
-        </tr>
-        </thead>
+<div class="table-wrapper table-coupon">
+    <table class="data table table-coupon-child">
         <tbody>
+        <tr>
+            <th class="col-title"><?= __('Coupon name') ?></th>
+            <th class="col-title"><?= __('The expiration date') ?></th>
+            <th class="col-title"><?= __('Code') ?></th>
+        </tr>
         <?php foreach ($items as $coupon) : ?>
             <tr>
                 <td>
                     <?php echo $coupon['name']; ?>
                 </td>
                 <td>
-                    <?php if ($coupon['simple_action'] == 'by_percent'): ?>
-                        <?= floatval($coupon['discount_amount']) . '%' ?>
-                    <?php elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed'): ?>
-                        <?= $block->getCurrencyCode().floatval($coupon['discount_amount']); ?>
-                    <?php elseif ($coupon['simple_action'] == 'buy_x_get_y'): ?>
-                        <?= $block->escapeHtml(__( 'Buy X get Y')); ?>
-                    <?php else: ?>
-                        <?= $block->escapeHtml(__('Automatically add products to cart')); ?>
-                    <?php endif; ?>
-                </td>
-                <td>
                     <?php echo $coupon['to_date'] == null ? 'none' : $coupon['to_date']; ?>
                 </td>
                 <td>
                     <div class="coupon-button">
-                        <button id="<?php echo $coupon['code'] ?>"> <?= $block->escapeHtml(__('copy')) ?></button>
+                        <button id="<?php echo $coupon['code'] ?>"> <?= $block->escapeHtml(__('Copy')) ?></button>
                     </div>
                 </td>
             </tr>
         <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <table class="data table mobile">
-        <tbody>
-        <?php for($i = 0; $i < 4; $i++) { ?>
-            <tr>
-            <?php
-            switch ($i) {
-                case 0:
-                    echo '<td class="col-title">' . __('Coupon name') . '</td>';
-                    break;
-                case 1:
-                    echo '<td class="col-title">' . __('Information') . '</td>';
-                    break;
-                case 2:
-                    echo '<td class="col-title">' . __('The expiration date') . '</td>';
-                    break;
-                case 3:
-                    echo '<td class="col-title">' . __('Code') . '</td>';
-                    break;
-            }
-            ?>
-            <?php foreach ($items as $coupon) : ?>
-                <?php
-                $value = '';
-                switch ($i) {
-                    case 0:
-                        $value = $coupon['name'];
-                        break;
-                    case 1:
-                        if ($coupon['simple_action'] == 'by_percent') {
-                            $value = floatval($coupon['discount_amount']) . '%';
-                        } elseif ($coupon['simple_action'] == 'cart_fixed' || $coupon['simple_action'] == 'by_fixed') {
-                            $value = $block->getCurrencyCode().floatval($coupon['discount_amount']);
-                        } elseif ($coupon['simple_action'] == 'buy_x_get_y') {
-                            $value = $block->escapeHtml(__( 'Buy X get Y'));
-                        } else {
-                            $value = $block->escapeHtml(__('Automatically add products to cart'));
-                        }
-                        break;
-                    case 2:
-                        $value = $coupon['to_date'] == null ? 'none' : $coupon['to_date'];
-                        break;
-                    case 3:
-                        $value = '<div class="coupon-button">
-                            <button id="' . $coupon['code'] . '"> ' . $block->escapeHtml(__('copy')) . '</button>
-                        </div>';
-                        break;
-                }
-                ?>
-                <td><?= $value ?></td>
-            <?php endforeach; ?>
-            </tr>
-        <?php } ?>
         </tbody>
     </table>
 </div>
