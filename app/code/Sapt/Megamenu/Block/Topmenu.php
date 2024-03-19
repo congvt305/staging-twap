@@ -1,6 +1,7 @@
 <?php
 namespace Sapt\Megamenu\Block;
 
+use Amore\GaTagging\Model\CommonVariable;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -149,11 +150,12 @@ class Topmenu extends \Magento\Framework\View\Element\Template
             $i = 0;
             $html = '<ul class="subchildmenu submenu-toggle '.$column_class.'">';
             foreach($children as $child) {
-                $parentCategoryName = 'MENU';
+                $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+                $clickArea = CommonVariable::CLICK_AREA;
                 if ($child->getParent()->getName()) {
-                    $parentCategoryId = $child->getParent()->getId();
-                    $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, $this->_storeManager->getStore()->getId())->getName();
+                    $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
                 }
+                $categoryDefaultName = $this->getDefaultStoreCategory($child->getId(), 0)->getName();
                 $sub_children = $this->getActiveChildCategories($child);
 
                 $item_class = 'level'.$level.' ';
@@ -170,9 +172,9 @@ class Topmenu extends \Magento\Framework\View\Element\Template
                     $html .= '<div class="open-children-toggle"></div>';
                 }
                 $html .= '<a href="'.$this->_categoryHelper->getCategoryUrl($child).'" title="'.$child->getName().'"'
-                    . ' ap-click-area="GNB"'
+                    . ' ap-click-area="'. $clickArea .'"'
                     . 'ap-click-name="'. $parentCategoryName .'"'
-                    . 'ap-click-data="'. $child->getName() .'"'
+                    . 'ap-click-data="'. strtoupper($categoryDefaultName) .'"'
                     . '>';
                 $html .= '<span>'.$child->getName();
                 $html .= '</span></a>';
@@ -232,16 +234,17 @@ class Topmenu extends \Magento\Framework\View\Element\Template
                 $html .= '<div class="open-children-toggle"></div>';
             }
 
-            $parentCategoryName = 'MENU';
+            $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+            $clickArea = CommonVariable::CLICK_AREA;
             if ($category->getParent()->getName()) {
-                $parentCategoryId = $category->getParent()->getId();
-                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, $this->_storeManager->getStore()->getId())->getName();
+                $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
             }
+            $categoryDefaultName = $this->getDefaultStoreCategory($category->getId(), 0)->getName();
 
             $html .= '<a href="'.$this->_categoryHelper->getCategoryUrl($category).'" class="level-top" title="'.$category->getName().'"'
-                . ' ap-click-area="GNB"'
+                . ' ap-click-area="'. $clickArea .'"'
                 . 'ap-click-name="'. $parentCategoryName .'"'
-                . 'ap-click-data="'. $category->getName() .'"'
+                . 'ap-click-data="'. strtoupper($categoryDefaultName) .'"'
                 .'>';
             $html .= '<span>'.$category->getName().'</span>';
             $html .= '</a>';

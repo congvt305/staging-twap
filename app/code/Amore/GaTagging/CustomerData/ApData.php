@@ -89,7 +89,7 @@ class ApData implements SectionSourceInterface
         $customer = $this->customerSession->getCustomer();
 
         $coreSession = $this->socialLoginModel->getCoreSession();
-        $loginType = 'NORMAL';
+        $loginType = CommonVariable::DEFAULT_LOGIN_TYPE;
         if (isset($coreSession->getData()['socialmedia_type'])) {
             $loginType = $coreSession->getData()['socialmedia_type'];
         }

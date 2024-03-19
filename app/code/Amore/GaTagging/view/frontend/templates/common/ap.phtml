@@ -17,6 +17,8 @@ use Amore\GaTagging\Model\CommonVariable;
     var AP_DATA_CID = "";
     var AP_DATA_ISMEMBER = "";
     var AP_DATA_ISLOGIN = "<?= CommonVariable::VALUE_NO ?>";
+    var AP_DATA_COUNTRY = "<?= $block->escapeHtml(strtoupper($block->getDataCountry())) ?>";
+    var AP_DATA_LANG = "<?= $block->escapeHtml(strtoupper($block->getDataLanguage())) ?>";
     var AP_DATA_LOGINTYPE = undefined;
     var AP_DATA_CA = "";
     var AP_DATA_CD = undefined;
