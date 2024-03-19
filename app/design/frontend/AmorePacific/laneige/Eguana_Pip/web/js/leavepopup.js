@@ -21,8 +21,8 @@ require([
                         window.dataLayer.push({
                             'event': 'withdrawal_complete',
                             'event_category': 'withdrawal',
-                            'event_action': 'withdrawal complete',
-                            'event_label': ''
+                            'event_action': 'withdrawal - complete',
+                            'event_label': 'Because I do not access it often'
                         });
                     }
                     window.location.href = accountLeaveUrl;

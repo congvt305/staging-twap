@@ -8,6 +8,8 @@
 
 namespace Amore\GaTagging\Plugin;
 
+use Magento\Catalog\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
 class Cart
 {
@@ -71,22 +73,47 @@ class Cart
         if (!$this->data->isActive()) {
             return $result;
         }
-        $storeId =
         $items = $this->getQuote()->getAllVisibleItems();
 
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
-                    $result['items'][$key]['product_original_price'] = $this->data->getProductOriginalPrice($item->getProduct());
-                    $result['items'][$key]['price'] = $this->data->getProductDiscountedPrice($item->getProduct());
+                    $result['items'][$key]['product_original_price'] = (float)$item->getOriginalPrice();
+                    $result['items'][$key]['price'] = (float)$item->getPrice();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
                     $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
                     $result['items'][$key]['apg_brand_code'] = $this->data->getApgBrandCode($item->getProduct()->getSku());
+                    $result['items'][$key]['discount_price'] = (float)$item->getDiscountAmount();
 
-                    $price = $result['items'][$key]['price'] ?? 0;
-                    $originalPrice = $result['items'][$key]['product_original_price'] ?? 0;
-                    $result['items'][$key]['discount_price'] = $originalPrice > $price ? ($originalPrice - $price) : 0;
+                    if ($item->getProductType() === Type::TYPE_BUNDLE) {
+                        $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
+                        foreach ($item->getChildren() as $bundleChild) {
+                            $childSkus[] = $bundleChild->getProduct()->getSku();
+                            $childPrices[] = (float) $bundleChild->getPrice();
+                            $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount();
+                            $childQtys[] = $bundleChild->getQty();
+
+                            if ($bundleChild->getIsFreeGift()) {
+                                $gifts[] = $bundleChild->getProduct()->getSku();
+                            }
+                        }
+
+                        $result['items'][$key]['parent_sku'] = $item->getProduct()->getData('sku');
+                        $result['items'][$key]['child_skus'] = implode(' / ', $childSkus);
+                        $result['items'][$key]['child_prices'] = implode(' / ', $childPrices);
+                        $result['items'][$key]['child_discount_prices'] = implode(' / ', $childDiscountPrices);
+                        $result['items'][$key]['child_qtys'] = implode(' / ', $childQtys);
+                        $result['items'][$key]['gifts'] = implode(' / ', $gifts);
+                    } elseif ($item->getProductType() === Configurable::TYPE_CODE) {
+                        $result['items'][$key]['parent_sku'] = $item->getProduct()->getData('sku');
+                        $result['items'][$key]['child_skus'] = $item->getSku();
+                        $result['items'][$key]['child_prices'] = (float)$item->getPrice();
+                        $result['items'][$key]['child_discount_prices'] = (float)$item->getDiscountAmount();
+                        $result['items'][$key]['child_qtys'] = $item->getQty();
+                        $result['items'][$key]['gifts'] = '';
+                        $result['items'][$key]['variant'] = $item->getSku();
+                    }
                 }
             }
         }

@@ -13,6 +13,8 @@ use Magento\Catalog\Model\Category;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Config\Model\Config\Backend\Admin\Custom;
+use Magento\Store\Model\Store;
 
 class Data extends AbstractHelper
 {
@@ -107,6 +109,28 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @return string
+     */
+    public function getDataCountry()
+    {
+        return $this->scopeConfig->getValue(
+            Custom::XML_PATH_GENERAL_COUNTRY_DEFAULT,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataLanguage()
+    {
+        return $this->scopeConfig->getValue(
+            Custom::XML_PATH_GENERAL_LOCALE_CODE,
+            ScopeInterface::SCOPE_WEBSITE
+        );
+    }
+
+    /**
      * @param $product
      * @return string|null
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -126,16 +150,18 @@ class Data extends AbstractHelper
         $category = $categoriesCollection->getFirstItem();
 
         if ($category->getId()) {
-            $category = $this->categoryRepository->get($category->getId(), $store->getId());
-            $categoryTree = $this->categoryTree->setStoreId($store->getId())
+            $defaultStoreId = Store::DEFAULT_STORE_ID;
+
+            $category = $this->categoryRepository->get($category->getId(), $defaultStoreId);
+            $categoryTree = $this->categoryTree->setStoreId($defaultStoreId)
                 ->loadBreadcrumbsArray($category->getPath());
 
             $categoryTreeNames = [];
-            foreach ($categoryTree as $category) {
-                if (empty(($category['name']))) {
+            foreach ($categoryTree as $categoryItem) {
+                if (empty(($categoryItem['name']))) {
                     continue;
                 }
-                $categoryTreeNames[] = __($category['name']);
+                $categoryTreeNames[] = $categoryItem['name'];
             }
             $categoryName = implode('/', $categoryTreeNames);
         }
