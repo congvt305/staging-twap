@@ -11,9 +11,9 @@ define([
 	return function (config, element) {
 		$(element).on('submit', function (e) {
 			if ($(this).valid()) {
-				AP_REVIE_PICTURE = $('#review-form [name="review_images[]"]').size();
-				AP_REVIE_CONTENT = $('#review-form [id="review_field"]').val();
-				AP_REVIE_RATING = $('#review-form [name^=ratings]').val();
+                AP_REVIEW_PICTURE = $(this).find('input[name="review_images[]"]')[0].files.length;
+                AP_REVIEW_CONTENT = $(this).find('textarea[name=detail]').val();
+                AP_REVIEW_RATING = $(this).find('input[name^=ratings]:checked').data('star-value');
 
 				window.dataLayer.push({'event': 'review'});
 

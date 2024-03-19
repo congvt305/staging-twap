@@ -1,7 +1,8 @@
 define([
     'jquery',
+    'underscore',
     'mage/utils/wrapper'
-], function ($, wrapper) {
+], function ($, _, wrapper) {
     'use strict';
 
     return function (stepNavigator) {
@@ -20,6 +21,15 @@ define([
                     window.AP_DATA_CD = sectionData['AP_DATA_CD'] || undefined;
                     window.AP_DATA_CG = sectionData['AP_DATA_CG'] || undefined;
                     window.AP_DATA_CT = sectionData['AP_DATA_CT'] || undefined;
+
+                    if (_.contains(sectionNames, 'customer-ap-data') && window.AP_DATA_LOGINTYPE) {
+                        window.dataLayer.push({
+                            'event': 'login_complete',
+                            'event_category': 'login',
+                            'event_action': 'login - complete',
+                            'event_label': window.AP_DATA_LOGINTYPE
+                        });
+                    }
                 }
             });
         });

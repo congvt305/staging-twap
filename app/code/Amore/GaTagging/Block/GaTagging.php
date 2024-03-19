@@ -21,7 +21,6 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 {
     const PURCHASE_DATA_REGISTRY_NAME = 'purchase_data';
     const FORMAT_DATE = 'Y-m-d';
-    const DEFAULT_SEARCH_TYPE = '직접입력';
     const DEFAULT_REFUND_CONTENT = '단순변심';
 
     /**
@@ -108,6 +107,11 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     private $ruleCollectionFactory;
 
     /**
+     * @var \Amasty\Promo\Helper\Item
+     */
+    private $promoItemHelper;
+
+    /**
      * @param ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
@@ -126,6 +130,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @param \Magento\Framework\HTTP\Header $header
      * @param \Eguana\SocialLogin\Model\SocialLoginHandler $socialLoginModel
      * @param \Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory $ruleCollectionFactory
+     * @param \Amasty\Promo\Helper\Item $promoItemHelper
      * @param array $data
      */
     public function __construct(
@@ -147,6 +152,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         \Magento\Framework\HTTP\Header $header,
         \Eguana\SocialLogin\Model\SocialLoginHandler $socialLoginModel,
         \Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory $ruleCollectionFactory,
+        \Amasty\Promo\Helper\Item $promoItemHelper,
         array $data = []
     ) {
         $this->stockRegistry = $stockRegistry;
@@ -167,6 +173,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->header = $header;
         $this->socialLoginModel = $socialLoginModel;
         $this->ruleCollectionFactory = $ruleCollectionFactory;
+        $this->promoItemHelper = $promoItemHelper;
     }
 
     /**
@@ -273,7 +280,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
     public function getSearchType()
     {
-        return $this->getRequest()->getCookie('ap_search_type') ?? self::DEFAULT_SEARCH_TYPE;
+        return $this->getRequest()->getCookie('ap_search_type') ?? CommonVariable::DEFAULT_SEARCH_TYPE;
     }
 
     public function getJoinName()
@@ -406,12 +413,18 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     private function getQuoteRealParentItemsData($allItems)
     {
-        $products = [];
+        $products = $gifts = [];
         foreach ($allItems as $item) {
             $product = [];
             if ($item->getParentItemId()) {
                 continue;
             }
+
+            if ($this->promoItemHelper->isPromoItem($item)) {
+                $gifts[] = $item->getSku();
+                continue;
+            }
+
             $product['name'] = $item->getName();
             $product['code'] = $item->getSku();
             $product['sapcode'] = $item->getSku();
@@ -430,20 +443,42 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['prdprice'] = (float) $item->getRowTotal();
             $product['discount'] = (float) $item->getDiscountAmount();
             if ($item->getProductType() === 'configurable') {
-                $nameArr = explode(' ', $item->getName());
-                $product['variant'] = $nameArr[(count($nameArr) - 1)];
-            }
-            if ($item->getProductType() === 'bundle') {
-                if ($currentProduct->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
-                    foreach($item->getChildren() as $childrenItem) {
+                $product['variant'] = $item->getSku();
+
+                $product['code'] = $item->getProduct()->getData('sku');
+                $product['product_param1'] = $item->getSku();
+                $product['product_param2'] = (float)$item->getPrice();
+                $product['product_param3'] = (float)$item->getDiscountAmount();
+                $product['product_param4'] = $item->getQty();
+            } elseif ($item->getProductType() === 'bundle') {
+                $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
+                foreach ($item->getChildren() as $bundleChild) {
+                    if ($currentProduct->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
                         // no need to reset because parent discount always 0
-                        $product['discount'] += $childrenItem->getDiscountAmount();
+                        $product['discount'] += $bundleChild->getDiscountAmount();
                     }
+
+                    $childSkus[] = $bundleChild->getProduct()->getSku();
+                    $childPrices[] = (float) $bundleChild->getRowTotal();
+                    $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount();
+                    $childQtys[] = $bundleChild->getQty();
                 }
+
+                $product['code'] = $item->getProduct()->getData('sku');
+                $product['product_param1'] = implode(' / ', $childSkus);
+                $product['product_param2'] = implode(' / ', $childPrices);
+                $product['product_param3'] = implode(' / ', $childDiscountPrices);
+                $product['product_param4'] = implode(' / ', $childQtys);
             }
             $product['price'] = $product['prdprice'] - $product['discount']; // // cat rule applied, need an attention 얼마에 팔았냐? 일단 로우토탈을 qty로 나눈다.
             $products[] = $product;
         }
+
+        // Assign gifts to first item
+        if (!empty($gifts)) {
+            $products[0]['product_param5'] = implode(' / ', $gifts);
+        }
+
         return $products;
     }
     /**
@@ -569,74 +604,76 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      */
     private function getOrderRealParentItemsData($allItems)
     {
-        $products = [];
-        $allItemsArr = [];
-        $parentSku = '';
-        foreach ($allItems as $item) {
-            $allItemsArr[] = $item->getData();
-        }
+        $products = $gifts = [];
         foreach ($allItems as $item) {
             $product = [];
             if ($item->getParentItemId()) {
-                $parentItem = $allItems[array_search($item->getParentItemId(), array_column($allItemsArr, 'item_id'))];
-                if($parentSku == $parentItem->getSku()) {
-                    continue;
-                }
-                $parentProduct = $parentItem->getProduct();
-                $product['name'] = $parentProduct->getData('name');
-                $product['code'] = $parentProduct->getData('sku');
-                $product['apg_brand_code'] = $this->helper->getApgBrandCode($parentProduct->getData('sku'));
-                $product['sapcode'] = $parentProduct->getData('sku');
-                $product['brand'] = $this->helper->getSiteName() ?? '';
-                $product['quantity'] = intval($parentItem->getQtyOrdered());
-                $product['variant'] = '';
-                $product['cate'] = $this->helper->getProductCategory($parentProduct);
-                $product['catecode'] = '';
-                $product['url'] = $parentItem->getProduct()->getProductUrl();
-                $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($parentItem->getProduct());
-                if ($parentItem->getProductType() === 'bundle') {
-                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue()) ;
-                    $product['price'] = intval($parentProduct->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue());
-                } elseif ($parentItem->getProductType() === 'configurable') {
-                    $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
-                    $product['prdprice'] = intval($parentProduct->getPriceInfo()->getPrice('regular_price')->getValue()) ?? 0;
-                    $nameArr = explode(' ', $item->getName());
-                    $product['variant'] = $nameArr[(count($nameArr) - 1)];
-                }
-
-                $ruleData = $this->getRuleName($parentItem->getAppliedRuleIds());
-                $product['promotion'] = $ruleData['name'];
-                $product['promotion_code'] = $ruleData['coupon'];
-                $product['discount'] = $product['prdprice'] - $product['price'];
-                $products[] = $product;
-                $parentSku = $parentItem->getSku();
-            }
-            else {
-                if ($item->getProductType() == 'simple') {
-                    $product['name'] = $item->getName();
-                    $product['code'] = $item->getSku();
-                    $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getData('sku'));
-                    $product['sapcode'] = $item->getSku();
-                    $product['brand'] = $this->helper->getSiteName() ?? '';
-                    $product['prdprice'] = $item->getRowTotal();
-                    $product['discount'] = $item->getDiscountAmount();
-                    $product['price'] = $product['prdprice'] - $product['discount'];
-                    $product['quantity'] = intval($item->getQtyOrdered());
-                    $product['variant'] =  '';
-                    $ruleData = $this->getRuleName($item->getAppliedRuleIds());
-                    $product['promotion'] = $ruleData['name'];
-                    $product['promotion_code'] = $ruleData['coupon'];
-                    $product['cate'] = $this->helper->getProductCategory($item->getProduct());
-                    $product['catecode'] = '';
-                    $product['url'] = $item->getProduct()->getProductUrl();
-                    $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
-                    $products[] = $product;
-                }
+                continue;
             }
 
+            $infoBuyRequest = $item->getProductOptionByCode('info_buyRequest');
+            if (isset($infoBuyRequest['options']['ampromo_rule_id'])) {
+                $gifts[] = $item->getSku();
+                continue;
+            }
+
+            $currentProduct = $item->getProduct();
+            $product['name'] = $item->getName();
+            $product['code'] = $item->getSku();
+            $product['apg_brand_code'] = $this->helper->getApgBrandCode($currentProduct->getData('sku'));
+            $product['sapcode'] = $item->getSku();
+            $product['brand'] = $this->helper->getSiteName() ?? '';
+            $product['quantity'] = intval($item->getQtyOrdered());
+            $product['variant'] = '';
+            $product['cate'] = $this->helper->getProductCategory($currentProduct);
+            $product['catecode'] = '';
+            $product['url'] = $item->getProduct()->getProductUrl();
+            $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
+            $product['prdprice'] = (float) $item->getRowTotal();
+            $product['discount'] = (float) $item->getDiscountAmount();
+
+            if ($item->getProductType() === 'bundle') {
+                $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
+                foreach ($item->getChildrenItems() as $bundleChild) {
+                    if ($currentProduct->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
+                        // no need to reset because parent discount always 0
+                        $product['discount'] += (float) $bundleChild->getDiscountAmount();
+                    }
+
+                    $childSkus[] = $bundleChild->getProduct()->getSku();
+                    $childPrices[] = (float) $bundleChild->getPrice();
+                    $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount();
+                    $childQtys[] = $bundleChild->getQtyOrdered();
+                }
+
+                $product['code'] = $item->getProduct()->getData('sku');
+                $product['product_param1'] = implode(' / ', $childSkus);
+                $product['product_param2'] = implode(' / ', $childPrices);
+                $product['product_param3'] = implode(' / ', $childDiscountPrices);
+                $product['product_param4'] = implode(' / ', $childQtys);
+            } elseif ($item->getProductType() === 'configurable') {
+                $product['variant'] = $item->getSku();
+
+                $product['code'] = $item->getProduct()->getData('sku');
+                $product['product_param1'] = $item->getSku();
+                $product['product_param2'] = (float)$item->getRowTotal();
+                $product['product_param3'] = (float)$item->getDiscountAmount();
+                $product['product_param4'] = $item->getQtyOrdered();
+            }
+
+            $ruleData = $this->getRuleName($item->getAppliedRuleIds());
+            $product['promotion'] = $ruleData['name'];
+            $product['promotion_code'] = $ruleData['coupon'];
+            $product['price'] = $product['prdprice'] - $product['discount'];
+            $products[] = $product;
         }
-        return $products;
 
+        // Assign gifts to first item
+        if (!empty($gifts)) {
+            $products[0]['product_param5'] = implode(' / ', $gifts);
+        }
+
+        return $products;
     }
 
     protected function getProductImage($productId)
@@ -785,9 +822,10 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * Get social login type
      * @return mixed|string
      */
-    public function getSocialTypeLogin() {
+    public function getSocialTypeLogin()
+    {
         $coreSession = $this->socialLoginModel->getCoreSession();
-        $loginType = 'General Login';
+        $loginType = CommonVariable::DEFAULT_LOGIN_TYPE;
         if (isset($coreSession->getData()['socialmedia_type'])) {
             $loginType = $coreSession->getData()['socialmedia_type'];
         }
@@ -857,6 +895,22 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getDataEnvironment()
     {
         return $this->helper->getDataEnvironment();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataCountry()
+    {
+        return $this->helper->getDataCountry();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataLanguage()
+    {
+        return substr($this->helper->getDataLanguage(), 0, 2);
     }
 }
 

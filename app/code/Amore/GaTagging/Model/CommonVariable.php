@@ -32,4 +32,13 @@ class CommonVariable
      */
     const DEFAULT_DATA_CHANNEL = 'PC';
     const DEFAULT_PAGE_TYPE = 'OTHERS';
+    const DEFAULT_SEARCH_TYPE = 'Direct Search';
+    const DEFAULT_LOGIN_TYPE = 'NORMAL';
+
+    /**
+     * GA Click tag values
+     */
+    const CLICK_AREA = 'Click';
+    const CLICK_TAG_GNB = 'GNB – Link Click';
+    const CLICK_TAG_MENU = 'Side Menu – Link Click';
 }
