@@ -23,7 +23,7 @@ $groupName = $block->getGroupName($customer->getGroupId());
             </div>
             <div class="item">
                 <span class="label"><?= $block->escapeHtml(__('Membership Level Expiration Date')) ?></span>
-                <span class="count"><?= $block->dateFormat($pointSearchResult['expireDate']); ?></span>
+                <span class="count"><?= $block->dateFormat($pointSearchResult['gradeExpireDate']); ?></span>
             </div>
         </div>
     <?php endif; ?>
