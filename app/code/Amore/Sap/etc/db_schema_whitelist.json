@@ -18,7 +18,8 @@
         "column": {
             "sap_return_send_check": true,
             "sap_return_increment_id": true,
-            "sap_response": true
+            "sap_response": true,
+            "partial_total_amount": true
         },
         "index": {
             "MAGENTO_RMA_SAP_RETURN_INCREMENT_ID": true

@@ -197,31 +197,6 @@ abstract class AbstractSapOrder
     }
 
     /**
-     * Get meins
-     *
-     * @param $value
-     * @return string|null
-     */
-    public function getMeins($value)
-    {
-        try {
-            $attribute = $this->eavAttributeRepositoryInterface->get('catalog_product', 'meins');
-            $options = $attribute->getOptions();
-
-            $label = 'EA';
-            foreach ($options as $option) {
-                if ($option->getValue() == $value) {
-                    $label = $option->getLabel();
-                }
-            }
-            return $label;
-        } catch (\Exception $exception) {
-            return null;
-        }
-    }
-
-
-    /**
      * Check cvs shipping
      *
      * @param $order \Magento\Sales\Model\Order
@@ -333,7 +308,7 @@ abstract class AbstractSapOrder
 
             foreach ($listToFormat as $field) {
                 foreach ($orderItemData as $key => $value) {
-                    if (isset($value[$field]) && (is_float($value[$field]) || is_int($value[$field]))) {
+                    if (isset($value[$field])) {
                         $orderItemData[$key][$field] = $this->orderData->formatPrice($value[$field], $isDecimalFormat);
                     }
                 }

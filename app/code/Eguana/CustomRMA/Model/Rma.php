@@ -414,12 +414,19 @@ class Rma extends \Magento\Rma\Model\Rma
     private function getBundleChilds($item, $orderItemId)
     {
         $result = [];
+        $itemModel = $this->_rmaItemFactory->create();
+        $itemParentQtyReturn = $itemModel->getReturnableQty($this->getOrder()->getId(), $orderItemId);
         foreach ($this->getOrder()->getItems() as $orderItem) {
             if ($orderItem->getParentItemId() == $orderItemId) {
                 $itemModel = $this->_rmaItemFactory->create();
-                $item['order_item_id'] = $orderItem->getItemId();
-                $item['qty_requested'] = $itemModel->getReturnableQty($this->getOrder()->getId(), $orderItem->getItemId());
-                $itemPost = $this->_preparePost($item);
+                $itemChild = [
+                    'order_item_id' => $orderItem->getItemId(),
+                    'qty_requested' => ($itemModel->getReturnableQty($this->getOrder()->getId(), $orderItem->getItemId()) / $itemParentQtyReturn) * $item['qty_requested'],
+                    'reason' => $item['reason'],
+                    'condition' =>  $item['condition'],
+                    'resolution' => $item['resolution']
+                ];
+                $itemPost = $this->_preparePost($itemChild);
                 $key = 'bundle_child_'.$orderItem->getItemId();//Key using for matching $_FILES, this unique string is no-use
                 $itemModel->setData($itemPost)->prepareAttributes($itemPost, $key);
                 $result[] = $itemModel;
