@@ -6,7 +6,9 @@
 
 .product-add-form {
     .action.tocart:hover,
-    .action.primary.tocheckout:hover {
+    .action.tocart:active,
+    .action.primary.tocheckout:hover,
+    .action.primary.tocheckout:active {
         background-color: #6691FF;
         border: 1px solid #6691FF;
         color: #ffffff;
@@ -54,6 +56,11 @@
                     &.primary {
                         background: #6691FF;
                         border: 1px solid #6691FF;
+                        &:hover,
+                        &:active{
+                            background: #6691FF;
+                            border: 1px solid #6691FF;
+                        }
                     }
                 }
             }
@@ -76,6 +83,10 @@
     .action.search.primary:hover{
         background: #6691FF;
         border: 1px solid #6691FF;
+    }
+
+    .control input, .block-search .control input:focus{
+        box-shadow: 0 0 3px 1px #6691FF;
     }
 }
 
@@ -111,7 +122,7 @@
 }
 
 .store-search-input:focus {
-    box-shadow: 0 0 3px 1px #4076FF !important;
+    box-shadow: 0 0 3px 1px #6691FF !important;
 }
 
 .page-layout-1column .filter-options-content .item a:hover {
@@ -139,4 +150,9 @@
         border: 1px solid #6691FF;
         color: #ffffff;
     }
+}
+
+.sections.nav-sections,
+.page-footer{
+    font-family: 'Gellix';
 }
