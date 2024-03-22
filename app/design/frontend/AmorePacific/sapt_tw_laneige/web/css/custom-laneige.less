@@ -58,16 +58,20 @@
 
 .login-container .form-login .actions-toolbar .primary button {
     border-radius: 30px;
-    background-color: #4477be;
+    background-color: #6691FF;
+    &:hover,
+    &:active{
+        background-color: #6691FF !important;
+    }
 }
 
 .action.primary:hover {
-    background-color: #4477be !important;
-    border-color: #4477be !important;
+    background-color: #6691FF !important;
+    border-color: #6691FF !important;
 }
 
 .login-container .login-benifit {
-    background-color: #ecf5fa;
+    background-color: rgba(180, 205, 255, 0.2);
 }
 
 .minicart-wrapper .action.showcart .counter.qty {
@@ -151,12 +155,16 @@ div.pagebuilder-button-secondary {
     outline: 1px solid transparent !important;
 }
 
+.cart-container .checkout-methods-items .action.primary{
+    background-color: #6691FF !important;
+    border-color: #6691FF !important;
+}
+
 .customer-address-index.account .column.main .actions-toolbar:not(.order-actions-toolbar) button.primary:hover,
 .amcheckout-step-container button.action.action-show-popup.amcheckout-button.-new-address:hover,
 .amcheckout-step-container .quote-details-items .actions-toolbar > .action.action.action-show-popup.amcheckout-button.-new-address:hover,
 .checkout-index-index .amcheckout-main-container .checkout-payment-method.submit .payment-methods button,
 .checkout-index-index .amcheckout-main-container .checkout-payment-method.submit .payment-methods .quote-details-items .actions-toolbar > .action,
-.cart-container .checkout-methods-items .action.primary,
 .cart-container .checkout-methods-items .amshopby-button,
 .cart-container .checkout-methods-items .am-filter-go,
 .cart-container .checkout-methods-items .paypal-express-review .paypal-review-discount .block .actions-toolbar .action.primary,
@@ -186,9 +194,14 @@ div.pagebuilder-button-secondary {
 
 @media (max-width: 768px){
     .product-info-main.sticky .product-add-form .box-tocart .actions button.action.tocheckout {
-        background-color: #4477be !important;
-        border-color: #4477be !important;
+        background-color: #6691FF !important;
+        border-color: #6691FF !important;
     }
+}
+
+.catalog-category-view .products-grid .product-items .product-item .product-item-details .action.tocart:hover {
+    background-color: #6691FF !important;
+    border-color: #6691FF !important;
 }
 
 .customer-account-findpasswordcomplete .box_link .action.secondary:hover,
@@ -231,7 +244,7 @@ div.pagebuilder-button-secondary:hover {
     }
 
     &.product-label-new {
-        background-color: #c9e1ff;
+        background-color: rgba(180, 205, 255, 0.6);
         color: #222;
     }
 
@@ -242,7 +255,7 @@ div.pagebuilder-button-secondary:hover {
 }
 
 .product_tags {
-    color: #4477be;
+    color: #4076FF;
 }
 
 /* Product List Page */
@@ -368,6 +381,11 @@ div.pagebuilder-button-secondary:hover {
     .sapt-megamenu.navigation li.level0.parent {
         border-bottom: 1px solid #ddd;
     }
+
+    .sapt-megamenu.navigation {
+        padding: 50px 20px 20px;
+        background: rgba(180, 205, 255, 0.2);
+    }
 }
 
 .product-info-main .discount-label,
@@ -379,7 +397,7 @@ div.pagebuilder-button-secondary:hover {
 .product-info-main.sticky::after,
 .product-info-main.sticky::before,
 .product-info-main.sticky {
-    background-color: #ECF5FA;
+    background-color: rgba(180, 205, 255, 0.6);
 }
 
 @media (min-width: 1200px){
@@ -494,6 +512,18 @@ body:not(.category-best-seller) .block.widget.block-products-bestseller .product
     text-transform: none !important;
 }
 
+.sapt-megamenu.navigation li.level0 > .level-top:hover{
+    color: #4076FF;
+    font-weight: 700;
+}
+
+.page_title_custom span{
+    color: #4076FF;
+}
+
+.catalogsearch-result-index #top-search{
+    background: rgba(180, 205, 255, 0.2);
+}
 #opc-shipping_method.checkout-shipping-method {
     height: 0 !important;
     width: 0 !important;
@@ -748,4 +778,9 @@ body.catalogsearch-result-index #amasty-shopby-product-list #on-sale-box {
 }
 .amrewards-points-rate {
     margin-bottom: 10px !important;
+}
+.product-info-main .box-tocart .actions button.tocheckout:hover{
+    background-color: #6691FF !important;
+    border-color: #6691FF !important;
+    color: #ffffff;
 }
