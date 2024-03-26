@@ -91,7 +91,7 @@ class Cart
                         foreach ($item->getChildren() as $bundleChild) {
                             $childSkus[] = $bundleChild->getProduct()->getSku();
                             $childPrices[] = (float) $bundleChild->getPrice();
-                            $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount();
+                            $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $bundleChild->getQty();
                             $childQtys[] = $bundleChild->getQty();
 
                             if ($bundleChild->getIsFreeGift()) {
@@ -109,10 +109,10 @@ class Cart
                         $result['items'][$key]['parent_sku'] = $item->getProduct()->getData('sku');
                         $result['items'][$key]['child_skus'] = $item->getSku();
                         $result['items'][$key]['child_prices'] = (float)$item->getPrice();
-                        $result['items'][$key]['child_discount_prices'] = (float)$item->getDiscountAmount();
+                        $result['items'][$key]['child_discount_prices'] = (float)$item->getDiscountAmount() / $item->getQty();
                         $result['items'][$key]['child_qtys'] = $item->getQty();
                         $result['items'][$key]['gifts'] = '';
-                        $result['items'][$key]['variant'] = $item->getSku();
+                        $result['items'][$key]['variant'] = $this->data->getSelectedOption($item);
                     }
                 }
             }
