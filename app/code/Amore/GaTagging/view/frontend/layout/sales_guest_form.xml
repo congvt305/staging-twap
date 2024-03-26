@@ -2,15 +2,14 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- PAGE SPECIFIC AP -->
         <referenceContainer name="after.body.start">
             <block class="Amore\GaTagging\Block\GaTagging"
                    ifconfig="amore_gatagging/tagmanager/active"
-                   name="ap_cms_page_type"
+                   name="ap_sales_order_product_type"
                    after="amore_gatagging_common_ap"
-                   template="Amore_GaTagging::common/ap-pagetype.phtml" >
+                   template="Amore_GaTagging::common/ap-pagetype.phtml">
                 <arguments>
-                    <argument name="page_type" xsi:type="string">BRAND_CONTENT</argument>
+                    <argument name="page_type" xsi:type="string">ORDER</argument>
                 </arguments>
             </block>
         </referenceContainer>

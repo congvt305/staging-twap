@@ -25,6 +25,8 @@ class Data extends AbstractHelper
     const XML_PATH_ADDITIONAL_CONTAINER_ENABLED = 'amore_gatagging/tagmanager/additional_container_enabled';
     const XML_PATH_DATA_ENV = 'amore_gatagging/tagmanager/data_env';
 
+    private $productCategoryPaths = [];
+
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
@@ -138,13 +140,17 @@ class Data extends AbstractHelper
     public function getProductCategory($product)
     {
         $categoryName = "";
-        $store = $product->getStore();
+        $store = $this->storeManager->getStore();
+        if (!empty($this->getCategoryPath($product->getId(), $store->getId()))) {
+            return $this->getCategoryPath($product->getId(), $store->getId());
+        }
+
         $categoriesCollection = $product->getCategoryCollection()
             ->addIsActiveFilter()
             ->addNameToResult()
             ->setStoreId($store->getId());
         $categoriesCollection
-            ->addPathsFilter(Category::TREE_ROOT_ID . '/' . $store->getRootCategoryId())
+            ->addPathsFilter(Category::TREE_ROOT_ID . '/' . $store->getRootCategoryId() . '/')
             ->getSelect()
             ->order('LENGTH(path) DESC');
         $category = $categoriesCollection->getFirstItem();
@@ -164,8 +170,39 @@ class Data extends AbstractHelper
                 $categoryTreeNames[] = $categoryItem['name'];
             }
             $categoryName = implode('/', $categoryTreeNames);
+
+            $this->setCategoryPath($product->getId(), $store->getId(), $categoryName);
         }
         return $categoryName;
+    }
+
+    /**
+     * Get category path from cache
+     *
+     * @param $productId
+     * @param $storeId
+     * @return mixed|null
+     */
+    protected function getCategoryPath($productId, $storeId)
+    {
+        if (isset($this->productCategoryPaths[$storeId][$productId])) {
+            return $this->productCategoryPaths[$storeId][$productId];
+        }
+
+        return null;
+    }
+
+    /**
+     * Set category path to cache
+     *
+     * @param $productId
+     * @param $storeId
+     * @param $value
+     * @return void
+     */
+    protected function setCategoryPath($productId, $storeId, $value)
+    {
+        $this->productCategoryPaths[$storeId][$productId] = $value;
     }
 
     /**
@@ -211,5 +248,34 @@ class Data extends AbstractHelper
         }
 
         return $price;
+    }
+
+    /**
+     * @param $item
+     * @return string
+     */
+    public function getSelectedOption($item)
+    {
+        $selectedOptions = [];
+        try {
+            $selectedAttributes = $item->getProduct()->getTypeInstance(true)->getSelectedAttributesInfo($item->getProduct());
+        } catch (\Exception $e) {
+            $selectedAttributes = [];
+        }
+
+        if (empty($selectedAttributes) && isset($item->getProductOptions()['attributes_info'])) {
+            $selectedAttributes = $item->getProductOptions()['attributes_info'];
+        }
+
+        if (!empty($selectedAttributes)) {
+            foreach ($selectedAttributes as $attribute) {
+                if (empty($attribute['value'])) {
+                    continue;
+                }
+                $selectedOptions[] = $attribute['value'];
+            }
+        }
+
+        return implode('|', $selectedOptions);
     }
 }
