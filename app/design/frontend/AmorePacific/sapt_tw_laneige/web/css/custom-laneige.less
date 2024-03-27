@@ -1,3 +1,5 @@
+@color_blue_light: #6691FF;
+@color_blue_dark: #4076FF;
 /*
 * HKLANEIZE-37
 * brand-story
@@ -58,20 +60,20 @@
 
 .login-container .form-login .actions-toolbar .primary button {
     border-radius: 30px;
-    background-color: #6691FF;
+    background-color: @color_blue_light;
     &:hover,
     &:active{
-        background-color: #6691FF !important;
+        background-color: @color_blue_light !important;
     }
 }
 
 .action.primary:hover {
-    background-color: #6691FF !important;
-    border-color: #6691FF !important;
+    background-color: @color_blue_light !important;
+    border-color: @color_blue_light !important;
 }
 
 .login-container .login-benifit {
-    background-color: #4076FF;
+    background-color: @color_blue_dark;
 }
 
 .minicart-wrapper .action.showcart .counter.qty {
@@ -156,8 +158,8 @@ div.pagebuilder-button-secondary {
 }
 
 .cart-container .checkout-methods-items .action.primary{
-    background-color: #6691FF !important;
-    border-color: #6691FF !important;
+    background-color: @color_blue_light !important;
+    border-color: @color_blue_light !important;
 }
 
 .customer-address-index.account .column.main .actions-toolbar:not(.order-actions-toolbar) button.primary:hover,
@@ -194,14 +196,14 @@ div.pagebuilder-button-secondary {
 
 @media (max-width: 768px){
     .product-info-main.sticky .product-add-form .box-tocart .actions button.action.tocheckout {
-        background-color: #6691FF !important;
-        border-color: #6691FF !important;
+        background-color: @color_blue_light !important;
+        border-color: @color_blue_light !important;
     }
 }
 
 .catalog-category-view .products-grid .product-items .product-item .product-item-details .action.tocart:hover {
-    background-color: #6691FF !important;
-    border-color: #6691FF !important;
+    background-color: @color_blue_light !important;
+    border-color: @color_blue_light !important;
 }
 
 .customer-account-findpasswordcomplete .box_link .action.secondary:hover,
@@ -255,7 +257,7 @@ div.pagebuilder-button-secondary:hover {
 }
 
 .product_tags {
-    color: #4076FF;
+    color: @color_blue_dark;
 }
 
 /* Product List Page */
@@ -513,7 +515,7 @@ body:not(.category-best-seller) .block.widget.block-products-bestseller .product
 }
 
 .sapt-megamenu.navigation li.level0 > .level-top:hover{
-    color: #4076FF;
+    color: @color_blue_dark;
     font-weight: 700;
 }
 
@@ -522,11 +524,12 @@ body:not(.category-best-seller) .block.widget.block-products-bestseller .product
 }
 
 .page_title_custom span{
-    color: #4076FF;
+    color: @color_blue_dark;
 }
 
-.catalogsearch-result-index #top-search{
+#top-search{
     background: rgba(180, 205, 255, 0.2);
+    border-top: 2px solid rgba(180, 205, 255, 0.2);
 }
 #opc-shipping_method.checkout-shipping-method {
     height: 0 !important;
@@ -784,7 +787,7 @@ body.catalogsearch-result-index #amasty-shopby-product-list #on-sale-box {
     margin-bottom: 10px !important;
 }
 .product-info-main .box-tocart .actions button.tocheckout:hover{
-    background-color: #6691FF !important;
-    border-color: #6691FF !important;
+    background-color: @color_blue_light !important;
+    border-color: @color_blue_light !important;
     color: #ffffff;
 }
