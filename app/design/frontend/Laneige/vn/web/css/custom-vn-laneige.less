@@ -1,94 +1,105 @@
+@color_blue_light: #6691FF;
+@color_blue_dark: #4076FF;
+
 .product-item .product-item-actions .actions-secondary > .action:hover {
-    background-color: #6691FF;
-    border: 1px solid #6691FF;
+    background-color: @color_blue_light;
+    border: 1px solid @color_blue_light;
     color: #ffffff;
 }
 .header.content > .header.links {
     a.login:after,
     a.location:after {
-        color: #6691FF;
+        color: @color_blue_light;
     }
 }
 
 .block-search{
     .label:before{
-        color: #6691FF;
+        color: @color_blue_light;
     }
 }
 
 .minicart-wrapper .action.showcart:before {
-    color: #6691FF;
+    color: @color_blue_light;
 }
 
 .block-customer-login .form-login .actions-toolbar .primary{
     :hover{
-        background: #6691FF;
-        border: 1px solid #6691FF;
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
     }
 
     :active{
-        background: #6691FF;
-        border: 1px solid #6691FF;
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
     }
 }
 
 .store_list_left{
     .input-text.store-search-input:focus{
-        box-shadow: 0 0 3px 1px #6691FF;
+        box-shadow: 0 0 3px 1px @color_blue_light;
     }
 }
 
 .stw-stores-locator .fieldset .field .actions .button.search-btn:hover{
-    background: #6691FF;
-    border: 1px solid #6691FF;
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
     color: #ffffff;
 }
 
 .stw-stores-locator .stores-result h3 strong {
-    color: #4076FF;
+    color: @color_blue_dark;
 }
 
 .stw-stores-locator .stores-list .stores-listing-ul li.store-list.selected-store {
     .store-title {
-        color: #4076FF;
+        color: @color_blue_dark;
     }
 
     .store-primary-info > p {
-        color: #4076FF;
+        color: @color_blue_dark;
     }
 }
 
 .block.block-search .form.minisearch .control {
     input:not([disabled]):focus {
-        box-shadow: 0 0 3px 1px #6691FF;
+        box-shadow: 0 0 3px 1px @color_blue_light;
     }
 
     .action.search.primary:hover {
-        background: #6691FF;
-        border: 1px solid #6691FF;
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
         color: #ffffff;
     }
 }
 
-.filter-clear:visited{
-    color: #4076FF;
+.filter-actions .filter-clear{
+    &:visited,
+    &:active{
+        color: @color_blue_dark;
+    }
 }
 
 .filter-options-content .item a:active {
-    color: #4076FF !important;
+    color: @color_blue_dark !important;
+    text-decoration: underline;
+}
+
+.filter-options-content .item a:hover {
+    color: @color_blue_dark !important;
     text-decoration: underline;
 }
 
 .products-grid, .widget-product-carousel {
     .product-item .tocart:hover {
-        background: #6691FF;
-        border: 1px solid #6691FF;
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
         color: #ffffff;
     }
 }
 
 .old-price .discount-label{
-    color: #4076FF;
+    color: @color_blue_dark;
     font-weight: 700;
     font-size: 16px;
     margin-right: 5px;
@@ -96,7 +107,7 @@
 
 .flags {
     .flag.new{
-        background: #6691FF;
+        background: @color_blue_light;
         color: #ffffff;
         display: block;
         font-size: 13px;
@@ -112,10 +123,10 @@
 }
 
 product-item-name-en, .product-item-name-en a {
-    color: #4076FF;
+    color: @color_blue_dark;
     text-decoration: none;
     &:hover{
-        color: #4076FF;
+        color: @color_blue_dark;
     }
 }
 
@@ -127,31 +138,31 @@ product-item-name-en, .product-item-name-en a {
 }
 
 .qty-selector:hover {
-    background: #6691FF;
-    border: 1px solid #6691FF;
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
     color: #ffffff;
 }
 
 .product-info-main .box-tocart .actions button:hover{
-    background: #6691FF;
-    border: 1px solid #6691FF;
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
     color: #ffffff;
 }
 
 @media only screen and (max-width: 768px) {
     .navigation .parent > a.ui-state-active {
-        background: #6691FF;
+        background: @color_blue_light;
         color: #ffffff;
     }
 
     .product-info-main .box-tocart .actions .tocheckout{
-        background: #6691FF;
-        border: 1px solid #6691FF;
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
         color: #ffffff;
 
         &:hover{
-            background: #6691FF;
-            border: 1px solid #6691FF;
+            background: @color_blue_light;
+            border: 1px solid @color_blue_light;
         }
     }
 }
