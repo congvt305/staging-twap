@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
+        <tab id="cj_extensions_tab" translate="label" sortOrder="2000">
+            <label>CJ Extensions</label>
+        </tab>
         <section id="cj_custom_catalog" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Custom Catalog Settings</label>
