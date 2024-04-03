@@ -4,10 +4,13 @@ namespace CJ\Popup\Model\Source\Popup;
 
 class PopupTrigger extends \Magenest\Popup\Model\Source\Popup\PopupTrigger
 {
-    public const CLICK_BACK = 5;
-    public const IDLE_X_SECONDS_ON_PAGE = 6;
-    public const SWITCH_TAB = 7;
+    const CLICK_BACK = 5;
+    const IDLE_X_SECONDS_ON_PAGE = 6;
+    const SWITCH_TAB = 7;
 
+    /**
+     * @return array|string[]
+     */
     public static function getOptionArray()
     {
         return [

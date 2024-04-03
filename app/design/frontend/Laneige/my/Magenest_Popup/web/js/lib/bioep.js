@@ -22,7 +22,6 @@ window.bioEp = {
     display_popup: null,
     enable_cookie_lifetime: null,
     is_idle_popup: false,
-    is_switch_tab: false,
 
     // Object for handling cookies, taken from QuirksMode
     // http://www.quirksmode.org/js/cookies.html
