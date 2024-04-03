@@ -317,4 +317,16 @@ abstract class AbstractSapOrder
 
         return $orderItemData;
     }
+
+    /**
+     * @param $value
+     * @param $key
+     * @return void
+     */
+    protected function convertNumberToString(&$value, $key)
+    {
+        if (is_float($value) || is_int($value)) {
+            $value = "$value";
+        }
+    }
 }

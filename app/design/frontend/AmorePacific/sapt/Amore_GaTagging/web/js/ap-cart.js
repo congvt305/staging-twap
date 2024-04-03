@@ -1,9 +1,10 @@
 define([
     'jquery',
+    'Amore_GaTagging/js/model/product',
     'Magento_Customer/js/customer-data',
     'underscore',
     'jquery-ui-modules/widget'
-], function ($, customerData, _) {
+], function ($, productModel, customerData, _) {
     'use strict';
 
     $.widget('mage.apCart', {
@@ -38,84 +39,13 @@ define([
             var events = this.options.events;
             var apCartAddProds = [];
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
-                if(product.product_type === 'bundle') {
-                    this.getBundleProductData(product).forEach(function (info) {
-                        apCartAddProds.push(info);
-                    });
-                } else if (product.product_type === 'configurable') {
-                    this.getConfigurableProductData(product).forEach(function (info) {
-                        apCartAddProds.push(info);
-                    });
-                } else {
-                    this.getSimpleProductData(product).forEach(function (info) {
-                        apCartAddProds.push(info);
-                    });
-                }
+                productModel.init(product);
+                apCartAddProds.push(productModel.getData());
+
                 apCartAddProds = [ apCartAddProds.pop() ];
                 AP_CART_ADDPRDS = apCartAddProds;
-                console.log('apCartAddProds:',apCartAddProds);
                 this.options.dataLayer.push({'event': 'addcart'});
-                console.log('AP_CART_ADDPRDS', AP_CART_ADDPRDS);
             }.bind(this);
-        },
-
-        getBundleProductData: function (product) {
-            var productInfosArr = window.PRD_DATA;
-            if (typeof productInfosArr != 'undefined') {
-                productInfosArr.forEach(function (productInfo) {
-                    productInfo.price = parseInt(product.product_price_value * productInfo.rate);
-                    productInfo.quantity = parseInt(productInfo.quantity * product.qty);
-                    delete productInfo.rate;
-                });
-            } else {
-                return [{
-                    'name': product.product_name,
-                    'code': product.product_sku,
-                    'v2code': product.product_id,
-                    'sapcode': product.product_sku,
-                    'brand': product.product_brand,
-                    'price': product.product_price_value,
-                    'prdprice': parseInt(product.product_original_price),
-                    'variant': '',
-                    'promotion': '',
-                    'cate': '',
-                    'catecode': '',
-                    'quantity': product.qty,
-                }];
-            }
-            return productInfosArr;
-        },
-        getSimpleProductData: function (product) {
-            var productInfosArr = [];
-            var productInfo = {
-                'name': product.product_name,
-                'code': product.product_sku,
-                'v2code': product.product_id,
-                'sapcode': product.product_sku,
-                'brand': product.product_brand,
-                'price': product.product_price_value,
-                'prdprice': parseInt(product.product_original_price),
-                'variant': '',
-                'promotion': '',
-                'cate': '',
-                'catecode': '',
-                'quantity': product.qty,
-            }
-            productInfosArr.push(productInfo);
-            return productInfosArr;
-        },
-        getConfigurableProductData: function (product) {
-            var productInfosArr = window.PRD_DATA;
-            var selectedProductInfo = [];
-            productInfosArr.forEach(function (productInfo) {
-                if (productInfo.code === product.product_sku) {
-                    productInfo.quantity = parseInt(product.qty);
-                    productInfo.variant = productInfo.name.replace(product.product_name, '');
-                    selectedProductInfo.push(productInfo);
-
-                }
-            });
-            return selectedProductInfo;
         },
 
         /**

@@ -28,7 +28,12 @@
         <?php if ($block->getIsBottom()): ?>
         <?php else: ?>
             <div class="category-filter-items">
-                <p><?= $category->getName(); ?></p><?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+                <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
+                    <span class="base" data-ui-id="page-title-wrapper">
+                        <p><?= $category->getName(); ?></p>
+                    </span>
+                </h1>
+                <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
             </div>
         <?php endif ?>
 

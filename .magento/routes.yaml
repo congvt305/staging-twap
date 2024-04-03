@@ -3,8 +3,8 @@
 # Each route describes how an incoming URL is going to be processed.
 
 "http://{default}/":
-    type: upstream
-    upstream: "mymagento:http"
+  type: upstream
+  upstream: "mymagento:http"
 
 "http://{all}/":
     type: upstream
@@ -17,12 +17,13 @@
 "http://*.{all}/":
     type: upstream
     upstream: "mymagento:http"
-"http://mcprod.tw.laneige.com/":
+
+"http://mcstaging.my.sulwhasoo.com/":
   type: upstream
   upstream: "mymagento:http"
   redirects:
-    paths:
+    "paths":
       "/(.*)?":
         "code": 301
-        "regexp": true
-        "to": "https://tw.laneige.com/$1"
+        regexp: true
+        "to": "https://mcstaging.vn.laneige.com/$1"

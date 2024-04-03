@@ -55,12 +55,12 @@ if (isHttpHost("tw.sulwhasoo.com")
     $_SERVER["MAGE_RUN_CODE"] = "tw_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 } elseif (isHttpHost("laneige.com.vn")
-        || isHttpHost("vn.laneige.com")
-        || isHttpHost("www.laneige.com.vn")
-        || isHttpHost("mcprod.vn.laneige.com")
-        || isHttpHost("vl.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
-        || isHttpHost("vl.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")
-        || isHttpHost("mcstaging.vn.laneige.com")) {
+    || isHttpHost("vn.laneige.com")
+    || isHttpHost("www.laneige.com.vn")
+    || isHttpHost("mcprod.vn.laneige.com")
+    || isHttpHost("vl.integration-5ojmyuq-kqevkj6gpg7si.ap-3.magentosite.cloud")
+    || isHttpHost("vl.dev-54ta5gq-kqevkj6gpg7si.ap-3.magentosite.cloud")
+    || isHttpHost("mcstaging.vn.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "vn_laneige";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 
@@ -83,6 +83,12 @@ if (isHttpHost("tw.sulwhasoo.com")
     || isHttpHost("www.my.laneige.com")
     || isHttpHost("mcstaging.my.laneige.com")) {
     $_SERVER["MAGE_RUN_CODE"] = "my_laneige";
+    $_SERVER["MAGE_RUN_TYPE"] = "store";
+} elseif (isHttpHost("my.sulwhasoo.com")
+    || isHttpHost("mcprod.my.sulwhasoo.com")
+    || isHttpHost("www.my.sulwhasoo.com")
+    || isHttpHost("mcstaging.my.sulwhasoo.com")) {
+    $_SERVER["MAGE_RUN_CODE"] = "my_sulwhasoo";
     $_SERVER["MAGE_RUN_TYPE"] = "store";
 }
 //if (isAdminBackendUri($_SERVER['REQUEST_URI'])) {

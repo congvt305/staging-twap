@@ -5,6 +5,7 @@
  */
 namespace Eguana\Theme\Block\Html;
 
+use Amore\GaTagging\Model\CommonVariable;
 use Magento\Backend\Model\Menu;
 use Magento\Catalog\Api\CategoryListInterface;
 use Magento\Framework\Data\Tree\Node;
@@ -158,10 +159,10 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
                 $html .= '</ul></li><li class="column"><ul>';
             }
 
-            $parentCategoryName = 'MENU';
+            $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+            $clickArea = CommonVariable::CLICK_AREA;
             if ($child->getParent()->getName()) {
-                $parentCategoryId = $child->getParent()->getId();
-                $parentCategoryName = $this->getDefaultStoreCategory($parentCategoryId, 0)->getName();
+                $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
             }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
@@ -176,9 +177,9 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             if ($externalUrl) {
                 $html .= '<a href="' . $externalUrl . '" ' . $outermostClassCode
                     . 'target="_blank"'
-                    . 'ap-click-area="GNB"'
+                    . 'ap-click-area="'. $clickArea .'"'
                     . 'ap-click-name="'. $parentCategoryName .'"'
-                    . 'ap-click-data="'. $childCategory->getName() .'"'
+                    . 'ap-click-data="'. strtoupper($childCategory->getName()) .'"'
                     .'><span>' . $this->escapeHtml(
                         $child->getName()
                     ) . '</span></a>' . $this->_addSubMenu(
@@ -189,9 +190,9 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
                     ) . '</li>';
             } else {
                 $html .= '<a href="' . $child->getUrl() . '" ' . $outermostClassCode
-                    . 'ap-click-area="GNB"'
+                    . 'ap-click-area="'. $clickArea .'"'
                     . 'ap-click-name="'. $parentCategoryName .'"'
-                    . 'ap-click-data="'. $childCategory->getName() .'"'
+                    . 'ap-click-data="'. strtoupper($childCategory->getName()) .'"'
                     .'><span>' . $this->escapeHtml(
                         $child->getName()
                     ) . '</span></a>' . $this->_addSubMenu(

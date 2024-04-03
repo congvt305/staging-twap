@@ -215,8 +215,17 @@ class QuoteItemsCsv extends AbstractAdapter
      */
     public function writeSourceRowWithCustomColumns(array $rowData)
     {
+        $itemData = [];
+        foreach(QuoteItems::HEADER_COLUMN_NAMES as $attribute => $data) {
+            if (isset($rowData[$attribute])) {
+                $itemData[$attribute] = $rowData[$attribute];
+            } else {
+                $itemData[$attribute] = null;
+            }
+        }
+
         $this->_fileHandler->writeCsv(
-            array_merge(array_intersect_key($rowData, QuoteItems::HEADER_COLUMN_NAMES)),
+            $itemData,
             $this->_delimiter,
             $this->_enclosure
         );

@@ -1,0 +1,14 @@
+{
+    "quote_item": {
+        "column": {
+            "is_point_redeemable": true,
+            "point_redemption_amount": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "is_point_redeemable": true,
+            "point_redemption_amount": true
+        }
+    }
+}

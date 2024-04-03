@@ -44,7 +44,7 @@ define([
      * @param {Object} element
      */
     function addBlockLoader(element) {
-        element.find(':focus').blur();
+        element.find(':focus').trigger('blur');
         element.find('input:disabled, select:disabled').addClass('_disabled');
         // CUSTOM HERE
         element.find('input:not("#discount-code, #bc-code, #ff-phonenumber"), select').prop('disabled', true);

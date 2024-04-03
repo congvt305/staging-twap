@@ -275,7 +275,7 @@ class Rma extends \Magento\Rma\Model\Rma
         $itemModels = [];
         $errors = [];
         $errorKeys = [];
-
+        $parentId = '';
         foreach ($data['items'] as $key => $item) {
             if (isset($item['items'])) {
                 $itemModel = $firstModel = false;
@@ -336,7 +336,7 @@ class Rma extends \Magento\Rma\Model\Rma
                 }
 
                 $itemPost = $this->_preparePost($item);
-
+                $itemPost['rma_entity_id'] = $itemModel->getRmaEntityId();
                 $itemModel->setData($itemPost)->prepareAttributes($itemPost, $key);
                 // @codingStandardsIgnoreStart
                 $errors = array_merge($itemModel->getErrors(), $errors);
