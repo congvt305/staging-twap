@@ -8,6 +8,7 @@
 
 namespace Amore\GaTagging\Plugin;
 
+use Magento\Bundle\Model\Product\Price;
 use Magento\Catalog\Model\Product\Type;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
@@ -47,14 +48,28 @@ class Cart
      */
     protected $ap;
 
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $json;
 
+    /**
+     * @param \Amore\GaTagging\Helper\Data $data
+     * @param \Magento\Catalog\Helper\Product $catalogProductHelper
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Amore\GaTagging\Model\Ap $ap
+     * @param \Magento\Framework\Serialize\Serializer\Json $json
+     */
     public function __construct(
         \Amore\GaTagging\Helper\Data $data,
         \Magento\Catalog\Helper\Product $catalogProductHelper,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
-        \Amore\GaTagging\Model\Ap $ap
+        \Amore\GaTagging\Model\Ap $ap,
+        \Magento\Framework\Serialize\Serializer\Json $json
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->data = $data;
@@ -62,6 +77,7 @@ class Cart
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->ap = $ap;
+        $this->json = $json;
     }
 
     /**
@@ -78,17 +94,28 @@ class Cart
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
-                    $result['items'][$key]['product_original_price'] = (float)$item->getOriginalPrice();
-                    $result['items'][$key]['price'] = (float)$item->getPrice();
+                    $result['items'][$key]['product_original_price'] = (float)$item->getRowTotal() / $item->getQty();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
                     $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
                     $result['items'][$key]['apg_brand_code'] = $this->data->getApgBrandCode($item->getProduct()->getSku());
-                    $result['items'][$key]['discount_price'] = (float)$item->getDiscountAmount();
+                    $result['items'][$key]['discount_price'] = (float)$item->getDiscountAmount() / $item->getQty();
 
                     if ($item->getProductType() === Type::TYPE_BUNDLE) {
+                        $itemOptions = $item->getOptionsByCode();
+                        if (!empty($itemOptions['bundle_selection_ids']->getValue())) {
+                            $result['items'][$key]['bundle_options'] = $this->json->unserialize(
+                                $itemOptions['bundle_selection_ids']->getValue()
+                            );
+                        }
+
                         $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
                         foreach ($item->getChildren() as $bundleChild) {
+                            if ($item->getProduct()->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
+                                // no need to reset because parent discount always 0
+                                $result['items'][$key]['discount_price'] += $bundleChild->getDiscountAmount() / $item->getQty();
+                            }
+
                             $childSkus[] = $bundleChild->getProduct()->getSku();
                             $childPrices[] = (float) $bundleChild->getPrice();
                             $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $bundleChild->getQty();
@@ -114,6 +141,8 @@ class Cart
                         $result['items'][$key]['gifts'] = '';
                         $result['items'][$key]['variant'] = $this->data->getSelectedOption($item);
                     }
+
+                    $result['items'][$key]['price'] = $result['items'][$key]['product_original_price'] - $result['items'][$key]['discount_price'];
                 }
             }
         }

@@ -13,8 +13,7 @@ define([], function () {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             'event': eventName,
-            'order_id': orderId,
-            'items': refundedItems
+            'order_id': orderId
         });
     }
 
