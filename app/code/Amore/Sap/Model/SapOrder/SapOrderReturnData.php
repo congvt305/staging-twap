@@ -9,7 +9,6 @@
 namespace Amore\Sap\Model\SapOrder;
 
 use Amore\Sap\Exception\RmaTrackNoException;
-use CJ\Middleware\Model\Product\Bundle\CalculatePrice;
 use Amore\Sap\Model\Source\Config;
 use Eguana\GWLogistics\Model\QuoteCvsLocationRepository;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -68,16 +67,6 @@ class SapOrderReturnData extends AbstractSapOrder
     private $rewardData;
 
     /**
-     * @var CalculatePrice
-     */
-    private $bundleCalculatePrice;
-
-    /**
-     * @var \CJ\Middleware\Model\Product\CalculatePrice
-     */
-    private $productCalculatePrice;
-
-    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderRepositoryInterface $orderRepository
      * @param StoreRepositoryInterface $storeRepository
@@ -90,8 +79,6 @@ class SapOrderReturnData extends AbstractSapOrder
      * @param \CJ\Middleware\Helper\Data $middlewareHelper
      * @param \Amasty\Rewards\Model\Config $amConfig
      * @param \CJ\Rewards\Model\Data $rewardData
-     * @param CalculatePrice $bundleCalculatePrice
-     * @param \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -106,8 +93,6 @@ class SapOrderReturnData extends AbstractSapOrder
         \CJ\Middleware\Helper\Data $middlewareHelper,
         \Amasty\Rewards\Model\Config $amConfig,
         \CJ\Rewards\Model\Data $rewardData,
-        CalculatePrice $bundleCalculatePrice,
-        \CJ\Middleware\Model\Product\CalculatePrice $productCalculatePrice,
         \CJ\Middleware\Model\Data $orderData,
         \Amore\Sap\Logger\Logger $logger
     ) {
@@ -117,8 +102,6 @@ class SapOrderReturnData extends AbstractSapOrder
         $this->middlewareHelper = $middlewareHelper;
         $this->amConfig = $amConfig;
         $this->rewardData = $rewardData;
-        $this->bundleCalculatePrice = $bundleCalculatePrice;
-        $this->productCalculatePrice = $productCalculatePrice;
         parent::__construct(
             $searchCriteriaBuilder, $orderRepository,
             $storeRepository, $config, $quoteCvsLocationRepository,
