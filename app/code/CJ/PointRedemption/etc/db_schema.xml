@@ -1,0 +1,11 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_item">
+        <column xsi:type="int" name="is_point_redeemable" padding="10" unsigned="true" nullable="false" comment="is_point_redeemable" default="0"/>
+        <column xsi:type="int" name="point_redemption_amount" padding="10" unsigned="true" nullable="false" comment="point_redemption_amount" default="0"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="int" name="is_point_redeemable" padding="10" unsigned="true" nullable="false" comment="is_point_redeemable" default="0"/>
+        <column xsi:type="int" name="point_redemption_amount" padding="10" unsigned="true" nullable="false" comment="point_redemption_amount" default="0"/>
+    </table>
+</schema>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!--
+        <referenceBlock name="customer_form_register">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_CustomerCustomAttributes::customer/form/register-custom.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="view_model" xsi:type="object">Amore\CustomerRegistration\ViewModel\Edit</argument>
+            </arguments>
+            <block class="Eguana\SocialLogin\Block\SocialLogin\Login" after="customer.login.container" name="social_media_login" template="Eguana_SocialLogin::social/forregister.phtml"/>
+        </referenceBlock>
+        -->
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Sign up</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string">Sign up</item>
+                    <item name="label" xsi:type="string" translate="true">Sign up</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="page.wrapper">
+            <block class="Magento\Cms\Block\Block" name="sign_up_sulwhasoo_shop_benefits" before="page-footer">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">sign_up_sulwhasoo_shop_benefits</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

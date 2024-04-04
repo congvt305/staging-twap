@@ -132,7 +132,7 @@ define([
                 messages.messageContainer.errorMessages.push(code + ' ' + this.errorMessage);
             }, this);
         },
-        
+
         /**
          * Cancel using coupon
          */

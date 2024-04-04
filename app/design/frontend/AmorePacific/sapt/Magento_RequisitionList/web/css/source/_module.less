@@ -1,0 +1,1197 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+//  Colors
+@requisition-link__color: @color-gray40;
+@requisition-label__color: @primary__color__darker;
+@requisition-order__color: @color-blue1;
+@requisition-print__color: @color-gray20;
+@requisition-print__border-color: @color-gray80;
+@requisition-icons__color: @color-gray56;
+@requisition-table__border-color: @color-gray-middle1;
+
+
+//  Icons
+@icon-dropdown-list: '\e901';
+@icon-configure: '\e601';
+
+//  Fonts
+@requisition-print__font-size-m: 1.4rem;
+@requisition-icon__font-size: 24px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .requisition_list-requisition-print {
+        .requisition-content {
+            margin-top: @indent__l;
+        }
+
+        .requisition-grid table {
+            .col.product {
+                padding-left: 0 !important;
+                text-align: left !important;
+            }
+
+            .col.action {
+                display: none !important;
+            }
+        }
+    }
+
+    .block-requisition-list {
+        display: inline;
+        margin-bottom: 0;
+    }
+
+    .requisition-list-action {
+        .lib-dropdown-split(
+        @_options-selector: ~'.items',
+        @_dropdown-split-button-border-radius-fix: true,
+        @_dropdown-split-list-item-padding: 5px 5px 5px 23px,
+        @_dropdown-split-toggle-icon-content: @icon-down,
+        @_dropdown-split-toggle-active-icon-content: @icon-up,
+        @_dropdown-split-toggle-actions-padding: false,
+        @_icon-font-size: 22px,
+        @_icon-font-line-height: 24px,
+        @_icon-font-color: @addto-color,
+        @_icon-font-color-hover: @addto-hover-color,
+        @_dropdown-split-list-pointer-position: left,
+        @_dropdown-split-list-min-width: 200px,
+        @_dropdown-split-list-item-margin: 0 1px 0 0,
+        @_icon-font-vertical-align: middle,
+        @_icon-font-text-hide: false
+        );
+        &:extend(.abs-dropdown-items-new all);
+        vertical-align: middle;
+        .lib-dropdown(
+            @_options-selector : ~"ul.list-items",
+            @_icon-font-line-height: 20px
+        );
+
+        .list-items {
+            li {
+                text-align: left;
+            }
+
+            .item {
+                margin: 0;
+                padding: @indent__xs @indent__s;
+
+                > span {
+                    display: block;
+                    color: @primary__color;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        color: @primary__color;
+                    }
+                }
+
+                &:last-child {
+                    &:hover {
+                        .lib-css(background, @dropdown-list-item__hover);
+                    }
+                }
+
+                .item-name {
+                    display: block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .action {
+                    &.new {
+                        .lib-button-reset();
+
+                        span {
+                            word-break: break-all;
+                            white-space: normal;
+                        }
+                    }
+                }
+            }
+        }
+
+        > .action.toggle {
+            &:extend(.abs-action-button-as-link all);
+            color: @primary__color;
+            padding-left: 1px;
+
+            &.active {
+                & + .list-items {
+                    display: block;
+                }
+            }
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: @primary__color;
+                text-decoration: none;
+            }
+        }
+
+        .cart.table-wrapper & {
+            margin-bottom: @indent__s;
+
+            > .action {
+                &.toggle {
+                    padding: .4rem @indent__xs;
+                }
+            }
+        }
+
+        .requisition-toolbar-actions & {
+            &.active {
+                .items {
+                    right: 0;
+
+                    &:before {
+                        left: auto;
+                        right: 11px;
+                    }
+
+                    &:after {
+                        left: auto;
+                        right: 10px;
+                    }
+                }
+            }
+        }
+
+        .social-button & {
+            .action.toggle {
+                width: @requisition-icon__font-size;
+                height: @requisition-icon__font-size;
+                margin-left: @indent__base;
+            }
+
+            .list-items {
+                text-align: left;
+            }
+        }
+    }
+
+    .requisition-list-button {
+        .social-button & {
+            .lib-icon-font(
+                    @icon-requisition-empty,
+            @_icon-font-size: 23px,
+            @_icon-font-text-hide: true
+            );
+            color: @requisition-link__color;
+            font-size: 1.4rem;
+            font-weight: @font-weight__semibold;
+            letter-spacing: .05rem;
+            line-height: @requisition-icon__font-size;
+            padding: 0 @indent__xs 0 0;
+            text-transform: uppercase;
+
+            &:before {
+                margin-top: -.4rem;
+                line-height: @requisition-icon__font-size;
+                font-weight: @font-weight__bold;
+            }
+
+            &:after {
+                display: none !important;
+            }
+
+            &:active,
+            &:focus,
+            &:hover {
+                .lib-css(color, @addto-hover-color);
+                .lib-icon-font-symbol(
+                    @icon-requisition-full,
+                    @_icon-font-position: before
+                );
+            }
+
+            &:after {
+                height: 1.5rem;
+                margin: .3rem 0 0;
+            }
+
+            &.active {
+                &:after {
+                    margin: .4rem 0 0;
+                }
+            }
+        }
+    }
+
+    .data-grid-wrap {
+        .cell-label-line-description {
+            word-break: break-all;
+        }
+    }
+
+    .requisition-grid {
+        .col {
+            padding-top: @indent__base;
+
+            &.qty {
+                .input-text {
+                    &:extend(.abs-input-qty all);
+                }
+            }
+
+            .price-excluding-tax {
+                display: block;
+                font-size: 1.3rem;
+
+                &:before {
+                    content: attr(data-label) ": ";
+                }
+
+                .price {
+                    font-size: @font-size__s;
+                }
+            }
+        }
+
+        .product-item-description {
+            .lib-wrap-words();
+            margin-bottom: @indent__xs;
+            margin-top: 0;
+
+            .product-item-sku {
+                margin-top: @indent__s;
+                font-size: @font-size__s;
+
+                b {
+                    color: @primary__color;
+                }
+
+                span {
+                    color: @secondary__color;
+                }
+            }
+
+            .product-item-details {
+                font-size: @font-size__s;
+                margin-top: @indent__s;
+
+                dl {
+                    margin: 0;
+
+                    dt,
+                    dd {
+                        display: inline;
+                    }
+                }
+            }
+        }
+
+        .actions-toolbar {
+            &:extend(.abs-add-clearfix all);
+            text-align: right;
+
+            > .action-edit,
+            > .action-delete {
+                &:extend(.abs-action-button-as-link all);
+
+                &:focus {
+                    .lib-css(box-shadow, @focus__box-shadow);
+                }
+            }
+
+            > .action-delete {
+                .lib-icon-font(
+                @icon-trash,
+                @_icon-font-size: 22px,
+                @_icon-font-text-hide: true,
+                @_icon-font-color: @requisition-icons__color,
+                @_icon-font-color-hover: @primary__color,
+                @_icon-font-color-active: @requisition-icons__color
+                );
+            }
+
+            > .action-edit {
+                .lib-icon-font(
+                @icon-configure,
+                @_icon-font: @icons-magento__font-name,
+                @_icon-font-size: 22px,
+                @_icon-font-text-hide: true,
+                @_icon-font-color: @requisition-icons__color,
+                @_icon-font-color-hover: @primary__color,
+                @_icon-font-color-active: @requisition-icons__color
+                );
+            }
+        }
+
+        .item-error {
+            margin-top: @indent__s;
+            padding-bottom: @indent__s;
+            padding-top: @indent__s;
+
+            > *:first-child {
+                &:before {
+                    margin-top: -1.4rem;
+                }
+            }
+        }
+    }
+
+    .requisition-list-description {
+        margin-top: @indent__base;
+        word-wrap: break-word;
+    }
+
+    .title-actions-links {
+        button {
+            &:extend(.abs-action-button-as-link all);
+        }
+    }
+
+    .requisition-popup {
+        .action {
+            &.hidden {
+                display: none;
+            }
+        }
+
+        .modal-title {
+            padding-right: @indent__base;
+        }
+    }
+
+    .requisition-view-links {
+        &:extend(.abs-add-clearfix all);
+        padding: @indent__s 0 @indent__base 0;
+
+        .action {
+            .lib-link(
+                @_link-color: @active__color,
+                @_link-text-decoration: underline,
+                @_link-color-visited: @active__color,
+                @_link-text-decoration-visited: underline,
+                @_link-color-hover: @theme__color__primary-alt,
+                @_link-text-decoration-hover: underline,
+                @_link-color-active: @theme__color__primary-alt,
+                @_link-text-decoration-active: underline
+            );
+        }
+    }
+
+    .block-requisition-management {
+        position: relative;
+
+        .requisition-list-title {
+            > span {
+                .lib-font-size(24);
+                font-family: 'buri', @font-family__sans-serif;
+                font-weight: @font-weight__semibold;
+                color: @primary__color__lighter;
+            }
+
+            button {
+                margin-left: @indent__s;
+                position: relative;
+                top: -3px;
+                &:extend(.abs-action-button-as-link all);
+            }
+        }
+
+        .requisition-toolbar-select,
+        .requisition-toolbar-actions {
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .requisition-toolbar-select {
+            margin-right: @indent__base;
+        }
+
+        .requisition-toolbar-actions {
+            .remove-selected {
+                &:extend(.abs-action-button-as-link all);
+                .lib-link(
+                    @_link-color: @active__color,
+                    @_link-text-decoration: underline,
+                    @_link-color-visited: @active__color,
+                    @_link-text-decoration-visited: underline,
+                    @_link-color-hover: @theme__color__primary-alt,
+                    @_link-text-decoration-hover: underline,
+                    @_link-color-active: @theme__color__primary-alt,
+                    @_link-text-decoration-active: underline
+                );
+            }
+        }
+    }
+
+    .requisition-content {
+        margin-bottom: 2rem;
+    }
+
+    .product-item-inner {
+        .block-requisition-list {
+            margin-bottom: 0;
+        }
+    }
+
+    .product-items {
+        .product-item-info {
+            .requisition-list-button {
+                &.toggle {
+                    span {
+                        font-size: 0;
+                        letter-spacing: 0;
+                    }
+
+                    &:after {
+                        border-left: 0;
+                        padding-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .requisition-list-requisition-view {
+        .requisition-grid {
+            .col {
+                &.number {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .requisition-list-requisition-print {
+        &.account {
+            .column {
+                &.main {
+                    padding-bottom: 0;
+                }
+            }
+        }
+
+        .block-requisition-management {
+            border-bottom: 1px solid @requisition-print__border-color;
+            margin-bottom: 0;
+            padding-bottom: @indent__s;
+
+            .requisition-list-title {
+                margin-bottom: 0;
+            }
+
+            .requisition-info {
+                float: right;
+                margin-top: -2.2rem;
+            }
+        }
+
+        .requisition-grid {
+            .actions-toolbar {
+                display: none;
+            }
+
+            .col {
+                &.number {
+                    width: 1rem;
+                }
+
+                &.col-checkbox {
+                    padding: 0;
+
+                    input[type='checkbox'] {
+                        display: none;
+                    }
+                }
+
+                &.subtotal {
+                    padding-right: 0;
+                }
+
+                &.price,
+                &.qty,
+                &.subtotal {
+                    text-align: right;
+                }
+
+                .product-item-name {
+                    a {
+                        pointer-events: none;
+                    }
+                }
+
+                .price {
+                    font-size: @requisition-print__font-size-m;
+                    font-weight: @font-weight__semibold;
+                }
+
+                .price-excluding-tax {
+                    font-size: 1.1rem;
+
+                    .price {
+                        font-size: @font-size__s;
+                    }
+                }
+
+                .input-text {
+                    border-color: transparent;
+                    opacity: 1;
+                    padding-right: 0;
+                    pointer-events: none;
+                    text-align: right;
+                }
+            }
+
+            .product-item-image {
+                display: none;
+            }
+
+            .product-item-description {
+                float: none;
+                width: 100%;
+            }
+
+            tbody {
+                td {
+                    border-top: 1px solid @requisition-table__border-color;
+                }
+            }
+        }
+
+        .copyright {
+            background-color: transparent;
+            color: @requisition-print__color;
+            font-size: @font-size__s;
+            margin-bottom: @indent__m;
+            padding: @indent__s 0 0;
+            text-align: left;
+
+            .phone {
+                float: right;
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .order-actions-toolbar {
+        .block-requisition-list {
+            margin-left: @indent__s;
+
+            .requisition-list-action {
+                position: relative;
+                top: -1px;
+
+                > .action.toggle.active + .list-items {
+                    min-width: 220px;
+                    right: 0;
+                }
+            }
+        }
+    }
+
+    .requisition-view-buttons {
+        width: 100% !important;
+    }
+
+    .requisition-toolbar-actions {
+        .block-requisition-list {
+            margin-left: @indent__s;
+        }
+    }
+
+    .requisition-list-requisition-index {
+        .data-grid {
+            > tbody,
+            > thead {
+                > tr {
+                    > th,
+                    > td {
+                        &:not(:first-child) {
+                            padding-left: 5%;
+                        }
+
+                        &:not(:last-child) {
+                            padding-right: 5%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .data-grid-wrap {
+        .number-field,
+        .actions-field {
+            text-align: right;
+        }
+
+        .list-name-field {
+            .cell-label-line-description {
+                margin-top: @indent__xs;
+            }
+        }
+    }
+
+    .title-actions-links {
+        float: right;
+        position: relative;
+        top: -9px;
+    }
+
+    .block-requisition-management {
+        &:extend(.abs-add-clearfix-desktop all);
+
+        .requisition-view-links {
+            display: inline-block;
+        }
+
+        .requisition-info {
+            float: left;
+            padding: @indent__s @indent__s @indent__base 0;
+        }
+
+        .requisition-toolbar {
+            clear: both;
+        }
+
+        .requisition-list-action {
+            > .action.toggle.active + .list-items {
+                min-width: 220px;
+                right: 0;
+            }
+        }
+    }
+
+    .requisition-list-action {
+        .social-button & {
+            .list-items {
+                right: -88%;
+                min-width: 220px;
+
+                &:before {
+                    right: 44px;
+                }
+
+                &:after {
+                    right: 43px;
+                }
+            }
+        }
+    }
+
+    .requisition-toolbar-actions {
+        margin-right: @indent__s;
+        position: relative;
+        top: -1px;
+
+        .mobile-label {
+            display: none;
+        }
+
+        button.action {
+            .lib-font-size(15) !important;
+        }
+    }
+
+    .requisition-grid {
+        table {
+            height: 100%;
+        }
+
+        thead,
+        .item {
+            .col {
+                &.item {
+                    display: block;
+                }
+
+                &.price,
+                &.stock,
+                &.qty,
+                &.subtotal {
+                    text-align: right;
+                }
+
+                &.subtotal {
+                    height: .1rem;
+                    position: relative;
+                }
+
+                &.col-checkbox {
+                    input[type='checkbox'] {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+
+        .actions-toolbar {
+            width: auto !important;
+            display: inline-block;
+        }
+
+        .price-excluding-tax {
+            margin: @indent__xs 0 3.5rem 0;
+        }
+    }
+
+    .product-item-description {
+        text-align: left;
+    }
+
+    .requisition-view-buttons {
+        > .primary {
+            display: block;
+            float: none;
+            text-align: left;
+        }
+
+        .action {
+            float: none;
+        }
+    }
+
+    .block-requisition-list {
+        &.update {
+
+            .requisition-list-button {
+                float: right;
+                margin-right: 0;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .requisition_list-requisition-view {
+        .table-wrapper {
+            .table {
+                &:not(.cart) {
+                    > tbody {
+                        > tr {
+                            padding: 15px 0 0 @indent__l !important;
+
+                            &:first-child {
+                                border-top: @table__border-width @table__border-style @table__border-color;
+                            }
+
+                            td {
+                                &.col-checkbox {
+                                    position: absolute;
+                                    top: 18px;
+                                    padding: 0 !important;
+                                    left: 0;
+
+                                    .input-checkbox {
+                                        float: left;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .requisition-list-requisition-view {
+        .table-wrapper {
+            .table {
+                &:not(.cart) {
+                    > tbody {
+                        > tr {
+                            td {
+                                &:last-child {
+                                    border-bottom: 1px solid @requisition-table__border-color;
+                                    padding-bottom: 2rem;
+                                }
+
+                                &.col-checkbox {
+                                    float: left;
+                                    padding-bottom: 0;
+                                }
+
+                                &.col-checkbox,
+                                &.product {
+                                    padding-top: 1.5rem;
+
+                                    &:before {
+                                        display: none;
+                                    }
+                                }
+
+                                &.number {
+                                    display: none;
+                                }
+
+                                &:before {
+                                    font-size: @font-size__s;
+                                }
+                            }
+
+                            td,
+                            th {
+                                padding-left: 1.5rem;
+                                padding-right: 1.5rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .requisition-list-requisition-index {
+        .table-wrapper {
+            .table {
+                &:not(.cart) {
+                    > tbody {
+                        > tr {
+                            td {
+                                &.list-name-field,
+                                &:last-child {
+                                    &:before {
+                                        display: none;
+                                    }
+                                }
+
+                                &:last-child {
+                                    border-bottom: 1px solid @requisition-table__border-color;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .data-grid {
+            td {
+                &:first-child {
+                    .data-grid-cell-content {
+                        display: inline-block;
+                    }
+                }
+
+                > div {
+                    display: inline;
+                }
+            }
+
+            &.data-grid-tr-no-data {
+                td {
+                    &:before {
+                        content: '';
+                    }
+                }
+            }
+
+            &:last-child {
+                td {
+                    border-top-width: 0;
+                }
+            }
+        }
+
+        .toolbar-amount {
+            top: -3.5rem;
+        }
+
+        .admin__data-grid-outer-wrap {
+            position: relative;
+        }
+
+        .admin__data-grid-pager {
+            margin-top: @indent__base;
+        }
+    }
+
+    .block-requisition-management {
+        .requisition-info {
+            margin-bottom: @indent__s;
+        }
+
+        .requisition-toolbar-select {
+            margin-bottom: @indent__s;
+        }
+
+        .requisition-toolbar-actions {
+            display: block;
+            margin-bottom: @indent__base;
+        }
+    }
+
+    .requisition-grid {
+        thead,
+        .item {
+            position: relative;
+
+            .col {
+                &.qty {
+                    .input-text {
+                        width: 47px !important;
+                    }
+                }
+
+                .product-item-subtotal {
+                    display: inline;
+                }
+
+                &-checkbox .input-checkbox {
+                    width: 20px !important;
+                }
+
+                .actions-toolbar {
+                    width: auto !important;
+                }
+
+                .price {
+                    font-size: 1.6rem;
+                }
+
+                .price-excluding-tax {
+                    .price {
+                        font-size: @font-size__s;
+                    }
+                }
+            }
+        }
+
+        .product-item-image {
+            display: none;
+        }
+
+        .product-item-name {
+            margin-bottom: @indent__s;
+        }
+
+        .col {
+            .price-excluding-tax {
+                display: inline-block;
+                margin-right: @indent__m;
+            }
+        }
+    }
+
+    .requisition-list-description {
+        margin-top: 0;
+        margin-bottom: @indent__s;
+    }
+
+    .title-actions-links {
+        margin-bottom: @indent__s;
+        margin-top: -15px;
+
+        &:empty {
+            margin-bottom: @indent__m;
+        }
+    }
+
+    .requisition-toolbar-actions,
+    .requisition-view-buttons {
+        .mobile-label {
+            display: none;
+            margin-right: @indent__xs;
+        }
+    }
+
+    .requisition-toolbar-actions,
+    .order-actions-toolbar {
+        .requisition-list-action {
+            width: 100%;
+            text-align: left;
+        }
+
+        .remove-selected {
+            margin-bottom: @indent__s;
+            text-align: left;
+            width: 100%;
+        }
+
+        .block-requisition-list {
+            margin-left: 0 !important;
+            width: 100%;
+        }
+    }
+
+    .order-actions-toolbar {
+        a.action + .block-requisition-list {
+            margin-top: @indent__xs;
+        }
+    }
+
+    .requisition-list-action {
+        .action {
+            &.toggle {
+                float: none;
+            }
+        }
+
+        .list-items .item > span {
+            .lib-font-size(12);
+        }
+
+        .social-button & {
+            .list-items {
+                right: -94%;
+                min-width: 155px;
+
+                &:before {
+                    right: 44px;
+                }
+
+                &:after {
+                    right: 43px;
+                }
+            }
+        }
+    }
+
+    .order-actions-toolbar,
+    .requisition-toolbar-actions {
+        ul.list-items {
+            &:before {
+                left: @indent__s !important;
+            }
+
+            &:after {
+                left: 9px !important;
+            }
+        }
+    }
+
+    .requisition-view-links {
+        display: none;
+    }
+
+    .order-actions-toolbar {
+        .requisition-list-action {
+            &.active {
+                .items {
+                    right: 0;
+
+                    &:before {
+                        left: auto;
+                        right: 11px;
+                    }
+
+                    &:after {
+                        left: auto;
+                        right: 10px;
+                    }
+                }
+            }
+        }
+    }
+
+    .requisition-list-requisition-print {
+        .nav-toggle {
+            display: none;
+        }
+
+        .logo {
+            margin-left: 0;
+        }
+
+        .block-requisition-management {
+            border-bottom: none;
+
+            .requisition-info {
+                float: none;
+                margin-top: 0;
+            }
+        }
+
+        .requisition-grid {
+            .col {
+                &.price,
+                &.qty,
+                &.subtotal {
+                    text-align: left;
+                }
+
+                .input-text {
+                    padding-left: 0;
+                    text-align: left;
+                }
+            }
+        }
+
+        .table-wrapper {
+            border-bottom: none;
+            clear: both;
+
+            .table {
+                &:not(.cart) {
+                    > tbody {
+                        > tr {
+                            td {
+                                &:last-child {
+                                    border-bottom: 1px solid @requisition-table__border-color;
+                                    padding-bottom: 2rem;
+                                }
+
+                                &.col-checkbox {
+                                    display: none;
+                                }
+
+                                &.col-checkbox,
+                                &.product {
+                                    padding-top: 1.5rem;
+
+                                    &:before {
+                                        display: none;
+                                    }
+                                }
+
+                                &.number {
+                                    display: none;
+                                }
+
+                                &:before {
+                                    font-size: @font-size__s;
+                                }
+                            }
+
+                            td,
+                            th {
+                                padding-left: 1.5rem;
+                                padding-right: 1.5rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media print {
+    .requisition-list-requisition-print {
+        .table-wrapper {
+            table {
+                table-layout: auto;
+            }
+        }
+    }
+}

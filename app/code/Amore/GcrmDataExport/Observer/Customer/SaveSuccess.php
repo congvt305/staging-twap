@@ -268,7 +268,7 @@ class SaveSuccess implements ObserverInterface
                 }
             }
         } catch (\Throwable $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
 
         try {
@@ -306,7 +306,7 @@ class SaveSuccess implements ObserverInterface
                 pg_close($db_connection);
             }
         } catch(\Throwable $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 

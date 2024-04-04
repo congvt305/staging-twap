@@ -1,0 +1,88 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .giftcard-account {
+        .please-wait {
+            display: none;
+        }
+
+        .form-giftcard-redeem {
+            .giftcard.info {
+                margin-bottom: @indent__base;
+                line-height: @checkout-billing-address-details__line-height;
+            }
+        }
+    }
+
+    .opc-wrapper {
+        .form-giftcard-account {
+            .field {
+                .label {
+                    &:extend(.abs-visually-hidden all);
+                }
+            }
+        }
+
+        .giftcard-account-info {
+            margin: 0 0 @indent__s;
+        }
+    }
+
+    .checkout-payment-giftcardaccount {
+        a {
+            .lib-link(
+                @_link-color: @active__color,
+                @_link-text-decoration: underline,
+                @_link-color-visited: @active__color,
+                @_link-text-decoration-visited: underline,
+                @_link-color-hover: @theme__color__primary-alt,
+                @_link-text-decoration-hover: underline,
+                @_link-color-active: @theme__color__primary-alt,
+                @_link-text-decoration-active: underline
+            );
+        }
+    }
+}
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .giftcard-account {
+        .form-giftcard-redeem {
+            .giftcard.info {
+                .lib-font-size(16);
+            }
+
+            .actions-toolbar > div {
+                display: inline-block !important;
+                width: 48.8%;
+
+                &:nth-child(odd) {
+                    clear: left;
+                    float: left !important;
+                }
+
+                &:nth-child(even) {
+                    float: right !important;
+                }
+
+                .action.check {
+                    width: 100%;
+
+                    .lib-button(
+                            @_button-line-height: 54;
+                    );
+                }
+            }
+        }
+    }
+}

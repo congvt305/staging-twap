@@ -75,6 +75,8 @@ class DefaultConfigProvider
                     } else {
                         $result['quoteGifts'][$itemId] = false;
                     }
+                    $isPointRedemptionItem = $item['is_point_redeemable'] ?? false;
+                    $result['memberGifts'][$itemId] = (bool)$isPointRedemptionItem;
                 }
             }
         } catch (\Exception $exception) {

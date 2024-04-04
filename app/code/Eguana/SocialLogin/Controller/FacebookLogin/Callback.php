@@ -63,7 +63,6 @@ class Callback extends Action
     /**
      * Callback constructor.
      * @param Context $context
-     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param SocialLoginModel $socialLoginModel
      * @param Curl $curl
@@ -71,7 +70,6 @@ class Callback extends Action
      */
     public function __construct(
         Context $context,
-        LoggerInterface $logger,
         Helper $helper,
         SocialLoginModel $socialLoginModel,
         Curl $curl,

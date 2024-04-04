@@ -12,5 +12,10 @@
                 <argument name="template" xsi:type="string">Eguana_CustomRMA::order/button.phtml</argument>
             </action>
         </referenceBlock>
+        <referenceBlock name="rma.returns.returns">
+            <arguments>
+                <argument name="custom_name_view_model" xsi:type="object">Eguana\CustomRMA\ViewModel\CustomName</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

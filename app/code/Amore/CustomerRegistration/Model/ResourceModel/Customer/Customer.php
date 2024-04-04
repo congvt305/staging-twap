@@ -90,13 +90,13 @@ class Customer extends \Magento\Customer\Model\ResourceModel\Customer
         try {
             $mobileAttribute = $this->attributeRepository->get('customer', 'mobile_number');
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
 
         try {
             $integrationNumberAttribute = $this->attributeRepository->get('customer', 'integration_number');
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
 
         if ($mobileAttribute) {

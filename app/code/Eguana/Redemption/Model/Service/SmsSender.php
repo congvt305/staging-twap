@@ -270,8 +270,7 @@ class SmsSender
                 $smsContent = str_replace('%name', $customerName, $smsContent);
                 if ($individualNumber) {
                     $smsContent = str_replace('%individual_number', $individualNumber, $smsContent);
-                }
-            }
+                }            }
             return $smsContent;
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());

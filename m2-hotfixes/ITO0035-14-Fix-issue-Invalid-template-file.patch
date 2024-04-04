@@ -1,12 +1,17 @@
-Index: vendor/magento/framework/View/Element/Template.php
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
+From 83ea1b06e48175175304574a1967301a5161a010 Mon Sep 17 00:00:00 2001
+From: Hoang Phan <hoangphan@amorepacific.com>
+Date: Wed, 18 Jan 2023 14:05:21 +0700
+Subject: [PATCH] ITO0035-14 Fix issue Invalid template file
+
+---
+ vendor/magento/framework/View/Element/Template.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento/framework/View/Element/Template.php
---- a/vendor/magento/framework/View/Element/Template.php	(revision b58d4e98617e1e4550086c9ed22b957d4245b8aa)
-+++ b/vendor/magento/framework/View/Element/Template.php	(date 1675302204057)
-@@ -297,7 +297,7 @@
+index e68d059..5cb0ac6 100644
+--- a/vendor/magento/framework/View/Element/Template.php
++++ b/vendor/magento/framework/View/Element/Template.php
+@@ -287,7 +287,7 @@ class Template extends AbstractBlock
       */
      protected function _toHtml()
      {
@@ -15,3 +20,5 @@ diff --git a/vendor/magento/framework/View/Element/Template.php b/vendor/magento
              return '';
          }
          return $this->fetchView($this->getTemplateFile());
+--
+2.34.1

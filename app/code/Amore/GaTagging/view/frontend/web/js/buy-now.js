@@ -6,7 +6,7 @@ define([
     function notify(eventName) {
         if (window.dataLayer) {
             //console.log('dataLayer.push ', eventName);
-            window.dataLayer.push({'event': eventName});
+            window.dataLayer.push({'event': eventName, 'quantity': $('#qty').val()});
         }
     }
 

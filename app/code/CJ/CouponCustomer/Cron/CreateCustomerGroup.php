@@ -3,7 +3,7 @@
 namespace CJ\CouponCustomer\Cron;
 
 use Magento\Customer\Model\GroupFactory;
-use Amore\PointsIntegration\Model\Connection\Request;
+use CJ\Middleware\Model\PosRequest;
 use CJ\CouponCustomer\Logger\Logger;
 use Magento\Store\Model\StoreManagerInterface;
 use CJ\CouponCustomer\Helper\Data;
@@ -20,7 +20,7 @@ class CreateCustomerGroup
     protected $groupFactory;
 
     /**
-     * @var Request
+     * @var PosRequest
      */
     protected $request;
 
@@ -45,7 +45,7 @@ class CreateCustomerGroup
      */
     public function __construct(
         GroupFactory          $groupFactory,
-        Request               $request,
+        PosRequest            $request,
         Logger                $logger,
         Data                  $helperData,
         StoreManagerInterface $storeManager

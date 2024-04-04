@@ -11,6 +11,7 @@
 namespace Amore\CustomerRegistration\Observer\Customer;
 
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Event\ObserverInterface;
 use Amore\CustomerRegistration\Model\POSSystem;
 use \Magento\Customer\Model\Data\Customer;
@@ -25,8 +26,13 @@ use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Webapi\Rest\Request;
 use Amore\CustomerRegistration\Plugin\CreateCustomer;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Call POS API on customer information change
@@ -35,7 +41,12 @@ use Amore\CustomerRegistration\Plugin\CreateCustomer;
  */
 class SaveSuccess implements ObserverInterface
 {
-    protected $storeManager;
+    /**#@+
+     * Constant for configuration path of groups
+     */
+    const CONFIG_CUSTOMERS_GROUPS_PATH = 'customerregistraion/customergroups/customer_group_mapping';
+    /**#@-*/
+
     /**
      * @var \Amore\CustomerRegistration\Model\Sequence
      */
@@ -57,6 +68,26 @@ class SaveSuccess implements ObserverInterface
     private $customerRepository;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
+     * @var GroupRepositoryInterface
+     */
+    private $groupRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteria;
+
+    /**
      * @var POSLogger
      */
     private $logger;
@@ -75,22 +106,31 @@ class SaveSuccess implements ObserverInterface
      * @var RequestInterface
      */
     private $request;
+
     /**
      * @var RegionFactory
      */
     private $regionFactory;
+
     /**
      * @var RegionResourceModel
      */
     private $regionResourceModel;
+
     /**
      * @var AddressRepositoryInterface
      */
     private $addressRepository;
+
     /**
      * @var AddressInterfaceFactory
      */
     private $addressDataFactory;
+
+    /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
 
     /**
      * @var \Magento\Framework\App\State
@@ -107,6 +147,34 @@ class SaveSuccess implements ObserverInterface
      */
     private $subscriptionManager;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    private $middlewareHelper;
+
+    /**
+     * @param Request $requestApi
+     * @param RequestInterface $request
+     * @param RegionFactory $regionFactory
+     * @param RegionResourceModel $regionResourceModel
+     * @param \Eguana\Directory\Helper\Data $cityHelper
+     * @param Sequence $sequence
+     * @param Data $config
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param SubscriberFactory $subscriberFactory
+     * @param POSLogger $logger
+     * @param POSSystem $POSSystem
+     * @param AddressRepositoryInterface $addressRepository
+     * @param AddressInterfaceFactory $addressDataFactory
+     * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
+     * @param GroupRepositoryInterface $groupRepository
+     * @param SearchCriteriaBuilder $searchCriteria
+     * @param ManagerInterface $eventManager
+     * @param \Magento\Framework\App\State $state
+     * @param \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
+     * @param MiddlewareHelper $middlewareHelper
+     */
     public function __construct(
         Request $requestApi,
         RequestInterface $request,
@@ -121,9 +189,14 @@ class SaveSuccess implements ObserverInterface
         POSSystem $POSSystem,
         AddressRepositoryInterface $addressRepository,
         AddressInterfaceFactory $addressDataFactory,
-        \Magento\Framework\App\State $state,
         StoreManagerInterface $storeManager,
-        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager
+        ScopeConfigInterface $scopeConfig,
+        GroupRepositoryInterface $groupRepository,
+        SearchCriteriaBuilder $searchCriteria,
+        ManagerInterface $eventManager,
+        \Magento\Framework\App\State $state,
+        \Magento\Newsletter\Model\SubscriptionManagerInterface $subscriptionManager,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->requestApi = $requestApi;
         $this->sequence = $sequence;
@@ -138,9 +211,14 @@ class SaveSuccess implements ObserverInterface
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
+        $this->scopeConfig = $scopeConfig;
+        $this->groupRepository = $groupRepository;
+        $this->searchCriteria = $searchCriteria;
+        $this->eventManager = $eventManager;
         $this->state = $state;
         $this->storeManager = $storeManager;
         $this->subscriptionManager = $subscriptionManager;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -165,7 +243,6 @@ class SaveSuccess implements ObserverInterface
              * @var Customer $newCustomerData
              */
             $newCustomerData = $observer->getEvent()->getData('customer_data_object');
-
             /**
              * @var Customer $oldCustomerData
              */
@@ -225,15 +302,30 @@ class SaveSuccess implements ObserverInterface
             if (!$oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $APIParameters = $this->getAPIParameters($newCustomerData, 'register');
                 $this->POSSystem->syncMember($APIParameters, $newCustomerData->getStoreId());
+                $this->eventManager->dispatch(
+                    "gcrm_customer_data_export",
+                    [
+                        'customer' => $newCustomerData,
+                        'isNew' => '1'
+                    ]
+                );
             } elseif ($oldDataHaveSequenceNumber && $newDataHaveSequenceNumber) {
                 $oldDataAPIParameters = $this->getAPIParameters($oldCustomerData, 'update');
                 $newDataAPIParameters = $this->getAPIParameters($newCustomerData, 'update');
                 if ($this->APIValuesChanged($oldDataAPIParameters, $newDataAPIParameters)) {
                     $this->POSSystem->syncMember($newDataAPIParameters, $newCustomerData->getStoreId());
+                    $this->eventManager->dispatch(
+                        "gcrm_customer_data_export",
+                        [
+                            'customer' => $newCustomerData,
+                            'isNew' => '0'
+                        ]
+                    );
+
                 }
             }
-        } catch (\Throwable $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+        } catch (\Exception $e) {
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
@@ -261,6 +353,11 @@ class SaveSuccess implements ObserverInterface
     private function assignIntegrationNumber($customer)
     {
         try {
+            $groupId = $this->getCustomerGroup($customer);
+            if ($groupId) {
+                $customer->setGroupId($groupId);
+            }
+
             if ($customer->getCustomAttribute('ba_code')) {
                 $baCode = $this->POSSystem->checkBACodePrefix(
                     $customer->getCustomAttribute('ba_code')->getValue()
@@ -288,16 +385,16 @@ class SaveSuccess implements ObserverInterface
             }
             $customer->setCustomAttribute(
                 'sales_organization_code',
-                $this->config->getOrganizationSalesCode($customer->getWebsiteId())
+                $this->middlewareHelper->getSalesOrganizationCode('store', $customer->getWebsiteId())
             );
             $customer->setCustomAttribute(
                 'sales_office_code',
-                $this->config->getOfficeSalesCode($customer->getWebsiteId())
+                $this->middlewareHelper->getSalesOfficeCode('store', $customer->getWebsiteId())
             );
             //$customer->setCustomAttribute('partner_id', $this->config->getPartnerId($customer->getWebsiteId()));
             return $this->customerRepository->save($customer);
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
             return $customer;
         }
     }
@@ -325,39 +422,39 @@ class SaveSuccess implements ObserverInterface
                 $baCode = $this->POSSystem->checkBACodePrefix(
                     $customer->getCustomAttribute('ba_code')->getValue()
                 );
-            $parameters['empID'] = $baCode;
-        } else {
-            $parameters['empID'] = '';
-        }
-        if ($customer->getCustomAttribute('call_subscription_status')) {
-            $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['callYN'] = 'N';
-        }
-        $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status') && $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        if ($customer->getCustomAttribute('dm_subscription_status')) {
-            $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
-        } else {
-            $parameters['dmYN'] = '';
-        }
-        $defaultBillingAddressId = $customer->getDefaultBilling();
-        $customerData = $this->request->getParams();
+
+                $parameters['empID'] = $baCode;
+            } else {
+                $parameters['empID'] = '';
+            }
+            if ($customer->getCustomAttribute('call_subscription_status')) {
+                $parameters['callYN'] = $customer->getCustomAttribute('call_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            } else {
+                $parameters['callYN'] = 'N';
+            }
+            $parameters['smsYN'] = $customer->getCustomAttribute('sms_subscription_status') && $customer->getCustomAttribute('sms_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            if ($customer->getCustomAttribute('dm_subscription_status')) {
+                $parameters['dmYN'] = $customer->getCustomAttribute('dm_subscription_status')->getValue() == 1 ? 'Y' : 'N';
+            } else {
+                $parameters['dmYN'] = '';
+            }
+            $defaultBillingAddressId = $customer->getDefaultBilling();
+            $customerData = $this->request->getParams();
             if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
-                $regionId = $customerData['region_id'];
+                $regionName = $customerData['dm_state'];
                 $regionObject = null;
-                if ($regionId) {
-                    $regionObject = $this->getRegionObject($regionId);
+                if ($regionName) {
+                    $regionObject = $this->getRegionObject($regionName);
                     $parameters['homeCity'] = $regionObject->getCode() ? $regionObject->getCode() : '';
                 } else {
                     $parameters['homeCity'] = '';
                 }
 
                 $cityName = $customerData['dm_city'];
-                $cityId = $customerData['city_id'];
                 $parameters['homeState'] = '';
-                if ($cityId && $regionObject) {
+                if ($cityName && $regionObject) {
                     $cities = $this->cityHelper->getCityData();
 
                     //Add log to track issue undefined array key when registration
@@ -376,7 +473,7 @@ class SaveSuccess implements ObserverInterface
                     }
                     $regionCities = $cities[$regionObject->getRegionId()];
                     foreach ($regionCities as $regionCity) {
-                        if ($regionCity['code'] == $cityId) {
+                        if ($regionCity['name'] == $cityName) {
                             $parameters['homeState'] = $regionCity['pos_code'];
                             break;
                         }
@@ -402,14 +499,15 @@ class SaveSuccess implements ObserverInterface
                 $customer->getCustomAttribute('partner_id')->getValue() : '';
             $parameters['statusCD'] = '01';
             $store = $this->storeManager->getStore($customer->getStoreId());
-            if ($store->getCode() == 'my_laneige') {
+            if (in_array($store->getCode(),['my_laneige','my_sulwhasoo'])) {
                 $parameters['race'] = $customer->getCustomAttribute('race') ? $customer->getCustomAttribute('race')->getValue() : '';
             }
 
             return $parameters;
         } catch (\Exception $exception) {
-            $this->logger->addExceptionMessage($exception->getMessage());
-            $this->logger->addExceptionMessage('Fail to get API Parameter: ' . json_encode($parameters) . 'Customer Data: ' . json_encode($customerData));
+            $this->logger->addAPILog($exception->getMessage());
+            $this->logger->addAPILog('Fail to get API Parameter: ' , $parameters );
+            $this->logger->addAPILog('Customer Data: ',  $customerData);
         }
     }
 
@@ -420,7 +518,7 @@ class SaveSuccess implements ObserverInterface
         try {
             $this->regionResourceModel->load($region, $regionId, 'region_id');
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
         return $region;
     }
@@ -437,25 +535,15 @@ class SaveSuccess implements ObserverInterface
         $parameters['homeCity'] = $address->getRegion()->getRegionCode();
         $parameters['homeAddr1'] = implode(' ', $address->getStreet());
         $parameters['homeZip'] = $address->getPostcode();
+        $cityName = $address->getCity();
         $parameters['homeState'] = '';
-        if ($cityId = $this->request->getParam('city_id')) {
+        if ($cityName) {
             $cities = $this->cityHelper->getCityData();
             $regionCities = $cities[$address->getRegionId()];
             foreach ($regionCities as $regionCity) {
-                if ($regionCity['code'] == $cityId) {
+                if ($regionCity['name'] == $cityName) {
                     $parameters['homeState'] = $regionCity['pos_code'];
                     break;
-                }
-            }
-        } else {
-            if ($cityName = $address->getCity()) {
-                $cities = $this->cityHelper->getCityData();
-                $regionCities = $cities[$address->getRegionId()];
-                foreach ($regionCities as $regionCity) {
-                    if ($regionCity['name'] == $cityName) {
-                        $parameters['homeState'] = $regionCity['pos_code'];
-                        break;
-                    }
                 }
             }
         }
@@ -552,17 +640,75 @@ class SaveSuccess implements ObserverInterface
                 $this->addressRepository->save($defaultBillingAddressData);
             }
         } catch (\Exception $e) {
-            $this->logger->addExceptionMessage($e->getMessage());
+            $this->logger->addAPILog($e->getMessage());
         }
     }
 
+    /**
+     * Fet group to the customer
+     *
+     * @param $customer Customer
+     * @return string
+     */
+    private function getCustomerGroup($customer)
+    {
+        $groupId = '';
+        try {
+            $apiGroupCode = '';
+            $cstmGradeCD = $this->request->getParam('cstmGradeCD');
+            $cstmGradeNM = $this->request->getParam('cstmGradeNM');
+            $websiteId = (int)$this->storeManager->getStore($customer->getStoreId())->getWebsiteId();
+            $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+
+            if ($websiteCode == 'tw_lageige_website') {
+                $apiGroupCode = $cstmGradeCD;
+            } else {
+                $apiGroupCode = $cstmGradeNM;
+            }
+
+            $result = $this->scopeConfig->getValue(
+                self::CONFIG_CUSTOMERS_GROUPS_PATH,
+                ScopeInterface::SCOPE_STORE,
+                $customer->getStoreId()
+            );
+            $configGroups = $this->middlewareHelper->unserializeData($result);
+
+            if ($apiGroupCode) {
+                $groupCode = '';
+                foreach ($configGroups as $group) {
+                    if ($group['label'] == $apiGroupCode) {
+                        $groupCode = $group['type'];
+                        break;
+                    }
+                }
+
+                if ($groupCode) {
+                    $search = $this->searchCriteria->addFilter('customer_group_code', $groupCode)->create();
+                    $groups = $this->groupRepository->getList($search)->getItems();
+                    foreach ($groups as $group) {
+                        $groupId = $group->getId();
+                        break;
+                    }
+                }
+            }
+            return $groupId;
+        } catch (\Exception $e) {
+            $this->logger->addAPILog($e->getMessage());
+            return $groupId;
+        }
+    }
+
+    /**
+     * @param $salOffCd
+     * @return int
+     */
     private function getCustomerStoreId($salOffCd)
     {
         $customerStoreId = 0;
         foreach ($this->storeManager->getStores() as $store) {
             $storeId = $store->getId();
             if ($storeId) {
-                $officeSaleCode = $this->config->getOfficeSalesCode($storeId);
+                $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $storeId);
                 if ($officeSaleCode == $salOffCd) {
                     $customerStoreId = $storeId;
                     break;

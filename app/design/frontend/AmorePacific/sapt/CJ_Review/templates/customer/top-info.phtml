@@ -1,0 +1,14 @@
+<?php
+/** @var $block \CJ\Review\Block\Top\Info */
+?>
+<div class="top-info-content" style="text-align: center;">
+    <div class="point-info">
+        <?= $block->escapeHtml(__('Point')). $block->getPoint() ?>
+    </div>
+    <div class="coupon-info">
+        <?= $block->escapeHtml(__('Coupon: ')). $block->getCountCoupon() ?>
+    </div>
+    <div class="review-info">
+        <?= $block->escapeHtml(__('Review: ')) . $block->getCountOrderReviewed().' / '.$block->getCountOrderReviewAvailable() ?>
+    </div>
+</div>

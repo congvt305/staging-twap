@@ -275,7 +275,7 @@ class Rma extends \Magento\Rma\Model\Rma
         $itemModels = [];
         $errors = [];
         $errorKeys = [];
-
+        $parentId = '';
         foreach ($data['items'] as $key => $item) {
             if (isset($item['items'])) {
                 $itemModel = $firstModel = false;

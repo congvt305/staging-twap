@@ -160,8 +160,8 @@ class PosReturnData extends AbstractPosOrder
         $friendReferralCode = $this->getFriendReferralCode($order);
 
         $rmaData = [
-            'salOrgCd' => $this->config->getOrganizationSalesCode($websiteId),
-            'salOffCd' => $this->config->getOfficeSalesCode($websiteId),
+            'salOrgCd' => $this->middlewareHelper->getSalesOrganizationCode('store', $websiteId),
+            'salOffCd' => $this->middlewareHelper->getSalesOfficeCode('store', $websiteId),
             'saledate' => $this->orderData->dateFormatting($rma->getDateRequested(), 'Ymd'),
             'orderID' => 'R' . $order->getIncrementId(),
             'rcptNO' => 'I' . $invoice->getIncrementId(),

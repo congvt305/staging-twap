@@ -8,26 +8,32 @@
 ?>
 <?php
 /** @var \Amore\GaTagging\Block\GaTagging $block */
+use Amore\GaTagging\Model\CommonVariable;
 ?>
 <!-- AP GA Tagging Data -->
 <script>
     //공동변수
-    var AP_DATA_GCID = "";
+    var AP_DATA_GCID = undefined;
     var AP_DATA_CID = "";
     var AP_DATA_ISMEMBER = "";
-    var AP_DATA_ISLOGIN = "N";
-    var AP_DATA_LOGINTYPE = "";
+    var AP_DATA_ISLOGIN = "<?= CommonVariable::VALUE_NO ?>";
+    var AP_DATA_COUNTRY = "<?= $block->escapeHtml(strtoupper($block->getDataCountry())) ?>";
+    var AP_DATA_LANG = "<?= $block->escapeHtml(strtoupper($block->getDataLanguage())) ?>";
+    var AP_DATA_LOGINTYPE = undefined;
     var AP_DATA_CA = "";
-    var AP_DATA_CD = "";
-    var AP_DATA_CG = "";
-    var AP_DATA_CT = "";
-    var AP_DATA_SITENAME = "<?= $block->escapeJs($block->escapeHtml($this->helper(\Amore\GaTagging\Helper\Data::class)->getSiteName())) ?>";
-    var AP_DATA_CHANNEL = "PC";
+    var AP_DATA_CD = undefined;
+    var AP_DATA_CG = undefined;
+    var AP_DATA_CT = undefined;
+    var AP_DATA_SITENAME = "<?= $block->escapeHtml($block->getSiteName()) ?>";
+    var AP_DATA_CHANNEL = "<?= CommonVariable::DEFAULT_DATA_CHANNEL ?>";
     var AP_DATA_PAGENAME = "<?= $block->getTitle() ?>";
-    var AP_DATA_PAGETYPE = "";
+    var AP_DATA_PAGETYPE = "<?= CommonVariable::DEFAULT_PAGE_TYPE ?>";
     var AP_CART_ADDPRDS = [];
     var AP_PRD_CURRENCY = "<?= $block->escapeHtml($block->getCurrentCurrencyCode())?>";
     var AP_RMCART_PRDS = [];
+    var AP_DATA_ENV = '<?= $block->escapeHtml($block->getDataEnvironment())?>';
+    var AP_PROMO_ID = undefined;
+    var AP_PROMO_NAME = undefined;
 </script>
 
 

@@ -10,11 +10,10 @@ namespace Amore\Sap\Plugin\Model\Order;
 
 use Amore\Sap\Exception\CrditmemoException;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderCancelData;
 use Amore\Sap\Model\Source\Config;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -28,7 +27,7 @@ class CreditmemoRepositoryPlugin
      */
     private $json;
     /**
-     * @var Request
+     * @var SapRequest
      */
     private $request;
     /**
@@ -67,7 +66,7 @@ class CreditmemoRepositoryPlugin
     /**
      * CreditmemoRepositoryPlugin constructor.
      * @param Json $json
-     * @param Request $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param ManagerInterface $messageManager
@@ -79,7 +78,7 @@ class CreditmemoRepositoryPlugin
      */
     public function __construct(
         Json $json,
-        Request $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         ManagerInterface $messageManager,
@@ -122,7 +121,7 @@ class CreditmemoRepositoryPlugin
                         $this->logger->info($this->json->serialize($orderUpdateData));
                     }
 
-                    $sapResult = $this->request->postRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
+                    $sapResult = $this->request->sendRequest($this->json->serialize($orderUpdateData), $order->getStoreId(), 'cancel');
 
                     if ($this->config->getLoggingCheck()) {
                         $this->logger->info("Single Order Cancel Result Data");
@@ -130,7 +129,7 @@ class CreditmemoRepositoryPlugin
                     }
 
                     $this->eventManager->dispatch(
-                        "eguana_bizconnect_operation_processed",
+                        \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                         [
                             'topic_name' => 'amore.sap.refund.request',
                             'direction' => 'outgoing',
@@ -140,7 +139,7 @@ class CreditmemoRepositoryPlugin
                             'result_message' => $this->json->serialize($sapResult)
                         ]
                     );
-                    $responseHandled = $this->request->handleResponse($sapResult, $order->getStoreId());
+                    $responseHandled = $this->request->handleResponse($sapResult);
                     if ($responseHandled === null) {
                         throw new CrditmemoException(__('Something went wrong while sending order data to SAP. No response.'));
                     } else {

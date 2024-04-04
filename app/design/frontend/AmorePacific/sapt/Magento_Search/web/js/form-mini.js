@@ -279,7 +279,7 @@ define([
          * @return {Boolean} Default return type for any unhandled keys
          */
         _onKeyDown: function (e) {
-            $.cookie('ap_search_type', '직접입력', { expires: 1, path: '/' });
+            $.cookie('ap_search_type', 'Direct Search', { expires: 1, path: '/' });
 
             var keyCode = e.keyCode || e.which;
 

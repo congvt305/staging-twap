@@ -23,54 +23,22 @@ class Data extends AbstractHelper
      */
     const POS_TERMS_CMS_BLOCK_ID = 'customerregistraion/general/terms_cms_block_id';
     const POS_ALERT_CMS_BLOCK_ID = 'customerregistraion/general/pos_alert_cms_block_id';
-    const CODE_EXPIRATION_TIME_IN_MINUTES
-        = 'customerregistraion/general/code_expiration_time_in_minutes';
-    const MINIMUM_MOBILE_NUMBER_DIGITS
-        = 'customerregistraion/general/minimum_mobile_number_digits';
-    const MAXIMUM_MOBILE_NUMBER_DIGITS
-        = 'customerregistraion/general/maximum_mobile_number_digits';
-    const MEMBERSHIP_ERROR_CMS_PAGE
-        = 'customerregistraion/general/membership_error_cms_page';
-    const DUPLICATE_MEMBERSHIP_CMS_PAGE
-        = 'customerregistraion/general/duplicate_membership_cms_page';
-    const NEWSLETTER_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/newsletter_policy_cms_block';
-    const SMS_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/sms_policy_cms_block';
-    const DM_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/dm_policy_cms_block';
-    const CALL_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/call_policy_cms_block';
-    const TERMS_AND_SERVICES_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/terms_and_services_policy_cms_block';
-    const PRIVACY_POLICY_CMS_BLOCK
-        = 'customerregistraion/general/privacy_policy_cms_block';
-    const SMS_VERIFICATION_ENABLE
-        = 'customerregistraion/general/sms_verification_enable';
-    const POS_BASE_URL
-        = 'customerregistraion/pos/base_url';
-    const POS_MEMBER_INFO_URL
-        = 'customerregistraion/pos/member_info';
-    const POS_MEMBER_JOIN_URL
-        = 'customerregistraion/pos/member_join';
-    const SALES_ORGANIZATION_CODE
-        = 'customerregistraion/pos/sales_organization_code';
-    const SALES_OFFICE_CODE
-        = 'customerregistraion/pos/sales_office_code';
-    const PARTNER_ID
-        = 'customerregistraion/pos/partner_id';
-    const SSL_VERIFICATION
-        = 'customerregistraion/pos/ssl_verification';
-    const DEBUG
-        = 'customerregistraion/pos/debug';
-    const XML_PATH_LIST_OF_CHARACTERS
-        = 'customerregistraion/validation/list_of_character';
+    const CODE_EXPIRATION_TIME_IN_MINUTES = 'customerregistraion/general/code_expiration_time_in_minutes';
+    const MINIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/minimum_mobile_number_digits';
+    const MAXIMUM_MOBILE_NUMBER_DIGITS = 'customerregistraion/general/maximum_mobile_number_digits';
+    const MEMBERSHIP_ERROR_CMS_PAGE = 'customerregistraion/general/membership_error_cms_page';
+    const DUPLICATE_MEMBERSHIP_CMS_PAGE = 'customerregistraion/general/duplicate_membership_cms_page';
+    const TERMS_AND_SERVICES_POLICY_CMS_BLOCK = 'customerregistraion/general/terms_and_services_policy_cms_block';
+    const PRIVACY_POLICY_CMS_BLOCK = 'customerregistraion/general/privacy_policy_cms_block';
+    const SMS_VERIFICATION_ENABLE = 'customerregistraion/general/sms_verification_enable';
+    const SSL_VERIFICATION = 'customerregistraion/pos/ssl_verification';
+    const DEBUG = 'customerregistraion/pos/debug';
+    const XML_PATH_LIST_OF_CHARACTERS = 'customerregistraion/validation/list_of_character';
     const EXTENSION_ENABLE = 'customerregistraion/general/active';
     const BA_CODE_ENABLE = 'customerregistraion/general/ba_code_enable';
     const BA_CODE_PREFIX = 'customerregistraion/general/ba_code_prefix';
     const MINIMUM_LENGTH_BA_CODE = 'customerregistraion/general/minimum_length_ba_code';
     const MAXIMUM_LENGTH_BA_CODE = 'customerregistraion/general/maximum_length_ba_code';
-    const POS_BA_CODE_INFO_URL = 'customerregistraion/pos/bacode_info';
     const WARNING_MESSAGE_VERIFCATION_MOBILE = 'customerregistraion/general/warning_message_verification_mobile';
 
     /**
@@ -174,7 +142,6 @@ class Data extends AbstractHelper
     }
 
 
-
     /**
      * Get Terms and Services policy CMS block id
      *
@@ -210,96 +177,6 @@ class Data extends AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::SMS_VERIFICATION_ENABLE,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    /**
-     * It will return the full url of the POS API to get the customer information
-     * @return string
-     */
-    public function getMemberInfoURL()
-    {
-        $baseURL = $this->getPOSBaseURL();
-        $memberInfoURL = $this->scopeConfig->getValue(
-            self::POS_MEMBER_INFO_URL,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-
-        return $baseURL.$memberInfoURL;
-    }
-
-    /**
-     * It will return the POS System URL for join customer
-     * @return string
-     */
-    public function getMemberJoinURL()
-    {
-        $baseURL = $this->getPOSBaseURL();
-        $memberJoinURL = $this->scopeConfig->getValue(
-            self::POS_MEMBER_JOIN_URL,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-
-        return $baseURL.$memberJoinURL;
-    }
-
-    /**
-     * Get the base url of the POS system
-     * @return mixed
-     */
-    private function getPOSBaseURL()
-    {
-        return $this->scopeConfig->getValue(
-            self::POS_BASE_URL,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getOrganizationSalesCode($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::SALES_ORGANIZATION_CODE,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::SALES_ORGANIZATION_CODE,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getOfficeSalesCode($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::SALES_OFFICE_CODE,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::SALES_OFFICE_CODE,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getPartnerId($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::PARTNER_ID,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::PARTNER_ID,
             ScopeInterface::SCOPE_WEBSITE
         );
     }
@@ -443,21 +320,6 @@ class Data extends AbstractHelper
                 ScopeInterface::SCOPE_WEBSITE
             );
         }
-    }
-
-    /**
-     * It will return the full url of POS API to get the ba code information
-     *
-     * @return string
-     */
-    public function getBaCodeInfoURL()
-    {
-        $baseURL = $this->getPOSBaseURL();
-        $memberInfoURL = $this->scopeConfig->getValue(
-            self::POS_BA_CODE_INFO_URL,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-        return $baseURL.$memberInfoURL;
     }
 
     /**
