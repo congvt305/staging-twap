@@ -528,13 +528,22 @@
     }
 
     .logo {
+        top:2px;
         img {
             width: 112px;
             height: auto !important;
         }
     }
+    .header {
+        &.content {
+            &:extend(.abs-add-clearfix all);
+            height: 52px;
+            box-sizing: border-box;
+        }
+    }
 
     .page-header {
+        position:relative;
         body:not(.cms-home) & {
             border-bottom: 1px solid #ccc;
         }
@@ -542,7 +551,7 @@
         .wrapper.panel {
             position: absolute;
             right: 0;
-            top: @indent__s;
+            top: 11px;
             z-index: 5;
         }
     }
