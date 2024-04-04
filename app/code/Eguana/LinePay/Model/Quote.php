@@ -149,8 +149,8 @@ class Quote
             $newShippingAddress = $newQuote->getShippingAddress();
             $newBillingAddress = $newQuote->getBillingAddress();
 
-            if (!$newShippingAddress->getFirstname() || !$newShippingAddress->getLastname() || !$newShippingAddress->getStreet()
-                || !$newBillingAddress->getFirstname() || !$newBillingAddress->getLastname() || !$newBillingAddress->getStreet()
+            if (!$newShippingAddress->getFirstname() || !$newShippingAddress->getLastname() || !$newShippingAddress->getStreet()[0]
+                || !$newBillingAddress->getFirstname() || !$newBillingAddress->getLastname() || !$newBillingAddress->getStreet()[0]
             ) {
                 throw new LocalizedException(__('The shipping address is missing. Set the address and try again.'));
             }

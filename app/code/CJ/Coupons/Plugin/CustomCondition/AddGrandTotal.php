@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace CJ\Coupons\plugin\CustomCondition;
+namespace CJ\Coupons\Plugin\CustomCondition;
 
 /**
  * Class AddGrandTotal

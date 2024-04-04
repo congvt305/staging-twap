@@ -1,6 +1,6 @@
 <?php
 
-namespace CJ\Coupons\plugin\SalesRule;
+namespace CJ\Coupons\Plugin\SalesRule;
 
 /**
  * Class CustomValidateSubtotalWithDiscount
