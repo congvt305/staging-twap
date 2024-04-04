@@ -49,7 +49,7 @@ define([
             deliveryMethodMessageTemplate: 'Eguana_GWLogistics/delivery-method-message',
             isVisible: false,
             isAvailable: false,
-            isCvsPickupSelected:  ko.observable(false),
+            isCvsPickupSelected: ko.observable(false),
             rate: {
                 'carrier_code': 'gwlogistics',
                 'method_code': 'CVS'
@@ -176,12 +176,11 @@ define([
                     );
                 },
                 this
-            ),
-                nonPickupShippingAddress;
+            ), nonPickupShippingAddress;
 
             checkoutData.setSelectedShippingAddress(this.lastSelectedNonPickUpShippingAddress);
             this.selectShippingMethod(nonPickupShippingMethod);
-
+            //force set shipping address when click back to home delivery tab
             if (this.isCvsPickupAddress(quote.shippingAddress())) {
                 nonPickupShippingAddress = checkoutDataResolver.getShippingAddressFromCustomerAddressList();
 
@@ -192,7 +191,6 @@ define([
                     );
                 }
             }
-
         },
 
         /**
