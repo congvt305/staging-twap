@@ -37,8 +37,9 @@ define([], function () {
             this.data.v2code = product.product_id;
             this.data.sapcode = product.product_sku;
             this.data.brand = product.product_brand;
-            this.data.price = product.product_price_value;
+            this.data.price = product.price;
             this.data.prdprice = product.product_original_price;
+            this.data.discount = product.discount_price;
             this.data.apg_brand_code = product.apg_brand_code;
             this.data.cate = product.product_category;
             this.data.quantity = product.qty;
@@ -49,6 +50,19 @@ define([], function () {
             if (['bundle', 'configurable'].includes(product.product_type)) {
                 if (product.parent_sku) {
                     this.data.code = product.parent_sku;
+                }
+
+                if (product.qty > 1 && product.child_qtys) {
+                    if ('bundle' === product.product_type) {
+                        var childQtysArr = String(product.child_qtys).split(' / ');
+                        childQtysArr = childQtysArr.map(function (childQty) {
+                            return Number(childQty) * product.qty;
+                        });
+
+                        product.child_qtys = childQtysArr.join(' / ');
+                    } else {
+                        product.child_qtys = product.qty;
+                    }
                 }
                 this.data.product_param1 = product?.child_skus;
                 this.data.product_param2 = product?.child_prices;

@@ -25,7 +25,7 @@ define([
          * @private
          */
         _create: function () {
-            this.cartItemsCache = [];
+            this.cartItemsCache = customerData.get('cart')().items;
             this._initActions();
             this._setListeners();
             this._setCartDataListener();
@@ -38,8 +38,8 @@ define([
          */
         _initActions: function () {
             var events = this.options.events;
-            var apCartAddProds = [];
             this.options.actions[events.AJAX_ADD_TO_CART] = function (product) {
+                var apCartAddProds = [];
                 productModel.init(product);
                 apCartAddProds.push(productModel.getData());
 
@@ -58,23 +58,59 @@ define([
         },
 
         /**
-         * Finds and returns product by sku.
+         * Finds and returns product.
          *
-         * @param {String} productId - product id.
+         * @param {Object} productInfo - product info.
          * @return {Object} product data.
          */
-        getProductById: function (productId) {
+        getProduct: function (productInfo) {
+            var searchCriteria,
+                productOptionValues = productInfo.optionValues || [],
+                productFromCache,
+                productFromCart;
+
             /**
              * Product search criteria.
              *
              * @param {Object} item
              * @return {Boolean}
              */
-            var searchCriteria = function (item) {
-                    return item['product_id'] === productId;
-                },
-                productFromCache = _.find(this.cartItemsCache, searchCriteria),
-                productFromCart = _.find(customerData.get('cart')().items, searchCriteria);
+            searchCriteria = function (item) {
+                var index = 0;
+
+                if (item['product_id'] !== productInfo.id) {
+                    return false;
+                }
+
+                if (productOptionValues.length === 0) {
+                    return true;
+                }
+
+                if (item['product_type'] === 'bundle') {
+                    if (_.isEmpty(item.bundle_options)) {
+                        return false;
+                    }
+
+                    while (index < item.bundle_options.length) {
+                        if (productOptionValues.indexOf(item.bundle_options[index]) === -1) {
+                            return false;
+                        }
+                        index++;
+                    }
+                } else {
+                    while (index < item.options.length) {
+                        if (productOptionValues.indexOf(item.options[index]['option_value']) === -1) {
+                            return false;
+                        }
+                        index++;
+                    }
+                }
+
+                return true;
+            };
+
+            productFromCache = _.find(this.cartItemsCache, searchCriteria);
+            productFromCart = _.find(customerData.get('cart')().items, searchCriteria);
 
             if (!productFromCache && !productFromCart) {
                 return _.extend({}, productFromCart, {
@@ -96,14 +132,14 @@ define([
          * When the cart data was updated this event will be executed.
          *
          * @param {String} type - Event type.
-         * @param {Array} productIds - list of product ids.
+         * @param {Array} productInfo - product info.
          *
          * @private
          */
-        _setToTemporaryEventStorage: function (type, productIds) {
+        _setToTemporaryEventStorage: function (type, productInfo) {
             this.options.temporaryEventStorage.push({
                 type: type,
-                productIds: productIds
+                productInfo: productInfo
             });
         },
 
@@ -131,8 +167,12 @@ define([
             var product;
 
             this.options.temporaryEventStorage.forEach(function (item, index) {
-                item.productIds.forEach(function (productId) {
-                    product = this.getProductById(productId);
+                if (typeof item.productInfo === 'undefined') {
+                    return;
+                }
+
+                item.productInfo.forEach(function (productInfoItem) {
+                    product = this.getProduct(productInfoItem);
 
                     if (!_.isUndefined(product['product_sku']) && parseInt(product.qty, 10) > 0) {
                         this.options.actions[item.type](product);
@@ -159,7 +199,7 @@ define([
              * @param {String} eventData.productId - product id
              */
             var handlerWrapper = function (callback, type, event, eventData) {
-                    callback.call(this, type, eventData.productIds);
+                    callback.call(this, type, eventData.productInfo);
                 },
                 opt = this.options;
 

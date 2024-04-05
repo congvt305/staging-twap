@@ -442,6 +442,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getSku());
             $product['prdprice'] = (float) $item->getRowTotal() / $item->getQty();
             $product['discount'] = (float) $item->getDiscountAmount() / $item->getQty();
+            $product['product_param1'] = null;
+            $product['product_param2'] = null;
+            $product['product_param3'] = null;
+            $product['product_param4'] = null;
+            $product['product_param5'] = null;
+
             if ($item->getProductType() === 'configurable') {
                 $product['variant'] = $this->helper->getSelectedOption($item);
 
@@ -449,19 +455,21 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['product_param1'] = $item->getSku();
                 $product['product_param2'] = (float)$item->getPrice();
                 $product['product_param3'] = (float)$item->getDiscountAmount() / $item->getQty();
-                $product['product_param4'] = $item->getQty();
+                $product['product_param4'] = (int)$item->getQty();
             } elseif ($item->getProductType() === 'bundle') {
-                $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
+                $childSkus = $childPrices = $childDiscountPrices = $childQtys = [];
                 foreach ($item->getChildren() as $bundleChild) {
                     if ($currentProduct->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
                         // no need to reset because parent discount always 0
                         $product['discount'] += $bundleChild->getDiscountAmount() / $item->getQty();
                     }
 
+                    $totalQty = $bundleChild->getQty() * $item->getQty();
+
                     $childSkus[] = $bundleChild->getProduct()->getSku();
-                    $childPrices[] = (float) $bundleChild->getRowTotal() / $item->getQty();
-                    $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $bundleChild->getQty();
-                    $childQtys[] = $bundleChild->getQty();
+                    $childPrices[] = (float) $bundleChild->getRowTotal() / $totalQty;
+                    $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $totalQty;
+                    $childQtys[] = (int) $totalQty;
                 }
 
                 $product['code'] = $item->getProduct()->getData('sku');
@@ -631,19 +639,24 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($item->getProduct());
             $product['prdprice'] = (float) $item->getRowTotal() / $item->getQtyOrdered();
             $product['discount'] = (float) $item->getDiscountAmount() / $item->getQtyOrdered();
+            $product['product_param1'] = null;
+            $product['product_param2'] = null;
+            $product['product_param3'] = null;
+            $product['product_param4'] = null;
+            $product['product_param5'] = null;
 
             if ($item->getProductType() === 'bundle') {
-                $childSkus = $childPrices = $childDiscountPrices = $childQtys = $gifts = [];
+                $childSkus = $childPrices = $childDiscountPrices = $childQtys = [];
                 foreach ($item->getChildrenItems() as $bundleChild) {
                     if ($currentProduct->getPriceType() == Price::PRICE_TYPE_DYNAMIC) {
                         // no need to reset because parent discount always 0
-                        $product['discount'] += (float) $bundleChild->getDiscountAmount();
+                        $product['discount'] += (float) $bundleChild->getDiscountAmount() / $item->getQtyOrdered();
                     }
 
                     $childSkus[] = $bundleChild->getProduct()->getSku();
                     $childPrices[] = (float) $bundleChild->getPrice();
                     $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $item->getQtyOrdered();
-                    $childQtys[] = $bundleChild->getQtyOrdered();
+                    $childQtys[] = (int) $bundleChild->getQtyOrdered();
                 }
 
                 $product['code'] = $item->getProduct()->getData('sku');
@@ -658,7 +671,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 $product['product_param1'] = $item->getSku();
                 $product['product_param2'] = (float)$item->getRowTotal() / $item->getQtyOrdered();
                 $product['product_param3'] = (float)$item->getDiscountAmount() / $item->getQtyOrdered();
-                $product['product_param4'] = $item->getQtyOrdered();
+                $product['product_param4'] = (int) $item->getQtyOrdered();
             }
 
             $ruleData = $this->getRuleName($item->getAppliedRuleIds());
