@@ -3,6 +3,9 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+    .header.links>li a.location:hover:after {
+        color: #4076FF !important;
+    }
     .main-hero-banner .pagebuilder-poster-content p,
     .main-bestseller h2,
     .recommendations-product h2,
@@ -183,7 +186,15 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-
+    .header.content>.header.links a.login:hover:after {
+        color: #4076FF !important;
+    }
+    .header.content>.header.links a.logout:after {
+        color: #6691FF !important;
+    }
+    .header.content>.header.links a.logout:hover:after {
+        color: #4076FF !important;
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
