@@ -11,6 +11,9 @@ var config = {
             },
             'Magento_Customer/js/customer-data': {
                 'Amore_GaTagging/js/view/customer-data-mixin': true
+            },
+            'Magento_Catalog/js/catalog-add-to-cart': {
+                'Amore_GaTagging/js/catalog-add-to-cart-mixin': true
             }
         }
     }
