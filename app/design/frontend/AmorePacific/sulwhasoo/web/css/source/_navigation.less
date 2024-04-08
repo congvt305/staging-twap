@@ -7,7 +7,7 @@
 //  Variables
 //  _____________________________________________
 
-@active-nav-indent: 30%;
+@active-nav-indent: 52px;
 
 //
 //  Common
@@ -35,7 +35,7 @@
         font-size: 0;
         left: @layout__width-xs-indent;
         position: absolute;
-        top: 9px;
+        top: 11px;
         z-index: 4;
     }
 }
@@ -63,11 +63,20 @@
 
                 &:after {
                     position: absolute;
-                    right: 5px;
-                    color: #222;
+                    right: 15px;
+                    color: #6b6b6b;
                     font-size: 18px;
                 }
-
+                &:hover {
+                    &:after {
+                        color: #6b6b6b !important;
+                    }
+                }
+                &:active {
+                    &:after {
+                        color: #6b6b6b !important;
+                    }
+                }
                 &.ui-state-active {
                     .lib-icon-font-symbol(
                         @_icon-font-content: @icon-collapse,
@@ -229,7 +238,6 @@
             width: 100%;
         }
     }
-
     .nav-open {
         .page-wrapper {
             left: 80%;
@@ -242,8 +250,11 @@
             .lib-css(box-shadow, @_shadow, 1);
             left: 0;
             z-index: 99;
+            margin-top: 52px !important;
         }
-
+        .widget.block.block-static-block~.page-wrapper .nav-sections {
+            margin-top: 107px !important;
+        }
         .nav-toggle {
             &:after {
                 background: rgba(0, 0, 0, @overlay__opacity);
@@ -302,12 +313,21 @@
             &:after {
                 position: absolute;
                 right: 15px;
+                color: @color-white !important;
             }
 
             &,
             &:hover {
                 .lib-css(color, @color-white);
                 .lib-css(text-decoration, @navigation-level0-item__text-decoration);
+                &:after {
+                    color: @color-white !important;
+                }
+            }
+            &:active {
+                &:after {
+                    color: @color-white !important;
+                }
             }
         }
     }
