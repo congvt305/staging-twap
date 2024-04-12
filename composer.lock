@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b44acd92a3874d755376a516d96e3ce",
+    "content-hash": "a9c430019377a7ef838cf68935c95be3",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -236,10 +236,10 @@
         },
         {
             "name": "amasty/ajax-scroll",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/ajax-scroll-1.5.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/ajax-scroll-1.5.1.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -444,13 +444,13 @@
         },
         {
             "name": "amasty/customer-group-assign",
-            "version": "1.0.8",
+            "version": "1.1.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/customer-group-assign-1.0.8.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/customer-group-assign-1.1.0.zip"
             },
             "require": {
-                "amasty/base": ">=1.13.5",
+                "amasty/base": ">=1.14.7",
                 "php": ">=7.3"
             },
             "type": "magento2-module",
@@ -463,7 +463,7 @@
                 }
             },
             "license": [
-                "Commercial"
+                "proprietary"
             ],
             "description": "Customer Group Auto Assign by Amasty"
         },
@@ -520,10 +520,10 @@
         },
         {
             "name": "amasty/groupcat",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/groupcat-1.9.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/groupcat-1.10.0.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -628,10 +628,10 @@
         },
         {
             "name": "amasty/module-banners-lite",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-banners-lite-1.1.2.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-banners-lite-1.1.3.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -813,14 +813,14 @@
         },
         {
             "name": "amasty/module-elastic-search-lite",
-            "version": "1.22.0",
+            "version": "1.22.1",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-elastic-search-lite-1.22.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-elastic-search-lite-1.22.1.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
-                "amasty/xsearch": "*",
+                "amasty/xsearch": ">=1.22.1",
                 "php": ">=7.3"
             },
             "type": "magento2-module",
@@ -1211,10 +1211,10 @@
         },
         {
             "name": "amasty/module-one-step-checkout-core",
-            "version": "1.2.13",
+            "version": "1.2.14",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-one-step-checkout-core-1.2.13.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-one-step-checkout-core-1.2.14.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -1613,13 +1613,13 @@
         },
         {
             "name": "amasty/module-thank-you-page",
-            "version": "1.2.3",
+            "version": "1.3.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-thank-you-page-1.2.3.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/module-thank-you-page-1.3.0.zip"
             },
             "require": {
-                "amasty/base": ">=1.13.4",
+                "amasty/base": ">=1.14.7",
                 "php": ">=7.3.0"
             },
             "type": "magento2-module",
@@ -1632,7 +1632,7 @@
                 }
             },
             "license": [
-                "Commercial"
+                "proprietary"
             ],
             "description": "Thank You Page by Amasty"
         },
@@ -1693,10 +1693,10 @@
         },
         {
             "name": "amasty/orderattr",
-            "version": "3.10.6",
+            "version": "3.11.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/orderattr-3.10.6.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/orderattr-3.11.0.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -1955,10 +1955,10 @@
         },
         {
             "name": "amasty/shopby-seo",
-            "version": "2.15.0",
+            "version": "2.15.1",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/shopby-seo-2.15.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/shopby-seo-2.15.1.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -1981,10 +1981,10 @@
         },
         {
             "name": "amasty/social-login",
-            "version": "1.11.1",
+            "version": "1.11.2",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/social-login-1.11.1.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/social-login-1.11.2.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -2064,10 +2064,10 @@
         },
         {
             "name": "amasty/xsearch",
-            "version": "1.22.0",
+            "version": "1.22.1",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.amasty.com/enterprise/packages/amasty/xsearch-1.22.0.zip"
+                "url": "https://composer.amasty.com/enterprise/packages/amasty/xsearch-1.22.1.zip"
             },
             "require": {
                 "amasty/base": ">=1.14.7",
@@ -2133,16 +2133,16 @@
         },
         {
             "name": "aws/aws-crt-php",
-            "version": "v1.2.3",
+            "version": "v1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "5545a4fa310aec39f54279fdacebcce33b3ff382"
+                "reference": "eb0c6e4e142224a10b08f49ebf87f32611d162b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/5545a4fa310aec39f54279fdacebcce33b3ff382",
-                "reference": "5545a4fa310aec39f54279fdacebcce33b3ff382",
+                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/eb0c6e4e142224a10b08f49ebf87f32611d162b2",
+                "reference": "eb0c6e4e142224a10b08f49ebf87f32611d162b2",
                 "shasum": ""
             },
             "require": {
@@ -2181,22 +2181,22 @@
             ],
             "support": {
                 "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.3"
+                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.4"
             },
-            "time": "2023-10-16T20:10:06+00:00"
+            "time": "2023-11-08T00:42:13+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.288.0",
+            "version": "3.304.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6485aad8d3cfa55e3bcea2b4b347f86ee233fc33"
+                "reference": "d1ecaba720dc5d935d4ff66255f990fce3aa9727"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6485aad8d3cfa55e3bcea2b4b347f86ee233fc33",
-                "reference": "6485aad8d3cfa55e3bcea2b4b347f86ee233fc33",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d1ecaba720dc5d935d4ff66255f990fce3aa9727",
+                "reference": "d1ecaba720dc5d935d4ff66255f990fce3aa9727",
                 "shasum": ""
             },
             "require": {
@@ -2276,9 +2276,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.288.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.304.3"
             },
-            "time": "2023-11-21T19:08:29+00:00"
+            "time": "2024-04-11T18:05:41+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2560,6 +2560,75 @@
             "time": "2023-09-01T21:10:07+00:00"
         },
         {
+            "name": "carbonphp/carbon-doctrine-types",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CarbonPHP/carbon-doctrine-types.git",
+                "reference": "18ba5ddfec8976260ead6e866180bd5d2f71aa1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon-doctrine-types/zipball/18ba5ddfec8976260ead6e866180bd5d2f71aa1d",
+                "reference": "18ba5ddfec8976260ead6e866180bd5d2f71aa1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "conflict": {
+                "doctrine/dbal": "<4.0.0 || >=5.0.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^4.0.0",
+                "nesbot/carbon": "^2.71.0 || ^3.0.0",
+                "phpunit/phpunit": "^10.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Carbon\\Doctrine\\": "src/Carbon/Doctrine/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KyleKatarn",
+                    "email": "kylekatarnls@gmail.com"
+                }
+            ],
+            "description": "Types to use Carbon in Doctrine",
+            "keywords": [
+                "carbon",
+                "date",
+                "datetime",
+                "doctrine",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/CarbonPHP/carbon-doctrine-types/issues",
+                "source": "https://github.com/CarbonPHP/carbon-doctrine-types/tree/3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kylekatarnls",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/Carbon",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/nesbot/carbon",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
             "name": "christian-riesen/base32",
             "version": "1.6.0",
             "source": {
@@ -2793,28 +2862,28 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.3.7",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "76e46335014860eec1aa5a724799a00a2e47cc85"
+                "reference": "0c5ccfcfea312b5c5a190a21ac5cef93f74baf99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/76e46335014860eec1aa5a724799a00a2e47cc85",
-                "reference": "76e46335014860eec1aa5a724799a00a2e47cc85",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/0c5ccfcfea312b5c5a190a21ac5cef93f74baf99",
+                "reference": "0c5ccfcfea312b5c5a190a21ac5cef93f74baf99",
                 "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
                 "ext-pcre": "*",
-                "php": "^5.3.2 || ^7.0 || ^8.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan": "^1.10",
                 "psr/log": "^1.0",
                 "symfony/phpunit-bridge": "^4.2 || ^5",
-                "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0 || ^6.0"
+                "symfony/process": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
@@ -2849,7 +2918,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.3.7"
+                "source": "https://github.com/composer/ca-bundle/tree/1.5.0"
             },
             "funding": [
                 {
@@ -2865,20 +2934,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-30T09:31:38+00:00"
+            "time": "2024-03-15T14:00:32+00:00"
         },
         {
             "name": "composer/composer",
-            "version": "2.2.22",
+            "version": "2.2.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa"
+                "reference": "d1542e89636abf422fde328cb28d53752efb69e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa",
-                "reference": "fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa",
+                "url": "https://api.github.com/repos/composer/composer/zipball/d1542e89636abf422fde328cb28d53752efb69e5",
+                "reference": "d1542e89636abf422fde328cb28d53752efb69e5",
                 "shasum": ""
             },
             "require": {
@@ -2948,7 +3017,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.2.22"
+                "source": "https://github.com/composer/composer/tree/2.2.23"
             },
             "funding": [
                 {
@@ -2964,7 +3033,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-29T08:53:46+00:00"
+            "time": "2024-02-08T14:08:53+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -3269,16 +3338,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "ced299686f41dce890debac69273b47ffe98a40c"
+                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/ced299686f41dce890debac69273b47ffe98a40c",
-                "reference": "ced299686f41dce890debac69273b47ffe98a40c",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
+                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
                 "shasum": ""
             },
             "require": {
@@ -3289,7 +3358,7 @@
             "require-dev": {
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
-                "symfony/phpunit-bridge": "^6.0"
+                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5"
             },
             "type": "library",
             "autoload": {
@@ -3313,9 +3382,9 @@
                 "performance"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/3.0.3"
+                "source": "https://github.com/composer/xdebug-handler/tree/3.0.4"
             },
             "funding": [
                 {
@@ -3331,7 +3400,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-25T21:32:43+00:00"
+            "time": "2024-03-26T18:29:49+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -3388,7 +3457,7 @@
             "version": "v7.17.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:elastic/elasticsearch-php.git",
+                "url": "https://github.com/elastic/elasticsearch-php.git",
                 "reference": "2d302233f2bb0926812d82823bb820d405e130fc"
             },
             "dist": {
@@ -3444,6 +3513,10 @@
                 "elasticsearch",
                 "search"
             ],
+            "support": {
+                "issues": "https://github.com/elastic/elasticsearch-php/issues",
+                "source": "https://github.com/elastic/elasticsearch-php/tree/v7.17.2"
+            },
             "time": "2023-04-21T15:31:12+00:00"
         },
         {
@@ -3694,16 +3767,16 @@
         },
         {
             "name": "fastly/magento2",
-            "version": "1.2.208",
+            "version": "1.2.216",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fastly/fastly-magento2.git",
-                "reference": "fc5c71624595e08146a400d18bfad0f55c508c53"
+                "reference": "fdd616cd0f945530e02e92e594ca00fd7990f557"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fastly/fastly-magento2/zipball/fc5c71624595e08146a400d18bfad0f55c508c53",
-                "reference": "fc5c71624595e08146a400d18bfad0f55c508c53",
+                "url": "https://api.github.com/repos/fastly/fastly-magento2/zipball/fdd616cd0f945530e02e92e594ca00fd7990f557",
+                "reference": "fdd616cd0f945530e02e92e594ca00fd7990f557",
                 "shasum": ""
             },
             "require": {
@@ -3713,7 +3786,7 @@
                 "magento/module-config": ">=101.2.0",
                 "magento/module-page-cache": ">=100.4.0",
                 "magento/module-store": ">=101.1.0",
-                "php": "~7.3.0|~7.4.0|~8.0.0|~8.1.0|~8.2.0",
+                "php": "~7.3.0|~7.4.0|~8.0.0|~8.1.0|~8.2.0|~8.3.0",
                 "zordius/lightncandy": "^1.2"
             },
             "type": "magento2-module",
@@ -3732,9 +3805,9 @@
             "description": "Fastly CDN Module for Magento 2.4.x",
             "support": {
                 "issues": "https://github.com/fastly/fastly-magento2/issues",
-                "source": "https://github.com/fastly/fastly-magento2/tree/1.2.208"
+                "source": "https://github.com/fastly/fastly-magento2/tree/1.2.216"
             },
-            "time": "2023-10-27T13:34:04+00:00"
+            "time": "2024-04-08T14:01:48+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -3813,80 +3886,17 @@
             "time": "2022-12-19T11:08:26+00:00"
         },
         {
-            "name": "firebase/php-jwt",
-            "version": "v6.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "f03270e63eaccf3019ef0f32849c497385774e11"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/f03270e63eaccf3019ef0f32849c497385774e11",
-                "reference": "f03270e63eaccf3019ef0f32849c497385774e11",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4||^8.0"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "^6.5||^7.4",
-                "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.5",
-                "psr/cache": "^1.0||^2.0",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0"
-            },
-            "suggest": {
-                "ext-sodium": "Support EdDSA (Ed25519) signatures",
-                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Firebase\\JWT\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Neuman Vong",
-                    "email": "neuman+pear@twilio.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Anant Narayanan",
-                    "email": "anant@php.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
-            "homepage": "https://github.com/firebase/php-jwt",
-            "keywords": [
-                "jwt",
-                "php"
-            ],
-            "support": {
-                "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.9.0"
-            },
-            "time": "2023-10-05T00:24:42+00:00"
-        },
-        {
             "name": "friendsofphp/proxy-manager-lts",
-            "version": "v1.0.16",
+            "version": "v1.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/proxy-manager-lts.git",
-                "reference": "ecadbdc9052e4ad08c60c8a02268712e50427f7c"
+                "reference": "2c8a6cffc3220e99352ad958fe7cf06bf6f7690f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/ecadbdc9052e4ad08c60c8a02268712e50427f7c",
-                "reference": "ecadbdc9052e4ad08c60c8a02268712e50427f7c",
+                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/2c8a6cffc3220e99352ad958fe7cf06bf6f7690f",
+                "reference": "2c8a6cffc3220e99352ad958fe7cf06bf6f7690f",
                 "shasum": ""
             },
             "require": {
@@ -3943,7 +3953,7 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/proxy-manager-lts/issues",
-                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.16"
+                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.18"
             },
             "funding": [
                 {
@@ -3955,7 +3965,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-24T07:17:17+00:00"
+            "time": "2024-03-20T12:50:41+00:00"
         },
         {
             "name": "google/recaptcha",
@@ -4011,36 +4021,31 @@
         },
         {
             "name": "graylog2/gelf-php",
-            "version": "1.7.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bzikarsky/gelf-php.git",
-                "reference": "8dceab86227c184725479cc36ab5cae4da940f6e"
+                "reference": "29ef48fa6eac6c8787b588949483f1739c57ad4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bzikarsky/gelf-php/zipball/8dceab86227c184725479cc36ab5cae4da940f6e",
-                "reference": "8dceab86227c184725479cc36ab5cae4da940f6e",
+                "url": "https://api.github.com/repos/bzikarsky/gelf-php/zipball/29ef48fa6eac6c8787b588949483f1739c57ad4f",
+                "reference": "29ef48fa6eac6c8787b588949483f1739c57ad4f",
                 "shasum": ""
             },
             "require": {
-                "paragonie/constant_time_encoding": "^1|^2",
-                "php": ">=5.6",
-                "psr/log": "^1.0|^2.0"
+                "php": ">=8.0",
+                "psr/log": "^1|^2|^3"
             },
             "provide": {
-                "psr/log-implementation": "~1.0"
+                "psr/log-implementation": "3.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7|^6.5|^7.5",
-                "squizlabs/php_codesniffer": "^3.3"
+                "phpunit/phpunit": "^9.6|^10.1",
+                "squizlabs/php_codesniffer": "^3.6",
+                "vimeo/psalm": "^5.11"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Gelf\\": "src/Gelf"
@@ -4053,7 +4058,7 @@
             "authors": [
                 {
                     "name": "Benjamin Zikarsky",
-                    "email": "benjamin@zikarsky.de"
+                    "email": "benjamin@familie-zikarsky.de"
                 },
                 {
                     "name": "gelf-php contributors",
@@ -4063,22 +4068,22 @@
             "description": "A php implementation to send log-messages to a GELF compatible backend like Graylog2.",
             "support": {
                 "issues": "https://github.com/bzikarsky/gelf-php/issues",
-                "source": "https://github.com/bzikarsky/gelf-php/tree/1.7.1"
+                "source": "https://github.com/bzikarsky/gelf-php/tree/2.0.1"
             },
-            "time": "2021-08-20T09:39:08+00:00"
+            "time": "2023-05-23T14:45:24+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.8.0",
+            "version": "7.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "1110f66a6530a40fe7aea0378fe608ee2b2248f9"
+                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/1110f66a6530a40fe7aea0378fe608ee2b2248f9",
-                "reference": "1110f66a6530a40fe7aea0378fe608ee2b2248f9",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/41042bc7ab002487b876a0683fc8dce04ddce104",
+                "reference": "41042bc7ab002487b876a0683fc8dce04ddce104",
                 "shasum": ""
             },
             "require": {
@@ -4093,11 +4098,11 @@
                 "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "php-http/client-integration-tests": "dev-master#2c025848417c1135031fdf9c728ee53d0a7ceaee as 3.0.999",
                 "php-http/message-factory": "^1.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23",
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
             "suggest": {
@@ -4175,7 +4180,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.8.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.8.1"
             },
             "funding": [
                 {
@@ -4191,28 +4196,28 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-27T10:20:53+00:00"
+            "time": "2023-12-03T20:35:24+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d"
+                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/111166291a0f8130081195ac4556a5587d7f1b5d",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/bbff78d96034045e58e13dedd6ad91b5d1253223",
+                "reference": "bbff78d96034045e58e13dedd6ad91b5d1253223",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
+                "bamarni/composer-bin-plugin": "^1.8.2",
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
             },
             "type": "library",
             "extra": {
@@ -4258,7 +4263,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.1"
+                "source": "https://github.com/guzzle/promises/tree/2.0.2"
             },
             "funding": [
                 {
@@ -4274,20 +4279,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-03T15:11:55+00:00"
+            "time": "2023-12-03T20:19:20+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "be45764272e8873c72dbe3d2edcfdfcc3bc9f727"
+                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/be45764272e8873c72dbe3d2edcfdfcc3bc9f727",
-                "reference": "be45764272e8873c72dbe3d2edcfdfcc3bc9f727",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/45b30f99ac27b5ca93cb4831afe16285f57b8221",
+                "reference": "45b30f99ac27b5ca93cb4831afe16285f57b8221",
                 "shasum": ""
             },
             "require": {
@@ -4301,9 +4306,9 @@
                 "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "http-interop/http-factory-tests": "^0.9",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
+                "phpunit/phpunit": "^8.5.36 || ^9.6.15"
             },
             "suggest": {
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
@@ -4374,7 +4379,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.6.1"
+                "source": "https://github.com/guzzle/psr7/tree/2.6.2"
             },
             "funding": [
                 {
@@ -4390,20 +4395,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-27T10:13:57+00:00"
+            "time": "2023-12-03T20:05:35+00:00"
         },
         {
             "name": "hybridauth/hybridauth",
-            "version": "v3.10.0",
+            "version": "v3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hybridauth/hybridauth.git",
-                "reference": "9b5e8a7782b630d5b1151003999d6db91a863ffe"
+                "reference": "b70b9cbe1c7fa99b5847c5868610a8f024cc7d38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/9b5e8a7782b630d5b1151003999d6db91a863ffe",
-                "reference": "9b5e8a7782b630d5b1151003999d6db91a863ffe",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/b70b9cbe1c7fa99b5847c5868610a8f024cc7d38",
+                "reference": "b70b9cbe1c7fa99b5847c5868610a8f024cc7d38",
                 "shasum": ""
             },
             "require": {
@@ -4450,9 +4455,9 @@
             "support": {
                 "gitter": "https://gitter.im/hybridauth/hybridauth",
                 "issues": "https://github.com/hybridauth/hybridauth/issues",
-                "source": "https://github.com/hybridauth/hybridauth/tree/v3.10.0"
+                "source": "https://github.com/hybridauth/hybridauth/tree/v3.11.0"
             },
-            "time": "2023-07-25T15:02:07+00:00"
+            "time": "2024-01-02T23:09:56+00:00"
         },
         {
             "name": "illuminate/collections",
@@ -4923,21 +4928,21 @@
         },
         {
             "name": "laminas/laminas-db",
-            "version": "2.18.0",
+            "version": "2.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-db.git",
-                "reference": "4df7a3f7ffe268e8683306fcec125c269408b295"
+                "reference": "207b9ee70a8b518913c1fad688d7a64fe89a8b91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-db/zipball/4df7a3f7ffe268e8683306fcec125c269408b295",
-                "reference": "4df7a3f7ffe268e8683306fcec125c269408b295",
+                "url": "https://api.github.com/repos/laminas/laminas-db/zipball/207b9ee70a8b518913c1fad688d7a64fe89a8b91",
+                "reference": "207b9ee70a8b518913c1fad688d7a64fe89a8b91",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-stdlib": "^3.7.1",
-                "php": "~8.0.0 || ~8.1.0|| ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "conflict": {
                 "zendframework/zend-db": "*"
@@ -4990,32 +4995,32 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-05-05T16:22:28+00:00"
+            "time": "2024-04-02T01:04:56+00:00"
         },
         {
             "name": "laminas/laminas-dependency-plugin",
-            "version": "2.2.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-dependency-plugin.git",
-                "reference": "73cfb63ddca9d6bfedad5e0a038f6d55063975a3"
+                "reference": "d98c34fc81f65564ef97e045a381ac3419958615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-dependency-plugin/zipball/73cfb63ddca9d6bfedad5e0a038f6d55063975a3",
-                "reference": "73cfb63ddca9d6bfedad5e0a038f6d55063975a3",
+                "url": "https://api.github.com/repos/laminas/laminas-dependency-plugin/zipball/d98c34fc81f65564ef97e045a381ac3419958615",
+                "reference": "d98c34fc81f65564ef97e045a381ac3419958615",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.1 || ^2.0",
-                "php": "^7.3 || ~8.0.0 || ~8.1.0"
+                "composer-plugin-api": ">=1.1.0 <2.3.0",
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "require-dev": {
-                "composer/composer": "^1.9 || ^2.0",
-                "laminas/laminas-coding-standard": "^2.2.1",
-                "mikey179/vfsstream": "^1.6.10@alpha",
+                "composer/composer": ">=1.9.0 <2.3.0",
+                "laminas/laminas-coding-standard": "~2.5.0",
+                "mikey179/vfsstream": "^1.6.11",
                 "phpunit/phpunit": "^9.5.5",
-                "psalm/plugin-phpunit": "^0.15.1",
+                "psalm/plugin-phpunit": "^0.18.0",
                 "roave/security-advisories": "dev-master",
                 "vimeo/psalm": "^4.5"
             },
@@ -5035,7 +5040,7 @@
             "description": "Replace zendframework and zfcampus packages with their Laminas Project equivalents.",
             "support": {
                 "issues": "https://github.com/laminas/laminas-dependency-plugin/issues",
-                "source": "https://github.com/laminas/laminas-dependency-plugin/tree/2.2.0"
+                "source": "https://github.com/laminas/laminas-dependency-plugin/tree/2.6.0"
             },
             "funding": [
                 {
@@ -5043,7 +5048,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-09-08T17:51:35+00:00"
+            "time": "2023-12-14T20:02:33+00:00"
         },
         {
             "name": "laminas/laminas-di",
@@ -5186,16 +5191,16 @@
         },
         {
             "name": "laminas/laminas-eventmanager",
-            "version": "3.12.0",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-eventmanager.git",
-                "reference": "4a576922c00cc7838d60d004a7bd6f5a02c23b57"
+                "reference": "ce5ba8bde378fca5cb0cd514f01823637215b2f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-eventmanager/zipball/4a576922c00cc7838d60d004a7bd6f5a02c23b57",
-                "reference": "4a576922c00cc7838d60d004a7bd6f5a02c23b57",
+                "url": "https://api.github.com/repos/laminas/laminas-eventmanager/zipball/ce5ba8bde378fca5cb0cd514f01823637215b2f3",
+                "reference": "ce5ba8bde378fca5cb0cd514f01823637215b2f3",
                 "shasum": ""
             },
             "require": {
@@ -5207,12 +5212,12 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~2.5.0",
-                "laminas/laminas-stdlib": "^3.17",
-                "phpbench/phpbench": "^1.2.10",
-                "phpunit/phpunit": "^10.4.1",
+                "laminas/laminas-stdlib": "^3.18",
+                "phpbench/phpbench": "^1.2.15",
+                "phpunit/phpunit": "^10.5.5",
                 "psalm/plugin-phpunit": "^0.18.4",
                 "psr/container": "^1.1.2 || ^2.0.2",
-                "vimeo/psalm": "^5.11"
+                "vimeo/psalm": "^5.18"
             },
             "suggest": {
                 "laminas/laminas-stdlib": "^2.7.3 || ^3.0, to use the FilterChain feature",
@@ -5250,7 +5255,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-10-18T16:36:45+00:00"
+            "time": "2024-01-03T17:43:50+00:00"
         },
         {
             "name": "laminas/laminas-feed",
@@ -5873,16 +5878,16 @@
         },
         {
             "name": "laminas/laminas-router",
-            "version": "3.12.0",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-router.git",
-                "reference": "e8f1a9ecd63d123c38de3519fe7ca9013da4f8d2"
+                "reference": "04e14e757303787c83f79298dbd4483eebacfeb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/e8f1a9ecd63d123c38de3519fe7ca9013da4f8d2",
-                "reference": "e8f1a9ecd63d123c38de3519fe7ca9013da4f8d2",
+                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/04e14e757303787c83f79298dbd4483eebacfeb9",
+                "reference": "04e14e757303787c83f79298dbd4483eebacfeb9",
                 "shasum": ""
             },
             "require": {
@@ -5896,10 +5901,10 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~2.5.0",
-                "laminas/laminas-i18n": "^2.23.1",
-                "phpunit/phpunit": "^10.4.2",
+                "laminas/laminas-i18n": "^2.26.0",
+                "phpunit/phpunit": "^10.5.11",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.15.0"
+                "vimeo/psalm": "^5.22.2"
             },
             "suggest": {
                 "laminas/laminas-i18n": "^2.15.0 if defining translatable HTTP path segments"
@@ -5940,7 +5945,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-11-02T17:21:39+00:00"
+            "time": "2024-03-05T12:54:05+00:00"
         },
         {
             "name": "laminas/laminas-server",
@@ -6246,16 +6251,16 @@
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.18.0",
+            "version": "3.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf"
+                "reference": "6a192dd0882b514e45506f533b833b623b78fff3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
-                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/6a192dd0882b514e45506f533b833b623b78fff3",
+                "reference": "6a192dd0882b514e45506f533b833b623b78fff3",
                 "shasum": ""
             },
             "require": {
@@ -6266,10 +6271,10 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "^2.5",
-                "phpbench/phpbench": "^1.2.14",
-                "phpunit/phpunit": "^10.3.3",
+                "phpbench/phpbench": "^1.2.15",
+                "phpunit/phpunit": "^10.5.8",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.15.0"
+                "vimeo/psalm": "^5.20.0"
             },
             "type": "library",
             "autoload": {
@@ -6301,7 +6306,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-09-19T10:15:21+00:00"
+            "time": "2024-01-19T12:39:49+00:00"
         },
         {
             "name": "laminas/laminas-text",
@@ -6608,26 +6613,26 @@
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "5ef52e26392777a26dbb8f20fe24f91b406459f6"
+                "reference": "eb0d96c708b92177a92bc2239543d3ed523452c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/5ef52e26392777a26dbb8f20fe24f91b406459f6",
-                "reference": "5ef52e26392777a26dbb8f20fe24f91b406459f6",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/eb0d96c708b92177a92bc2239543d3ed523452c6",
+                "reference": "eb0d96c708b92177a92bc2239543d3ed523452c6",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5.26",
+                "phpunit/phpunit": "^10.4",
                 "psalm/plugin-phpunit": "^0.18.0",
                 "squizlabs/php_codesniffer": "^3.7.1",
-                "vimeo/psalm": "^4.29.0"
+                "vimeo/psalm": "^5.16.0"
             },
             "type": "library",
             "extra": {
@@ -6666,7 +6671,8 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-12-12T11:44:10+00:00"
+            "abandoned": true,
+            "time": "2023-11-24T13:56:19+00:00"
         },
         {
             "name": "league/flysystem",
@@ -6825,16 +6831,16 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e"
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/b6a5854368533df0295c5761a0253656a2e52d9e",
-                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
                 "shasum": ""
             },
             "require": {
@@ -6865,7 +6871,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.14.0"
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.15.0"
             },
             "funding": [
                 {
@@ -6877,7 +6883,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-17T14:13:20+00:00"
+            "time": "2024-01-28T23:22:08+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -7040,16 +7046,16 @@
         },
         {
             "name": "magento/composer-root-update-plugin",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/composer-root-update-plugin/magento-composer-root-update-plugin-2.0.3.0.zip",
-                "shasum": "2b794992dceb3357ab2dd61fc23fb1d54bd0ef2e"
+                "url": "https://repo.magento.com/archives/magento/composer-root-update-plugin/magento-composer-root-update-plugin-2.0.4.0.zip",
+                "shasum": "797117ccf0df9d8fe16b88c83d59ac203eb0a2b9"
             },
             "require": {
                 "composer-plugin-api": "^1.0 || ^2.0",
                 "composer/composer": "^1.0 || ^2.0",
-                "php": "~7.3.0||~7.4.0||~8.0.0||~8.1.0||~8.2.0"
+                "php": "~7.3.0||~7.4.0||~8.0.0||~8.1.0||~8.2.0||~8.3.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -7067,64 +7073,38 @@
             "description": "Plugin to look ahead for Magento Open Source or Adobe Commerce project root changes when running composer update for new magento/product or magento/magento-cloud metapackage versions"
         },
         {
-            "name": "magento/data-services",
-            "version": "7.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/data-services/magento-data-services-7.0.8.0.zip",
-                "shasum": "90d4680b6af411accb82a32cedd999e1bf0bb1f1"
-            },
-            "require": {
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-data-services": "7.0.8",
-                "magento/module-data-services-multishipping": "7.0.2",
-                "magento/module-saas-common": "^101.1.0",
-                "magento/module-services-id": "~2.2",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "type": "metapackage",
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Data Services metapackage"
-        },
-        {
             "name": "magento/ece-tools",
-            "version": "2002.1.16",
+            "version": "2002.1.18",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/ece-tools/magento-ece-tools-2002.1.16.0.zip",
-                "shasum": "81ee97387f15df2f11c0c3863eaf34d9ced742dc"
+                "url": "https://repo.magento.com/archives/magento/ece-tools/magento-ece-tools-2002.1.18.0.zip",
+                "shasum": "97d03d4d862aa4861714ebdc0e5e42485f6c5482"
             },
             "require": {
-                "colinmollenhour/credis": "^1.6.0",
-                "composer/composer": "^1.4 || ^2.0",
+                "colinmollenhour/credis": "^1.6.0 || ^1.13",
+                "composer/composer": "^1.4 || ^2.0 || !=2.2.16",
                 "composer/semver": "@stable",
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "ext-sockets": "*",
-                "graylog2/gelf-php": "^1.4.2",
-                "guzzlehttp/guzzle": "^6.3||^7.3",
+                "graylog2/gelf-php": "^1.4.2 || ^2.0.1",
+                "guzzlehttp/guzzle": "^6.3||^7.3 || ^7.5",
                 "illuminate/config": "^5.5||^8.77",
                 "magento/magento-cloud-components": "^1.0.8",
                 "magento/magento-cloud-docker": "^1.0.0",
                 "magento/magento-cloud-patches": "^1.0.20",
                 "magento/quality-patches": "^1.1.0",
-                "monolog/monolog": "^1.25 || ^2.3",
+                "monolog/monolog": "^1.25 || ^2.3 || ^2.7",
                 "nesbot/carbon": "^1.0 || ^2.0",
                 "php": "^7.2 || ^8.0",
                 "psr/container": "^1.0",
-                "psr/log": "^1.0",
-                "symfony/config": "^4.4 || ^5.1",
-                "symfony/console": "^2.8 || ^4.0 || ^5.1",
-                "symfony/dependency-injection": "^3.3 || ^4.3 || ^5.1",
-                "symfony/process": "^2.1 || ^4.1 || ^5.1",
-                "symfony/serializer": "^2.8 || ^3.3 || ^4.0",
-                "symfony/yaml": "^3.3 || ^4.0 || ^5.1"
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/config": "^4.4 || ^5.1 || ^5.4 || ^6.4",
+                "symfony/console": "^2.8 || ^4.0 || ^5.1 || ^5.4 || ^6.4",
+                "symfony/dependency-injection": "^3.3 || ^4.3 || ^5.1 || ^5.4 || ^6.4",
+                "symfony/process": "^2.1 || ^4.1 || ^5.1 || ^5.4 || ^6.4",
+                "symfony/serializer": "^2.8 || ^3.3 || ^4.0 || ^5.4 || ^6.4",
+                "symfony/yaml": "^3.3 || ^4.0 || ^5.1 || ^5.4 || ^6.4"
             },
             "conflict": {
                 "nesbot/carbon": ">=1.38 <2.0",
@@ -7135,12 +7115,12 @@
                 "magento/magento-cloud-configuration": "*"
             },
             "require-dev": {
-                "codeception/codeception": "^4.1",
-                "codeception/module-asserts": "^1.2",
-                "codeception/module-db": "^1.0",
-                "codeception/module-phpbrowser": "^1.0",
-                "codeception/module-rest": "^1.2",
-                "consolidation/robo": "^1.2",
+                "codeception/codeception": "^5.1",
+                "codeception/module-asserts": "^1.2 || ^3.0",
+                "codeception/module-db": "^1.0 || ^3.0",
+                "codeception/module-phpbrowser": "^1.0 || ^3.0",
+                "codeception/module-rest": "^1.2 || ^3.0",
+                "consolidation/robo": "^1.2 || ^3.0",
                 "funkjedi/composer-include-files": "^1.0",
                 "php-mock/php-mock-phpunit": "^2.0",
                 "phpmd/phpmd": "@stable",
@@ -7153,11 +7133,6 @@
                 "bin/ece-tools"
             ],
             "type": "magento2-component",
-            "extra": {
-                "include_files": [
-                    "vendor/codeception/phpunit-wrapper/src/phpunit7-interfaces.php"
-                ]
-            },
             "autoload": {
                 "psr-4": {
                     "Magento\\MagentoCloud\\": "src/"
@@ -7644,11 +7619,11 @@
         },
         {
             "name": "magento/magento-cloud-components",
-            "version": "1.0.13",
+            "version": "1.0.14",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/magento-cloud-components/magento-magento-cloud-components-1.0.13.0.zip",
-                "shasum": "fdbb3078bbbd03fad99462d0c1b813bd164427b1"
+                "url": "https://repo.magento.com/archives/magento/magento-cloud-components/magento-magento-cloud-components-1.0.14.0.zip",
+                "shasum": "2a0b13c0c59aa7c92c07ea23cacde6607f423ddd"
             },
             "require": {
                 "colinmollenhour/cache-backend-redis": "^1.9",
@@ -7687,11 +7662,11 @@
         },
         {
             "name": "magento/magento-cloud-docker",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/magento-cloud-docker/magento-magento-cloud-docker-1.3.6.0.zip",
-                "shasum": "16211b8b5a737ed0b56175496619cc14276ee5c1"
+                "url": "https://repo.magento.com/archives/magento/magento-cloud-docker/magento-magento-cloud-docker-1.3.7.0.zip",
+                "shasum": "ee1cc2b8780d949fd7879b704fc7a4756adfed69"
             },
             "require": {
                 "composer/composer": "^1.4 || ^2.0",
@@ -7699,10 +7674,10 @@
                 "ext-json": "*",
                 "illuminate/config": "^5.5||^8.77",
                 "php": "^7.2 || ^8.0",
-                "symfony/config": "^4.4 || ^5.1",
-                "symfony/console": "^2.8 || ^4.0 || ^5.1",
-                "symfony/dependency-injection": "^3.3 || ^4.3 || ^5.1",
-                "symfony/yaml": "^3.3 || ^4.0 || ^5.1"
+                "symfony/config": "^4.4 || ^5.1|| ^5.4 || ^6.4",
+                "symfony/console": "^2.8 || ^4.0 || ^5.1 || ^5.4 || ^6.4",
+                "symfony/dependency-injection": "^3.3 || ^4.3 || ^5.1|| ^5.4 || ^6.4",
+                "symfony/yaml": "^3.3 || ^4.0 || ^5.1 || ^5.4|| ^6.4"
             },
             "require-dev": {
                 "codeception/codeception": "^4.1",
@@ -7712,7 +7687,7 @@
                 "codeception/module-rest": "^1.2",
                 "consolidation/robo": "^1.2 || ^2.0",
                 "phpmd/phpmd": "@stable",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1.8",
                 "phpunit/phpunit": "^8.5 || ^9.5",
                 "squizlabs/php_codesniffer": "^3.0"
             },
@@ -7805,18 +7780,18 @@
         },
         {
             "name": "magento/magento-cloud-patches",
-            "version": "1.0.24",
+            "version": "1.0.26",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/magento-cloud-patches/magento-magento-cloud-patches-1.0.24.0.zip",
-                "shasum": "a9ac0c163514a0916aa7262e79bfb3d78fe4baf2"
+                "url": "https://repo.magento.com/archives/magento/magento-cloud-patches/magento-magento-cloud-patches-1.0.26.0.zip",
+                "shasum": "2d67efd2d53cd47794dd12ce02ff343d96223a38"
             },
             "require": {
                 "composer/composer": "^1.4 || ^2.0",
                 "composer/semver": "@stable",
                 "ext-json": "*",
                 "magento/quality-patches": "^1.1.0",
-                "monolog/monolog": "^1.25||^2.3",
+                "monolog/monolog": "^1.25||^2.3||^2.7",
                 "php": "^7.2 || ^8.0",
                 "symfony/config": "^3.3||^4.4||^5.0||^6.0",
                 "symfony/console": "^2.6||^4.0||^5.0||^6.0",
@@ -10064,39 +10039,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-bundle-product-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-bundle-product-data-exporter/magento-module-bundle-product-data-exporter-101.3.14.0.zip",
-                "shasum": "7f4c7a2fd68e0b7d7fa2da76ffab48d57c8ac4aa"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-bundle": ">=100.3.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-catalog-data-exporter": "self.version",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-eav": ">=102.0.2",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\BundleProductDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Bundle product data exporter"
-        },
-        {
             "name": "magento/module-bundle-staging",
             "version": "100.4.5",
             "dist": {
@@ -10372,46 +10314,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-catalog-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-catalog-data-exporter/magento-module-catalog-data-exporter-101.3.14.0.zip",
-                "shasum": "00a76e86e457fd8493483669602241827fb23eb2"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-customer": ">=102.0.2",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-directory": ">=100.3.2",
-                "magento/module-downloadable": ">=100.3.2",
-                "magento/module-eav": ">=102.0.2",
-                "magento/module-grouped-product": ">=100.3.2",
-                "magento/module-indexer": ">=100.3.2",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "suggest": {
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-config": ">=101.1.2"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\CatalogDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Catalog data exporter"
-        },
-        {
             "name": "magento/module-catalog-event",
             "version": "101.1.4",
             "dist": {
@@ -10591,38 +10493,6 @@
                 "AFL-3.0"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-catalog-inventory-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-catalog-inventory-data-exporter/magento-module-catalog-inventory-data-exporter-101.3.14.0.zip",
-                "shasum": "09bccef13200acd93a3a275f5409fe6a4e416be4"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-catalog-data-exporter": "self.version",
-                "magento/module-catalog-inventory": ">=100.3.2",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\CatalogInventoryDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Catalog inventory data exporter"
         },
         {
             "name": "magento/module-catalog-inventory-graph-ql",
@@ -11119,39 +10989,6 @@
             "description": "Catalog Staging Page Builder module"
         },
         {
-            "name": "magento/module-catalog-sync-admin",
-            "version": "1.0.6",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-catalog-sync-admin/magento-module-catalog-sync-admin-1.0.6.0.zip",
-                "shasum": "8c4b4d47dff8f7ceeb808c7a97a4c00f8a6804a7"
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0.0||^7.3.0",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-backend": ">=101.0.0 <103.0.0",
-                "magento/module-catalog": ">=103.0.0 <105.0.0",
-                "magento/module-saas-common": "^101.1.0",
-                "magento/module-services-id": "~2.2",
-                "magento/module-store": ">=101.0.0 <101.2.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\CatalogSyncAdmin\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Catalog sync status interface"
-        },
-        {
             "name": "magento/module-catalog-url-rewrite",
             "version": "100.4.5",
             "dist": {
@@ -11188,37 +11025,6 @@
                 "AFL-3.0"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-catalog-url-rewrite-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-catalog-url-rewrite-data-exporter/magento-module-catalog-url-rewrite-data-exporter-101.3.14.0.zip",
-                "shasum": "b03a847d5e08e2bd06ba64e0b76b6cadff5b6363"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-store": ">=101.0.2",
-                "magento/module-url-rewrite": ">=101.1.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\CatalogUrlRewriteDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product URL data exporter"
         },
         {
             "name": "magento/module-catalog-url-rewrite-graph-ql",
@@ -11902,39 +11708,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-configurable-product-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-configurable-product-data-exporter/magento-module-configurable-product-data-exporter-101.3.14.0.zip",
-                "shasum": "386cb8242a887d8dd5ddd5e46b57fdd7c396c4e3"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-catalog-data-exporter": "self.version",
-                "magento/module-configurable-product": ">=100.3.2",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-eav": ">=102.0.2",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ConfigurableProductDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Configurable product data exporter"
-        },
-        {
             "name": "magento/module-configurable-product-graph-ql",
             "version": "100.4.5",
             "dist": {
@@ -12589,100 +12362,6 @@
                 "proprietary"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-data-exporter/magento-module-data-exporter-101.3.14.0.zip",
-                "shasum": "410aed32d781603e675739834d0a4b140b177f87"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-analytics": ">=100.3.2",
-                "magento/module-query-xml": "self.version",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\DataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Magento 2 Data Exporter module exports necessary data to Magento cloud services that rely on it"
-        },
-        {
-            "name": "magento/module-data-services",
-            "version": "7.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-data-services/magento-module-data-services-7.0.8.0.zip",
-                "shasum": "c1eafff031540ae9409037781f6e86101bd05ce9"
-            },
-            "require": {
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-catalog": ">=103.0.0 <105.0.0",
-                "magento/module-checkout": ">=100.3.0 <100.5.0",
-                "magento/module-config": ">=101.1.0 <101.3.0",
-                "magento/module-customer": ">=102.0.0 <104.0.0",
-                "magento/module-quote": ">=101.1.0 <101.3.0",
-                "magento/module-saas-common": "^101.1.0",
-                "magento/module-services-id": "~2.2",
-                "magento/module-store": ">=101.0.0 <101.2.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\DataServices\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Data Services base module"
-        },
-        {
-            "name": "magento/module-data-services-multishipping",
-            "version": "7.0.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-data-services-multishipping/magento-module-data-services-multishipping-7.0.2.0.zip",
-                "shasum": "2dbf20de0054b6f898712c413cc420874e137fa7"
-            },
-            "require": {
-                "magento/framework": ">102.0.0",
-                "magento/module-customer": ">=102.0.0 <104.0.0",
-                "magento/module-data-services": "~7.0",
-                "magento/module-multishipping": ">=100.3.0 <100.5.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\DataServicesMultishipping\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Data Services Multishipping module"
         },
         {
             "name": "magento/module-deferred-total-calculating",
@@ -18843,38 +18522,6 @@
             "description": "Page Builder Analytics module"
         },
         {
-            "name": "magento/module-page-builder-product-recommendations",
-            "version": "1.2.5",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-page-builder-product-recommendations/magento-module-page-builder-product-recommendations-1.2.5.0.zip",
-                "shasum": "581502eb79e5ee56b5b0f5707647b2601408efb4"
-            },
-            "require": {
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-catalog": ">=103.0.0 <105.0.0",
-                "magento/module-product-recommendations-admin": "~3.0",
-                "magento/module-product-recommendations-layout": "~3.2",
-                "magento/module-store": ">=101.0.0 <101.2.0",
-                "magento/page-builder-commerce": "~1.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\PageBuilderProductRecommendations\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "PageBuilder Product Recommendations module"
-        },
-        {
             "name": "magento/module-page-cache",
             "version": "100.4.5-p2",
             "dist": {
@@ -18904,37 +18551,6 @@
                 "AFL-3.0"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-parent-product-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-parent-product-data-exporter/magento-module-parent-product-data-exporter-101.3.14.0.zip",
-                "shasum": "22d570318b07625727fc5c6c91935445d2a02fd6"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-configurable-product": ">=100.3.2",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ParentProductDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Extract parent-child product relation"
         },
         {
             "name": "magento/module-payment",
@@ -19332,139 +18948,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-product-override-data-exporter",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-product-override-data-exporter/magento-module-product-override-data-exporter-101.3.14.0.zip",
-                "shasum": "6edc26df0f77d4962ddec261ceb0b17880e17a55"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog": ">=103.0.2",
-                "magento/module-catalog-data-exporter": "self.version",
-                "magento/module-catalog-permissions": ">=100.3.2",
-                "magento/module-configurable-product-data-exporter": "self.version",
-                "magento/module-data-exporter": "self.version",
-                "magento/module-query-xml": "self.version",
-                "magento/module-store": ">=101.0.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "suggest": {
-                "magento/module-catalog-permissions": "Catalog permissions module is needed for B2B permissions support",
-                "magento/module-configurable-product": "Configurable product module is required for proper module functioning",
-                "magento/module-customer": "Customer module is needed for B2B prices support",
-                "magento/module-store": "Store module is needed for B2B prices support"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ProductOverrideDataExporter\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product prices exporter"
-        },
-        {
-            "name": "magento/module-product-recommendations-admin",
-            "version": "3.0.5",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-product-recommendations-admin/magento-module-product-recommendations-admin-3.0.5.0.zip",
-                "shasum": "8dbe74a9e60c4575d692866fe3476933532b74bf"
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0.0||^7.3.0",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-backend": ">=101.0.0 <103.0.0",
-                "magento/module-catalog": ">=103.0.0 <105.0.0",
-                "magento/module-services-id": "~2.2",
-                "magento/module-store": ">=101.0.0 <101.2.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ProductRecommendationsAdmin\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product Recommendations admin interface."
-        },
-        {
-            "name": "magento/module-product-recommendations-layout",
-            "version": "3.3.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-product-recommendations-layout/magento-module-product-recommendations-layout-3.3.2.0.zip",
-                "shasum": "81c260a0e8eb2a633d534e0e9667dabda619d449"
-            },
-            "require": {
-                "magento/data-services": "~7.0",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-catalog": ">=103.0.0 <105.0.0",
-                "magento/module-product-recommendations-admin": "~3.0",
-                "magento/module-store": ">=101.0.0 <101.2.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ProductRecommendationsLayout\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product Recommendations storefront layout."
-        },
-        {
-            "name": "magento/module-product-recommendations-sync-admin",
-            "version": "1.0.2",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-product-recommendations-sync-admin/magento-module-product-recommendations-sync-admin-1.0.2.0.zip",
-                "shasum": "c85b88fc65007cdfa0d3d58640daf17a70b9a100"
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0.0||^7.3.0",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-backend": ">=101.0.0 <103.0.0",
-                "magento/module-catalog-sync-admin": "~1.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ProductRecommendationsSyncAdmin\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product Recommendations sync status interface"
-        },
-        {
             "name": "magento/module-product-video",
             "version": "100.4.5",
             "dist": {
@@ -19567,34 +19050,6 @@
                 "proprietary"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-query-xml",
-            "version": "101.3.14",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-query-xml/magento-module-query-xml-101.3.14.0.zip",
-                "shasum": "d1c3c34e4c87f9c5cfe47c82cf67a0ea9730deb6"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-analytics": ">=100.3.2",
-                "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\QueryXml\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Query Xml"
         },
         {
             "name": "magento/module-quote",
@@ -21366,108 +20821,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-saas-catalog",
-            "version": "101.4.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-saas-catalog/magento-module-saas-catalog-101.4.0.0.zip",
-                "shasum": "6b030da81b56a242abf5a8098c5fb785a06592a2"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-catalog-data-exporter": "101.*",
-                "magento/module-data-exporter": "101.*",
-                "magento/module-saas-common": "self.version",
-                "php": "~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\SaaSCatalog\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Magento 2 SaaS Catalog module exports necessary catalog data to Magento cloud services that rely on it"
-        },
-        {
-            "name": "magento/module-saas-common",
-            "version": "101.4.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-saas-common/magento-module-saas-common-101.4.0.0.zip",
-                "shasum": "3fe28a8de2364058d42523dc111568127100ea5f"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-data-exporter": "101.*",
-                "magento/module-services-id": "*",
-                "magento/services-connector": "*",
-                "php": "~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "suggest": {
-                "ext-zlib": "Allow gzip compression of HTTP requests"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\SaaSCommon\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Magento 2 SaaS Common module for shared saas export functionality"
-        },
-        {
-            "name": "magento/module-saas-product-override",
-            "version": "101.4.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-saas-product-override/magento-module-saas-product-override-101.4.0.0.zip",
-                "shasum": "32cb7fe9f11db754d91d86f486159ac80c8ed636"
-            },
-            "require": {
-                "magento/framework": ">=102.0.2",
-                "magento/module-data-exporter": "101.*",
-                "magento/module-product-override-data-exporter": "101.*",
-                "magento/module-saas-common": "self.version",
-                "php": "~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\SaaSProductOverride\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Magento_SaaSProductOverride"
-        },
-        {
             "name": "magento/module-sales",
             "version": "103.0.5-p1",
             "dist": {
@@ -22105,36 +21458,6 @@
                 "AFL-3.0"
             ],
             "description": "N/A"
-        },
-        {
-            "name": "magento/module-services-id",
-            "version": "2.2.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-services-id/magento-module-services-id-2.2.3.0.zip",
-                "shasum": "05cf7c95a8fb181297b03c759014c30381443129"
-            },
-            "require": {
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-backend": ">=101.0.0 <103.0.0",
-                "magento/module-config": ">=101.1.0 <101.3.0",
-                "magento/services-connector": "~1.2.1",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ServicesId\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Data Services identity module"
         },
         {
             "name": "magento/module-shipping",
@@ -23463,37 +22786,6 @@
             "description": "N/A"
         },
         {
-            "name": "magento/module-visual-product-recommendations",
-            "version": "1.2.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/module-visual-product-recommendations/magento-module-visual-product-recommendations-1.2.1.0.zip",
-                "shasum": "9c26ff350281716c6ffba36d746519695765acd6"
-            },
-            "require": {
-                "magento/framework": ">=102.0.0",
-                "magento/module-backend": ">=101.0.0",
-                "magento/module-config": ">=101.1.0",
-                "magento/module-product-recommendations-admin": "~3.0",
-                "magento/product-recommendations": "~3.2",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\VisualProductRecommendations\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Visual Product Recommendations module"
-        },
-        {
             "name": "magento/module-webapi",
             "version": "100.4.4",
             "dist": {
@@ -24481,81 +23773,12 @@
             "description": "eCommerce Platform for Growth (Enterprise Edition)"
         },
         {
-            "name": "magento/product-recommendations",
-            "version": "3.3.7",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/product-recommendations/magento-product-recommendations-3.3.7.0.zip",
-                "shasum": "27c43eda2b05e7bb782036c8c511f876eadf2ce4"
-            },
-            "require": {
-                "magento/data-services": "^7.0.6",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-bundle-product-data-exporter": "^101.0.0",
-                "magento/module-catalog-data-exporter": "^101.0.0",
-                "magento/module-catalog-inventory-data-exporter": "^101.0.0",
-                "magento/module-catalog-url-rewrite-data-exporter": "^101.0.0",
-                "magento/module-configurable-product-data-exporter": "^101.0.0",
-                "magento/module-data-exporter": "^101.0.0",
-                "magento/module-parent-product-data-exporter": "^101.0.0",
-                "magento/module-product-override-data-exporter": "^101.0.0",
-                "magento/module-product-recommendations-layout": "3.3.2",
-                "magento/module-query-xml": "^101.0.0",
-                "magento/module-saas-catalog": "^101.1.0",
-                "magento/module-saas-common": "^101.1.0",
-                "magento/module-saas-product-override": "^101.1.0",
-                "magento/module-services-id": "^2.2.2",
-                "magento/product-recommendations-admin": "^3.0.6",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "suggest": {
-                "magento/module-page-builder-product-recommendations": "Enable Product Recommendations for PageBuilder. Supported in Magento Commerce 2.3.1 and later.",
-                "magento/module-visual-product-recommendations": "Enable Visual Product Recommendations."
-            },
-            "type": "metapackage",
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product Recommendations metapackage"
-        },
-        {
-            "name": "magento/product-recommendations-admin",
-            "version": "3.0.6",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/product-recommendations-admin/magento-product-recommendations-admin-3.0.6.0.zip",
-                "shasum": "34cdbd05f64ed90159104a7b9645878f8491a226"
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0.0||^7.3.0",
-                "magento/framework": ">=102.0.0 <104.0.0",
-                "magento/module-catalog-sync-admin": "~1.0",
-                "magento/module-product-recommendations-admin": "3.0.5",
-                "magento/module-product-recommendations-sync-admin": "1.0.2",
-                "magento/module-services-id": "~2.2",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.5.0"
-            },
-            "type": "metapackage",
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Product Recommendations Admin metapackage"
-        },
-        {
             "name": "magento/quality-patches",
-            "version": "1.1.42",
+            "version": "1.1.48",
             "dist": {
                 "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.42.0.zip",
-                "shasum": "295232bfff06ef65ec1191131da2a319877fc6ce"
+                "url": "https://repo.magento.com/archives/magento/quality-patches/magento-quality-patches-1.1.48.0.zip",
+                "shasum": "cd1d3d475f05f4b6a915de38bbf4cd7365b1f80f"
             },
             "require": {
                 "ext-json": "*",
@@ -24641,35 +23864,6 @@
             },
             "type": "metapackage",
             "description": "Magento Security Package for Enterprise Edition"
-        },
-        {
-            "name": "magento/services-connector",
-            "version": "1.2.7",
-            "dist": {
-                "type": "zip",
-                "url": "https://repo.magento.com/archives/magento/services-connector/magento-services-connector-1.2.7.0.zip",
-                "shasum": "9a7e92caceb03de1ce3b24750daa305333f8e8e6"
-            },
-            "require": {
-                "firebase/php-jwt": "^6.0.0",
-                "guzzlehttp/guzzle": "^6.0.0||^7.3.0",
-                "magento/framework": ">=101.0.0",
-                "php": "~7.2.0||~7.3.0||~7.4.0||~8.1.0||~8.2.0"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Magento\\ServicesConnector\\": ""
-                }
-            },
-            "license": [
-                "OSL-3.0",
-                "AFL-3.0"
-            ],
-            "description": "Saas utilities module"
         },
         {
             "name": "magento/theme-adminhtml-backend",
@@ -25097,19 +24291,20 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.71.0",
+            "version": "2.72.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "98276233188583f2ff845a0f992a235472d9466a"
+                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/98276233188583f2ff845a0f992a235472d9466a",
-                "reference": "98276233188583f2ff845a0f992a235472d9466a",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/0c6fd108360c562f6e4fd1dedb8233b423e91c83",
+                "reference": "0c6fd108360c562f6e4fd1dedb8233b423e91c83",
                 "shasum": ""
             },
             "require": {
+                "carbonphp/carbon-doctrine-types": "*",
                 "ext-json": "*",
                 "php": "^7.1.8 || ^8.0",
                 "psr/clock": "^1.0",
@@ -25121,8 +24316,8 @@
                 "psr/clock-implementation": "1.0"
             },
             "require-dev": {
-                "doctrine/dbal": "^2.0 || ^3.1.4",
-                "doctrine/orm": "^2.7",
+                "doctrine/dbal": "^2.0 || ^3.1.4 || ^4.0",
+                "doctrine/orm": "^2.7 || ^3.0",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "kylekatarnls/multi-tester": "^2.0",
                 "ondrejmirtes/better-reflection": "*",
@@ -25199,25 +24394,25 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-25T11:31:05+00:00"
+            "time": "2024-01-25T10:35:09+00:00"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.17.1",
+            "version": "v4.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d"
+                "reference": "4e1b88d21c69391150ace211e9eaf05810858d0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d",
-                "reference": "a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4e1b88d21c69391150ace211e9eaf05810858d0b",
+                "reference": "4e1b88d21c69391150ace211e9eaf05810858d0b",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=7.0"
+                "php": ">=7.1"
             },
             "require-dev": {
                 "ircmaxell/php-yacc": "^0.0.7",
@@ -25253,9 +24448,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.17.1"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.19.1"
             },
-            "time": "2023-08-13T19:53:39+00:00"
+            "time": "2024-03-17T08:10:35+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -25654,26 +24849,26 @@
         },
         {
             "name": "phpgt/cssxpath",
-            "version": "v1.1.4",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/CssXPath.git",
-                "reference": "7f073ba346c49a339a7b2cda9ccfdb1994c5d271"
+                "reference": "c0a06671fed8db601bb680dc4d5accf3cd9deb81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/CssXPath/zipball/7f073ba346c49a339a7b2cda9ccfdb1994c5d271",
-                "reference": "7f073ba346c49a339a7b2cda9ccfdb1994c5d271",
+                "url": "https://api.github.com/repos/PhpGt/CssXPath/zipball/c0a06671fed8db601bb680dc4d5accf3cd9deb81",
+                "reference": "c0a06671fed8db601bb680dc4d5accf3cd9deb81",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.3"
+                "php": ">=8.0"
             },
             "require-dev": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "phpstan/phpstan": ">=0.12.42",
-                "phpunit/phpunit": "^9.5"
+                "phpstan/phpstan": "^v1.8",
+                "phpunit/phpunit": "^v9.5"
             },
             "type": "library",
             "autoload": {
@@ -25696,7 +24891,7 @@
             "description": "Convert CSS selectors to XPath queries.",
             "support": {
                 "issues": "https://github.com/PhpGt/CssXPath/issues",
-                "source": "https://github.com/PhpGt/CssXPath/tree/v1.1.4"
+                "source": "https://github.com/PhpGt/CssXPath/tree/v1.2.0"
             },
             "funding": [
                 {
@@ -25704,7 +24899,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-13T15:40:44+00:00"
+            "time": "2024-01-03T18:33:56+00:00"
         },
         {
             "name": "phpgt/dom",
@@ -25909,21 +25104,21 @@
         },
         {
             "name": "phpseclib/mcrypt_compat",
-            "version": "2.0.4",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/mcrypt_compat.git",
-                "reference": "6505669343743daf290b7d7b6b7105f85fd9988f"
+                "reference": "e5924504997b4f90772034cefd89dc2f4ec189dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/mcrypt_compat/zipball/6505669343743daf290b7d7b6b7105f85fd9988f",
-                "reference": "6505669343743daf290b7d7b6b7105f85fd9988f",
+                "url": "https://api.github.com/repos/phpseclib/mcrypt_compat/zipball/e5924504997b4f90772034cefd89dc2f4ec189dc",
+                "reference": "e5924504997b4f90772034cefd89dc2f4ec189dc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.1",
-                "phpseclib/phpseclib": ">=3.0.13 <4.0.0"
+                "phpseclib/phpseclib": ">=3.0.36 <4.0.0"
             },
             "provide": {
                 "ext-mcrypt": "5.6.40"
@@ -25973,20 +25168,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-19T00:32:45+00:00"
+            "time": "2024-02-26T14:52:18+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.33",
+            "version": "3.0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "33fa69b2514a61138dd48e7a49f99445711e0ad0"
+                "reference": "cfa2013d0f68c062055180dd4328cc8b9d1f30b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/33fa69b2514a61138dd48e7a49f99445711e0ad0",
-                "reference": "33fa69b2514a61138dd48e7a49f99445711e0ad0",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/cfa2013d0f68c062055180dd4328cc8b9d1f30b8",
+                "reference": "cfa2013d0f68c062055180dd4328cc8b9d1f30b8",
                 "shasum": ""
             },
             "require": {
@@ -26067,7 +25262,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.33"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.37"
             },
             "funding": [
                 {
@@ -26083,7 +25278,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-21T14:00:39+00:00"
+            "time": "2024-03-03T02:14:58+00:00"
         },
         {
             "name": "psr/clock",
@@ -26798,16 +25993,16 @@
         },
         {
             "name": "sabberworm/php-css-parser",
-            "version": "8.4.0",
+            "version": "v8.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
-                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30"
+                "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git",
+                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/e41d2140031d533348b2192a83f02d8dd8a71d30",
-                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30",
+                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
+                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
                 "shasum": ""
             },
             "require": {
@@ -26815,13 +26010,17 @@
                 "php": ">=5.6.20"
             },
             "require-dev": {
-                "codacy/coverage": "^1.4",
-                "phpunit/phpunit": "^4.8.36"
+                "phpunit/phpunit": "^5.7.27"
             },
             "suggest": {
                 "ext-mbstring": "for parsing UTF-8 CSS"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "9.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Sabberworm\\CSS\\": "src/"
@@ -26834,6 +26033,14 @@
             "authors": [
                 {
                     "name": "Raphael Schweikert"
+                },
+                {
+                    "name": "Oliver Klee",
+                    "email": "github@oliverklee.de"
+                },
+                {
+                    "name": "Jake Hotson",
+                    "email": "jake.github@qzdesign.co.uk"
                 }
             ],
             "description": "Parser for CSS Files written in PHP",
@@ -26844,23 +26051,23 @@
                 "stylesheet"
             ],
             "support": {
-                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
-                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
+                "issues": "https://github.com/MyIntervals/PHP-CSS-Parser/issues",
+                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.5.1"
             },
-            "time": "2021-12-11T13:40:54+00:00"
+            "time": "2024-02-15T16:41:13+00:00"
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.10.0",
+            "version": "1.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "594fd6462aad8ecee0b45ca5045acea4776667f1"
+                "reference": "9bb7db07b5d66d90f6ebf542f09fc67d800e5259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/594fd6462aad8ecee0b45ca5045acea4776667f1",
-                "reference": "594fd6462aad8ecee0b45ca5045acea4776667f1",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/9bb7db07b5d66d90f6ebf542f09fc67d800e5259",
+                "reference": "9bb7db07b5d66d90f6ebf542f09fc67d800e5259",
                 "shasum": ""
             },
             "require": {
@@ -26887,7 +26094,7 @@
                 {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
+                    "homepage": "https://seld.be"
                 }
             ],
             "description": "JSON Linter",
@@ -26899,7 +26106,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/jsonlint/issues",
-                "source": "https://github.com/Seldaek/jsonlint/tree/1.10.0"
+                "source": "https://github.com/Seldaek/jsonlint/tree/1.10.2"
             },
             "funding": [
                 {
@@ -26911,7 +26118,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-11T13:16:46+00:00"
+            "time": "2024-02-07T12:57:50+00:00"
         },
         {
             "name": "seld/phar-utils",
@@ -27173,16 +26380,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.4.31",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "dd5ea39de228813aba0c23c3a4153da2a4cf3cd9"
+                "reference": "3dcd47d4bbd9fea4d1210e7a7a0a5ca02d99df14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/dd5ea39de228813aba0c23c3a4153da2a4cf3cd9",
-                "reference": "dd5ea39de228813aba0c23c3a4153da2a4cf3cd9",
+                "url": "https://api.github.com/repos/symfony/config/zipball/3dcd47d4bbd9fea4d1210e7a7a0a5ca02d99df14",
+                "reference": "3dcd47d4bbd9fea4d1210e7a7a0a5ca02d99df14",
                 "shasum": ""
             },
             "require": {
@@ -27232,7 +26439,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v5.4.31"
+                "source": "https://github.com/symfony/config/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -27248,7 +26455,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-09T08:22:43+00:00"
+            "time": "2024-03-22T10:04:40+00:00"
         },
         {
             "name": "symfony/console",
@@ -27342,16 +26549,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v6.3.2",
+            "version": "v6.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "883d961421ab1709877c10ac99451632a3d6fa57"
+                "reference": "ee0f7ed5cf298cc019431bb3b3977ebc52b86229"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/883d961421ab1709877c10ac99451632a3d6fa57",
-                "reference": "883d961421ab1709877c10ac99451632a3d6fa57",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ee0f7ed5cf298cc019431bb3b3977ebc52b86229",
+                "reference": "ee0f7ed5cf298cc019431bb3b3977ebc52b86229",
                 "shasum": ""
             },
             "require": {
@@ -27387,7 +26594,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v6.3.2"
+                "source": "https://github.com/symfony/css-selector/tree/v6.4.3"
             },
             "funding": [
                 {
@@ -27403,7 +26610,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-12T16:00:22+00:00"
+            "time": "2024-01-23T14:51:35+00:00"
         },
         {
             "name": "symfony/debug",
@@ -27476,16 +26683,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.4.31",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "eb1bcafa54e00ed218e1b733b8b6ad1c9ff83d20"
+                "reference": "0ba1fa459d284a9398c71afa1cb5d13de025de17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/eb1bcafa54e00ed218e1b733b8b6ad1c9ff83d20",
-                "reference": "eb1bcafa54e00ed218e1b733b8b6ad1c9ff83d20",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/0ba1fa459d284a9398c71afa1cb5d13de025de17",
+                "reference": "0ba1fa459d284a9398c71afa1cb5d13de025de17",
                 "shasum": ""
             },
             "require": {
@@ -27545,7 +26752,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.31"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -27561,29 +26768,29 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-31T07:58:33+00:00"
+            "time": "2024-03-18T16:56:51+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.4.0",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf"
+                "reference": "80d075412b557d41002320b96a096ca65aa2c98d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/7c3aff79d10325257a001fcf92d991f24fc967cf",
-                "reference": "7c3aff79d10325257a001fcf92d991f24fc967cf",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/80d075412b557d41002320b96a096ca65aa2c98d",
+                "reference": "80d075412b557d41002320b96a096ca65aa2c98d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
+                "php": ">=7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.4-dev"
+                    "dev-main": "2.5-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -27612,7 +26819,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.4.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.3"
             },
             "funding": [
                 {
@@ -27628,7 +26835,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-23T14:45:45+00:00"
+            "time": "2023-01-24T14:02:46+00:00"
         },
         {
             "name": "symfony/error-handler",
@@ -27863,16 +27070,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v6.3.1",
+            "version": "v6.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "edd36776956f2a6fcf577edb5b05eb0e3bdc52ae"
+                "reference": "9919b5509ada52cc7f66f9a35c86a4a29955c9d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/edd36776956f2a6fcf577edb5b05eb0e3bdc52ae",
-                "reference": "edd36776956f2a6fcf577edb5b05eb0e3bdc52ae",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/9919b5509ada52cc7f66f9a35c86a4a29955c9d3",
+                "reference": "9919b5509ada52cc7f66f9a35c86a4a29955c9d3",
                 "shasum": ""
             },
             "require": {
@@ -27906,7 +27113,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v6.3.1"
+                "source": "https://github.com/symfony/filesystem/tree/v6.4.6"
             },
             "funding": [
                 {
@@ -27922,27 +27129,27 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-01T08:30:39+00:00"
+            "time": "2024-03-21T19:36:20+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v6.3.5",
+            "version": "v6.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "a1b31d88c0e998168ca7792f222cbecee47428c4"
+                "reference": "11d736e97f116ac375a81f96e662911a34cd50ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/a1b31d88c0e998168ca7792f222cbecee47428c4",
-                "reference": "a1b31d88c0e998168ca7792f222cbecee47428c4",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/11d736e97f116ac375a81f96e662911a34cd50ce",
+                "reference": "11d736e97f116ac375a81f96e662911a34cd50ce",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
             "require-dev": {
-                "symfony/filesystem": "^6.0"
+                "symfony/filesystem": "^6.0|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -27970,7 +27177,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v6.3.5"
+                "source": "https://github.com/symfony/finder/tree/v6.4.0"
             },
             "funding": [
                 {
@@ -27986,20 +27193,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-26T12:56:25+00:00"
+            "time": "2023-10-31T17:30:12+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client-contracts.git",
-                "reference": "ba6a9f0e8f3edd190520ee3b9a958596b6ca2e70"
+                "reference": "e5cc97c2b4a4db0ba26bebc154f1426e3fd1d2f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/ba6a9f0e8f3edd190520ee3b9a958596b6ca2e70",
-                "reference": "ba6a9f0e8f3edd190520ee3b9a958596b6ca2e70",
+                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/e5cc97c2b4a4db0ba26bebc154f1426e3fd1d2f1",
+                "reference": "e5cc97c2b4a4db0ba26bebc154f1426e3fd1d2f1",
                 "shasum": ""
             },
             "require": {
@@ -28048,7 +27255,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client-contracts/tree/v2.5.2"
+                "source": "https://github.com/symfony/http-client-contracts/tree/v2.5.3"
             },
             "funding": [
                 {
@@ -28064,20 +27271,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-12T15:48:08+00:00"
+            "time": "2024-03-26T19:42:53+00:00"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.4.31",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "f84fd4fd8311a541ceb2ae3f257841d002450a90"
+                "reference": "d8c13d35f68c69e15595fe37fa2c225d11c10f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/f84fd4fd8311a541ceb2ae3f257841d002450a90",
-                "reference": "f84fd4fd8311a541ceb2ae3f257841d002450a90",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/d8c13d35f68c69e15595fe37fa2c225d11c10f7e",
+                "reference": "d8c13d35f68c69e15595fe37fa2c225d11c10f7e",
                 "shasum": ""
             },
             "require": {
@@ -28124,7 +27331,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v5.4.31"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -28140,7 +27347,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-06T22:05:57+00:00"
+            "time": "2024-03-19T10:19:25+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -28248,16 +27455,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "ea208ce43cbb04af6867b4fdddb1bdbf84cc28cb"
+                "reference": "ef4d7e442ca910c4764bce785146269b30cb5fc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/ea208ce43cbb04af6867b4fdddb1bdbf84cc28cb",
-                "reference": "ea208ce43cbb04af6867b4fdddb1bdbf84cc28cb",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/ef4d7e442ca910c4764bce785146269b30cb5fc4",
+                "reference": "ef4d7e442ca910c4764bce785146269b30cb5fc4",
                 "shasum": ""
             },
             "require": {
@@ -28271,9 +27478,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28310,7 +27514,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28326,20 +27530,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "ecaafce9f77234a6a449d29e49267ba10499116d"
+                "reference": "a287ed7475f85bf6f61890146edbc932c0fff919"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/ecaafce9f77234a6a449d29e49267ba10499116d",
-                "reference": "ecaafce9f77234a6a449d29e49267ba10499116d",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/a287ed7475f85bf6f61890146edbc932c0fff919",
+                "reference": "a287ed7475f85bf6f61890146edbc932c0fff919",
                 "shasum": ""
             },
             "require": {
@@ -28352,9 +27556,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28397,7 +27598,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28413,20 +27614,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:30:37+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92"
+                "reference": "bc45c394692b948b4d383a08d7753968bed9a83d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92",
-                "reference": "8c4ad05dd0120b6a53c1ca374dca2ad0a1c4ed92",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/bc45c394692b948b4d383a08d7753968bed9a83d",
+                "reference": "bc45c394692b948b4d383a08d7753968bed9a83d",
                 "shasum": ""
             },
             "require": {
@@ -28437,9 +27638,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28481,7 +27679,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28497,20 +27695,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "42292d99c55abe617799667f454222c54c60e229"
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/42292d99c55abe617799667f454222c54c60e229",
-                "reference": "42292d99c55abe617799667f454222c54c60e229",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
                 "shasum": ""
             },
             "require": {
@@ -28524,9 +27722,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28564,7 +27759,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28580,20 +27775,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-28T09:04:16+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "70f4aebd92afca2f865444d30a4d2151c13c3179"
+                "reference": "861391a8da9a04cbad2d232ddd9e4893220d6e25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/70f4aebd92afca2f865444d30a4d2151c13c3179",
-                "reference": "70f4aebd92afca2f865444d30a4d2151c13c3179",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/861391a8da9a04cbad2d232ddd9e4893220d6e25",
+                "reference": "861391a8da9a04cbad2d232ddd9e4893220d6e25",
                 "shasum": ""
             },
             "require": {
@@ -28601,9 +27796,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28640,7 +27832,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php72/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-php72/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28656,20 +27848,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "fe2f306d1d9d346a7fee353d0d5012e401e984b5"
+                "reference": "21bd091060673a1177ae842c0ef8fe30893114d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/fe2f306d1d9d346a7fee353d0d5012e401e984b5",
-                "reference": "fe2f306d1d9d346a7fee353d0d5012e401e984b5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/21bd091060673a1177ae842c0ef8fe30893114d2",
+                "reference": "21bd091060673a1177ae842c0ef8fe30893114d2",
                 "shasum": ""
             },
             "require": {
@@ -28677,9 +27869,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28719,7 +27908,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php73/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-php73/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28735,20 +27924,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5"
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
                 "shasum": ""
             },
             "require": {
@@ -28756,9 +27945,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28802,7 +27988,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28818,20 +28004,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
-            "version": "v1.28.0",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php81.git",
-                "reference": "7581cd600fa9fd681b797d00b02f068e2f13263b"
+                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/7581cd600fa9fd681b797d00b02f068e2f13263b",
-                "reference": "7581cd600fa9fd681b797d00b02f068e2f13263b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/c565ad1e63f30e7477fc40738343c62b40bc672d",
+                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d",
                 "shasum": ""
             },
             "require": {
@@ -28839,9 +28025,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -28881,7 +28064,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.29.0"
             },
             "funding": [
                 {
@@ -28897,7 +28080,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-26T09:26:14+00:00"
+            "time": "2024-01-29T20:11:03+00:00"
         },
         {
             "name": "symfony/process",
@@ -29029,52 +28212,61 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v4.4.47",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "6e01d63c55657930a6de03d6e36aae50af98888d"
+                "reference": "978c155c92601227c014be0291b0bf5b58a1204a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/6e01d63c55657930a6de03d6e36aae50af98888d",
-                "reference": "6e01d63c55657930a6de03d6e36aae50af98888d",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/978c155c92601227c014be0291b0bf5b58a1204a",
+                "reference": "978c155c92601227c014be0291b0bf5b58a1204a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-php80": "^1.16"
             },
             "conflict": {
-                "phpdocumentor/reflection-docblock": "<3.0|>=3.2.0,<3.2.2",
-                "phpdocumentor/type-resolver": "<0.3.0|1.3.*",
-                "symfony/dependency-injection": "<3.4",
-                "symfony/property-access": "<3.4",
-                "symfony/property-info": "<3.4",
-                "symfony/yaml": "<3.4"
+                "doctrine/annotations": "<1.12",
+                "phpdocumentor/reflection-docblock": "<3.2.2",
+                "phpdocumentor/type-resolver": "<1.4.0",
+                "symfony/dependency-injection": "<4.4",
+                "symfony/property-access": "<5.4",
+                "symfony/property-info": "<5.4.24|>=6,<6.2.11",
+                "symfony/uid": "<5.3",
+                "symfony/yaml": "<4.4"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.10.4",
+                "doctrine/annotations": "^1.12|^2",
                 "phpdocumentor/reflection-docblock": "^3.2|^4.0|^5.0",
-                "symfony/cache": "^3.4|^4.0|^5.0",
-                "symfony/config": "^3.4|^4.0|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/error-handler": "^4.4|^5.0",
-                "symfony/http-foundation": "^3.4|^4.0|^5.0",
-                "symfony/mime": "^4.4|^5.0",
-                "symfony/property-access": "^4.4.36|^5.3.13",
-                "symfony/property-info": "^3.4.13|~4.0|^5.0",
-                "symfony/validator": "^3.4|^4.0|^5.0",
-                "symfony/yaml": "^3.4|^4.0|^5.0"
+                "symfony/cache": "^4.4|^5.0|^6.0",
+                "symfony/config": "^4.4|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/error-handler": "^4.4|^5.0|^6.0",
+                "symfony/filesystem": "^4.4|^5.0|^6.0",
+                "symfony/form": "^4.4|^5.0|^6.0",
+                "symfony/http-foundation": "^4.4|^5.0|^6.0",
+                "symfony/http-kernel": "^4.4|^5.0|^6.0",
+                "symfony/mime": "^4.4|^5.0|^6.0",
+                "symfony/property-access": "^5.4.26|^6.3",
+                "symfony/property-info": "^5.4.24|^6.2.11",
+                "symfony/uid": "^5.3|^6.0",
+                "symfony/validator": "^4.4|^5.0|^6.0",
+                "symfony/var-dumper": "^4.4|^5.0|^6.0",
+                "symfony/var-exporter": "^4.4|^5.0|^6.0",
+                "symfony/yaml": "^4.4|^5.0|^6.0"
             },
             "suggest": {
-                "doctrine/annotations": "For using the annotation mapping.",
                 "psr/cache-implementation": "For using the metadata cache.",
                 "symfony/config": "For using the XML mapping loader.",
-                "symfony/http-foundation": "For using a MIME type guesser within the DataUriNormalizer.",
+                "symfony/mime": "For using a MIME type guesser within the DataUriNormalizer.",
                 "symfony/property-access": "For using the ObjectNormalizer.",
                 "symfony/property-info": "To deserialize relations.",
+                "symfony/var-exporter": "For using the metadata compiler.",
                 "symfony/yaml": "For using the default YAML mapping loader."
             },
             "type": "library",
@@ -29103,7 +28295,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v4.4.47"
+                "source": "https://github.com/symfony/serializer/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -29119,20 +28311,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-19T08:38:33+00:00"
+            "time": "2024-03-19T09:55:32+00:00"
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "4b426aac47d6427cc1a1d0f7e2ac724627f5966c"
+                "reference": "a2329596ddc8fd568900e3fc76cba42489ecc7f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/4b426aac47d6427cc1a1d0f7e2ac724627f5966c",
-                "reference": "4b426aac47d6427cc1a1d0f7e2ac724627f5966c",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/a2329596ddc8fd568900e3fc76cba42489ecc7f3",
+                "reference": "a2329596ddc8fd568900e3fc76cba42489ecc7f3",
                 "shasum": ""
             },
             "require": {
@@ -29186,7 +28378,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v2.5.2"
+                "source": "https://github.com/symfony/service-contracts/tree/v2.5.3"
             },
             "funding": [
                 {
@@ -29202,7 +28394,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-30T19:17:29+00:00"
+            "time": "2023-04-21T15:04:16+00:00"
         },
         {
             "name": "symfony/translation",
@@ -29295,16 +28487,16 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "136b19dd05cdf0709db6537d058bcab6dd6e2dbe"
+                "reference": "b0073a77ac0b7ea55131020e87b1e3af540f4664"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/136b19dd05cdf0709db6537d058bcab6dd6e2dbe",
-                "reference": "136b19dd05cdf0709db6537d058bcab6dd6e2dbe",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/b0073a77ac0b7ea55131020e87b1e3af540f4664",
+                "reference": "b0073a77ac0b7ea55131020e87b1e3af540f4664",
                 "shasum": ""
             },
             "require": {
@@ -29353,7 +28545,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/translation-contracts/tree/v2.5.2"
+                "source": "https://github.com/symfony/translation-contracts/tree/v2.5.3"
             },
             "funding": [
                 {
@@ -29369,20 +28561,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-27T16:58:25+00:00"
+            "time": "2024-01-23T13:51:25+00:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.4.29",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "6172e4ae3534d25ee9e07eb487c20be7760fcc65"
+                "reference": "ae1d949ccc57d3f6662e4256b47ac9fbfa9651ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/6172e4ae3534d25ee9e07eb487c20be7760fcc65",
-                "reference": "6172e4ae3534d25ee9e07eb487c20be7760fcc65",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/ae1d949ccc57d3f6662e4256b47ac9fbfa9651ae",
+                "reference": "ae1d949ccc57d3f6662e4256b47ac9fbfa9651ae",
                 "shasum": ""
             },
             "require": {
@@ -29442,7 +28634,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.4.29"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -29458,35 +28650,39 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-12T10:09:58+00:00"
+            "time": "2024-03-19T10:19:25+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.45",
+            "version": "v5.3.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d"
+                "reference": "c441e9d2e340642ac8b951b753dea962d55b669d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
-                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/c441e9d2e340642ac8b951b753dea962d55b669d",
+                "reference": "c441e9d2e340642ac8b951b753dea962d55b669d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
-                "symfony/console": "<3.4"
+                "symfony/console": "<4.4"
             },
             "require-dev": {
-                "symfony/console": "^3.4|^4.0|^5.0"
+                "symfony/console": "^4.4|^5.0"
             },
             "suggest": {
                 "symfony/console": "For validating YAML files using the lint command"
             },
+            "bin": [
+                "Resources/bin/yaml-lint"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -29513,7 +28709,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.45"
+                "source": "https://github.com/symfony/yaml/tree/v5.3.14"
             },
             "funding": [
                 {
@@ -29529,7 +28725,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-02T15:47:23+00:00"
+            "time": "2022-01-26T16:05:39+00:00"
         },
         {
             "name": "tedivm/jshrink",
@@ -30329,5 +29525,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
