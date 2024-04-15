@@ -21,6 +21,20 @@ define([
                 }
 
                 return this._super(form);
+            },
+
+            /**
+             * @private
+             */
+            _redirect: function (url) {
+                var result = this._super.bind(this, url);
+                if (_.contains(url, '/checkout/cart')) {
+                    $(document.body).on('buyNowGaEvent', result.bind(this));
+
+                    setTimeout(result, 5000);
+                } else {
+                    result();
+                }
             }
         });
 
