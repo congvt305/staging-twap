@@ -52,7 +52,7 @@ define([], function () {
                     this.data.code = product.parent_sku;
                 }
 
-                if (product.qty > 1 && product.child_qtys) {
+                if (product.qty >= 1 && product.child_qtys) {
                     if ('bundle' === product.product_type) {
                         var childQtysArr = String(product.child_qtys).split(' / ');
                         childQtysArr = childQtysArr.map(function (childQty) {

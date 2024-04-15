@@ -98,7 +98,7 @@ class Cart
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
                     $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
                     $result['items'][$key]['image_url'] = $this->getProductImage($item->getProduct()->getId());
-                    $result['items'][$key]['apg_brand_code'] = $this->data->getApgBrandCode($item->getProduct()->getSku());
+                    $result['items'][$key]['apg_brand_code'] = $this->data->getApgBrandCode($item->getSku());
                     $result['items'][$key]['discount_price'] = (float)$item->getDiscountAmount() / $item->getQty();
 
                     if ($item->getProductType() === Type::TYPE_BUNDLE) {

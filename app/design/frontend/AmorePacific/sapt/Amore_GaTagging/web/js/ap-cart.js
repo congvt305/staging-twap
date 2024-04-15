@@ -164,7 +164,7 @@ define([
                 item.productInfo.forEach(function (productInfoItem) {
                     product = this.getProduct(productInfoItem);
 
-                    if (!_.isUndefined(product['product_sku']) && parseInt(product.qty, 10) > 0) {
+                    if (!_.isUndefined(product['product_sku']) && Math.abs(parseInt(product.qty, 10)) > 0) {
                         this.options.actions[item.type](product);
                     }
 
@@ -189,7 +189,9 @@ define([
              * @param {String} eventData.productId - product id
              */
             var handlerWrapper = function (callback, type, event, eventData) {
-                    callback.call(this, type, eventData.productInfo);
+                    if (_.isEmpty(eventData.response?.backUrl)) {
+                        callback.call(this, type, eventData.productInfo);
+                    }
                 },
                 opt = this.options;
 
