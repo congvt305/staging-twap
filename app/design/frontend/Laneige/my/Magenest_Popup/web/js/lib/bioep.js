@@ -3,7 +3,7 @@ window.bioEp = {
     bgEl: {},
     popupEl: {},
     closeBtnEl: {},
-    shown: false,
+    shown: [],
     overflowDefault: "visible",
     transformDefault: false,
 
@@ -125,14 +125,19 @@ window.bioEp = {
     // Add the popup to the page
     addPopup: function () {
         // Add the background div
-        this.bgEl = document.createElement("div");
-        this.bgEl.id = "bio_ep_bg";
-        document.body.appendChild(this.bgEl);
+        if (document.getElementById("bio_ep_bg")) {
+            this.bgEl = document.getElementById("bio_ep_bg");
+        } else {
+            this.bgEl = document.createElement("div");
+            this.bgEl.id = "bio_ep_bg";
+            document.body.appendChild(this.bgEl);
+        }
 
         // Add the popup
-        if (document.getElementById("bio_ep"))
+        if (document.getElementById("bio_ep")) {
             this.popupEl = document.getElementById("bio_ep");
-        else {
+            this.popupEl.innerHTML = this.html;
+        } else {
             this.popupEl = document.createElement("div");
             this.popupEl.id = "bio_ep";
             this.popupEl.innerHTML = this.html;
@@ -153,10 +158,12 @@ window.bioEp = {
 
     // Show the popup
     showPopup: function () {
-        if (this.shown) return;
-
-        this.bgEl.style.display = "block";
+        if (this.shown[this.popup_id]) {
+            return;
+        }
+        this.bgEl.style = "display:block";
         this.popupEl.style.display = "block";
+        this.closeBtnEl.style.display = "block"
 
 
         // Handle scaling
@@ -166,7 +173,7 @@ window.bioEp = {
         this.overflowDefault = document.body.style.overflow;
         document.body.style.overflow = "hidden";
 
-        this.shown = true;
+        this.shown[this.popup_id] = true;
 
         if (typeof this.onPopup === "function") {
             this.onPopup();
@@ -288,6 +295,7 @@ window.bioEp = {
         this.display_popup = (typeof opts.display_popup === 'undefined') ? this.display_popup : opts.display_popup;
         this.cookie_lifetime = (typeof opts.cookie_lifetime === 'undefined') ? this.cookie_lifetime : opts.cookie_lifetime;
         this.enable_cookie_lifetime = (typeof opts.enable_cookie_lifetime === 'undefined') ? this.enable_cookie_lifetime : opts.enable_cookie_lifetime;
+        this.shown[this.popup_id] = (typeof opts.shown === 'undefined') ? this.shown[this.popup_id] : opts.shown; //Customize here
     },
 
     // Ensure the DOM has loaded

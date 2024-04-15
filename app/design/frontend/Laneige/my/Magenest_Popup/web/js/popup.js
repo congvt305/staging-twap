@@ -31,6 +31,8 @@ define([
                 cookies = self._getCookie('magenest_cookie_popup'),
                 values = {},
                 view_page = 1,
+                htmlData = [],
+                popupIdData = [],
                 css_style = this.options.dataPopup.css_style;
             if (cookies != null && cookies != "") {
 
@@ -52,7 +54,8 @@ define([
                 var popup_trigger = this.options.dataPopup.popup_trigger,
                     number_x = this.options.dataPopup.number_x,
                     display_popup = this.options.dataPopup.floating_button_display_popup;
-
+                    htmlData[popup_trigger] = html_content;
+                    popupIdData[popup_trigger] = popup_id;
                 if (this.options.dataPopup.preview == 1 && this.options.dataPopup.preview) {
                     bioEp.init({
                         html: html_content,
@@ -68,11 +71,11 @@ define([
                     var id = 'magenest-popup popup-bio_ep';
                     $('#magenest-popup').attr('id', id);
                     bioEp.init({
-                        html: html_content,
+                        html: htmlData[1],
                         showOnDelay: true,
                         delay: number_x,
                         css: css_style,
-                        popup_id: popup_id,
+                        popup_id: popupIdData[1],
                         cookie_lifetime: cookie_lifetime,
                         display_popup: display_popup,
                         onPopup: function () {
@@ -89,9 +92,9 @@ define([
                     $('#magenest-popup').attr('id', id);
                     if (view_page >= number_x) {
                         bioEp.init({
-                            html: html_content,
+                            html: htmlData[3],
                             css: this.options.dataPopup.css_style,
-                            popup_id: popup_id,
+                            popup_id: popupIdData[3],
                             cookie_lifetime: cookie_lifetime,
                             showOnDelay: true,
                             delay: 0,
@@ -105,39 +108,41 @@ define([
                     var id = 'magenest-popup popup-bio_ep';
                     $('#magenest-popup').attr('id', id);
                     bioEp.init({
-                        html: html_content,
+                        html: htmlData[4],
                         css: this.options.dataPopup.css_style,
-                        popup_id: popup_id,
+                        popup_id: popupIdData[4],
                         cookie_lifetime: cookie_lifetime,
                         onPopup: function () {
                             self._createCarousel().slick("setPosition")
                         }
                     });
                     $(document).off('mouseleave');
-                } else if (popup_trigger === 5) {
-                    window.history.pushState(null, null, window.location.href);
+                } else if (popup_trigger === 5 && self._isMobile()) {//Back button
+                    bioEp.init({
+                        html: html_content,
+                        css: css_style,
+                        popup_id: popup_id,
+                        showOnDelay: true,
+                        delay: 0,
+                        display_popup: 1,// avoid show popup immediately
+                        onPopup: function () {
+                            self._createCarousel().slick("setPosition");
+                        }
+                    });
                     $(window).on('popstate', function(event) {
-                        history.pushState({}, '')
-                        bioEp.init({
-                            html: html_content,
-                            css: css_style,
-                            popup_id: popup_id,
-                            showOnDelay: true,
-                            delay: 0,
-                            onPopup: function () {
-                                self._createCarousel().slick("setPosition");
-                            }
-                        });
+                        if (window.location.href.indexOf('#') == -1) {
+                            bioEp.init({ display_popup: 0});
+                        }
                     });
                 } else if (popup_trigger === 6) {
                     var id = 'magenest-popup popup-bio_ep';
                     $('#magenest-popup').attr('id', id);
                     bioEp.init({
-                        html: html_content,
+                        html: htmlData[6],
                         showOnDelay: true,
                         delay: number_x,
                         css: css_style,
-                        popup_id: popup_id,
+                        popup_id: popupIdData[6],
                         cookie_lifetime: cookie_lifetime,
                         display_popup: display_popup,
                         is_idle_popup: true,
@@ -145,18 +150,19 @@ define([
                             self._createCarousel().slick("setPosition")
                         }
                     });
-                }else if (popup_trigger === 7) {
+                }else if (popup_trigger === 7 && !self._isMobile()) { //switch tab
                     document.addEventListener("visibilitychange", () => {
                         if (document.visibilityState === 'visible') {
                             var id = 'magenest-popup popup-bio_ep';
                             $('#magenest-popup').attr('id', id);
                             bioEp.init({
-                                html: html_content,
+                                html: htmlData[7],
                                 showOnDelay: true,
-                                delay: number_x,
+                                delay: 0,
                                 css: css_style,
-                                popup_id: popup_id,
+                                popup_id: popupIdData[7],
                                 cookie_lifetime: cookie_lifetime,
+                                shown:false,
                                 display_popup: display_popup,
                                 onPopup: function () {
                                     self._createCarousel().slick("setPosition")
@@ -383,6 +389,10 @@ define([
             } else {
                 $('#bio_ep').addClass('popup-default-1');
             }
+        },
+
+        _isMobile: function () {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         },
         /**
          * Event add postion in page for popup
