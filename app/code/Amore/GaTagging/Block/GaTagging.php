@@ -27,6 +27,12 @@ class GaTagging extends \Magento\Framework\View\Element\Template
      * @var \Amore\GaTagging\Helper\Data
      */
     private $helper;
+
+    /**
+     * @var \Amore\GaTagging\Helper\User
+     */
+    private $userHelper;
+
     /**
      * @var \Magento\Framework\Registry
      */
@@ -144,6 +150,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \Magento\Framework\Registry $registry,
+        \Amore\GaTagging\Helper\User $userHelper,
         \Amore\GaTagging\Helper\Data $helper,
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         Template\Context $context,
@@ -161,6 +168,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
         $this->catalogProductHelper = $catalogProductHelper;
         parent::__construct($context, $data);
         $this->helper = $helper;
+        $this->userHelper = $userHelper;
         $this->registry = $registry;
         $this->jsonSerializer = $jsonSerializer;
         $this->customerSession = $customerSession;
@@ -397,7 +405,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                 if ($parentItem->getProductType() === 'configurable') {
                     $product['price'] =  intval($parentItem->getPrice()); // cat rule applied
                     $nameArr = explode(' ', $item->getName());
-                    $product['variant'] = $this->helper->getSelectedOption($item);
+                    $product['variant'] = $this->helper->getSelectedOption($parentItem);
                 }
             }
             $products[] = $product;
@@ -628,7 +636,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $currentProduct = $item->getProduct();
             $product['name'] = $item->getName();
             $product['code'] = $item->getSku();
-            $product['apg_brand_code'] = $this->helper->getApgBrandCode($currentProduct->getData('sku'));
+            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getSku());
             $product['sapcode'] = $item->getSku();
             $product['brand'] = $this->helper->getSiteName() ?? '';
             $product['quantity'] = intval($item->getQtyOrdered());
@@ -924,6 +932,14 @@ class GaTagging extends \Magento\Framework\View\Element\Template
     public function getDataLanguage()
     {
         return substr($this->helper->getDataLanguage(), 0, 2);
+    }
+
+    /**
+     * @return array
+     */
+    public function getUserData()
+    {
+        return $this->userHelper->getCustomerData();
     }
 }
 

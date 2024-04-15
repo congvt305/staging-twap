@@ -8,7 +8,7 @@ define([
     return function (stepNavigator) {
         stepNavigator.reload = wrapper.wrapSuper(stepNavigator.reload, function (sectionNames, forceNewSectionTimestamp) {
 
-            this._super(sectionNames, forceNewSectionTimestamp).always(function (){
+            return this._super(sectionNames, forceNewSectionTimestamp).always(function (){
                 var storage = $.initNamespaceStorage('mage-cache-storage').localStorage, sectionData;
                 sectionData = storage.get('customer-ap-data');
                 if (_.size(sectionData) > 1) {
