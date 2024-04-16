@@ -11,16 +11,31 @@
     a.location:after {
         color: @color_blue_light;
     }
+    a.login:hover:after,
+    a.location:hover:after {
+        color: @color_blue_dark;
+    }
+}
+
+.header.links>li a.account:after {
+    color: @color_blue_light;
+}
+.header.links>li a.account:hover:after {
+    color: @color_blue_dark;
 }
 
 .block-search{
     .label:before{
-        color: @color_blue_light;
+        color: @color_blue_dark;
     }
 }
 
 .minicart-wrapper .action.showcart:before {
     color: @color_blue_light;
+}
+
+.minicart-wrapper .action.showcart:hover:before {
+    color: @color_blue_dark;
 }
 
 .block-customer-login .form-login .actions-toolbar .primary{
@@ -122,7 +137,7 @@
     }
 }
 
-product-item-name-en, .product-item-name-en a {
+.product-item-name-en, .product-item-name-en a {
     color: @color_blue_dark;
     text-decoration: none;
     &:hover{
@@ -143,10 +158,138 @@ product-item-name-en, .product-item-name-en a {
     color: #ffffff;
 }
 
+.qty-selector:focus,
+.qty-selector:active {
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
+}
+.qty-selector:focus:before {
+    color: inherit;
+}
+
 .product-info-main .box-tocart .actions button:hover{
     background: @color_blue_light;
     border: 1px solid @color_blue_light;
     color: #ffffff;
+}
+.nav-toggle:before {
+    color: @color_blue_light;
+}
+.nav-toggle:hover:before {
+    color: @color_blue_dark;
+}
+button:focus,
+button:active {
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
+}
+.action.primary:hover,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .action.primary:hover,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .action.primary:hover,
+.amshopby-button:hover,
+.am-filter-go:hover,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .amshopby-button:hover,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .amshopby-button:hover,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .am-filter-go:hover,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .am-filter-go:hover {
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
+}
+.action.primary:focus,
+.action.primary:active,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .action.primary:focus,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .action.primary:active,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .action.primary:focus,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .action.primary:active,
+.amshopby-button:focus,
+.amshopby-button:active,
+.am-filter-go:focus,
+.am-filter-go:active,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .amshopby-button:focus,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .amshopby-button:active,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .amshopby-button:focus,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .amshopby-button:active,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .am-filter-go:focus,
+.paypal-express-review .paypal-review-discount .block .actions-toolbar .am-filter-go:active,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .am-filter-go:focus,
+.braintree-paypal-review .paypal-review-discount .block .actions-toolbar .am-filter-go:active {
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
+}
+._keyfocus *:focus,
+input:not([disabled]):focus,
+textarea:not([disabled]):focus,
+select:not([disabled]):focus {
+    box-shadow: 0 0 3px 1px @color_blue_light;
+}
+input[type="checkbox"]:checked {
+    background: @color_blue_light;
+    border-color: @color_blue_light;
+}
+.form-create-account .field.mobile a,
+.form-edit-account .field.mobile a,
+.form-create-account-pos .field.mobile a,
+.form-create-account .field.verification-code a,
+.form-edit-account .field.verification-code a,
+.form-create-account-pos .field.verification-code a,
+.form-create-account .field.ba-code a,
+.form-edit-account .field.ba-code a,
+.form-create-account-pos .field.ba-code a {
+    background: @color_blue_light;
+}
+.form-create-account .field.mobile a:hover,
+.form-edit-account .field.mobile a:hover,
+.form-create-account-pos .field.mobile a:hover,
+.form-create-account .field.verification-code a:hover,
+.form-edit-account .field.verification-code a:hover,
+.form-create-account-pos .field.verification-code a:hover,
+.form-create-account .field.ba-code a:hover,
+.form-edit-account .field.ba-code a:hover,
+.form-create-account-pos .field.ba-code a:hover {
+    background: @color_blue_dark;
+}
+.form-create-account .field.mobile a:hover,
+.form-edit-account .field.mobile a:hover,
+.form-create-account-pos .field.mobile a:hover,
+.form-create-account .field.verification-code a:hover,
+.form-edit-account .field.verification-code a:hover,
+.form-create-account-pos .field.verification-code a:hover,
+.form-create-account .field.ba-code a:hover,
+.form-edit-account .field.ba-code a:hover,
+.form-create-account-pos .field.ba-code a:hover,
+.form-create-account .field.mobile a:active,
+.form-edit-account .field.mobile a:active,
+.form-create-account-pos .field.mobile a:active,
+.form-create-account .field.verification-code a:active,
+.form-edit-account .field.verification-code a:active,
+.form-create-account-pos .field.verification-code a:active,
+.form-create-account .field.ba-code a:active,
+.form-edit-account .field.ba-code a:active,
+.form-create-account-pos .field.ba-code a:active,
+.form-create-account .field.mobile a:focus,
+.form-edit-account .field.mobile a:focus,
+.form-create-account-pos .field.mobile a:focus,
+.form-create-account .field.verification-code a:focus,
+.form-edit-account .field.verification-code a:focus,
+.form-create-account-pos .field.verification-code a:focus,
+.form-create-account .field.ba-code a:focus,
+.form-edit-account .field.ba-code a:focus,
+.form-create-account-pos .field.ba-code a:focus {
+    background: @color_blue_dark;
+}
+.customer-account-create .form.create.account .actions-toolbar .action {
+    background: @color_blue_light;
+    border: 1px solid @color_blue_light;
+}
+.customer-account-create .form.create.account .actions-toolbar .action:hover {
+    background: @color_blue_dark;
+    border: 1px solid @color_blue_dark;
+}
+.customer-account-create .form.create.account .actions-toolbar .action:focus,
+.customer-account-create .form.create.account .actions-toolbar .action:active {
+    background: @color_blue_dark;
+    border: 1px solid @color_blue_dark;
+    color: #fff;
 }
 
 @media only screen and (max-width: 768px) {
@@ -164,5 +307,46 @@ product-item-name-en, .product-item-name-en a {
             background: @color_blue_light;
             border: 1px solid @color_blue_light;
         }
+    }
+    .logo {
+        top: 17px;
+    }
+    .nav-sections .header.links li>a:not(.location):not(.account):hover {
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
+    }
+    .nav-sections .header.links li>a:not(.location):not(.account):focus,
+    .nav-sections .header.links li>a:not(.location):not(.account):active {
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
+    }
+    .navigation .level0 .submenu .level1.all-category>a:hover,
+    .navigation .level0 .submenu .level1.parent>a:hover {
+        color: @color_blue_dark;
+    }
+    .product-item .product-item-actions .actions-secondary>.action:hover {
+        background-color: #fff;
+        border-color: #fff;
+    }
+    .product-info-main .box-tocart .actions .tocart:hover,
+    .product-options-bottom .box-tocart .actions .tocart:hover {
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
+    }
+    .product-info-main .box-tocart .actions .tocart:focus,
+    .product-options-bottom .box-tocart .actions .tocart:focus,
+    .product-info-main .box-tocart .actions .tocart:active,
+    .product-options-bottom .box-tocart .actions .tocart:active {
+        background: @color_blue_light;
+        border: 1px solid @color_blue_light;
+    }
+    .filter.active .filter-title strong:after {
+        color: @color_blue_dark;
+    }
+    .filter .filter-subtitle {
+        color: @color_blue_light;
+    }
+    .active>.filter-options-title {
+        background: @color_blue_dark;
     }
 }
