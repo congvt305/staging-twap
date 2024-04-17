@@ -300,15 +300,17 @@ class PosReturnData extends AbstractPosOrder
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $skuPrefix = $skuPrefix ?: '';
         $sku = $newOrderItem->getSku();
+        $qty = $newOrderItem->getQtyOrdered();
         if ($bundleChild) {
             $sku = $bundleChild->getSku();
+            $qty = $bundleChild->getQtyOrdered();
         }
 
         $stripSku = str_replace($skuPrefix, '', $sku);
         $this->orderItemData[] = [
             'prdCD' => $stripSku,
-            'qty' => (int)$rmaItem->getQtyRequested(),
-            'price' => $this->orderData->roundingPrice($itemNsamt/(int)$rmaItem->getQtyRequested(), $isDecimalFormat),
+            'qty' => (int)$qty,
+            'price' => $this->orderData->roundingPrice($itemNsamt/(int)$qty, $isDecimalFormat),
             'salAmt' => $this->orderData->roundingPrice($itemSlamt, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
             'netSalAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat)
