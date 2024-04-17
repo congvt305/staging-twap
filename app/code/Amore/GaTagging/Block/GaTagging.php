@@ -447,7 +447,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $product['url'] = $item->getProduct()->getProductUrl();
             $product['img_url'] = $this->catalogProductHelper->getThumbnailUrl($currentProduct);
             $product['catecode'] = '';
-            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getSku());
+            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getProduct()->getData('sku'));
             $product['prdprice'] = (float) $item->getRowTotal() / $item->getQty();
             $product['discount'] = (float) $item->getDiscountAmount() / $item->getQty();
             $product['product_param1'] = null;
@@ -636,7 +636,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $currentProduct = $item->getProduct();
             $product['name'] = $item->getName();
             $product['code'] = $item->getSku();
-            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getSku());
+            $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getProduct()->getData('sku'));
             $product['sapcode'] = $item->getSku();
             $product['brand'] = $this->helper->getSiteName() ?? '';
             $product['quantity'] = intval($item->getQtyOrdered());
