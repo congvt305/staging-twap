@@ -463,7 +463,7 @@ class PosOrderData extends AbstractPosOrder
         $this->orderItemData[] = [
             'prdCD' => $stripSku,
             'qty' => $qty,
-            'price' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat),
+            'price' => $this->orderData->roundingPrice($itemNsamt/(int)$qty, $isDecimalFormat),
             'salAmt' => $this->orderData->roundingPrice($itemSlamt, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
             'netSalAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat)
