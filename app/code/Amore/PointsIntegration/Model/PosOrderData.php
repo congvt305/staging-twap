@@ -238,46 +238,26 @@ class PosOrderData extends AbstractPosOrder
         $orderItems = $order->getAllVisibleItems();
         $isDecimalFormat = $this->middlewareConfig->getIsDecimalFormat('store', $order->getStoreId());
         $storeId = $order->getStoreId();
-        $spendingRate = $this->amConfig->getPointsRate($storeId);
-        $mileageUsedAmount = 0;
-        if (!$spendingRate) {
-            $spendingRate = 1;
-        }
-        if ($this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = 0;
-            if ($order->getData('am_spent_reward_points')) {
-                $rewardPoints = $this->orderData->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
-            }
-            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
-                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
-                if ($rewardPoints) {
-                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
-                } else {
-                $mileageUsedAmount = $rewardPoints / $spendingRate;
-            }
-            }
-        }
         /** @var Item $orderItem */
         foreach ($orderItems as $orderItem) {
             if ($orderItem->getProductType() != 'bundle') {
                 $itemNsamt = $orderItem->getData('sap_item_nsamt');
                 $itemDcamt = $orderItem->getData('sap_item_dcamt');
-                $itemSlamt = $orderItem->getData('sap_item_slamt');
                 $itemNetwr = $orderItem->getData('sap_item_netwr');
-
-                $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt,
-                    $itemSlamt, $itemNetwr, $isDecimalFormat
+                $itemMiamt = $orderItem->getData('sap_item_miamt');
+                $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt + $itemMiamt,
+                    $itemNetwr, $isDecimalFormat
                 );
             } else {
                 foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    $itemDcamt = $bundleChild->getDiscountAmount();
+                    $itemDcamt = $bundleChild->getData('sap_item_dcamt');
                     $itemNsamt = $bundleChild->getData('sap_item_nsamt');
                     $itemSlamt = $itemNsamt - $itemDcamt;
                     $itemMiamt = $bundleChild->getData('sap_item_miamt');
                     $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
                     $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
-                    $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt,
-                        $itemSlamt, $itemNetwr, $isDecimalFormat, $bundleChild
+                    $this->addOrderItemData($order, $orderItem, $itemNsamt, $itemDcamt + $itemMiamt,
+                        $itemNetwr, $isDecimalFormat, $bundleChild
                     );
                 }
             }
@@ -292,7 +272,7 @@ class PosOrderData extends AbstractPosOrder
             $orderGrandTotal -= $order->getShippingAmount();
         }
 
-        $orderDiscountAmount = $orderSubtotal - $orderGrandTotal - $mileageUsedAmount;
+        $orderDiscountAmount = $orderSubtotal - $orderGrandTotal;
 
         $this->correctPricePOSOrderItemData($orderSubtotal, $orderDiscountAmount, $orderGrandTotal, $isDecimalFormat);
 
@@ -440,7 +420,6 @@ class PosOrderData extends AbstractPosOrder
      * @param $newOrderItem
      * @param $itemNsamt
      * @param $itemDcamt
-     * @param $itemSlamt
      * @param $itemNetwr
      * @param $isDecimalFormat
      * @param $bundleChild
@@ -448,7 +427,7 @@ class PosOrderData extends AbstractPosOrder
      */
     private function addOrderItemData(
         $order, $newOrderItem, $itemNsamt, $itemDcamt,
-        $itemSlamt, $itemNetwr, $isDecimalFormat, $bundleChild = null
+        $itemNetwr, $isDecimalFormat, $bundleChild = null
     ) {
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $skuPrefix = $skuPrefix ?: '';
@@ -464,9 +443,9 @@ class PosOrderData extends AbstractPosOrder
             'prdCD' => $stripSku,
             'qty' => $qty,
             'price' => $this->orderData->roundingPrice($itemNsamt/(int)$qty, $isDecimalFormat),
-            'salAmt' => $this->orderData->roundingPrice($itemSlamt, $isDecimalFormat),
+            'salAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
-            'netSalAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat)
+            'netSalAmt' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat)
         ];
 
         $this->itemsSubtotal += $itemNsamt;

@@ -17,7 +17,6 @@ use Magento\Framework\DataObject;
 use Magento\Rma\Api\Data\CommentInterfaceFactory;
 use Magento\Rma\Api\Data\RmaInterface;
 use Magento\Rma\Api\RmaRepositoryInterface;
-use Magento\Sales\Api\OrderItemRepositoryInterface;
 use Amore\PointsIntegration\Logger\Logger;
 
 class PosReturnData extends AbstractPosOrder
@@ -32,11 +31,6 @@ class PosReturnData extends AbstractPosOrder
      */
 
     private $rmaRepository;
-    /**
-     * @var OrderItemRepositoryInterface
-     */
-
-    private $orderItemRepository;
 
     /**
      * @var \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory
@@ -77,7 +71,6 @@ class PosReturnData extends AbstractPosOrder
     /**
      * @param Config $config
      * @param RmaRepositoryInterface $rmaRepository
-     * @param OrderItemRepositoryInterface $orderItemRepository
      * @param CustomerRepositoryInterface $customerRepository
      * @param \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory
      * @param Logger $pointsIntegrationLogger
@@ -91,7 +84,6 @@ class PosReturnData extends AbstractPosOrder
     public function __construct(
         Config $config,
         RmaRepositoryInterface $rmaRepository,
-        OrderItemRepositoryInterface $orderItemRepository,
         CustomerRepositoryInterface $customerRepository,
         \Magento\Rma\Model\ResourceModel\Rma\CollectionFactory $rmaCollectionFactory,
         Logger $pointsIntegrationLogger,
@@ -104,7 +96,6 @@ class PosReturnData extends AbstractPosOrder
     ) {
         $this->config = $config;
         $this->rmaRepository = $rmaRepository;
-        $this->orderItemRepository = $orderItemRepository;
         $this->rmaCollectionFactory = $rmaCollectionFactory;
         $this->pointsIntegrationLogger = $pointsIntegrationLogger;
         $this->commentInterfaceFactory = $commentInterfaceFactory;
@@ -158,6 +149,10 @@ class PosReturnData extends AbstractPosOrder
         }
         $baReferralCode = $this->getReferralBACode($order, $websiteId);
         $friendReferralCode = $this->getFriendReferralCode($order);
+        $quantityRatioForPartial = $this->getQuantityRatioForPartial($rma);
+        if ($rewardPoints && $quantityRatioForPartial < 1) {
+            $rewardPoints = $rewardPoints * $quantityRatioForPartial;
+        }
 
         $rmaData = [
             'salOrgCd' => $this->middlewareHelper->getSalesOrganizationCode('store', $websiteId),
@@ -189,48 +184,19 @@ class PosReturnData extends AbstractPosOrder
         $order = $rma->getOrder();
         $storeId = $order->getStoreId();
         $isDecimalFormat = $this->middlewareHelper->getIsDecimalFormat('store', $storeId);
-        $spendingRate = $this->amConfig->getPointsRate($storeId);
-        $mileageUsedAmount = 0;
-        if (!$spendingRate) {
-            $spendingRate = 1;
-        }
-        if ($this->amConfig->isEnabled($storeId)) {
-            $rewardPoints = 0;
-            if ($order->getData('am_spent_reward_points')) {
-                $rewardPoints = $this->orderData->roundingPrice($order->getData('am_spent_reward_points'), $isDecimalFormat);
-            }
-            if ($this->rewardData->isEnableShowListOptionRewardPoint($storeId)) {
-                $listOptions = $this->rewardData->getListOptionRewardPoint($storeId);
-                if ($rewardPoints) {
-                    $mileageUsedAmount = $listOptions[$rewardPoints] ?? 0;
-                }
-            } else {
-                $mileageUsedAmount = $rewardPoints / $spendingRate;
-            }
-        }
+        $quantityRatioForPartial = $this->getQuantityRatioForPartial($rma);
         foreach ($rmaItems as $rmaItem) {
-            $orderItem = $this->orderItemRepository->get($rmaItem->getOrderItemId());
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
+
+            $quantityRatioPerItemPartial = $rmaItem->getQtyRequested() / $orderItem->getQtyOrdered();
             if ($orderItem->getProductType() != 'bundle') {
-                if ($orderItem->getParentItem() && $orderItem->getParentItem()->getProductType() == 'bundle') {
-                    continue;
-                }
-                $itemNsamt = $orderItem->getData('sap_item_nsamt');
-                $itemDcamt = $orderItem->getData('sap_item_dcamt');
-                $itemSlamt = $orderItem->getData('sap_item_slamt');
-                $itemNetwr = $orderItem->getData('sap_item_netwr');
-                $this->addOrderItemData($order, $orderItem, $rmaItem, $itemNsamt, $itemDcamt,
-                    $itemSlamt, $itemNetwr, $isDecimalFormat);
-            } else {
-                foreach ($orderItem->getChildrenItems() as $bundleChild) {
-                    $itemDcamt = $bundleChild->getDiscountAmount();
-                    $itemNsamt = $bundleChild->getData('sap_item_nsamt');
-                    $itemSlamt = $itemNsamt - $itemDcamt;
-                    $itemMiamt = $bundleChild->getData('sap_item_miamt');
-                    $itemTaxAmount = $bundleChild->getData('sap_item_mwsbp');
-                    $itemNetwr = $itemSlamt - $itemMiamt - $itemTaxAmount;
-                    $this->addOrderItemData($order, $orderItem, $rmaItem, $itemNsamt, $itemDcamt,
-                        $itemSlamt, $itemNetwr, $isDecimalFormat, $bundleChild);
-                }
+                $itemDcamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_dcamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemNsamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_nsamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemSlamt = $itemNsamt - $itemDcamt; // have to do this to correct price among Nsamt, Dcamt and Slamt
+                $itemMiamt = $this->orderData->roundingPrice($orderItem->getData('sap_item_miamt') * $quantityRatioPerItemPartial, $isDecimalFormat);
+                $itemNetwr = $itemSlamt - $itemMiamt; // have to do this to correct price among Nsamt, Dcamt, Slamt and Netwr
+
+                $this->addOrderItemData($order, $orderItem, $rmaItem, $itemNsamt, $itemDcamt + $itemMiamt, $itemNetwr, $isDecimalFormat);
             }
         }
         $orderSubtotal = abs($this->orderData->roundingPrice($order->getSubtotalInclTax(), $isDecimalFormat));
@@ -241,10 +207,10 @@ class PosReturnData extends AbstractPosOrder
         } else {
             $orderGrandTotal -= $order->getShippingAmount();
         }
-
-        $orderDiscountAmount = $orderSubtotal - $orderGrandTotal - $mileageUsedAmount;
-        $this->correctPricePOSOrderItemData($orderSubtotal, $orderDiscountAmount, $orderGrandTotal, $isDecimalFormat);
-
+        if ($quantityRatioForPartial == 1) {
+            $orderDiscountAmount = $orderSubtotal - $orderGrandTotal;
+            $this->correctPricePOSOrderItemData($orderSubtotal, $orderDiscountAmount, $orderGrandTotal, $isDecimalFormat);
+        }
         return $this->orderItemData;
     }
 
@@ -287,7 +253,6 @@ class PosReturnData extends AbstractPosOrder
      * @param $newOrderItem
      * @param $itemNsamt
      * @param $itemDcamt
-     * @param $itemSlamt
      * @param $itemNetwr
      * @param $isDecimalFormat
      * @param $bundleChild
@@ -295,15 +260,15 @@ class PosReturnData extends AbstractPosOrder
      */
     private function addOrderItemData(
         $order, $newOrderItem, $rmaItem, $itemNsamt, $itemDcamt,
-        $itemSlamt, $itemNetwr, $isDecimalFormat, $bundleChild = null
+        $itemNetwr, $isDecimalFormat, $bundleChild = null
     ) {
         $skuPrefix = $this->getSKUPrefix($order->getStoreId()) ?: '';
         $skuPrefix = $skuPrefix ?: '';
         $sku = $newOrderItem->getSku();
-        $qty = $newOrderItem->getQtyOrdered();
+        $qty = $rmaItem->getQtyRequested();
         if ($bundleChild) {
             $sku = $bundleChild->getSku();
-            $qty = $bundleChild->getQtyOrdered();
+            $qty = $bundleChild->getQtyRequested();
         }
 
         $stripSku = str_replace($skuPrefix, '', $sku);
@@ -311,9 +276,9 @@ class PosReturnData extends AbstractPosOrder
             'prdCD' => $stripSku,
             'qty' => (int)$qty,
             'price' => $this->orderData->roundingPrice($itemNsamt/(int)$qty, $isDecimalFormat),
-            'salAmt' => $this->orderData->roundingPrice($itemSlamt, $isDecimalFormat),
+            'salAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
-            'netSalAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat)
+            'netSalAmt' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat)
         ];
 
         $this->itemsSubtotal += $itemNsamt;
@@ -321,4 +286,35 @@ class PosReturnData extends AbstractPosOrder
         $this->itemsGrandTotal += $itemNetwr;
     }
 
+    /**
+     * Get quantity ratio for partial
+     *
+     * @param $rma
+     * @return float|int
+     */
+    private function getQuantityRatioForPartial($rma)
+    {
+        $totalReturn = 0;
+        $totalOrder = 0;
+        $rmaItems = $rma->getItems();
+        $order = $rma->getOrder();
+        foreach ($rmaItems as $rmaItem) {
+            $orderItem = $order->getItemById($rmaItem->getOrderItemId());
+            if ($orderItem->getProductType() == 'bundle') {
+                continue;
+            }
+            $totalReturn += $rmaItem->getQtyRequested();
+        }
+
+        foreach ($order->getAllVisibleItems() as $orderItem) {
+            if ($orderItem->getProductType() != 'bundle') {
+                $totalOrder += $orderItem->getQtyOrdered();
+            } else {
+                foreach ($orderItem->getChildrenItems() as $bundleChild) {
+                    $totalOrder += $bundleChild->getQtyOrdered();
+                }
+            }
+        }
+        return $totalReturn / $totalOrder;
+    }
 }
