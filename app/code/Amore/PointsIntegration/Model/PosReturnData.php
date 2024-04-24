@@ -276,9 +276,9 @@ class PosReturnData extends AbstractPosOrder
             'prdCD' => $stripSku,
             'qty' => (int)$qty,
             'price' => $this->orderData->roundingPrice($itemNsamt/(int)$qty, $isDecimalFormat),
-            'salAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat),
+            'salAmt' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat),
             'dcAmt' => $this->orderData->roundingPrice($itemDcamt, $isDecimalFormat),
-            'netSalAmt' => $this->orderData->roundingPrice($itemNsamt, $isDecimalFormat)
+            'netSalAmt' => $this->orderData->roundingPrice($itemNetwr, $isDecimalFormat)
         ];
 
         $this->itemsSubtotal += $itemNsamt;
