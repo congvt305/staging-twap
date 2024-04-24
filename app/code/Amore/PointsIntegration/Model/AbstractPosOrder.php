@@ -141,9 +141,9 @@ abstract class AbstractPosOrder
      */
     protected function correctPricePOSOrderItemData($orderSubtotal, $orderDiscountAmount, $orderGrandTotal, $isDecimalFormat)
     {
-        $this->orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $this->orderItemData, 'salAmt', $isDecimalFormat);
+        $this->orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $this->orderItemData, 'salAmt', $isDecimalFormat);
         $this->orderItemData = $this->orderData->priceCorrector($orderDiscountAmount, $this->itemsDiscountAmount, $this->orderItemData, 'dcAmt', $isDecimalFormat);
-        $this->orderItemData = $this->orderData->priceCorrector($orderGrandTotal, $this->itemsGrandTotal, $this->orderItemData, 'netSalAmt', $isDecimalFormat);
+        $this->orderItemData = $this->orderData->priceCorrector($orderSubtotal, $this->itemsSubtotal, $this->orderItemData, 'netSalAmt', $isDecimalFormat);
 
         if ($isDecimalFormat) {
             $listToFormat = ['salAmt', 'dcAmt', 'netSalAmt', 'pointAccount', 'price'];
