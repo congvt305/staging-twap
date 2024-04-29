@@ -206,11 +206,35 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @param $storeId
+     * @return string
+     */
+    public function getSapSkuPrefix($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            \Amore\Sap\Model\Source\Config::SAP_SKU_PREFIX_XML_PATH,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?? '';
+    }
+
+    /**
+     * @param $productSku
+     * @return string
+     */
+    public function getSapSku($productSku)
+    {
+        $skuPrefix = $this->getSapSkuPrefix();
+        return str_replace($skuPrefix, '', $productSku);
+    }
+
+    /**
      * @param $productSku
      * @return string
      */
     public function getApgBrandCode($productSku)
     {
+        $productSku = $this->getSapSku($productSku);
         return !empty($productSku) ? substr($productSku, 0, 5) : '';
     }
 

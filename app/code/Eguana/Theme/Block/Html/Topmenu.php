@@ -159,11 +159,8 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
                 $html .= '</ul></li><li class="column"><ul>';
             }
 
-            $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+            $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
             $clickArea = CommonVariable::CLICK_AREA;
-            if ($child->getParent()->getName()) {
-                $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
-            }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
 
