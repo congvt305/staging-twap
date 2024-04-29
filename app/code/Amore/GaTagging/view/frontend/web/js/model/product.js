@@ -33,7 +33,7 @@ define([], function () {
         init: function (product) {
             this.data = productData;
             this.data.name = product.product_name;
-            this.data.code = product.product_sku;
+            this.data.code = product.code;
             this.data.v2code = product.product_id;
             this.data.sapcode = product.product_sku;
             this.data.brand = product.product_brand;

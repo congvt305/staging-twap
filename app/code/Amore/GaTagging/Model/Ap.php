@@ -121,7 +121,7 @@ class Ap
         $prdPrice = $this->getProductOriginalPrice($product);
         $price = $this->getProductDiscountedPrice($product);
         $productInfo['name'] = $product->getName();
-        $productInfo['code'] = $product->getSku();
+        $productInfo['code'] = $this->helper->getSapSku($product->getSku());
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
@@ -152,7 +152,7 @@ class Ap
         $prdPrice = $this->getProductOriginalPrice($product);
         $price = $this->getProductDiscountedPrice($product);
         $productInfo['name'] = $product->getName();
-        $productInfo['code'] = $product->getSku();
+        $productInfo['code'] = $this->helper->getSapSku($product->getSku());
         $productInfo['v2code'] = $product->getId();
         $productInfo['sapcode'] = $product->getSku();
         $productInfo['brand'] = $this->helper->getSiteName() ?? '';
