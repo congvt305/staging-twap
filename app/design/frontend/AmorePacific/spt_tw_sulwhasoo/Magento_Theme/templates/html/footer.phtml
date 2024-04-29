@@ -1,0 +1,188 @@
+<?php $categories = $this->helper(\Magento\Catalog\Helper\Category::class)->getStoreCategories(); ?>
+
+<div class="footer_top">
+    <div data-content-type="html" data-appearance="default" data-element="main" data-decoded="true">
+        <div class="footer_top_nav">
+            <div class="footer_nav">
+                <div class="nav_items">
+                    <div class="nav_item box_link footer-category">
+                        <h5 class="to-gnb">精選類別</h5>
+                        <ul style="display:block !important">
+                            <li>
+                                <a title="<?= $block->escapeHtml(__('Skin care PLP')) ?>" href="/skincare.html">
+                                    韓式保養
+                                </a>
+                            </li>
+                            <li>
+                                <a title="<?= $block->escapeHtml(__('Makeup PLP')) ?>" href="/makeup.html">
+                                    韓系彩妝
+                                </a>
+                            </li>
+                            <li>
+                                <a title="<?= $block->escapeHtml(__('Best Sellers')) ?>" href="/best.html">
+                                    熱賣商品
+                                </a>
+                            </li>
+                            <li>
+                                <a title="<?= $block->escapeHtml(__('Member privileges')) ?>" href="/2022membership.html">
+                                    會員尊寵禮遇
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="nav_item box_link">
+                        <h5 class="to-gnb">常見問題</h5>
+                        <ul style="display:block !important">
+                            <li><a title="<?= $block->escapeHtml(('FAQ')) ?>" href="/faq">FAQ</a></li>
+                            <li><a title="<?= $block->escapeHtml(__('Shipping information')) ?>" href="/sales/guest/form/">訂單進度查詢</a></li>
+                            <li><a title="<?= $block->escapeHtml(__('UGC Terms of Use')) ?>" href="/ugc-terms-and-conditions" style="text-transform: uppercase">UGC 使用條款</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav_item">
+                        <h5>聯繫我們</h5>
+                        <ul>
+                            <li>
+                                <span>客戶服務專線</span>
+                                <a href="#">0800-600-308 (手機可撥打)</a>
+                            </li>
+                            <li>
+                                <span>客戶服務信箱</span>
+                                <a href="#">service@tw.amorepacific.com</a>
+                            </li>
+                            <li>
+                                <span>客戶服務時間</span>
+                                週一至週五9:00-18:00 (國定例假日除外)
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="nav_item">
+                        <a class="footer-sitemap-link" href="/sitemap" style="text-transform: uppercase">網站地圖</a>
+                        <ul class="footer-sitemap-ul" >
+                            <li>
+                                <span>其他</span>
+                                <a href="/stores/info/list/" style="text-transform: uppercase">尋找門市</a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+
+        </div>
+        <div class="footer_card">
+            <ul>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart1.png'); ?>" alt="Card Pay 1">
+                </li>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart2.png'); ?>" alt="Card Pay 2">
+                </li>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart3.png'); ?>" alt="Card Pay 3">
+                </li>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart4.png'); ?>" alt="Card Pay 4">
+                </li>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart5.png'); ?>" alt="Card Pay 5">
+                </li>
+                <li>
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart6.png'); ?>" alt="Card Pay 6">
+                </li>
+            </ul>
+        </div>
+        <div class="footer_bottom">
+            <div class="footer_links">
+                <ul>
+                    <li><a title="<?= $block->escapeHtml(__('Sitemap')) ?>"  href="/sitemap">網站地圖</a></li>
+                    <li>
+                        <a title="<?= $block->escapeHtml(__('Store Location')) ?>" href="/stores/info/list/">尋找門市</a>
+                    </li>
+                    <li>
+                        <a title="<?= $block->escapeHtml(__('Privacy Policy')) ?>"  href="/privacy-policy">隱私權政策</a>
+                    </li>
+                    <li>
+                        <a title="<?= $block->escapeHtml(__('Term & Conditions')) ?>" href="/terms-and-conditions">服務條款</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="social_links">
+                <ul>
+                    <li>
+                        <a title="<?= $block->escapeHtml(('LINE page')) ?>" target="_blank" href="https://page.line.me/759vngzh?openQrModal=true"><span class="line"></span></a>
+                    </li>
+                    <li>
+                        <a title="<?= $block->escapeHtml(('Facebook page')) ?>" target="_blank" href="https://www.facebook.com/Sulwhasoo.taiwan/?ref=bookmarks"><span class="facebook"></span></a>
+                    </li>
+                    <li>
+                        <a title="<?= $block->escapeHtml(('Instagram page')) ?>" target="_blank" href="https://www.instagram.com/sulwhasoo.taiwan/"><span class="instagram"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <style>
+            .footer_top .footer_top_nav .nav_items .nav_item li a {
+                text-transform: lowercase;
+            }
+        </style>
+    </div>
+    <div data-content-type="html" data-appearance="default" data-element="main" data-decoded="true">
+        <style>
+            #on-sale-box {
+                display: none;
+            }
+
+            .catalog-product-view.page-layout-1column .products-grid .product-item {
+                margin-right: 20px
+            }
+
+            .catalog-product-view.page-layout-1column .products-grid .product-item:last-child {
+                margin-right: 0;
+            }
+
+            @media (min-width: 1024px),
+            print {
+                .catalog-product-view.page-layout-1column .products-grid .product-item {
+                    margin-right: 20px;
+                }
+
+                .catalog-product-view.page-layout-1column .products-grid .product-item:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            @media only screen and (max-width: 768px) {
+
+                .product-items .action.towishlist:not(.updated):before,
+                .products.list.items .action.towishlist:not(.updated):before {
+                    height: auto;
+                    line-height: 18px;
+                    width: 23px;
+                }
+
+                .products .products.list.items .action.towishlist,
+                .products.list.items .action.towishlist {
+                    z-index: 9;
+                }
+
+                .page.messages .message {
+                    margin: 0 20px;
+                }
+
+            }
+        </style>
+
+
+    </div>
+</div>
+<script>
+    require(['jquery'], function($) {
+        $(document).on('click','.to-gnb',function(){
+            window.scroll({
+            top: 0, 
+            left: 0, 
+            behavior: 'smooth'
+            });
+        });
+    });
+</script>
