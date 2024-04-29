@@ -150,11 +150,8 @@ class Topmenu extends \Magento\Framework\View\Element\Template
             $i = 0;
             $html = '<ul class="subchildmenu submenu-toggle '.$column_class.'">';
             foreach($children as $child) {
-                $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+                $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
                 $clickArea = CommonVariable::CLICK_AREA;
-                if ($child->getParent()->getName()) {
-                    $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
-                }
                 $categoryDefaultName = $this->getDefaultStoreCategory($child->getId(), 0)->getName();
                 $sub_children = $this->getActiveChildCategories($child);
 
@@ -234,7 +231,7 @@ class Topmenu extends \Magento\Framework\View\Element\Template
                 $html .= '<div class="open-children-toggle"></div>';
             }
 
-            $parentCategoryName = CommonVariable::CLICK_TAG_MENU;
+            $parentCategoryName = CommonVariable::CLICK_TAG_GNB;
             $clickArea = CommonVariable::CLICK_AREA;
             if ($category->getParent()->getName()) {
                 $parentCategoryName = CommonVariable::CLICK_TAG_GNB;

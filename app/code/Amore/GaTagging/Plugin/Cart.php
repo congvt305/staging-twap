@@ -94,6 +94,7 @@ class Cart
         if (is_array($result['items'])) {
             foreach ($result['items'] as $key => $itemAsArray) {
                 if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
+                    $result['items'][$key]['code'] = $this->data->getSapSku($result['items'][$key]['product_sku']);
                     $result['items'][$key]['product_original_price'] = (float)$item->getRowTotal() / $item->getQty();
                     $result['items'][$key]['product_brand'] = $this->data->getSiteName();
                     $result['items'][$key]['product_category'] = $this->data->getProductCategory($item->getProduct());
@@ -116,25 +117,25 @@ class Cart
                                 $result['items'][$key]['discount_price'] += $bundleChild->getDiscountAmount() / $item->getQty();
                             }
 
-                            $childSkus[] = $bundleChild->getProduct()->getSku();
+                            $childSkus[] = $this->data->getSapSku($bundleChild->getProduct()->getSku());
                             $childPrices[] = (float) $bundleChild->getPrice();
                             $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $bundleChild->getQty();
                             $childQtys[] = $bundleChild->getQty();
 
                             if ($bundleChild->getIsFreeGift()) {
-                                $gifts[] = $bundleChild->getProduct()->getSku();
+                                $gifts[] = $this->data->getSapSku($bundleChild->getProduct()->getSku());
                             }
                         }
 
-                        $result['items'][$key]['parent_sku'] = $item->getProduct()->getData('sku');
+                        $result['items'][$key]['parent_sku'] = $this->data->getSapSku($item->getProduct()->getData('sku'));
                         $result['items'][$key]['child_skus'] = implode(' / ', $childSkus);
                         $result['items'][$key]['child_prices'] = implode(' / ', $childPrices);
                         $result['items'][$key]['child_discount_prices'] = implode(' / ', $childDiscountPrices);
                         $result['items'][$key]['child_qtys'] = implode(' / ', $childQtys);
                         $result['items'][$key]['gifts'] = implode(' / ', $gifts);
                     } elseif ($item->getProductType() === Configurable::TYPE_CODE) {
-                        $result['items'][$key]['parent_sku'] = $item->getProduct()->getData('sku');
-                        $result['items'][$key]['child_skus'] = $item->getSku();
+                        $result['items'][$key]['parent_sku'] = $this->data->getSapSku($item->getProduct()->getData('sku'));
+                        $result['items'][$key]['child_skus'] = $this->data->getSapSku($item->getSku());
                         $result['items'][$key]['child_prices'] = (float)$item->getPrice();
                         $result['items'][$key]['child_discount_prices'] = (float)$item->getDiscountAmount() / $item->getQty();
                         $result['items'][$key]['child_qtys'] = $item->getQty();

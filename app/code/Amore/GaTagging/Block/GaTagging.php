@@ -262,7 +262,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             $discountAmount = $regularPrice - $finalPrice;
 
             $productData[] = [
-                'code' => $product->getSku(),
+                'code' => $this->helper->getSapSku($product->getSku()),
                 'name' => $product->getName(),
                 'brand' => $this->helper->getSiteName(),
                 'cate' => $this->helper->getProductCategory($product),
@@ -434,7 +434,7 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             }
 
             $product['name'] = $item->getName();
-            $product['code'] = $item->getSku();
+            $product['code'] = $this->helper->getSapSku($item->getSku());
             $product['sapcode'] = $item->getSku();
             $product['brand'] = $this->helper->getSiteName() ?? '';
             $product['quantity'] = intval($item->getQty());
@@ -459,8 +459,8 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             if ($item->getProductType() === 'configurable') {
                 $product['variant'] = $this->helper->getSelectedOption($item);
 
-                $product['code'] = $item->getProduct()->getData('sku');
-                $product['product_param1'] = $item->getSku();
+                $product['code'] = $this->helper->getSapSku($item->getProduct()->getData('sku'));
+                $product['product_param1'] = $this->helper->getSapSku($item->getSku());
                 $product['product_param2'] = (float)$item->getPrice();
                 $product['product_param3'] = (float)$item->getDiscountAmount() / $item->getQty();
                 $product['product_param4'] = (int)$item->getQty();
@@ -474,13 +474,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
                     $totalQty = $bundleChild->getQty() * $item->getQty();
 
-                    $childSkus[] = $bundleChild->getProduct()->getSku();
+                    $childSkus[] = $this->helper->getSapSku($bundleChild->getProduct()->getSku());
                     $childPrices[] = (float) $bundleChild->getRowTotal() / $totalQty;
                     $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $totalQty;
                     $childQtys[] = (int) $totalQty;
                 }
 
-                $product['code'] = $item->getProduct()->getData('sku');
+                $product['code'] = $this->helper->getSapSku($item->getProduct()->getData('sku'));
                 $product['product_param1'] = implode(' / ', $childSkus);
                 $product['product_param2'] = implode(' / ', $childPrices);
                 $product['product_param3'] = implode(' / ', $childDiscountPrices);
@@ -629,13 +629,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
 
             $infoBuyRequest = $item->getProductOptionByCode('info_buyRequest');
             if (isset($infoBuyRequest['options']['ampromo_rule_id'])) {
-                $gifts[] = $item->getSku();
+                $gifts[] = $this->helper->getSapSku($item->getSku());
                 continue;
             }
 
             $currentProduct = $item->getProduct();
             $product['name'] = $item->getName();
-            $product['code'] = $item->getSku();
+            $product['code'] = $this->helper->getSapSku($item->getSku());
             $product['apg_brand_code'] = $this->helper->getApgBrandCode($item->getProduct()->getData('sku'));
             $product['sapcode'] = $item->getSku();
             $product['brand'] = $this->helper->getSiteName() ?? '';
@@ -661,13 +661,13 @@ class GaTagging extends \Magento\Framework\View\Element\Template
                         $product['discount'] += (float) $bundleChild->getDiscountAmount() / $item->getQtyOrdered();
                     }
 
-                    $childSkus[] = $bundleChild->getProduct()->getSku();
+                    $childSkus[] = $this->helper->getSapSku($bundleChild->getProduct()->getSku());
                     $childPrices[] = (float) $bundleChild->getPrice();
                     $childDiscountPrices[] = (float) $bundleChild->getDiscountAmount() / $item->getQtyOrdered();
                     $childQtys[] = (int) $bundleChild->getQtyOrdered();
                 }
 
-                $product['code'] = $item->getProduct()->getData('sku');
+                $product['code'] = $this->helper->getSapSku($item->getProduct()->getData('sku'));
                 $product['product_param1'] = implode(' / ', $childSkus);
                 $product['product_param2'] = implode(' / ', $childPrices);
                 $product['product_param3'] = implode(' / ', $childDiscountPrices);
@@ -675,8 +675,8 @@ class GaTagging extends \Magento\Framework\View\Element\Template
             } elseif ($item->getProductType() === 'configurable') {
                 $product['variant'] = $this->helper->getSelectedOption($item);
 
-                $product['code'] = $item->getProduct()->getData('sku');
-                $product['product_param1'] = $item->getSku();
+                $product['code'] = $this->helper->getSapSku($item->getProduct()->getData('sku'));
+                $product['product_param1'] = $this->helper->getSapSku($item->getSku());
                 $product['product_param2'] = (float)$item->getRowTotal() / $item->getQtyOrdered();
                 $product['product_param3'] = (float)$item->getDiscountAmount() / $item->getQtyOrdered();
                 $product['product_param4'] = (int) $item->getQtyOrdered();
