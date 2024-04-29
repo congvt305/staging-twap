@@ -1,0 +1,64 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** This changes need to valid applying filters and configuration before search process is started. */
+$productList = $block->getProductListHtml(); 
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+?>
+
+<div class="columns search-result-sidebar">
+    <div class="sidebar sidebar-main">
+        <div class="block sidebar-search-result" style="">
+            <h3>
+                搜尋結果 (<?=$block->getResultCount() ?>)
+            </h3>
+        </div>
+    </div>
+    <div class="column main">
+        <h1 class="page_title_custom"><span>'<?= $helper->getEscapedQueryText() ?>'</span> 結果</h1>
+        <?php if ($block->getResultCount()) : ?>
+            <?= /* @noEscape */ $block->getChildHtml('tagged_product_list_rss_link') ?>
+            <div class="search results">
+                <?= /* @noEscape */ $productList ?>
+            </div>
+        <?php else : ?>
+            <div class="cart-empty-content">
+                <p class="message-cart-empty">
+                    很抱歉，找不到與 : 符合的商品
+                </p>
+            </div>
+        <?php endif; ?>
+        <div data-am-js="js-init"></div>
+    </div>
+</div>
+<?php if (!$block->getResultCount()) : ?>
+<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('tw-sulwhasoo-empty-search-banner')->toHtml(); ?>
+<?php endif; ?>
+<!-- <script>
+        require([
+            'jquery',
+            'amScrollScript'
+        ], function ($) {
+            var bodyElem = $('body');
+            if ($.data(bodyElem[0], 'mage-amScrollScript')) {
+                bodyElem.amScrollScript('initialize');
+            } else {
+                bodyElem.amScrollScript({
+                    "product_container":".products.products-grid:not(.amasty-banners), .products.products-list:not(.amasty-banners), .products-grid.grid:not(.amasty-banners)",
+                    "product_link":".product-item-link",
+                    "pageNumberStyle":"button",
+                    "buttonColor":"#4776F0",
+                    "buttonColorPressed":"#1846BE",
+                    "loadingafterTextButton":"Load next",
+                    "loadingbeforeTextButton":"Load previous",
+                    "backToTop":{"enabled":"0","style_desktop":"text","style_mobile":"arrow","color":"#4776F0"},
+                    "backToTopText":"Back to Top",
+                    "current_page":1,
+                    "footerSelector":".page-footer",
+                    "actionMode":"auto"});
+            }
+        });
+    </script> -->
