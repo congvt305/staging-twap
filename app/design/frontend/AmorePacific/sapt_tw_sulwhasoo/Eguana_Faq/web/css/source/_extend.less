@@ -1,0 +1,41 @@
+& when (@media-common = true) {
+    .faqs-page{
+        .lists{
+            .list{
+                .title{
+                    font-size: 18px;
+                    font-weight: 700;
+                    line-height: 23px;
+                    color: #222;
+                    text-transform: capitalize;
+                    padding: 20px 64px 20px 0;
+                    border-top: 1px solid #c7c7c7;
+                    word-break: break-all;
+                    position: relative;
+                    cursor: pointer;
+                    &:after{
+                        color: #222;
+                        content: "\e61c";
+                        font-family: 'icons';
+                        vertical-align: top;
+                        display: inline-block;
+                        font-size: 21px;
+                        font-weight: 400;
+                        position: absolute;
+                        top: 36px;
+                        right: 0;
+                    }
+                    &[aria-expanded="true"]:after{
+                        content: '\e60f';
+                    }
+                }
+                .content{
+                    font-size: 16px;
+                    line-height: 24px;
+                    font-weight: 400;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

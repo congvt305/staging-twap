@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * @var \Eguana\Faq\Block\Faq $block
+ */
+
+/** @var \Eguana\Faq\ViewModel\Faq  $faqViewModel */
+$faqViewModel = $block->getData('faq_view_model');
+$faqList = $faqViewModel->getFaqData(5, 1);
+$faqHeader = $faqViewModel->getHeaderFaq();
+$productId = null;
+$categoryId = null;
+$html = '';
+if ($faqViewModel->isPdpPage()) {
+    $product = $faqViewModel->getProduct();
+    $productId = $product->getId();
+} else {
+    $category = $faqViewModel->getCategory();
+    $categoryId = $category->getId();
+    $html = "<div class='faq-border'></div>";
+}
+?>
+<?php if ($faqList) :?>
+    <?=$html?>
+    <div class="product attribute faq">
+        <div class="faqs-page" data-product-id="<?=$productId?>" data-category-id="<?=$categoryId?>">
+        <strong class="type click_show faq">常見問題</strong>
+        <div class="value content_faq" style="display:none">
+            <div class="header-faq"><?=$faqHeader?></div>
+                <div class="block">
+                    <div class="item content" data-role="tab-content">
+                        <div class="lists"
+                            data-mage-init='{"accordion":{
+                                    "collapsible": true,
+                                    "animate": {"duration": 300},
+                                    "active": false,
+                                    "multipleCollapsible": true}}'>
+                            <?php foreach ($faqList as $key => $faq) :?>
+                                <?php $html = ''?>
+                                <?php if ($key % 2 != 0) {
+                                    $class = 'right';
+                                    $html = '<div class="clearfix"></div>';
+                                } else {
+                                    $class = 'left';
+                                }?>
+                                <div class="list <?=$class?>">
+                                    <div data-role="collapsible">
+                                        <div class="title" data-role="title">
+                                            <span><?= $block->escapeHtml($faq->getTitle()) ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="content" data-role="content">
+                                        <?= /* @noEscape */
+                                        $block->descriptionFilter($faq->getDescription()) ?>
+                                    </div>
+                                </div>
+                                <?=$html?>
+                            <?php endforeach; ?>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "faqLoadAjaxJs": {}
+        }
+    }
+
+    </script>
+    <script>
+        require([
+            'jquery'
+        ],function ($) {
+            $("#tab-label-faq_list").click(function() {
+                $(".click_show.faq").addClass("active");
+                $(".content_faq").show();
+            });
+
+            $(".click_show.faq").click(function(){
+                $(this).toggleClass("active");
+                $(".content_faq").slideToggle();
+            });
+        });
+    </script>
+<?php endif; ?>
