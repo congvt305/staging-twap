@@ -2,7 +2,7 @@
 
 namespace CJ\NinjaVanShipping\Logger;
 
-use Magento\Framework\Logger\Handler\Base as BaseHandler;
+use CJ\Middleware\Logger\Handler as BaseHandler;
 
 class Handler extends BaseHandler
 {

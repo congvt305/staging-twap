@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="cached_product_slider" class="Amore\Cms\Block\Widget\BlockSlider" ttl="86400">
+        <label translate="true">Cached Product Slider</label>
+        <description translate="true">Cached Product Slider</description>
+        <parameters>
+            <parameter name="skus" xsi:type="text" visible="true" required="true" sort_order="20">
+                <label translate="true">Sku</label>
+                <description translate="true">
+                    <![CDATA[Limit by ',' and maximum is 12 sku]]>
+                </description>
+            </parameter>
+            <parameter name="template" xsi:type="select" visible="true" required="true" sort_order="10">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="widget/cached_product_slider.phtml" selected="true">
+                        <label translate="true">CMS Product Slider Template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

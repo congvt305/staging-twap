@@ -14,8 +14,12 @@
  */
 ?>
 <dl class="payment-method">
+    <?php if ($block->escapeHtml($block->getEcpayPaymentMethod())): ?>
     <dt class="title"><?= $block->escapeHtml($block->getEcpayPaymentMethod()) ?></dt>
-    <?php if ($block->getInstructions()) : ?>
+    <?php else: ?>
+    <dt class="title"><?= $block->escapeHtml($block->getMethod()->getTitle()) ?></dt>
+    <?php endif; ?>
+    <?php if ($block->getInstructions()): ?>
         <dd class="content"><?= /* @noEscape */ nl2br($block->escapeHtml($block->getInstructions())) ?></dd>
     <?php endif; ?>
 </dl>

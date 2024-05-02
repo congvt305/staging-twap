@@ -66,7 +66,7 @@ class HistoryAjax implements ArgumentInterface
 
         $pointsHistoryResult = $this->pointsHistorySearch->getPointsHistoryResult($customer->getId(), $customer->getWebsiteId(), $page);
 
-        if ($this->pointsHistorySearch->responseValidation($pointsHistoryResult, $customer->getWebsiteId())) {
+        if ($this->pointsHistorySearch->responseValidation($pointsHistoryResult)) {
             $pointsData = $pointsHistoryResult['data']['point_data'];
             return $this->pagination->ajaxPagination($pointsData);
         } else {
@@ -79,7 +79,7 @@ class HistoryAjax implements ArgumentInterface
         $customer = $this->customerSession->getCustomer();
         $customerPointsResult = $this->customerPointsSearch->getMemberSearchResult($customer->getId(), $customer->getWebsiteId());
 
-        if ($this->customerPointsSearch->responseValidation($customerPointsResult, $customer->getWebsiteId())) {
+        if ($this->customerPointsSearch->responseValidation($customerPointsResult)) {
             return $customerPointsResult['data'];
         } else {
             return [];

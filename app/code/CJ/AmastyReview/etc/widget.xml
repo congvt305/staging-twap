@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="CJ\AmastyReview\Block\Widget\ReviewAll" id="cj_amasty_review_widget_review_all">
+        <label>Review All</label>
+        <description>Review All</description>
+        <parameters>
+            <parameter name="page_size" sort_order="10" visible="true" xsi:type="text">
+                <label>Page Size</label>
+                <value>20</value>
+            </parameter>
+            <parameter name="search_type" sort_order="20" visible="true" xsi:type="text">
+                <label>Search Type</label>
+                <value>20</value>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

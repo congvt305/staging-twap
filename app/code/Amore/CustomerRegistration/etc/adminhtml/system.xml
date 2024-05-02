@@ -111,45 +111,26 @@
                         <field id="ba_code_enable">1</field>
                     </depends>
                 </field>
-                <field id="datalayer_singup_success" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" >
-                    <label>Enable Event Signup Success</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-            </group>
-
-            <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
-                <label>POS System</label>
-                <depends>
-                    <field id="customerregistraion/general/active">1</field>
-                </depends>
-
-                <field id="base_url" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1">
-                    <label>Base URL</label>
-                </field>
-
-                <field id="member_info" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1">
-                    <label>Member Information URI</label>
-                    <comment>Member info URI. Complete URL = BASE URL + Member Information URI</comment>
-                </field>
-
-                <field id="member_join" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1">
-                    <label>Memeber Join URI</label>
-                    <comment>Member join URI. Complete URL = BASE URL + Memeber Join URI</comment>
-                </field>
-
-                <field id="bacode_info" translate="label" type="text" sortOrder="51" showInDefault="1" showInWebsite="1">
-                    <label>BA Code Information URI</label>
-                    <comment>BA Code info URI. Complete URL = BASE URL + BA Code Information URI</comment>
-                </field>
 
                 <field id="sales_organization_code" translate="label" type="text" sortOrder="60" showInWebsite="1">
                     <label>Sales Organization Code</label>
                 </field>
 
-                <field id="sales_office_code" translate="label" type="text" sortOrder="70" showInWebsite="1">
-                    <label>Sales Office Code</label>
+            </group>
+            <group id="customergroups" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>Customer Groups</label>
+                <field id="customer_group_mapping" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1">
+                    <label>Customer Group Mapping</label>
+                    <frontend_model>Amore\CustomerRegistration\Block\Adminhtml\Form\Field\CustomerGroups</frontend_model>
+                    <backend_model>Amore\CustomerRegistration\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Customer group label and code can not be repeated.</comment>
                 </field>
+            </group>
+            <group id="pos" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>POS System</label>
+                <depends>
+                    <field id="customerregistraion/general/active">1</field>
+                </depends>
 
                 <field id="partner_id" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1">
                     <label>Partner ID</label>

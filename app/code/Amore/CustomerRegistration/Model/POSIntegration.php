@@ -16,11 +16,11 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Amore\CustomerRegistration\Model\POSLogger;
 use Amore\CustomerRegistration\Api\Data\ResponseInterface;
 use Amore\CustomerRegistration\Api\Data\DataResponseInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Directory\Model\ResourceModel\Region as RegionResourceModel;
 use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
 /**
  * Implement the API module interface
@@ -65,10 +65,6 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      */
     private $dataResponse;
     /**
-     * @var Json
-     */
-    private $json;
-    /**
      * @var \Magento\Framework\Event\ManagerInterface
      */
     private $eventManager;
@@ -93,6 +89,11 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
      */
     private $addressData;
 
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
     public function __construct(
         RegionFactory $regionFactory,
         \Eguana\Directory\Helper\Data $cityHelper,
@@ -105,10 +106,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         POSLogger $logger,
         ResponseInterface $response,
         DataResponseInterface $dataResponse,
-        Json $json,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         AddressRepositoryInterface $addressRepository,
-        AddressInterface $addressData
+        AddressInterface $addressData,
+        MiddlewareHelper $middlewareHelper
     ) {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
         $this->configHelper = $configHelper;
@@ -118,13 +119,13 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $this->logger = $logger;
         $this->response = $response;
         $this->dataResponse = $dataResponse;
-        $this->json = $json;
         $this->eventManager = $eventManager;
         $this->regionFactory = $regionFactory;
         $this->cityHelper = $cityHelper;
         $this->regionResourceModel = $regionResourceModel;
         $this->addressRepository = $addressRepository;
         $this->addressData = $addressData;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     /**
@@ -200,10 +201,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
             ];
             $callSuccess = 1;
             $response = '';
-            $this->logger->addAPICallLog(
+            $this->logger->addAPILog(
                 'Customer update api call',
-                '{Base URL}/rest/all/V1/pos-customers/',
-                $parameters
+                $parameters,
+                '{Base URL}/rest/all/V1/pos-customers/'
             );
 
             $customerWebsiteId = $this->getCustomerWebsiteId($salOffCd);
@@ -379,12 +380,12 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
         $log['response'] = $arrayResponse;
 
         $this->eventManager->dispatch(
-            'eguana_bizconnect_operation_processed',
+            \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
             [
                 'topic_name' => 'eguana.pos.update.customer',
                 'direction' => 'incoming',
                 'to' => 'api', //from or to
-                'serialized_data' => $this->json->serialize($log),
+                'serialized_data' => $this->middlewareHelper->serializeData($log),
                 'status' => $callSuccess,
                 'result_message' => $response->getMessage()
             ]
@@ -450,10 +451,10 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
           ]
         ];
 
-        $this->logger->addAPICallLog(
+        $this->logger->addAPILog(
             'Customer update api response',
-            '{Base URL}/rest/all/V1/pos-customers/',
-            $logResponse
+            $logResponse,
+            '{Base URL}/rest/all/V1/pos-customers/'
         );
 
         $this->response->setCode($code);
@@ -476,7 +477,7 @@ class POSIntegration implements \Amore\CustomerRegistration\Api\POSIntegrationIn
          */
         arsort($websiteIds);
         foreach ($websiteIds as $websiteId) {
-            $officeSaleCode = $this->configHelper->getOfficeSalesCode($websiteId);
+            $officeSaleCode = $this->middlewareHelper->getSalesOfficeCode('store', $websiteId);
             if ($officeSaleCode == $salOffCd) {
                 $customerWebsiteId = $websiteId;
                 break;

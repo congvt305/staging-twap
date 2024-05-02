@@ -2,8 +2,11 @@ define([
     'jquery',
     'mage/translate',
     'Magento_Customer/js/customer-data',
+    'Magento_Catalog/js/product/view/product-info-resolver',
+    'Magento_ConfigurableProduct/js/product/view/product-info-resolver',
+    'Amore_GaTagging/js/product/view/bundle-product-info-resolver',
     'Magento_Ui/js/modal/modal'
-], function ($, $t, customerData, modal) {
+], function ($, $t, customerData, productInfoResolver, configurableProductInfoResolver, bundleProductInfoResolver, modal) {
     'use strict';
 
     $.widget('magepow.ajaxcart', {
@@ -12,6 +15,7 @@ define([
             processStop : null,
             bindSubmit  : true,
             showLoader  : true,
+            productInfoResolver: productInfoResolver,
             minicartSelector: '[data-block="minicart"]',
             messagesSelector: '[data-placeholder="messages"]',
             productStatusSelector: '.stock.available',
@@ -198,7 +202,13 @@ define([
                     var _qsModal = $('#modals_ajaxcart');
                     if (data.popup) {
                         if (data.success) {
-                            $(document).trigger('ajax:addToCart', {productIds: [data.id]});
+                            var productInfo = form ? self.retrieveProductInfo($(form)) : null;
+                            $(document).trigger('ajax:addToCart', {
+                                'sku': form ? $(form).data().productSku : null,
+                                'productIds': [data.id],
+                                'productInfo': productInfo
+                            });
+
                             setTimeout(function (){
                                 if (isWishlist){
                                     window.location.reload();
@@ -364,8 +374,31 @@ define([
                     $(this).removeClass('wishlisticon');
                 }
             });
-        }
+        },
 
+        /**
+         * Retrieve product info from form
+         *
+         * @param form
+         * @returns {*}
+         */
+        retrieveProductInfo: function (form) {
+            var isConfigurable = !!_.find(form.serializeArray(), function (item) {
+                return item.name.indexOf('super_attribute') !== -1;
+            });
+
+            var isBundle = !!_.find(form.serializeArray(), function (item) {
+                return item.name.indexOf('bundle_option') !== -1;
+            });
+
+            if (isConfigurable) {
+                this.options.productInfoResolver = configurableProductInfoResolver;
+            } else if (isBundle) {
+                this.options.productInfoResolver = bundleProductInfoResolver;
+            }
+
+            return this.options.productInfoResolver(form);
+        }
     });
 
     return $.magepow.ajaxcart;

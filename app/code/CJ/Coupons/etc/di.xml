@@ -9,10 +9,10 @@
         <plugin name="CJ_Coupon::couponRenderer" type="CJ\Coupons\Plugin\CustomCouponRenderer"/>
     </type>
     <type name="Magento\SalesRule\Model\Rule\Condition\Address">
-        <plugin name="addGrandTotalType" type="CJ\Coupons\plugin\CustomCondition\AddGrandTotal"/>
+        <plugin name="addGrandTotalType" type="CJ\Coupons\Plugin\CustomCondition\AddGrandTotal"/>
     </type>
     <type name="Magento\AdvancedSalesRule\Model\Rule\Condition\Address">
-        <plugin name="customSubtotalWithDiscount" type="CJ\Coupons\plugin\SalesRule\CustomValidateSubtotalWithDiscount"/>
+        <plugin name="customSubtotalWithDiscount" type="CJ\Coupons\Plugin\SalesRule\CustomValidateSubtotalWithDiscount"/>
     </type>
     <type name="CJ\Coupons\Logger\Handler">
         <arguments>

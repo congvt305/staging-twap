@@ -63,19 +63,19 @@ class Callback extends Action
     /**
      * Callback constructor.
      * @param Context $context
-     * @param LoggerInterface $logger
      * @param Helper $helper
      * @param SocialLoginModel $socialLoginModel
      * @param Curl $curl
      * @param SocialLoginRepository $socialLoginRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
-        LoggerInterface $logger,
         Helper $helper,
         SocialLoginModel $socialLoginModel,
         Curl $curl,
-        SocialLoginRepository $socialLoginRepository
+        SocialLoginRepository $socialLoginRepository,
+        private LoggerInterface $logger
     ) {
         $this->helper                           = $helper;
         $this->socialLoginModel                 = $socialLoginModel;
@@ -102,25 +102,36 @@ class Callback extends Action
         $client_secret = $this->helper->getAppSecret();
         $redirect_uri = $this->helper->getFbCallbackUrl();
         if ($this->socialLoginModel->getCoreSession()->getFacebookLoginState() != $state) {
-            $this->getResponse()->setBody(__('Warning! State mismatch. Authentication attempt may have been compromised.'));
+            $message = __('Warning! State mismatch. Authentication attempt may have been compromised.');
+            $this->logger->info($message);
+            $this->getResponse()->setBody($message);
             return null;
         }
         $this->socialLoginModel->getCoreSession()->unsFacebookLoginState();
         $response = $this->getAccessToken($client_id, $client_secret, $redirect_uri, $code);
+
+        if (!isset($response)) {
+            $this->logger->info('Failed to get response');
+            return null;
+        }
+
         try {
             $access_token = $response['access_token'];
             $response = $this->verifyAccessToken($access_token);
             if ($response['success'] != 1) {
+                $this->logger->info('Unspecified OAuth error occurred.');
                 $this->getResponse()->setBody(__('Unspecified OAuth error occurred.'));
                 return null;
             }
         } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
             $this->getResponse()->setBody(__($e->getMessage()));
             return null;
         }
         try {
             $response = $this->getFbUserProfile($access_token, $client_id, $redirect_uri);
         } catch (\Exception $e) {
+            $this->logger->info($e->getMessage());
             $this->getResponse()->setBody(__($e->getMessage()));
             return null;
         }
@@ -189,6 +200,7 @@ class Callback extends Action
             $status = $this->getCurlClient()->getStatus();
             if (($status == 400 || $status == 401)) {
                 $message = __('Unspecified OAuth error occurred.');
+                $this->logger->info($message);
                 $this->getResponse()->setBody(__($message));
                 return null;
             }
@@ -196,6 +208,7 @@ class Callback extends Action
             return $response;
         } catch (\Exception $e) {
             $this->getResponse()->setBody(__($e->getMessage()));
+            $this->logger->info($e->getMessage());
             return null;
         }
     }

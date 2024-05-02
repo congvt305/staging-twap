@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <custom_cms>
+            <migrate>
+                <url>https://mcstaging.gapm-hk.amorepacific.com/</url>
+                <token>98ben78znhat2trt6joime7r21q3zpx9</token>
+                <store_id>6</store_id>
+            </migrate>
+        </custom_cms>
+    </default>
+</config>

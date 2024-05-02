@@ -9,22 +9,20 @@
 namespace Amore\Sap\Controller\Adminhtml\SapOrder;
 
 use Amore\Sap\Exception\ShipmentNotExistException;
-use Amore\Sap\Model\Connection\Request;
+use CJ\Middleware\Model\SapRequest;
 use Amore\Sap\Model\SapOrder\SapOrderConfirmData;
 use Amore\Sap\Model\Source\Config;
 use Amore\Sap\Logger\Logger;
-use Amore\Sap\Controller\Adminhtml\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use CJ\Middleware\Helper\Data as MiddlewareHelper;
 
-class OrderSend extends AbstractAction
+class OrderSend extends Action
 {
     /**
      * @var SapOrderConfirmData
@@ -41,20 +39,38 @@ class OrderSend extends AbstractAction
     private $eventManager;
 
     /**
-     * OrderSend constructor.
+     * @var SapRequest
+     */
+    protected $request;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var MiddlewareHelper
+     */
+    protected $middlewareHelper;
+
+    /**
      * @param Action\Context $context
-     * @param Json $json
-     * @param Request $request
+     * @param SapRequest $request
      * @param Logger $logger
      * @param Config $config
      * @param OrderRepositoryInterface $orderRepository
      * @param SapOrderConfirmData $sapOrderConfirmData
      * @param ManagerInterface $eventManager
+     * @param MiddlewareHelper $middlewareHelper
      */
     public function __construct(
         Action\Context $context,
-        Json $json,
-        Request $request,
+        SapRequest $request,
         Logger $logger,
         Config $config,
         OrderRepositoryInterface $orderRepository,
@@ -62,10 +78,14 @@ class OrderSend extends AbstractAction
         ManagerInterface $eventManager,
         MiddlewareHelper $middlewareHelper
     ) {
-        parent::__construct($context, $json, $request, $logger, $config, $middlewareHelper);
+        parent::__construct($context);
         $this->orderRepository = $orderRepository;
         $this->sapOrderConfirmData = $sapOrderConfirmData;
         $this->eventManager = $eventManager;
+        $this->request = $request;
+        $this->logger = $logger;
+        $this->config = $config;
+        $this->middlewareHelper = $middlewareHelper;
     }
 
     public function execute()
@@ -104,25 +124,25 @@ class OrderSend extends AbstractAction
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Send Data");
-                $this->logger->info($this->json->serialize($orderSendData));
+                $this->logger->info($this->middlewareHelper->serializeData($orderSendData));
             }
 
-            $result = $this->request->postRequest($this->json->serialize($orderSendData), $order->getStoreId());
+            $result = $this->request->sendRequest($this->middlewareHelper->serializeData($orderSendData), $order->getStoreId(), 'confirm');
 
             if ($this->config->getLoggingCheck()) {
                 $this->logger->info("Single Order Result Data");
-                $this->logger->info($this->json->serialize($result));
+                $this->logger->info($this->middlewareHelper->serializeData($result));
             }
 
             $this->eventManager->dispatch(
-                "eguana_bizconnect_operation_processed",
+                \Amore\CustomerRegistration\Model\POSSystem::EGUANA_BIZCONNECT_OPERATION_PROCESSED,
                 [
                     'topic_name' => 'amore.sap.order.send.request',
                     'direction' => 'outgoing',
                     'to' => "SAP",
-                    'serialized_data' => $this->json->serialize($orderSendData),
+                    'serialized_data' => $this->middlewareHelper->serializeData($orderSendData),
                     'status' => $this->successCheck($orderSendData),
-                    'result_message' => $this->json->serialize($result)
+                    'result_message' => $this->middlewareHelper->serializeData($result)
                 ]
             );
 
@@ -131,7 +151,7 @@ class OrderSend extends AbstractAction
                 return $resultRedirect;
             }
 
-            $responseHandled = $this->request->handleResponse($result, $order->getStoreId());
+            $responseHandled = $this->request->handleResponse($result);
             if ($responseHandled === null) {
                 $order->setData('sap_order_send_check', SapOrderConfirmData::ORDER_SENT_TO_SAP_FAIL);
                 $order->setStatus('sap_fail');
@@ -139,7 +159,10 @@ class OrderSend extends AbstractAction
                     __('Something went wrong while sending order data to SAP. No response')
                 );
             } else {
-                $outData = $responseHandled['data']['output']['outdata'];
+                $outData = [];
+                if (isset($responseHandled['data']['output']['outdata'])){
+                    $outData = $responseHandled['data']['output']['outdata'];
+                }
                 if (isset($responseHandled['success']) && $responseHandled['success'] == true) {
                     foreach ($outData as $data) {
                         if ($data['retcod'] == 'S') {

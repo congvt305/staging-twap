@@ -7,6 +7,8 @@
  */
 ?>
 <?php
+use Amore\GaTagging\Model\CommonVariable;
+
 /** @var \Amore\GaTagging\Block\GaTagging $block */
 $currentProduct = $block->getCurrentProduct();
 $productHelper = $this->helper("Magento\Catalog\Helper\Product");
@@ -22,6 +24,7 @@ $qty = ($currentProduct->isSaleable()) ? $block->getProductDefaultQty($currentPr
 <script>
     var AP_DATA_PAGETYPE = "<?= $block->getPageType()?>";
     //상품상세 todo additional AP
+    var AP_ECOMM_CURRENCY = "<?=$block->getCurrentCurrencyCode()?>";
     var AP_PRD_NAME = "<?= $block->escapeHtml($currentProduct->getName())?>";
     var AP_PRD_CODE = "<?= $block->escapeHtml($currentProduct->getSku())?>";
     var AP_PRD_PRDPRICE = "<?= $block->escapeHtml($originalPrice) ?>";
@@ -29,8 +32,11 @@ $qty = ($currentProduct->isSaleable()) ? $block->getProductDefaultQty($currentPr
     var AP_PRD_BRAND = "<?= $block->escapeHtml($gaTaggingHelper->getSiteName() ?? '')?>";
     var AP_PRD_URL = "<?= $block->escapeHtml($currentProduct->getProductUrl()) ?>";
     var AP_PRD_CATEGORY = "<?= $block->escapeHtml($block->getProductCategory($currentProduct))?>";
+    var AP_PRD_APGBRCODE = "<?= $gaTaggingHelper->getApgBrandCode($currentProduct->getSku())?>"
     var AP_PRD_IMG_URL = "<?= $block->escapeUrl($productImageUrl)  ?>";
     var AP_PRD_QTY = <?= $block->escapeHtml($qty) ?>;
+    var AP_PRD_ISTOCK = '<?= $currentProduct->getIsSalable() ? CommonVariable::VALUE_YES : CommonVariable::VALUE_NO ?>';
+    var AP_PRD_DISCOUNT = <?=$originalPrice - $price?>;
     var PRD_DATA = [
         <?php foreach($productInfo as $info) : ?>
         <?= $info ?>,

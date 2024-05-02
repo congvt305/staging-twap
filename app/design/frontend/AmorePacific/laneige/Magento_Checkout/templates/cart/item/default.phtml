@@ -10,6 +10,7 @@
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
 
 $_item = $block->getItem();
+$isPointRedemption = $_item->getData('is_point_redeemable');
 $product = $_item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
@@ -41,6 +42,9 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         <?= $block->escapeHtml($block->getProductName()) ?>
                     <?php endif; ?>
                 </strong>
+                <?php if($isPointRedemption): ?>
+                    <div class="member-gift"><span>Member Gift</span></div>
+                <?php endif; ?>
                 <dl class="item-options">
                     <?php if($product->getCustomAttribute('prdvl')):?>
                         <dt><?= $block->escapeHtml(__('Size')) ?></dt>

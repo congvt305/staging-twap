@@ -1,0 +1,16 @@
+{
+    "name": "cj/module-migrate",
+    "description": "This extention migrate cms, attribute product and customer, customer address",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CJ\\Migrate\\": ""
+        }
+    }
+}

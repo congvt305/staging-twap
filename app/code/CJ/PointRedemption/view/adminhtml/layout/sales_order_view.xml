@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_items">
+            <arguments>
+                <argument name="columns" xsi:type="array">
+                    <item name="point_amount" xsi:type="string" translate="true">Point Amount</item>
+                </argument>
+            </arguments>
+            <referenceBlock name="default_order_items_renderer">
+                <arguments>
+                    <argument name="columns" xsi:type="array">
+                        <item name="point_amount" xsi:type="string" translate="false">col-point-amount</item>
+                    </argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="order_items.bundle" template="CJ_PointRedemption::sales/order/view/items/renderer.phtml"/>
+            <block class="CJ\PointRedemption\Block\Adminhtml\Items\Column\PointAmount" name="column_point_amount" template="CJ_PointRedemption::items/column/point-amount.phtml" group="column"/>
+        </referenceBlock>
+    </body>
+</page>

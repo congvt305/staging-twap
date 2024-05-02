@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var $block \CJ\PointRedemption\Block\RedeemableLabel
+ */
+$imageUrl = $block->getRedemptionLabelImage();
+?>
+<?php if($imageUrl): ?>
+<div class="redemption-label">
+    <img width="64" height="64" src="<?php echo $imageUrl; ?>" alt="Redemption Label" title="Redemption Label"/>
+</div>
+<?php endif; ?>

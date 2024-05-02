@@ -201,7 +201,7 @@ class SapOrderReturnData extends AbstractSapOrder
 
         $cvsShippingCheck = $this->cvsShippingCheck($order);
         $telephone = $this->getTelephone($shippingAddress->getTelephone());
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         //Case partial return force assign total price to order price
@@ -286,7 +286,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 }
             }
         }
-
+        array_walk_recursive($bindData, [$this, 'convertNumberToString']);
         return $bindData;
     }
 
@@ -366,8 +366,10 @@ class SapOrderReturnData extends AbstractSapOrder
             if ($isEnableRewardsPoint && $mileageUsedAmountExisted) {
                 $this->itemsGrandTotalInclTax -= $mileageUsedAmountExisted;
             }
+            $orderShippingAmount = $this->orderData->roundingPrice($order->getShippingAmount() * $quantityRatioForPartial, $isDecimalFormat);
+
             if ($this->middlewareHelper->getIsIncludeShippingAmountWhenSendRequest($storeId)) {
-                $orderSubtotal += $order->getShippingAmount();
+                $orderSubtotal += $orderShippingAmount;
             } else {
                 $orderGrandTotal -= $order->getShippingAmount();
             }
@@ -375,6 +377,7 @@ class SapOrderReturnData extends AbstractSapOrder
                 $orderSubtotal, $orderDiscountAmount, $mileageUsedAmount, $orderGrandTotal, $isDecimalFormat
             );
         }
+        array_walk_recursive($this->rmaItemData, [$this, 'convertNumberToString']);
         return $this->rmaItemData;
     }
 
@@ -463,7 +466,7 @@ class SapOrderReturnData extends AbstractSapOrder
         $skuPrefix = $skuPrefix ?: '';
         $sku = str_replace($skuPrefix, '', $sku);
         $isMileageOrderItem = $itemSlamt > 0 && $itemSlamt == $itemMiamt;
-        $salesOrg = $this->config->getSalesOrg('store', $storeId);
+        $salesOrg = $this->middlewareHelper->getSalesOrganizationCode('store', $storeId);
         $client = $this->config->getClient('store', $storeId);
 
         $this->rmaItemData[] = [
@@ -513,7 +516,7 @@ class SapOrderReturnData extends AbstractSapOrder
     }
 
     /**
-     * Get Total item return
+     * Get quantity ratio for partial
      *
      * @param \Magento\Rma\Model\Rma $rma
      * @return int

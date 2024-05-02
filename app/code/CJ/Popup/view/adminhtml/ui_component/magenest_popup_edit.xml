@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="label" xsi:type="string" translate="true">Popup</item>
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">magenest_popup_edit.magenest_popup_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back">
+                <url path="*/*/"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+            <button name="delete" class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\DeleteButton"/>
+            <button name="reset">
+                <label translate="true">Reset</label>
+            </button>
+            <button name="popup_preview"
+                    class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\TemplatePreviewButton"/>
+            <button name="save_and_continue"
+                    class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\SaveAndContinueButton"/>
+            <button name="save" class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Button\SaveButton"/>
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <namespace>magenest_popup_edit</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>magenest_popup_edit.magenest_popup_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="magenest_popup_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="*/*/save"/>
+        </settings>
+        <dataProvider class="Magenest\Popup\Ui\Component\DataProvider\Popup" name="magenest_popup_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>popup_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="magenest_popup_general" sortOrder="10">
+        <settings>
+            <label translate="true">General Setting</label>
+            <dataScope>data</dataScope>
+        </settings>
+        <field name="popup_name" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Popup Name</label>
+            </settings>
+        </field>
+        <field name="popup_status" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enabled</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="start_date" formElement="date">
+            <settings>
+                <validation>
+                    <rule name="validate-date" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Start Date</label>
+            </settings>
+        </field>
+        <field name="end_date" formElement="date">
+            <settings>
+                <validation>
+                    <rule name="validate-date" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">End Date</label>
+            </settings>
+        </field>
+        <field name="priority" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Priority</label>
+                <notice translate="true">if 1 page use multi popup trigger with the same type, it will be replaced by priority, highest priority = 0</notice>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="magenest_popup_settings" sortOrder="20">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="wasActivated" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <settings>
+            <label translate="true">Popup Configuration</label>
+            <dataScope>data</dataScope>
+        </settings>
+        <field name="popup_type" formElement="select" component="Magenest_Popup/js/form/element/popup_type_select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="urlTemplateType" xsi:type="url" path="magenest_popup/template/getByPopupType"/>
+                </item>
+            </argument>
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Popup Type</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>3</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>4</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="4">
+                            <value>5</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="5">
+                            <value>6</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.coupon_code</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>${$.parentName}.thankyou_message</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>${$.parentName}.popup_link</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\PopupType"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="enable_floating_button" formElement="checkbox"
+               component="Magenest_Popup/js/form/element/floating_button_enable">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable Floating Button</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="floating_button_display_popup" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Display Popup</label>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\ButtonDisplayPopup"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="floating_button_content" formElement="input"
+               component="Magenest_Popup/js/form/element/floating_button_content">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">Button</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Floating Button Content</label>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="floating_button_position" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Floating Button Position</label>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\ButtonPosition"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <colorPicker name="floating_button_text_color" class="Magento\Ui\Component\Form\Element\ColorPicker"
+                     component="Magenest_Popup/js/form/element/floating_button_text_color">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">#5d96d3</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Floating Button Text Color</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>hex</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-color" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+        </colorPicker>
+        <colorPicker name="floating_button_text_hover_color" class="Magento\Ui\Component\Form\Element\ColorPicker"
+                     component="Magenest_Popup/js/form/element/floating_button_text_hover_color">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">#0e3e81</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Floating Button Text Hover Color</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>hex</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+                <validation>
+                    <rule name="validate-color" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+        </colorPicker>
+        <colorPicker name="floating_button_background_color" class="Magento\Ui\Component\Form\Element\ColorPicker"
+                     component="Magenest_Popup/js/form/element/floating_button_background_color">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">#f0f0f0</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Floating Button Background Color</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>hex</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+                <validation>
+                    <rule name="validate-color" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+        </colorPicker>
+        <colorPicker name="floating_button_hover_color" class="Magento\Ui\Component\Form\Element\ColorPicker"
+                     component="Magenest_Popup/js/form/element/floating_button_hover_color">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">#eaeaea</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Floating Button Background Hover Color</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>hex</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+                <validation>
+                    <rule name="validate-color" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_floating_button:checked</link>
+                </imports>
+            </settings>
+        </colorPicker>
+        <field name="popup_trigger" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Popup Trigger</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>3</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>4</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="4">
+                            <value>5</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="5">
+                            <value>6</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="6">
+                            <value>7</value>
+                            <actions>
+                                <action name="0">
+                                    <target>${$.parentName}.number_x</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\PopupTrigger"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="number_x" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">1</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-digits" xsi:type="boolean">true</rule>
+                    <rule name="validate-greater-than-zero" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Number X</label>
+            </settings>
+        </field>
+        <field name="enable_mailchimp" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable Mailchimp</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="api_key" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Mailchimp Api Key</label>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_mailchimp:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="audience_id" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Mailchimp Audience Id</label>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_mailchimp:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="popup_positioninpage" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Popup Position On Page</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\PopupPositionInPage"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="popup_animation" formElement="select">
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Popup Animation</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\PopupAnimation"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="visible_stores" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/user-guide/configuration/scope.html</link>
+                    <description>What is this?</description>
+                </tooltip>
+                <label translate="true">Store View</label>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Magento\Cms\Ui\Component\Listing\Column\Cms\Options"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="customer_group_ids" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">32000</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Magento\Customer\Model\Customer\Source\Group"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="enable_cookie_lifetime" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable Cookie Lifetime</label>
+                <notice translate="true">Duration (in seconds) before popup appears again for the same customer</notice>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="cookie_lifetime" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-digits" xsi:type="boolean">true</rule>
+                    <rule name="validate-greater-than-zero" xsi:type="boolean">true</rule>
+                    <rule name="less-than-equals-to" xsi:type="number">214748</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Cookie Lifetime</label>
+                <notice translate="true">Cookie lifetime (in seconds)</notice>
+                <imports>
+                    <link name="visible">${$.parentName}.enable_cookie_lifetime:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="coupon_code" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Coupon Code</label>
+            </settings>
+        </field>
+        <field name="thankyou_message" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Thank You Message</label>
+            </settings>
+        </field>
+        <field name="popup_link" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Add Link</label>
+            </settings>
+        </field>
+        <htmlContent name="layout_update_content">
+            <block name="layout_update" class="Magenest\Popup\Block\Adminhtml\Popup\Edit\Instance\Layout"/>
+        </htmlContent>
+    </fieldset>
+    <fieldset name="magenest_popup_edit_html" sortOrder="30">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="wasActivated" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <settings>
+            <label translate="true">HTML Content</label>
+            <dataScope>data</dataScope>
+        </settings>
+        <field name="popup_template_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="elementTmpl" xsi:type="string">Magenest_Popup/form/element/select</item>
+                    <item name="component" xsi:type="string">Magenest_Popup/js/form/element/template_select</item>
+                    <item name="loadTemplateUrl" xsi:type="url" path="magenest_popup/template/loadTemplate"/>
+                </item>
+            </argument>
+            <settings>
+                <dataType>int</dataType>
+                <label translate="true">Popup Template</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magenest\Popup\Model\Source\Popup\PopupTemplate"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="html_content" template="ui/form/field" formElement="wysiwyg">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">HTML Content</label>
+                <notice translate="true">Note: All content types except HTML code might not display properly. Make sure
+                    you've previewed the popup before saving.
+                </notice>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        <field name="background_image" formElement="imageUploader">
+            <settings>
+                <label translate="true">Background Image</label>
+                <componentType>imageUploader</componentType>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>2097152</maxFileSize>
+                        <uploaderConfig>
+                            <param xsi:type="string" name="url">magenest_popup/popup_backgroundimage/upload</param>
+                        </uploaderConfig>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <field name="css_style" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">2</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">CSS Style</label>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="magenest_popup_report" sortOrder="40">
+        <settings>
+            <label translate="true">Report</label>
+            <dataScope>data</dataScope>
+        </settings>
+        <field name="click" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Click (s)</label>
+            </settings>
+        </field>
+        <field name="view" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">View (s)</label>
+            </settings>
+        </field>
+        <field name="ctr" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">CTR (%)</label>
+            </settings>
+        </field>
+    </fieldset>
+</form>

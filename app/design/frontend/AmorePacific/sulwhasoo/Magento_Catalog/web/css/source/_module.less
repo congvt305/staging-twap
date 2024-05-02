@@ -448,12 +448,14 @@
                 }
 
                 .twitter {
-                    &:before {
-                        margin-top: 1px;
-                    }
-
                     &:hover {
-                        background-color: #6eb1e5;
+                        .lib-icon-image(
+                            @_icon-image: @icon-x-on,  
+                            @_icon-image-width: @icon-x__width,
+                            @_icon-image-height: @icon-x__height,
+                            @_icon-image-position-y: @icon-x__position-center,
+                            @_icon-image-position: before
+                        );
                     }
                 }
 
@@ -696,6 +698,21 @@
                     font-size: 14px;
                     width: 30px;
                     line-height: 30px;
+                }
+
+                &.twitter {
+                    &:hover {
+                        &:before {
+                            width: 30px;
+                            height: 30px;
+                            background-size: cover;
+                        }
+                    }
+                    &:before {
+                        width: 30px;
+                        height: 30px;
+                        background-size: cover;
+                    }
                 }
             }
         }

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="MigrateLoggerHandlerBase" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/migrate.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="MigrateLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">MigrateLoggerHandlerBase</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CJ\Migrate\Helper\Logger">
+        <arguments>
+            <argument name="migrateLogger" xsi:type="object">MigrateLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="cj_migrate_attribute_product_data" xsi:type="object">CJ\Migrate\Console\MigrateAttributeProduct</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -34,12 +34,20 @@ return [
                 'default_group_id' => '8',
                 'is_default' => '0'
             ],
+            'vn_sulwhasoo_website' => [
+                'website_id' => '9',
+                'code' => 'vn_sulwhasoo_website',
+                'name' => 'VN Sulwhasoo Website',
+                'sort_order' => '0',
+                'default_group_id' => '9',
+                'is_default' => '0'
+            ],
             'my_laneige_website' => [
-                'website_id' => '12',
+                'website_id' => '10',
                 'code' => 'my_laneige_website',
                 'name' => 'MY Laneige Website',
                 'sort_order' => '0',
-                'default_group_id' => '12',
+                'default_group_id' => '10',
                 'is_default' => '0'
             ]
         ],
@@ -76,12 +84,20 @@ return [
                 'default_store_id' => '8',
                 'code' => 'vn_laneige_website_store'
             ],
-            12 => [
-                'group_id' => '12',
-                'website_id' => '12',
+            9 => [
+                'group_id' => '9',
+                'website_id' => '9',
+                'name' => 'VN Sulwhasoo Website Store',
+                'root_category_id' => '533',
+                'default_store_id' => '9',
+                'code' => 'vn_sulwhasoo_website_store'
+            ],
+            10 => [
+                'group_id' => '10',
+                'website_id' => '10',
                 'name' => 'MY Laneige Website Store',
                 'root_category_id' => '751',
-                'default_store_id' => '12',
+                'default_store_id' => '10',
                 'code' => 'my_laneige_website_store'
             ]
         ],
@@ -122,11 +138,20 @@ return [
                 'sort_order' => '0',
                 'is_active' => '1'
             ],
+            'vn_sulwhasoo' => [
+                'store_id' => '9',
+                'code' => 'vn_sulwhasoo',
+                'website_id' => '9',
+                'group_id' => '9',
+                'name' => 'VN Sulwhasoo Store View',
+                'sort_order' => '0',
+                'is_active' => '1'
+            ],
             'my_laneige' => [
-                'store_id' => '12',
+                'store_id' => '10',
                 'code' => 'my_laneige',
-                'website_id' => '12',
-                'group_id' => '12',
+                'website_id' => '10',
+                'group_id' => '10',
                 'name' => 'MY Laneige Store View',
                 'sort_order' => '0',
                 'is_active' => '1'
@@ -143,7 +168,6 @@ return [
             'advanced' => [
                 'modules_disable_output' => [
                     'Magento_Banner' => '1',
-                    'Amasty_Xsearch' => '1',
                     'Amasty_Geoip' => '1'
                 ]
             ],
@@ -166,14 +190,14 @@ return [
                         'authorizenet_acceptjs' => '\\.authorize\\.net/v1/Accept'
                     ],
                     'move_script_to_bottom' => '0',
-                    'enable_baler_js_bundling' => '1',
+                    'enable_baler_js_bundling' => '0',
                     'session_storage_logging' => '0',
                     'translate_strategy' => 'dictionary',
                     'enable_js_bundling' => '0'
                 ],
                 'css' => [
-                    'merge_css_files' => '1',
-                    'minify_files' => '1',
+                    'merge_css_files' => '0',
+                    'minify_files' => '0',
                     'minify_exclude' => [
                         'tiny_mce' => '/tiny_mce/'
                     ],
@@ -190,6 +214,13 @@ return [
                     'locale' => [
                         'code' => 'zh_Hant_TW'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
                 ]
             ],
             'tw_lageige_website' => [
@@ -204,12 +235,33 @@ return [
                     'locale' => [
                         'code' => 'vi_VN'
                     ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
+                    ]
+                ]
+            ],
+            'vn_sulwhasoo_website' => [
+                'general' => [
+                    'locale' => [
+                        'code' => 'vi_VN'
+                    ]
                 ]
             ],
             'my_laneige_website' => [
                 'general' => [
                     'locale' => [
                         'code' => 'ms_MY'
+                    ]
+                ],
+                'advanced' => [
+                    'modules_disable_output' => [
+                        'Magento_Banner' => '1',
+                        'Amasty_Geoip' => '1',
+                        'Amasty_Xsearch' => 1
                     ]
                 ]
             ]
@@ -748,9 +800,9 @@ return [
         'Amasty_VisualMerchUi' => 1,
         'Amasty_XmlSitemap' => 1,
         'Amasty_Xsearch' => 1,
-        'Amore_Base' => 1,
+        'Amore_Cms' => 1,
         'Eguana_Base' => 1,
-        'Amore_GaTagging' => 1,
+        'CJ_Middleware' => 1,
         'Eguana_StoreSms' => 1,
         'Amore_CustomerRegistration' => 1,
         'Amore_GcrmDataExport' => 1,
@@ -783,24 +835,32 @@ return [
         'CJ_CustomSales' => 1,
         'CJ_CustomTheme' => 1,
         'CJ_DataExport' => 1,
+        'CJ_EventManager' => 1,
         'CJ_GAEnhanced' => 1,
         'CJ_Hoolah' => 1,
         'CJ_HoverImage' => 1,
         'CJ_ImportExport' => 1,
         'CJ_InventoryShipping' => 1,
-        'CJ_Invoice' => 1,
         'Ipay88_Payment' => 1,
         'CJ_LineShopping' => 1,
-        'CJ_Middleware' => 1,
+        'Amore_GaTagging' => 1,
+        'CJ_Migrate' => 1,
         'CJ_NinjaVanShipping' => 1,
         'CJ_PageBuilder' => 1,
         'Payoo_PayNow' => 1,
+        'CJ_PointRedemption' => 1,
+        'CJ_ProductInventoryQty' => 1,
+        'CJ_PromotionManager' => 1,
+        'CJ_Review' => 1,
+        'CJ_ReviewScore' => 1,
         'CJ_ReviewsImportExport' => 1,
         'CJ_Rewards' => 1,
         'CJ_SKUValidation' => 1,
         'CJ_Seo' => 1,
         'Hoolah_Hoolah' => 1,
         'CJ_Sms' => 1,
+        'CJ_Sorting' => 1,
+        'CJ_TotalInquiry' => 1,
         'Eguana_GWLogistics' => 1,
         'Amore_GcrmSegment' => 1,
         'Eguana_BizConnect' => 1,
@@ -842,6 +902,7 @@ return [
         'Pixlee_Pixlee' => 1,
         'Eguana_RedInvoice' => 1,
         'Eguana_Redemption' => 1,
+        'Eguana_ScheduledImportExport' => 0,
         'Eguana_Share' => 1,
         'Eguana_MobileLogin' => 1,
         'Eguana_EventReservation' => 1,
@@ -851,6 +912,8 @@ return [
         'Fastly_Cdn' => 1,
         'CJ_ShopBack' => 1,
         'CJ_Ipay88' => 1,
+        'Magenest_Core' => 1,
+        'Magenest_Popup' => 1,
         'Amasty_CheckoutDeliveryDate' => 1,
         'PayPal_BraintreeGraphQl' => 0,
         'CJ_Payoo' => 1,
@@ -869,7 +932,6 @@ return [
         'Sapt_LazyLoading' => 1,
         'Sapt_Megamenu' => 1,
         'Sapt_Newsletter' => 0,
-        'Sapt_OneStepCheckoutCore' => 1,
         'Sapt_Review' => 1,
         'Sapt_Sales' => 1,
         'Sapt_SearchTerms' => 0,

@@ -13,22 +13,6 @@ use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
-    const SALES_ORGANIZATION_CODE = 'points_integration/pos/sales_organization_code';
-
-    const SALES_OFFICE_CODE = 'points_integration/pos/sales_office_code';
-
-    const POS_URL_PATH = 'points_integration/pos/url';
-
-    const POS_MEMBER_SEARCH_URL = 'points_integration/pos/member_search';
-
-    const POS_REDEEM_SEARCH_URL = 'points_integration/pos/redeem_search';
-
-    const POS_POINT_SEARCH_URL = 'points_integration/pos/point_search';
-
-    const POS_CUSTOMER_ORDER_URL = 'points_integration/pos/customer_order';
-
-    const POS_CUSTOMER_GRADE_URL = 'points_integration/pos/customer_grade';
-
     const POS_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_order_active';
 
     const POS_CANCELLED_ORDER_ACTIVE_CHECK = 'points_integration/general/pos_cancelled_active';
@@ -104,110 +88,9 @@ class Config
         return $this->getValue(self::LOGGER_ACTIVE_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
     }
 
-    public function getPosUrl($websiteId)
-    {
-        return $this->getValue(self::POS_URL_PATH, ScopeInterface::SCOPE_WEBSITE, $websiteId);
-    }
-
     public function getSSLVerification($websiteId)
     {
         return $this->scopeConfig->getValue(self::SSL_VERIFICATION_CHECK, ScopeInterface::SCOPE_WEBSITE, $websiteId);
-    }
-
-    public function getOrganizationSalesCode($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::SALES_ORGANIZATION_CODE,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::SALES_ORGANIZATION_CODE,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getOfficeSalesCode($websiteId = null)
-    {
-        if ($websiteId) {
-            return $this->scopeConfig->getValue(
-                self::SALES_OFFICE_CODE,
-                ScopeInterface::SCOPE_WEBSITE,
-                $websiteId
-            );
-        }
-
-        return $this->scopeConfig->getValue(
-            self::SALES_OFFICE_CODE,
-            ScopeInterface::SCOPE_WEBSITE
-        );
-    }
-
-    public function getMemberSearchURL($websiteId)
-    {
-        $baseURL = $this->getPosUrl($websiteId);
-        $memberSearchURL = $this->scopeConfig->getValue(
-            self::POS_MEMBER_SEARCH_URL,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
-        );
-
-        return $baseURL.$memberSearchURL;
-    }
-
-    public function getRedeemSearchURL($websiteId)
-    {
-        $baseURL = $this->getPosUrl($websiteId);
-        $redeemSearchURL = $this->scopeConfig->getValue(
-            self::POS_REDEEM_SEARCH_URL,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
-        );
-
-        return $baseURL.$redeemSearchURL;
-    }
-
-    public function getPointSearchURL($websiteId)
-    {
-        $baseURL = $this->getPosUrl($websiteId);
-        $pointSearchURL = $this->scopeConfig->getValue(
-            self::POS_POINT_SEARCH_URL,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
-        );
-
-        return $baseURL.$pointSearchURL;
-    }
-
-    public function getCustomerOrderURL($websiteId)
-    {
-        $baseURL = $this->getPosUrl($websiteId);
-        $customerOrderURL = $this->scopeConfig->getValue(
-            self::POS_CUSTOMER_ORDER_URL,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
-        );
-
-        return $baseURL.$customerOrderURL;
-    }
-
-    /**
-     * get all customer grades from POS
-     * @param $websiteId
-     * @return string
-     */
-    public function getAllCustomerGradeURL($websiteId) {
-        $baseURL = $this->getPosUrl($websiteId);
-        $customerOrderURL = $this->scopeConfig->getValue(
-            self::POS_CUSTOMER_GRADE_URL,
-            ScopeInterface::SCOPE_WEBSITE,
-            $websiteId
-        );
-
-        return $baseURL.$customerOrderURL;
     }
 
     public function getCronActive($websiteId)
