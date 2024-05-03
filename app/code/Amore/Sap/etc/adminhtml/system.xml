@@ -111,6 +111,9 @@
                 <field id="seveneleven" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Seven Eleven Code</label>
                 </field>
+                <field id="sku_prefix" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>SKU Prefix</label>
+                </field>
             </group>
             <group id="send_order_to_sap_cron" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Send order to SAP Cron</label>
