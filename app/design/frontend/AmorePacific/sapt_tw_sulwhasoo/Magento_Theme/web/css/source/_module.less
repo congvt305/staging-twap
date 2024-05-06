@@ -57,12 +57,7 @@
         .footer.content {
             display: block !important;
             .nav_item { 
-                    ul{
-                        display:block !important;
-                    }
-                    .to-gnb{
-                        pointer-events: unset;
-                    }
+                 
                     a.footer-sitemap-link {
                         color: rgb(12, 12, 12);
                         font-family: 'Theinhardt';
@@ -98,7 +93,7 @@
                     align-items: center;
 
                     li {
-                        margin: 0 40px 0 0;
+                        margin: 0 0 28px;
                     }
                 }
             }
@@ -599,8 +594,16 @@
     }
 
     .twitter {
-        .lib-icon-font-symbol(@_icon-font-content: @icon-twitter,
-            @_icon-font-position: before);
+        .lib-icon-image(
+            @_icon-image: @icon-x-off,  
+            @_icon-image-width: @icon-x__width,
+            @_icon-image-height: @icon-x__height,
+            @_icon-image-position-y: @icon-x__position-center,
+            @_icon-image-position: before
+        );
+        &:before {
+            background-size: cover;
+        }
     }
 
     .line {
@@ -1257,6 +1260,9 @@
                 border-bottom: 1px solid @border-color__base;
                 padding: @indent__base 0;
             }
+        }
+        .copyright {
+            margin-top: 36px;
         }
     }
 
