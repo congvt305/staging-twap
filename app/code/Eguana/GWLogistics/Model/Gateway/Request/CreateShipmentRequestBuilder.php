@@ -12,6 +12,7 @@ namespace Eguana\GWLogistics\Model\Gateway\Request;
 use Eguana\GWLogistics\Model\Lib\EcpayLogisticsType;
 use Magento\Sales\Model\Order;
 use Eguana\GWLogistics\Model\Lib\EcpayIsCollection;
+use Magento\Sales\Model\OrderRepository;
 
 class CreateShipmentRequestBuilder implements \Eguana\GWLogistics\Model\Gateway\Request\RequestBuilderInterface
 {
@@ -36,11 +37,25 @@ class CreateShipmentRequestBuilder implements \Eguana\GWLogistics\Model\Gateway\
      */
     private $logger;
 
+    /**
+     * @var OrderRepository
+     */
+    private $orderRepository;
+
+    /**
+     * @param \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository
+     * @param \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Eguana\GWLogistics\Helper\Data $helper
+     * @param OrderRepository $orderRepository
+     * @param \Psr\Log\LoggerInterface $logger
+     */
     public function __construct(
         \Eguana\GWLogistics\Api\QuoteCvsLocationRepositoryInterface $quoteCvsLocationRepository,
         \Magento\Framework\Stdlib\DateTime\DateTimeFactory $dateTimeFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Eguana\GWLogistics\Helper\Data $helper,
+        OrderRepository $orderRepository,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->quoteCvsLocationRepository = $quoteCvsLocationRepository;
@@ -48,8 +63,12 @@ class CreateShipmentRequestBuilder implements \Eguana\GWLogistics\Model\Gateway\
         $this->scopeConfig = $scopeConfig;
         $this->helper = $helper;
         $this->logger = $logger;
+        $this->orderRepository = $orderRepository;
     }
+
     /**
+     * Prepare data to send GW logistic
+     *
      * @param array $buildSubject
      * @return array|null
      */
@@ -126,12 +145,36 @@ class CreateShipmentRequestBuilder implements \Eguana\GWLogistics\Model\Gateway\
         }
     }
 
+    /**
+     * Get cvs location data and re-save if can not get
+     *
+     * @param  Order $order
+     * @return \Eguana\GWLogistics\Api\Data\QuoteCvsLocationInterface
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     private function getCvsLocation($order)
     {
-        $cvsLocationId = (int) $order->getShippingAddress()->getCvsLocationId();
-        return $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        try {
+            $cvsLocationId = (int) $order->getShippingAddress()->getCvsLocationId();
+            $cvsData = $this->quoteCvsLocationRepository->getById($cvsLocationId);
+        } catch (\Exception $e) { //case order doesn't have cvs location id
+            $this->logger->critical("Order " . $order->getIncrementId() . ' is missed cvs location id');
+            $cvsData = $this->quoteCvsLocationRepository->getByQuoteId($order->getQuoteId());
+            $order->getShippingAddress()->setCvsLocationId($cvsData->getLocationId());
+            $this->orderRepository->save($order);
+            $this->logger->critical("Update order " . $order->getIncrementId() . ' with cvs location id = ' . $cvsData->getLocationId() . ' successfully');
+        }
+        return $cvsData;
     }
 
+    /**
+     * Count total item
+     *
+     * @param $order
+     * @return float|int|null
+     */
     private function getItemCount($order) {
         /** @var \Magento\Sales\Api\Data\OrderItemInterface[] $items */
         $items = $order->getItems();
