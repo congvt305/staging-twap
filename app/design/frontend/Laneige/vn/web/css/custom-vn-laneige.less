@@ -300,6 +300,45 @@ input[type="checkbox"]:checked {
     border: 1px solid @color_blue_dark;
     color: #fff;
 }
+a,button,div {
+    .pagebuilder-button-secondary {
+        &:hover, :focus, :active {
+            background: #6691ff;
+            border-color: #6691ff;
+        }
+    }
+}
+
+.stw-stores-locator {
+    .stores-list .stores-listing-ul li.store-list {
+        &:focus, :hover, .selected-store {
+            .store-title, .store-primary-info > p, .store-secondary-info > p {
+                color: #4076ff;
+            }
+        }
+    }
+    .fieldset .field .actions .button.search-btn {
+        &:focus, :active {
+            background: #6691ff;
+            border-color: #6691ff;
+        }
+    }
+}
+.filter-options-content .item a {
+    &:hover, :active {
+        color: #4076ff;
+        .count {
+            color: #4076ff;
+        }
+    }
+}
+
+.product-item .product-item-actions .actions-secondary>.action{
+    &:focus, &:active {
+        background: #6691ff;
+        border-color: #6691ff;
+    }
+}
 
 @media only screen and (max-width: 768px) {
     .navigation .parent > a.ui-state-active {
@@ -307,41 +346,48 @@ input[type="checkbox"]:checked {
         color: #ffffff;
     }
 
-    .product-info-main .box-tocart .actions .tocheckout{
+    .product-info-main .box-tocart .actions .tocheckout {
         background: @color_blue_light;
         border: 1px solid @color_blue_light;
         color: #ffffff;
 
-        &:hover{
+        &:hover {
             background: @color_blue_light;
             border: 1px solid @color_blue_light;
         }
     }
+
     .logo {
         top: 17px;
     }
-    .nav-sections .header.links li>a:not(.location):not(.account):hover {
+
+    .nav-sections .header.links li > a:not(.location):not(.account):hover {
         background: @color_blue_light;
         border: 1px solid @color_blue_light;
     }
-    .nav-sections .header.links li>a:not(.location):not(.account):focus,
-    .nav-sections .header.links li>a:not(.location):not(.account):active {
+
+    .nav-sections .header.links li > a:not(.location):not(.account):focus,
+    .nav-sections .header.links li > a:not(.location):not(.account):active {
         background: @color_blue_light;
         border: 1px solid @color_blue_light;
     }
-    .navigation .level0 .submenu .level1.all-category>a:hover,
-    .navigation .level0 .submenu .level1.parent>a:hover {
+
+    .navigation .level0 .submenu .level1.all-category > a:hover,
+    .navigation .level0 .submenu .level1.parent > a:hover {
         color: @color_blue_dark;
     }
-    .product-item .product-item-actions .actions-secondary>.action:hover {
+
+    .product-item .product-item-actions .actions-secondary > .action:hover {
         background-color: #fff;
         border-color: #fff;
     }
+
     .product-info-main .box-tocart .actions .tocart:hover,
     .product-options-bottom .box-tocart .actions .tocart:hover {
         background: @color_blue_light;
         border: 1px solid @color_blue_light;
     }
+
     .product-info-main .box-tocart .actions .tocart:focus,
     .product-options-bottom .box-tocart .actions .tocart:focus,
     .product-info-main .box-tocart .actions .tocart:active,
@@ -349,13 +395,49 @@ input[type="checkbox"]:checked {
         background: @color_blue_light;
         border: 1px solid @color_blue_light;
     }
+
     .filter.active .filter-title strong:after {
         color: @color_blue_dark;
     }
+
     .filter .filter-subtitle {
         color: @color_blue_light;
     }
-    .active>.filter-options-title {
+
+    .active > .filter-options-title {
         background: @color_blue_dark;
+    }
+
+    .products-grid .product-item .tocart,
+    .widget-product-carousel .product-item .tocart {
+        &:hover, &:focus {
+            background: transparent;
+            border-color: transparent;
+        }
+        &:active {
+            background: transparent;
+            border-color: transparent;
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
+    .product-item .product-item-actions .actions-secondary>.action  {
+        &:active, &:focus {
+            background: transparent;
+            border-color: transparent;
+        }
+        &:hover {
+            border: 0;
+        }
+    }
+    .navigation .level0 .submenu .level1.all-category,
+    .navigation .level0 .submenu .level1.parent {
+        >a:active {
+            color: #4076ff;
+        }
+    }
+    .stw-stores-locator .store_list_left .stores-list .stores-listing-ul li.store-list.current-li  {
+        .store-title, .store-primary-info>p, .store-secondary-info>p {
+            color: #4076ff;
+        }
     }
 }
