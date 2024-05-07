@@ -22,5 +22,11 @@
                 </arguments>
             </block>
         </referenceContainer>
+
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Member login</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>
