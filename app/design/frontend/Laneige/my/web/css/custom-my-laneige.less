@@ -57,7 +57,7 @@
                         background: #6691FF;
                         border: 1px solid #6691FF;
                         &:hover,
-                        &:active{
+                        &:active {
                             background: #6691FF;
                             border: 1px solid #6691FF;
                         }
@@ -75,22 +75,22 @@
     }
 }
 
-.block-search{
-    .label:before{
+.block-search {
+    .label:before {
         color: #6691FF;
     }
 
-    .action.search.primary:hover{
+    .action.search.primary:hover {
         background: #6691FF;
         border: 1px solid #6691FF;
     }
 
-    .control input, .block-search .control input:focus{
+    .control input, .block-search .control input:focus {
         box-shadow: 0 0 3px 1px #6691FF;
     }
 }
 
-.cart-container .action.primary.checkout:hover{
+.cart-container .action.primary.checkout:hover {
     background: #6691FF;
     border: 1px solid #6691FF;
 }
@@ -107,26 +107,46 @@
     color: #4076FF;
 }
 
-.stw-stores-locator .stores-list .stores-listing-ul li.store-list.selected-store {
-    .store-title {
-        color: #4076FF;
-    }
+.stw-stores-locator {
+    .stores-list .stores-listing-ul li.store-list {
+        &:focus, &:hover, .selected-store {
+            .store-title {
+                color: #4076ff !important;
+                border-color: #4076ff !important;
+            }
 
-    .store-primary-info > p {
-        color: #4076FF;
+            .store-primary-info, .store-secondary-info {
+                > p {
+                    color: #4076ff !important;
+                }
+            }
+        }
     }
 }
 
-.stw-stores-locator .stores-list .stores-listing-ul li.store-list:hover .store-secondary-info > p, .stw-stores-locator .stores-list .stores-listing-ul li.store-list.selected-store .store-secondary-info > p {
-    color: #4076FF;
+.fieldset .field .actions .button.search-btn:hover {
+    background: #6691ff !important;
+    border-color: #6691ff !important;
 }
 
 .store-search-input:focus {
     box-shadow: 0 0 3px 1px #6691FF !important;
 }
 
-.page-layout-1column .filter-options-content .item a:hover {
-    color: #4076FF;
+.page-layout-1column .filter-options-content .item a {
+    &:hover, :active {
+        color: #4076FF;
+
+        .count {
+            color: #4076ff;
+        }
+    }
+}
+
+.filter-actions .filter-clear {
+    &:hover, :visited, :focus, :active {
+        color: #4076ff;
+    }
 }
 
 .page-product-bundle .bundle-options-wrapper button.select-option:not(.selected):hover {
@@ -139,20 +159,55 @@
     opacity: 60%;
 }
 
+.sections.nav-sections,
+.page-footer {
+    font-family: 'Gellix';
+}
+
 @media only screen and (max-width: 768px) {
     .navigation .parent > a.ui-state-active {
         background: #6691FF;
         color: #ffffff;
     }
 
-    .product-info-main .box-tocart .actions .tocheckout{
+    .product-info-main .box-tocart .actions .tocheckout {
         background: #6691FF;
         border: 1px solid #6691FF;
         color: #ffffff;
     }
-}
 
-.sections.nav-sections,
-.page-footer{
-    font-family: 'Gellix';
+    .block-minicart .block-content > .actions > .secondary .action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 78px;
+    }
+    .products-grid .product-item .tocart,
+    .widget-product-carousel .product-item .tocart {
+        &:hover {
+            background: transparent;
+            border-color: transparent;
+        }
+    }
+    .product-item-actions .actions-secondary>.action:hover {
+        background: transparent;
+        border-color: transparent;
+        border: 0;
+    }
+    .product-item-actions .actions-secondary>.action:hover, .products-grid .product-item .tocart:hover, .widget-product-carousel .product-item .tocart:hover,
+    .stw-stores-locator .store_list_left .stores-list .stores-listing-ul li.store-list.current-li {
+        .store-title {
+            color: #4076ff;
+            border-color: #4076ff;
+        }
+        .store-primary-info>p, .store-secondary-info>p {
+            color: #4076ff;
+        }
+    }
+    .navigation .level0 .submenu .level1.all-category>a:hover,
+    .navigation .level0 .submenu .level1.parent>a {
+        &:hover, :active {
+            color: #4076ff;
+        }
+    }
 }
