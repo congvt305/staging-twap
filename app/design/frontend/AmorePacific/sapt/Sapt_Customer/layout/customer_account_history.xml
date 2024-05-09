@@ -17,6 +17,13 @@
                            template="Magento_Wishlist::catalog/product/list/addto/wishlist.phtml"/>
                 </block>
             </block>
+
+            <block class="Magento\Reports\Block\Product\Widget\Viewed" before="-" name="recently_viewed_1" cacheable="false"
+                   template="Magento_Reports::product/widget/viewed.phtml">
+                <action method="setPageSize">
+                    <argument name="page_size" xsi:type="number">10</argument>
+                </action>
+            </block>
         </referenceContainer>
         <referenceBlock name="related.product.addto.wishlist">
             <action method="setTemplate">

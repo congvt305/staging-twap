@@ -9,7 +9,7 @@
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::catalog/ap-product-detail.phtml" >
             <arguments>
-                <argument name="page_type" xsi:type="string">prod</argument>
+                <argument name="page_type" xsi:type="string">PRODUCT_DETAIL</argument>
             </arguments>
         </block>
             <!-- 2.4 트랜잭션 - 구매하기 버튼 -->

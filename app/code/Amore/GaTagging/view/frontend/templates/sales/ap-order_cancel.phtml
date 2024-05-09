@@ -12,6 +12,7 @@ $canceledOrderData = $block->getCanceledOrderData();
 <?php if ($canceledOrderData) : ?>
 <script>
     //주문취소
+    var AP_ECOMM_CURRENCY = "<?= $block->escapeHtml($canceledOrderData['AP_ECOMM_CURRENCY'])?>";
     var AP_REFUND_PRICE = "<?= $block->escapeHtml($canceledOrderData['AP_REFUND_PRICE'])?>";
     var AP_REFUND_ORDERNUM = "<?= $block->escapeHtml($canceledOrderData['AP_REFUND_ORDERNUM'])?>";
     var AP_REFUND_CONTENT = "<?= $block->escapeHtml($canceledOrderData['AP_REFUND_CONTENT'])?>";
@@ -25,8 +26,9 @@ $canceledOrderData = $block->getCanceledOrderData();
 <script type="text/x-magento-init">
     {
         "*": {
-            "Amore_GaTagging/js/action/notify":{
-                "eventName": "<?= /* @noEscape */$block->getEventName() ?>"
+            "Amore_GaTagging/js/ap-refund":{
+                "eventName": "<?= /* @noEscape */$block->getEventName() ?>",
+                "orderId": "<?= $block->escapeHtml($canceledOrderData['ORDER_ID'])?>"
             }
         }
     }

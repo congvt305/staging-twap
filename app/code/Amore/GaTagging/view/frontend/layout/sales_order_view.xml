@@ -11,6 +11,15 @@
                     <argument name="event_name" xsi:type="string">refund</argument>
                 </arguments>
             </block>
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   name="ap_sales_order_product_type"
+                   after="amore_gatagging_common_ap"
+                   template="Amore_GaTagging::common/ap-pagetype.phtml">
+                <arguments>
+                    <argument name="page_type" xsi:type="string">ORDER</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>
