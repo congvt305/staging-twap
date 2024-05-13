@@ -12,5 +12,12 @@ var config = {
         'slick': {
             deps: ['jquery']
         }
-    }
+    },
+    config: {
+        mixins: {
+            "mage/sticky": {
+               "js/mage/sticky-mixin": true
+           }
+        }
+    },
 };

@@ -775,7 +775,8 @@ body {
         background: none;
         padding-left: 36px;
         padding-right: 36px;
-        padding-top: 3px;
+        height: 40px;
+        line-height: 42px;
     }
 
     .btn-joinus .pagebuilder-button-secondary {
@@ -3359,8 +3360,13 @@ body>.widget.block.block-static-block {
     text-align: center;
 }
 
-.checkout-cart-index .page-wrapper {
-    overflow-x: hidden;
+.checkout-cart-index  {
+    .page-wrapper {
+        overflow-x: hidden;
+    }
+    .cart-container {
+        margin-bottom: 100px;
+    }
 }
 
 .events-index-index .event-list-wrapper,
@@ -3391,13 +3397,20 @@ body>.widget.block.block-static-block {
             max-width: 600px !important;
         }
     }
-
+    .cart-discount {
+        z-index: 2;
+        background: #fff;
+    }
+    .cart-container {
+        z-index: 1;
+        position:relative;    
+    }
 }
 
 @media(max-width: 768px) {
 
     .fotorama-item .fotorama__wrap {
-        padding-left: 4px;
+        padding: 0;
 
         .fotorama__stage__shaft {
             max-width: 580px !important;
