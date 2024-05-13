@@ -24,7 +24,7 @@ define([
 
     $('.cart-summary').mage('sticky', {
         container: '#maincontent',
-        spacingTop: -100 //height of sticky header in px
+        spacingTop: -110
     });
 
     $('.panel.header > .header.links').clone().appendTo('#store\\.links');
