@@ -1234,3 +1234,4 @@
 "Close button","關閉"
 " x QTY %1", " x %1 件"
 "Copy","複製"
+"Last name must be less than 5 Chinese alphabets or 10 English alphabets.","請務必填寫身份證上的姓名，以免無法收貨。姓名總長度不超過五字以內的中文字或10個英文字母。"
