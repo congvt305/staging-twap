@@ -302,7 +302,7 @@ input[type="checkbox"]:checked {
 }
 a,button,div {
     .pagebuilder-button-secondary {
-        &:hover, :focus, :active {
+        &:hover, &:focus, &:active {
             background: #6691ff;
             border-color: #6691ff;
         }
@@ -311,21 +311,21 @@ a,button,div {
 
 .stw-stores-locator {
     .stores-list .stores-listing-ul li.store-list {
-        &:focus, :hover, .selected-store {
+        &:focus, &:hover, &.selected-store {
             .store-title, .store-primary-info > p, .store-secondary-info > p {
                 color: #4076ff;
             }
         }
     }
     .fieldset .field .actions .button.search-btn {
-        &:focus, :active {
+        &:focus, &:active {
             background: #6691ff;
             border-color: #6691ff;
         }
     }
 }
 .filter-options-content .item a {
-    &:hover, :active {
+    &:hover, &:active {
         color: #4076ff;
         .count {
             color: #4076ff;
