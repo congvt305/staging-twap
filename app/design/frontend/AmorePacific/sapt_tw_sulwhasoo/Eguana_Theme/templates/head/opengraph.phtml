@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var \Eguana\Theme\Block\Html\Metatag $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<meta property="og:type" content="website" />
+<meta property="og:title"
+      content="<?= $block->getMetaTitle() ?>" />
+<meta property="og:image"
+      content="<?= /* @noEscape  */ $block->escapeUrl($block->getImageViewUrl($block->getImage())) ?>" />
+<meta property="og:description"
+      content="<?= $block->getDescription() ?>" />
+<meta property="og:url" content="<?= $escaper->escapeUrl($block->getCurrentUrl()) ?>" />

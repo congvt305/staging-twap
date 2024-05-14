@@ -1,0 +1,40 @@
+<?php
+/** @var $block \Sapt\Customer\Block\Membership */
+$customer = $block->getCustomer();
+$groupName = $block->getGroupName($customer->getGroupId());
+$couponCount = number_format($block->getCountCoupon());
+$pointSearchResult = $block->getPointsSearchResult();
+$memberInfo = $block->getMemberInfo();
+?>
+
+<div class="membership_section">
+    <div class="container">
+        <div class="box_member">
+            <div class="member_info">
+            <p class="hi">Hi,</p>
+            <h3><?= $customer->getName() ?></h3>
+                <p><?= $block->escapeHtml(__('Member No.')) ?><span><?= $memberInfo['cstmNO'] ?? ''?></span></p>
+            </div>
+            <div class="member_point">
+                
+                <p class="date"><?= __('Membership expiry date') ?>: <span>
+                <?php if (isset($pointSearchResult['gradeExpireDate']) && !empty($pointSearchResult['gradeExpireDate'])): ?>
+                        <?= $block->dateFormat($pointSearchResult['gradeExpireDate']) ?>
+                    <?php endif; ?>
+                </span></p>
+                <p class="count"><?= $pointSearchResult['cstmGradeNM'] ?? ''; ?></p>
+                <p class="title"><?= __('Membership') ?></p>
+            </div>
+            <div class="member_point">
+                <a href="<?= $block->getPointsUrl() ?>" class="link"><?= __('Point History') ?></a>
+                <p class="count"><?=number_format($block->getPoint());?><span><?= __('Points') ?></span></p>
+                <p class="title"><?= __('Points') ?></p>
+            </div>
+            <div class="member_review">
+                <a href="<?= $block->getReviewUrl() ?>" class="link"><p class="label point"><?= $block->escapeHtml(__('Review')) ?></p></a>
+                <p class="count"><?=number_format($block->getCountOrderReviewed())?> / <?=number_format($block->getCountOrderReviewAvailable())?></p>
+                <p class="title"><?= __('Reviews') ?></p>
+            </div>
+        </div>
+    </div>
+</div>

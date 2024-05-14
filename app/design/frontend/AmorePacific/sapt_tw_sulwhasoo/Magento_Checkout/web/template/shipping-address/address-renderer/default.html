@@ -1,0 +1,17 @@
+<div class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()" data-bind="visible: !checkIsVnWebsite()">
+    <strong><text args="address().prefix"></text> <text args="address().lastname"></text>
+        <text args="address().firstname"></text> <text args="address().telephone"></text>
+    </strong><br/>
+    <text args="address().postcode"></text>
+    <span data-bind="text: $t(address().region)"></span>
+    <text args="translate(address().city )"></text>
+    <text args="_.values(address().street).join(', ')"></text><br/>
+
+    <button visible="address().isEditable()" type="button"
+            class="action edit-address-link"
+            click="editAddress">
+        <span translate="'Edit'"></span>
+    </button>
+    <button type="button" click="selectAddress" class="action action-select-shipping-item">
+        <span translate="'Ship Here'"></span></button>
+</div>

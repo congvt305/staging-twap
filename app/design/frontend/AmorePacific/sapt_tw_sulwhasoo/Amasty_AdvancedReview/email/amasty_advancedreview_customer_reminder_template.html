@@ -1,0 +1,37 @@
+<!--@subject {{trans  "You have new item to review on %store_name" store_name=$store_name}} @-->
+<!--@vars {
+"var store_name":"Store Name",
+"var website_name":"Website Name",
+"var unsubscribe_link":"Unsubscribe Link",
+"var customer_name":"Customer Name",
+"var coupon_message":"Coupon Message",
+"var store_email":"Store Email",
+"var store_phone":"Store Telephone"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+{{inlinecss file="Amasty_AdvancedReview::css/custom-email.css"}}
+
+<div class="amreview-email-content" xmlns="http://www.w3.org/1999/html">
+    <p class="greeting amreview-text">
+        {{trans "Hello"}}, {{var customer_name}}
+    </p>
+
+    <p>{{trans "Thank you for your recent purchase with %store_name" store_name=$store_name}}.</p>
+
+    <p>{{trans "We'd love to know your thoughts on the product(s) you've bought! So please share your unique experience with other shoppers."}}</p>
+    <br />
+
+    <p>{{var coupon_message | raw}}</p>
+
+    {{var productGrid|raw}}
+</div>
+
+<div class="amreview-email-footer">
+    <a class="amreview-unsubscribe amreview-link" href="{{var unsubscribe_link}}" title="{{trans 'Unsubscribe'}}">
+        {{trans "Unsubscribe"}}
+    </a>
+</div>
+
+{{template config_path="design/email/footer_template"}}

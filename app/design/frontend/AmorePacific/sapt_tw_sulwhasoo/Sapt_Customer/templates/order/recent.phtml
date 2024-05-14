@@ -1,0 +1,152 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+use Magento\Framework\App\Action\Action;
+
+/** @var \Sapt\Customer\Block\Order\Recent $block */
+/** @var \Sapt\Sales\ViewModel\Product $viewModel */
+
+$viewModel = $block->getData('view_model');
+?>
+<div class="block block-dashboard-orders">
+<?php
+    $_orders = $block->getOrders();
+    $count = count($_orders);
+
+    // Delivery status count
+    $deliveryStatusCount = $block->getDeliveryStatusCount();
+?>
+    <div class="block-title order">
+        <strong><?= $block->escapeHtml(__('Delivery status')) ?></strong>
+        <?php if ($count > 0) : ?>
+            <a class="action view" href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                <span><?= $block->escapeHtml(__('View all order history')) ?></span>
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="block-content">
+        <div class="delivery-status-count">
+            <div class="status-wrapper">
+                <div class="status-item <?=$deliveryStatusCount['processing']?:'no-item'?>">
+                    <span class="count"><?= $deliveryStatusCount['processing'] ?></span>
+                    <span class="status-label"><?= $block->escapeHtml(__('Processing')) ?></span>
+                </div>
+                <span class="arrow"></span>
+                <div class="status-item <?=$deliveryStatusCount['preparing']?:'no-item'?>">
+                    <span class="count"><?= $deliveryStatusCount['preparing'] ?></span>
+                    <span class="status-label"><?= $block->escapeHtml(__('Preparing')) ?></span>
+                </div>
+                <span class="arrow"></span>
+                <div class="status-item <?=$deliveryStatusCount['in_delivery']?'':'no-item'?>">
+                    <span class="count"><?= $deliveryStatusCount['in_delivery'] ?></span>
+                    <span class="status-label"><?= $block->escapeHtml(__('In Delivery')) ?></span>
+                </div>
+                <span class="arrow"></span>
+                <div class="status-item <?=$deliveryStatusCount['delivered']?'':'no-item'?>">
+                    <span class="count"><?= $deliveryStatusCount['delivered'] ?></span>
+                    <span class="status-label"><?= $block->escapeHtml(__('Delivered')) ?></span>
+                </div>
+            </div>
+            <div class="status-refund-wrapper">
+                <div class="status-item <?=$deliveryStatusCount['refund']?:'no-item'?>">
+                    <span class="count"><?= $deliveryStatusCount['refund'] ?></span>
+                    <span class="status-label"><?= $block->escapeHtml(__('Refund')) ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="status-refund-wrapper-mobile">
+            <a class="action view" href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                <span><?= $block->escapeHtml(__('Refund')) ?></span>
+            </a>
+        </div>
+    <?= $block->getChildHtml() ?>
+    <?php if ($count > 0) : ?>
+        <div class="table-wrapper orders-recent">
+            <div class="table-title"><?= $block->escapeHtml(__('Recent Order')) ?></div>
+            <table class="data table table-order-items recent" id="my-orders-table">
+                <tbody>
+                    <?php foreach ($_orders as $_order) : ?>
+                        <?php
+                            $orderItems = $_order->getAllVisibleItems();
+                            $moreProduct = count($orderItems) - 1;
+                            foreach($orderItems as $orderItem) {
+                                if (!$viewModel->isPromoItem($orderItem)) {
+                                    $normalItem = $orderItem;
+                                     $item = $block->getProduct($orderItem);
+                                     break;
+                                }
+                            }
+                            $totalQuantity = $viewModel->getTotalQuantity($_order);
+                        ?>
+                        <tr>
+                            <td class="col thumbnail">
+                                <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view">
+                                    <span><?= $block->escapeHtml($block->formatOrderDate($_order->getCreatedAt())) ?></span>
+                                </a>
+                                <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view increment-id">
+                                    <span><?= $_order->getIncrementId() ?></span>
+                                </a>
+                                <span class="product-thumbnail-wrapper">
+                                    <img class="product-thumbnail"
+                                        src="<?= $escaper->escapeUrl($block->getOrderItemThumbnail($normalItem)) ?>"
+                                        loading="lazy"
+                                        alt="<?= $escaper->escapeHtml($normalItem->getName()) ?>" />
+                                </span>
+                            </td>
+                            <td class="col item">
+                                <div class="shipping">
+                                    <span class="order-status"><?= $block->escapeHtml($_order->getStatusLabel()) ?></span>
+                                    <span class="shipping-method"><?= $block->escapeHtml($_order->getShippingDescription()) ?></span>
+                                </div>
+                                </div class="order-item-info">
+                                    <div class="product-name">
+                                        <a href="<?= $escaper->escapeUrl($block->getOrderItemUrl($normalItem)) ?>">
+                                            <?= $escaper->escapeHtml($normalItem->getName()) ?>
+                                        </a>
+                                        <div class="total-items"><?= __("Total %1 items", $totalQuantity) ?></div>
+                                        <?php if($moreProduct): ?>
+                                        <span class="more-product"><?= $block->escapeHtml(__('+%1 More Products', $moreProduct)) ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="product-price"><?= $_order->formatPrice($normalItem->getPriceInclTax()) ?></div>
+                                </div>
+                            </td>
+                            <td class="col actions">
+                                <a href="<?= $block->escapeUrl($block->getUrl('review/customer')) . '?review_order_item=' . $normalItem->getId() ?>" class="action write-review">
+                                    <span><?= $escaper->escapeHtml(__('Review')) ?></span>
+                                </a>
+                                <?php $postParams = $viewModel->getPostData($item, $block); ?>
+                                <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($item->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                                    <?php $optionsData = $viewModel->getOptionsData($item); ?>
+                                    <?php foreach ($optionsData as $optionItem): ?>
+                                        <input type="hidden"
+                                            name="<?= $block->escapeHtml($optionItem['name']) ?>"
+                                            value="<?= $block->escapeHtml($optionItem['value']) ?>">
+                                    <?php endforeach; ?>
+                                    <input type="hidden" name="product" value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                    <?= $block->getBlockHtml('formkey') ?>
+                                    <a type="submit"
+                                            clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                            formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                            title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                            <?php if (!$viewModel->isActiveProduct($item)): ?>disabled="disabled"<?php endif; ?>
+                                            class="action tocart primary">
+                                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                    </a>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else : ?>
+        <div class="message info empty"><span><?= $block->escapeHtml(__('You have placed no orders.')) ?></span></div>
+    <?php endif; ?>
+    </div>
+</div>

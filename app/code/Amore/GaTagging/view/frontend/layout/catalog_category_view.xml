@@ -9,7 +9,7 @@
                    after="amore_gatagging_common_ap"
                    template="Amore_GaTagging::common/ap-pagetype.phtml" >
                 <arguments>
-                    <argument name="page_type" xsi:type="string">prods</argument>
+                    <argument name="page_type" xsi:type="string">PRODUCT_LIST</argument>
                 </arguments>
             </block>
         </referenceContainer>
