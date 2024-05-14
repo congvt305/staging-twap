@@ -112,6 +112,14 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                                 <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
                                                             </button>
                                                         </form>
+                                                    <?php else: ?>
+                                                        <button class="action tocart primary disabled"
+                                                                clicktext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                formtext="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                type="button" disabled
+                                                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Sold out')) ?></span>
+                                                        </button>
                                                     <?php endif; ?>
                                                 <?php endif?>
                                             </div>
@@ -121,7 +129,7 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                         <div class="actions-secondary" data-role="add-to-links">
                                                             <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
                                                                 <?php $viewModel = $block->getData('wishlistStatusViewModel'); ?>
-                                                                <?php if ($viewModel && $viewModel->moduleStatus()): ?>
+                                                                
                                                                     <!-- ko scope: 'ajaxwishlist' -->
                                                                     <a
                                                                         class="action towishlist"
@@ -130,12 +138,7 @@ use Sapt\AjaxWishlist\Helper\Data as AjaxHelper;
                                                                         data-product-id='<?= /* @noEscape */$_item->getId() ?>'
                                                                         data-action="wishlist-actions"><span><?= $block->escapeHtml(__('Add to Wish List')) ?></span></a>
                                                                     <!-- /ko -->
-                                                                <?php else: ?>
-                                                                    <a href="#"
-                                                                       data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
-                                                                        <span><?= $block->escapeHtml(__('Add to Wishlist')) ?></span>
-                                                                    </a>
-                                                                <?php endif; ?>
+                                                               
 
                                                             <?php endif; ?>
                                                             <?php if ($block->getAddToCompareUrl() && $showCompare): ?>

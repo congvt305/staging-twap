@@ -496,7 +496,7 @@
 "Cash On Delivery","現金貨到付款"
 "Checkout","結帳"
 "Email Address","電郵地址"
-"Order Summary","訂單詳情 件產品"
+"Order Summary","訂單明細"
 "Items in Cart","件產品"
 "Shipping Charge","運費"
 "You can create an account after checkout.","訂單完成後可加入會員"
@@ -1315,3 +1315,4 @@
 "Term & Conditions","服務條款"
 "Q&A","常見問題"
 "Member login","會員登入"
+"Last name must be less than 5 Chinese alphabets or 10 English alphabets.","請務必填寫身份證上的姓名，以免無法收貨。姓名總長度不超過五字以內的中文字或10個英文字母。"

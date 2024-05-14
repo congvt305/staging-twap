@@ -90,7 +90,7 @@ class Index extends Action implements CsrfAwareActionInterface, HttpPostActionIn
             $this->logger->error('gwlogistics | cvs store data for a map selection', [$e->getMessage()]);
         }
         $publicCookieMetadata = $this->cookieMetadataFactory->createPublicCookieMetadata();
-        $publicCookieMetadata->setDuration(20);
+        $publicCookieMetadata->setDuration(2000);
         $publicCookieMetadata->setPath('/');
         $publicCookieMetadata->setHttpOnly(false);
         $this->cookieManager->setPublicCookie(
