@@ -121,6 +121,24 @@ class POS implements ArgumentInterface
     }
 
     /**
+     * Get given name
+     */
+    public function getGivenName()
+    {
+        $socialMediaData = $this->getSocialLoginData();
+        return $socialMediaData != null & isset($socialMediaData['given_name'])?$socialMediaData['given_name']:'';
+    }
+
+    /**
+     * Get family name
+     */
+    public function getFamilyName()
+    {
+        $socialMediaData = $this->getSocialLoginData();
+        return $socialMediaData != null & isset($socialMediaData['family_name'])?$socialMediaData['family_name']:'';
+    }
+
+    /**
      * Get Not Allowed Characters
      * This Method is used to get configuration value of not allowed characters
      * @return string
