@@ -113,12 +113,15 @@ define([
             this.isVisible(this.isAvailable && shippingStep.isVisible());
             if (isUpdateCvs) {
                 this.preselectLocation();
+                $.cookieStorage.set('updatecvs', false);
+            } else {
+                pickupLocationsService.selectForShipping({});
             }
             this.isCvsPickupSelected.subscribe(function () {
                 var isUpdateCvs = $.cookieStorage.get('updatecvs');
                 if (isUpdateCvs) {
                     this.preselectLocation();
-                    $.cookieStorage.set('updatecvs', null);
+                    $.cookieStorage.set('updatecvs', false);
                 } else {
                     if (shippingStep.isVisible()) {
                         //set select shipping null for cvs to avoid miss data when change back home delivery tab
@@ -191,7 +194,6 @@ define([
                     );
                 }
             }
-
         },
 
         /**
