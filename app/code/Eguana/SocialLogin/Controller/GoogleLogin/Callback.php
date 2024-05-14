@@ -171,7 +171,7 @@ class Callback extends Action
      */
     private function getUserProfileInfo($access_token)
     {
-        $url = 'https://www.googleapis.com/oauth2/v2/userinfo?fields=name,email,gender,id,picture,verified_email';
+        $url = 'https://www.googleapis.com/oauth2/v2/userinfo?fields=name,email,gender,id,picture,verified_email,given_name,family_name';
 
         try {
             $this->getCurlClient()->setOptions(

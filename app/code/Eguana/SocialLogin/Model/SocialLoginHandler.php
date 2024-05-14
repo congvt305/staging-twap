@@ -162,6 +162,12 @@ class SocialLoginHandler
             if (array_key_exists('email', $dataUser)) {
                 $customerData['email'] = $dataUser['email'];
             }
+            if (array_key_exists('given_name', $dataUser)) {
+                $customerData['given_name'] = $dataUser['given_name'];
+            }
+            if (array_key_exists('family_name', $dataUser)) {
+                $customerData['family_name'] = $dataUser['family_name'];
+            }
             $customerData['socialmedia_type'] = $socialMediaType;
             return $customerData;
         }
