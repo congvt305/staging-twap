@@ -112,7 +112,8 @@ $helper = $this->helper(\Eguana\CustomCatalog\Helper\Data::class);
                     'display_label'     => $block->escapeHtml(__('Regular Price')),
                     'price_id'          => $block->getPriceId('old-price-' . $idSuffix),
                     'include_container' => true,
-                    'skip_adjustments'  => true
+                    'skip_adjustments'  => true,
+                    'price_type'        => 'oldPrice'
                 ]); ?>
             </span>
         <?php else: ?>
