@@ -180,10 +180,14 @@ define([
             var body = $('body');
             var options = this.options;
             var self = this;
+            var productId='';
             if(form){
                 self.disableAddToCartButton(form);
                 data = new FormData(form);
+                var productId = data.get('product')
+
             }
+            
             $.ajax({
                 type: 'post',
                 url: addUrl,
@@ -196,6 +200,7 @@ define([
                 success: function (data) {
                     if(!$('#modals_ajaxcart').length) body.append('<div id="modals_ajaxcart" style="display:none"></div>');
                     var _qsModal = $('#modals_ajaxcart');
+                    $('input[name="product"][value="'+productId+'"]').parent().find('input.bundle.option').val('');
                     if (data.popup) {
                         if (data.success) {
                             $(document).trigger('ajax:addToCart', {productIds: [data.id]});
