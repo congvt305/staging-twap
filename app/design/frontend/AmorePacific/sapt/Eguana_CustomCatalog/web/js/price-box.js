@@ -35,7 +35,7 @@ define([
 
                     if (
                         oldPrice != undefined && 
-                        (priceCode != 'oldPrice' || priceCode != 'baseOldPrice')
+                        (priceCode != 'oldPrice' && priceCode != 'baseOldPrice')
                     ) {
                         if (price.final != oldPrice) {
                             var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
