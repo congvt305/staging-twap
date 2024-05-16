@@ -1,8 +1,14 @@
 .catalog-category-view .main .products.wrapper.grid+.toolbar-products {
     width: auto;
     height: auto;
+    display:none;
+    .pages{
+        display:none !important;
+    }
 }
-
+.amscroll-backtotop-block{
+    display:none !important
+}
 .cms-sitemap .ap-sitemap .ap-sitemap-group__heading {
     height: fit-content;
 }
@@ -777,6 +783,7 @@ body {
         padding-right: 36px;
         height: 40px;
         line-height: 42px;
+        padding-top: 0!important;
     }
 
     .btn-joinus .pagebuilder-button-secondary {
@@ -6816,6 +6823,9 @@ button.action.action-show-popup.amcheckout-button {
 .modal-popup .modal-content {
     padding: 0px;
     word-break: break-word;
+}
+.modal-popup.modals-quickview._inner-scroll .modal-content {
+    overflow-y: auto !important;
 }
 
 .lounge-text .pagebuilder-button-secondary {

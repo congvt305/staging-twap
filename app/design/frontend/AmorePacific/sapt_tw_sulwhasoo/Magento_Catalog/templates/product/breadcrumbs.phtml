@@ -16,7 +16,7 @@ $breadcrumbs = $ProductBreadcrumbs->getBreadcrumbs();
         ?>
         <li class="item <?= $block->escapeHtmlAttr($crumbName===0 ? 'home' : $crumbName) ?>">
             <?php if ($crumbName == 0) : ?>
-                <a href="<?= $block->getRequest()->getUriString(); ?>"
+                <a href="/"
                    title="<?= $block->escapeHtml($crumbInfo['label']) ?>">首頁</a>
             <?php elseif (isset($crumbInfo['link'])) : ?>
                 <a href="<?= $block->escapeUrl($crumbInfo['link']) ?>"
