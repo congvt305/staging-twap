@@ -9,7 +9,8 @@ use Sapt\AjaxWishlist\ViewModel\AjaxWishlistStatus;
 
 class CatalogWidgetProductList
 {
-    const TW_LNG_STORE_CODE = 'tw_laneige';
+    const SAPT_THEME_STORE_CODE = ['tw_laneige', 'default'];
+
     /**
      * @var StoreManagerInterface
      */
@@ -19,19 +20,27 @@ class CatalogWidgetProductList
      */
     private $viewModel;
 
+    /**
+     * @var \Magento\Catalog\ViewModel\Product\OptionsData
+     */
+    private $optionsDataViewModel;
+
     public function __construct(
         AjaxWishlistStatus $viewModel,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        \Magento\Catalog\ViewModel\Product\OptionsData $optionsDataViewModel
     ) {
         $this->viewModel = $viewModel;
         $this->storeManager = $storeManager;
+        $this->optionsDataViewModel = $optionsDataViewModel;
     }
 
     public function beforeToHtml(
         \Magento\CatalogWidget\Block\Product\ProductsList $block
     ) {
-        if ($this->storeManager->getStore()->getCode() == self::TW_LNG_STORE_CODE) {
+        if (in_array($this->storeManager->getStore()->getCode(), self::SAPT_THEME_STORE_CODE)) {
             $block->setData('wishlistStatusViewModel', $this->viewModel);
+            $block->setData('optionDataViewModel', $this->optionsDataViewModel);
         }
         return [];
     }
