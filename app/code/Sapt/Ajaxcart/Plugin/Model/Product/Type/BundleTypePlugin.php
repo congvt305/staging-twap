@@ -15,7 +15,7 @@ use Magento\Catalog\Model\Product\Type\AbstractType as Subject;
  */
 class BundleTypePlugin
 {
-    const APPLIED_STORES = ['tw_laneige'];
+    const APPLIED_STORES = ['tw_laneige', 'default'];
 
     /**
      * @var SingleChoiceProvider

@@ -290,7 +290,9 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
                 'added' => false,
                 'messages' => []
             ];
-
+            if ($product->getTypeId() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE && !isset($params['bundle_option'])) {
+                $data['messages'][] = ['message' => __('Please specify product option(s).')];
+            }
             $result = $this->dataObjectFactory->create()->setData($data);
 
             $this->_eventManager->dispatch(
@@ -460,7 +462,7 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         $messages = $result->getData('messages');
         if (!empty($messages)) {
             throw new LocalizedException(
-                $messages[0]['message']
+                __($messages[0]['message'])
             );
         }
 
