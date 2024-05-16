@@ -17,7 +17,7 @@ define([
             'validate-cvs-address-firstname',
             function(value, element) {
                 var lastname = _.isEmpty($('#lastname').val()) ? 
-                    (!_.isEmpty($('#last_name').val()) ? $('#last_name').val() : '' ) : '';
+                    (!_.isEmpty($('#last_name').val()) ? $('#last_name').val() : '' ) : $('#lastname').val();
                 value = lastname + value;
                 return /^[a-zA-Z]{4,10}$/.test(value) || /^[\u4e00-\u9fa5]{2,5}$/.test(value) || /^\s/.test(value);
             },
