@@ -15,6 +15,13 @@
             margin: 0 auto;
             max-width: @account-form-width;
         }
+        .page-main {
+            .columns {
+                border: @indent__xl solid @border-color__base !important;
+                border-top: none !important;
+                padding: 0 @indent__l @indent__l !important;
+            }
+        }
     }
 }
 
@@ -29,12 +36,6 @@
             border-bottom: none;
             padding: @indent__l @indent__l 0;
         }
-
-        .columns {
-            border: @indent__xl solid @border-color__base;
-            border-top: none;
-            padding: 0 @indent__l @indent__l;
-        }
     }
 }
 
@@ -43,6 +44,11 @@
     .contact-index-index {
         .page-main {
             padding: 0;
+            .columns {
+                border: @indent__base solid @border-color__base !important;
+                border-top: none !important;
+                padding: 0 0 17% 0 !important;
+            }
         }
 
         .column.main {
@@ -52,19 +58,12 @@
         .page-title-wrapper {
             border: @indent__base solid @border-color__base;
             border-bottom: none;
-            padding: 17% 0 0 0;
-        }
-
-        .columns {
-            border: @indent__base solid @border-color__base;
-            border-top: none;
-            padding: 0 0 17% 0;
+            padding: 17% 0 3% 0;
+            .page-title {
+                font-size:24px;
+                font-weight: 700;
+                color: #222;
+            }
         }
     }
-}
-
-.contact-index-index .page-main .columns{
-    border: 40px solid #eeeeee !important; 
-    border-top: none !important;
-    padding: 0 30px 30px !important;
 }

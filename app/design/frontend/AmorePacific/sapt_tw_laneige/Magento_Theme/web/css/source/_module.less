@@ -541,10 +541,16 @@
     }
 
     .twitter {
-        .lib-icon-font-symbol(
-            @_icon-font-content: @icon-twitter,
-            @_icon-font-position: before
+        .lib-icon-image(
+            @_icon-image: @icon-x-off,  
+            @_icon-image-width: @icon-x__width,
+            @_icon-image-height: @icon-x__height,
+            @_icon-image-position-y: @icon-x__position-center,
+            @_icon-image-position: before
         );
+        &:before {
+            background-size: cover;
+        }
     }
 
     .line {

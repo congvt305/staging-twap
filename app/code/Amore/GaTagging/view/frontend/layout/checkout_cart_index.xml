@@ -7,7 +7,16 @@
                    ifconfig="amore_gatagging/tagmanager/active"
                    name="ap_cart"
                    cacheable="false"
-                   template="Amore_GaTagging::checkout/ap-cart.phtml" />
+                   template="Amore_GaTagging::checkout/ap-cart.phtml"/>
+            <!-- PAGE SPECIFIC AP -->
+            <block class="Amore\GaTagging\Block\GaTagging"
+                   ifconfig="amore_gatagging/tagmanager/active"
+                   name="ap_cart_pagetype"
+                   template="Amore_GaTagging::common/ap-pagetype.phtml">
+                <arguments>
+                    <argument name="page_type" xsi:type="string">CART</argument>
+                </arguments>
+            </block>
         </referenceContainer>
         <!-- 2.4 트랜잭션 장바구니 이벤트 트리거 -->
         <referenceContainer name="before.body.end">

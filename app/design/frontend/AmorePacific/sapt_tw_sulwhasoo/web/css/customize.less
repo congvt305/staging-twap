@@ -1,8 +1,14 @@
 .catalog-category-view .main .products.wrapper.grid+.toolbar-products {
     width: auto;
     height: auto;
+    display:none;
+    .pages{
+        display:none !important;
+    }
 }
-
+.amscroll-backtotop-block{
+    display:none !important
+}
 .cms-sitemap .ap-sitemap .ap-sitemap-group__heading {
     height: fit-content;
 }
@@ -775,7 +781,9 @@ body {
         background: none;
         padding-left: 36px;
         padding-right: 36px;
-        padding-top: 3px;
+        height: 40px;
+        line-height: 42px;
+        padding-top: 0!important;
     }
 
     .btn-joinus .pagebuilder-button-secondary {
@@ -3359,8 +3367,13 @@ body>.widget.block.block-static-block {
     text-align: center;
 }
 
-.checkout-cart-index .page-wrapper {
-    overflow-x: hidden;
+.checkout-cart-index  {
+    .page-wrapper {
+        overflow-x: hidden;
+    }
+    .cart-container {
+        margin-bottom: 100px;
+    }
 }
 
 .events-index-index .event-list-wrapper,
@@ -3391,13 +3404,20 @@ body>.widget.block.block-static-block {
             max-width: 600px !important;
         }
     }
-
+    .cart-discount {
+        z-index: 2;
+        background: #fff;
+    }
+    .cart-container {
+        z-index: 1;
+        position:relative;    
+    }
 }
 
 @media(max-width: 768px) {
 
     .fotorama-item .fotorama__wrap {
-        padding-left: 4px;
+        padding: 0;
 
         .fotorama__stage__shaft {
             max-width: 580px !important;
@@ -6803,6 +6823,9 @@ button.action.action-show-popup.amcheckout-button {
 .modal-popup .modal-content {
     padding: 0px;
     word-break: break-word;
+}
+.modal-popup.modals-quickview._inner-scroll .modal-content {
+    overflow-y: auto !important;
 }
 
 .lounge-text .pagebuilder-button-secondary {

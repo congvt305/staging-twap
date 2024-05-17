@@ -50,6 +50,14 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
+                <field id="data_env" type="select" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="0" sortOrder="50">
+                    <label>Environment</label>
+                    <source_model>Amore\GaTagging\Model\Config\Source\Environments</source_model>
+                    <comment>Select value of AP_DATA_ENV</comment>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>
