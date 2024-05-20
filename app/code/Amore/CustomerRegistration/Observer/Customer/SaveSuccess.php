@@ -443,10 +443,10 @@ class SaveSuccess implements ObserverInterface
             if (isset($customerData['dm_zipcode']) && !$defaultBillingAddressId) {
                 $parameters['homeAddr1'] = $customerData['dm_detailed_address'];
                 $parameters['homeZip'] = $customerData['dm_zipcode'];
-                $regionName = $customerData['dm_state'];
+                $regionId = $customerData['region_id'];
                 $regionObject = null;
-                if ($regionName) {
-                    $regionObject = $this->getRegionObject($regionName);
+                if ($regionId) {
+                    $regionObject = $this->getRegionObject($regionId);
                     $parameters['homeCity'] = $regionObject->getCode() ? $regionObject->getCode() : '';
                 } else {
                     $parameters['homeCity'] = '';
