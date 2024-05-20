@@ -115,7 +115,9 @@ define([
                 this.preselectLocation();
                 $.cookieStorage.set('updatecvs', false);
             } else {
-                pickupLocationsService.selectForShipping({});
+                if (this.isCvsPickupSelected()) {
+                    pickupLocationsService.selectForShipping({});
+                }
             }
             this.isCvsPickupSelected.subscribe(function () {
                 var isUpdateCvs = $.cookieStorage.get('updatecvs');

@@ -10,8 +10,9 @@ define([
     'Magento_Checkout/js/action/set-shipping-information',
     'Magento_Checkout/js/checkout-data',
     'Eguana_GWLogistics/js/model/cvs-location-service',
+    'Amasty_CheckoutCore/js/model/statistic',
     'mage/validation'
-], function (_, $, registry, $t, alert, customer, quote, addressConverter, setShippingInformationAction, checkoutData, pickupLocationService) {
+], function (_, $, registry, $t, alert, customer, quote, addressConverter, setShippingInformationAction, checkoutData, pickupLocationService, statistic) {
     'use strict';
 
     var mixin = {
@@ -47,6 +48,8 @@ define([
                     } else if (!telephoneValidateResult.valid) {
                         message = $t('Please enter exactly proper mobile number. Start with 09 and 10 digit.');
                     }
+                } else {
+                    statistic.saveStatistic();
                 }
 
             } else if (deliveryMethod.carrier_code === 'gwlogistics') {
@@ -94,7 +97,7 @@ define([
                     checkoutData.setShippingAddressFromData(shippingAddress);
                     if (paymentMethod.method != 'linepay_payment') {
                         setShippingInformationAction();
-                    }                
+                    }
                 }
                 if (!validateShippingAddressResult) {
                     message = $t('Please check the shipping address information.');
