@@ -6,8 +6,8 @@
             <div class="footer_nav">
                 <div class="nav_items">
                     <div class="nav_item box_link footer-category">
-                        <h5 class="to-gnb">精選類別</h5>
-                        <ul style="display:block !important">
+                        <h5 >精選類別</h5>
+                        <ul>
                             <li>
                                 <a title="<?= $block->escapeHtml(__('Skin care PLP')) ?>" href="/skincare.html">
                                     韓系保養
@@ -25,14 +25,14 @@
                             </li>
                             <li>
                                 <a title="<?= $block->escapeHtml(__('Member privileges')) ?>" href="/2022membership.html">
-                                    會員尊寵禮遇
+                                    雪花秀會員福利
                                 </a>
                             </li>
                         </ul>
                     </div>
                     <div class="nav_item box_link">
-                        <h5 class="to-gnb">常見問題</h5>
-                        <ul style="display:block !important">
+                        <h5 >常見問題</h5>
+                        <ul>
                             <li><a title="<?= $block->escapeHtml(('FAQ')) ?>" href="/faq">FAQ</a></li>
                             <li><a title="<?= $block->escapeHtml(__('Shipping information')) ?>" href="/sales/guest/form/">訂單進度查詢</a></li>
                             <li><a title="<?= $block->escapeHtml(__('UGC Terms of Use')) ?>" href="/ugc-terms-and-conditions" style="text-transform: uppercase">UGC 使用條款</a></li>
@@ -70,24 +70,17 @@
         </div>
         <div class="footer_card">
             <ul>
+
                 <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart1.png'); ?>" alt="Card Pay 1">
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart2.png'); ?>" alt="Master Card">
                 </li>
                 <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart2.png'); ?>" alt="Card Pay 2">
+                    <img src="<?= $block->getViewFileUrl('images/carts/cart3.png'); ?>" alt="Visa Card">
                 </li>
                 <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart3.png'); ?>" alt="Card Pay 3">
+                    <img width="35px" src="<?= $block->getViewFileUrl('images/carts/JCB_logo.png'); ?>" alt="JCB Card">
                 </li>
-                <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart4.png'); ?>" alt="Card Pay 4">
-                </li>
-                <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart5.png'); ?>" alt="Card Pay 5">
-                </li>
-                <li>
-                    <img src="<?= $block->getViewFileUrl('images/carts/cart6.png'); ?>" alt="Card Pay 6">
-                </li>
+
             </ul>
         </div>
         <div class="footer_bottom">
@@ -179,10 +172,12 @@
     require(['jquery'], function($) {
         $(document).on('click','.to-gnb',function(){
             window.scroll({
-            top: 0, 
-            left: 0, 
+            top: 0,
+            left: 0,
             behavior: 'smooth'
             });
         });
+
+
     });
 </script>
