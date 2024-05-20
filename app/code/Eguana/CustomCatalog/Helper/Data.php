@@ -76,7 +76,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getTotalOriginalPriceForBundleDynamic($item) {
         $total = 0;
         foreach ($item->getChildren() as $itemChild) {
-            $total += $itemChild->getProduct()->getPrice();
+            $total += $itemChild->getProduct()->getPrice() * $itemChild->getQty();
         }
         return $total;
     }
