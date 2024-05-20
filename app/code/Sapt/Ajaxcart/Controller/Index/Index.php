@@ -290,7 +290,6 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
                 'added' => false,
                 'messages' => []
             ];
-
             $result = $this->dataObjectFactory->create()->setData($data);
 
             $this->_eventManager->dispatch(
@@ -460,7 +459,7 @@ class Index extends \Magento\Framework\App\Action\Action implements HttpPostActi
         $messages = $result->getData('messages');
         if (!empty($messages)) {
             throw new LocalizedException(
-                $messages[0]['message']
+                __($messages[0]['message'])
             );
         }
 
