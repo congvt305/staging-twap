@@ -74,20 +74,12 @@ class ShippingInformationManagement
             }
         }
         if (in_array($storeCode, self::TW_STORE_CODE)) {
-            if ($storeCode == self::TW_LNG_STORE_CODE) {
-                if ($telephone && !preg_match('/^[0]{1}[9]{1}\d{8}$/', $telephone)) {
-                    throw new InputException(
-                        __("Please enter exactly proper mobile number. Start with 09 and 10 digit.")
-                    );
-                } else {
-                    return;
-                }
+            if ($telephone && !preg_match('/^[0]{1}[9]{1}\d{8}$/', $telephone)) {
+                throw new InputException(
+                    __("Please enter exactly proper mobile number. Start with 09 and 10 digit.")
+                );
             } else {
-                if (!preg_match('/^[0]{1}[9]{1}\d{8}$/', $telephone)) {
-                    throw new InputException(
-                        __("Please enter exactly proper mobile number. Start with 09 and 10 digit.")
-                    );
-                }
+                return;
             }
         }
 
