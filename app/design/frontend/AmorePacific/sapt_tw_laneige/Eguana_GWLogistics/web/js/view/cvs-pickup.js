@@ -118,7 +118,7 @@ define([
                 var isUpdateCvs = $.cookieStorage.get('updatecvs');
                 if (isUpdateCvs) {
                     this.preselectLocation();
-                    $.cookieStorage.set('updatecvs', null);
+                    $.cookieStorage.set('updatecvs', false);
                 } else {
                     if (shippingStep.isVisible()) {
                         //set select shipping null for cvs to avoid miss data when change back home delivery tab
