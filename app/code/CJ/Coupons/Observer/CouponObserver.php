@@ -16,7 +16,10 @@ use Magento\SalesRule\Model\Rule\Action\Discount\Data as DiscountData;
 
 class CouponObserver implements \Magento\Framework\Event\ObserverInterface
 {
-    const TW_LNG_STORE_CODE = 'tw_laneige';
+    const STORE_TW_CODE = [
+        'tw_laneige',
+        'default'
+    ];
     /**
      * @var CouponRenderer
      */
@@ -80,7 +83,7 @@ class CouponObserver implements \Magento\Framework\Event\ObserverInterface
         //start customize
         // fix error when input coupon code and click apply
         // they apply 2 rule(1 is auto, 1 is coupoon code), rule no coupon apply first, it remove couponCode in quote
-        if ($rule->getCouponCode() && $quote->getStore()->getCode() == self::TW_LNG_STORE_CODE) {
+        if ($rule->getCouponCode() && in_array($quote->getStore()->getCode(), self::STORE_TW_CODE)) {
             $appliedCodes[] = $rule->getCouponCode();
         }
         //end customize
