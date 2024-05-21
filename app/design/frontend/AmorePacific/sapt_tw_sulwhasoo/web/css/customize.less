@@ -6,13 +6,26 @@
         display:none !important;
     }
 }
+.checkout-cart-index .giftset_home_content .slick-button{
+    position:  relative !important;
+}
 .amscroll-backtotop-block{
     display:none !important
+}
+.checkout-cart-index .product_labels{
+    display:none;
 }
 .cms-sitemap .ap-sitemap .ap-sitemap-group__heading {
     height: fit-content;
 }
-
+.ticket-index-createticket #subject{
+    padding:10px;
+    padding-top:15px;
+}
+.ticket-index-createticket #message{
+    padding: 10px;
+    overflow-y: clip;
+}
 .catalog-product-view {
     @media only screen and (max-width: 1024px) {
         .custom-attribute {
@@ -782,7 +795,6 @@ body {
         padding-left: 36px;
         padding-right: 36px;
         height: 40px;
-        line-height: 42px;
         padding-top: 0!important;
     }
 
@@ -6830,7 +6842,7 @@ button.action.action-show-popup.amcheckout-button {
 }
 
 .lounge-text .pagebuilder-button-secondary {
-    padding: 3px 24px 0;
+    padding: 0 24px;
 }
 
 #am_upload_image_button {
@@ -7317,4 +7329,47 @@ h1#modal-title-32 {
 
 .page-product-bundle.catalog-product-view .product.info.detailed .product.data.items .titles.sticky {
     top: 0px;
+}
+.account .modals-quickview {
+    fieldset.fieldset.fieldset-bundle-options .field.option.required {
+        margin: 0 auto;
+    }
+    .modal-inner-wrap .modal-content {
+        padding: 0 15px !important;
+    }
+    .bundle-options-container p.required {
+        margin-left: 15%;
+    }
+    .bundle-options-container .block-bundle-summary .bundle-summary {
+        margin-left: 15%;
+    }
+     #maincontent .box-tocart-ajax {
+        width: 70%;
+        margin: 30px auto;
+    }
+    @media only screen and (max-width: 767px) {
+        .modal-inner-wrap {
+            top: 20px;
+        }
+    }
+}
+@media only screen and (max-width: 767px) {
+    .customer-account-create {
+        .form.create.account {
+            .fieldset {
+                > .field.field-name-lastname {
+                    margin-top: 30px;
+                }
+            }
+        }
+    }
+    .modal-popup {
+        .modal-footer {
+            button.action {
+                &.agree {
+                    height: 48px;
+                }
+            }
+        }
+    }
 }
