@@ -77,6 +77,7 @@
 // BUTTONS
 //______________________________________
 .wishlisticon::before,
+.wishlisticon2::before,
 .abs-actions-addto-gridlist:hover::before,
 .products-grid .product-item .product-item-details .actions-primary .tocart:hover::before,
 .tocompare:hover::before,
@@ -91,6 +92,9 @@
 .product-addto-links .action.towishlist:not(.updated):hover::before,
 .cart.table-wrapper .action.towishlist:hover::before {
     color: #d63b60 !important;
+}
+.wishlisticon2:before {
+    content: "\e915" !important;
 }
 
 @media (max-width: 768px) {
@@ -185,6 +189,7 @@ div.pagebuilder-button-secondary:hover {
         max-width: 120px;
         padding: 0;
         margin: 0;
+        line-height: 38px;
     }
 }
 

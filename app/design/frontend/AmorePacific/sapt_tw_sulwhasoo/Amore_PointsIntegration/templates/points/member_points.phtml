@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by Eguana.
+ * User: Brian
+ * Date: 2020-11-10
+ * Time: 오전 11:01
+ */
+/** @var $block \Amore\PointsIntegration\Block\Points\Index */
+$pointSearchResult = $block->getPointsSearchResult();
+$memberInfo = $block->getMemberInfo();
+// $pointSearchResult['lastName']="test";
+// $pointSearchResult['firstName']="test";
+// $pointSearchResult['cstmGradeNM']="test";
+// $pointSearchResult['availablePoint']="test";
+// $pointSearchResult['gradeExpireDate']="2025-01-01";
+
+
+?>
+<div class="block block-points-integration">
+    <div class="block-title">
+        <strong><?= __('Integration Points'); ?></strong>
+    </div>
+    <div class="block-content content">
+        <?php if (count($pointSearchResult) > 0) : ?>
+            <div class="pos-customer-info">
+                <div class="pos-customer-name">
+                    <strong><?= $block->escapeHtml(__('Name')) . ' : '; ?><?= $pointSearchResult['lastName'] . ' ' . $pointSearchResult['firstName']; ?></strong>
+                    <span>(<?= $block->escapeHtml(__('Customer Code')) ?>: <?= $memberInfo['cstmNO'] ?? ''; ?>)</span>
+                </div>
+                <div class="pos-customer-grade-name">
+                    <?= $block->escapeHtml(__('Customer Grade')) . ' : '; ?>
+                    <?= $pointSearchResult['cstmGradeNM']; ?>
+                </div>
+                <?php if (isset($pointSearchResult['gradeExpireDate']) && $pointSearchResult['gradeExpireDate']): ?>
+                    <div class="pos-customer-expireDate">
+                        <?= $block->escapeHtml(__('Expiry Date')) . ' : '; ?>
+                        <?= $block->dateFormat($pointSearchResult['gradeExpireDate']); ?>
+                    </div>
+                <?php endif ?>
+                <div class="pos-customer-available-points">
+                    <?= $block->escapeHtml(__('Available Points')) . ' : '; ?>
+                    <span class="primary"><?= $block->escapeHtml(__('%1 Points',$pointSearchResult['availablePoint'])) ?></span>
+                    <?= $block->getChildHtml('member.points.modal.info'); ?>
+                </div>
+            </div>
+        <?php else : ?>
+            <div class="message info empty">
+                <span><?= $block->escapeHtml(__('Customer Points Info is not Exist.')) ?></span>
+            </div>
+        <?php endif ?>
+    </div>
+</div>
