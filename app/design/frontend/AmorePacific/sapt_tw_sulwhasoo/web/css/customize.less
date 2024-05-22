@@ -6,6 +6,9 @@
         display:none !important;
     }
 }
+.sales-order-view .block.order-details .order-actions-toolbar .action span{
+    width:60px;
+}
 .checkout-cart-index .giftset_home_content .slick-button{
     position:  relative !important;
 }
@@ -167,6 +170,13 @@ body {
 }
 
 @media only all and (max-width: 767px) {
+    .swatch-attribute.sulwhasoo_color{
+        display: flex;
+        flex-wrap: wrap-reverse;
+        .swatch-attribute-options{
+            width:100%
+        }
+    }
     .design-html-view #maincontent {
         padding: 0;
     }
@@ -7326,6 +7336,11 @@ h1#modal-title-32 {
 .checkout-onepage-success [data-content-type='row'][data-appearance='contained'] {
     display: none
 }
+.checkout-onepage-success .customer_favories{
+    &::after{
+        width: fit-content;
+    }
+}
 
 .page-product-bundle.catalog-product-view .product.info.detailed .product.data.items .titles.sticky {
     top: 0px;
@@ -7351,12 +7366,17 @@ h1#modal-title-32 {
         .modal-inner-wrap {
             top: 20px;
         }
+        .modal-inner-wrap .modal-content {
+            padding: 0 0px !important;
+        }
     }
 }
 @media only screen and (max-width: 767px) {
     .customer-account-create {
         .form.create.account {
             .fieldset {
+                display: flex;
+                flex-wrap: wrap;
                 > .field.field-name-lastname {
                     margin-top: 30px;
                 }
