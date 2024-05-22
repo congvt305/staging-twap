@@ -4,4 +4,7 @@
         <observer name="Amasty_Coupons::CouponObserver" disabled="true" />
         <observer name="CJ_Coupons::CouponObserver" instance="CJ\Coupons\Observer\CouponObserver" />
     </event>
+    <event name="sales_quote_address_collect_totals_before">
+        <observer name="Amasty_Coupons::FlushCouponObserver" instance="Amasty\Coupons\Observer\FlushCouponObserver" />
+    </event>
 </config>
