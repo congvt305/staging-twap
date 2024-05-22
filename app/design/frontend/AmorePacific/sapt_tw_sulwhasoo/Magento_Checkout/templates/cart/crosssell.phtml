@@ -157,7 +157,7 @@
                 var $prdRecomm =  $(this).find('.product-items'),
                     $prdRecommProgressBar = $(this).find('.progress .progress_ing'),
                     $prdRecommSlidesToShow = 4;
-                
+
                 $prdRecomm.on('init', function(event, slick){
                     (window.innerWidth > 768) ? $prdRecommSlidesToShow = 4 : $prdRecommSlidesToShow = 1.56;
                     var calc = (100 / (slick.slideCount / $prdRecommSlidesToShow));
