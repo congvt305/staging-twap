@@ -124,7 +124,11 @@
                         <argument name="css_class" xsi:type="string">footer links</argument>
                     </arguments>
                 </block>
-                <block class="Magento\Theme\Block\Html\Footer" name="footer_content_tw" template="Magento_Theme::html/footer.phtml" />
+                <block class="Magento\Cms\Block\Block" name="footer_content_sulwhasoo">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">tw_sulwhasoo_footer_content</argument>
+                    </arguments>
+                </block>
                 <block class="Magento\Theme\Block\Html\Footer" name="copyright" template="Magento_Theme::html/copyright.phtml"/>
                 <block class="Magento\Framework\View\Element\Template" name="report.bugs" template="Magento_Theme::html/bugreport.phtml" ifconfig="design/footer/report_bugs"/>
             </container>
