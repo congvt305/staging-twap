@@ -4,8 +4,9 @@
  */
 
 define([
-	'jquery'
-], function ($) {
+	'jquery',
+	'amrevloader'
+], function ($, amloader) {
 	'use strict';
 
 	/**
@@ -13,6 +14,7 @@ define([
 	 * @param {*} fromPages
 	 */
 	function processReviews(url, fromPages) {
+		var loader  = amloader;
 		$.ajax({
 			url: url,
 			cache: true,
@@ -20,6 +22,7 @@ define([
 			showLoader: false,
 			loaderContext: $('.product.data.items')
 		}).done(function (data) {
+			loader.init($('[data-amload-js="container"]'));
 			$('#product-review-container').html(data).trigger('contentUpdated');
 			$('[data-role="product-review"] .pages a').each(function (index, element) {
 				$(element).click(function (event) { //eslint-disable-line max-nested-callbacks

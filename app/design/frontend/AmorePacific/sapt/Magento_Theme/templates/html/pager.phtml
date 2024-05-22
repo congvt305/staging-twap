@@ -38,8 +38,17 @@
         <div class="pages">
             <strong class="label pages-label" id="paging-label"><?= $block->escapeHtml(__('Page')) ?></strong>
             <ul class="items pages-items" aria-labelledby="paging-label">
-
-
+                <?php if (!$block->isFirstPage()) : ?>
+                    <li class="item pages-item-previous">
+                        <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>
+                        <a class="<?= $block->escapeHtmlAttr($text ? 'link ' : 'action ') ?> previous"
+                           href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"
+                           title="<?= $block->escapeHtmlAttr($text ? $text : __('Previous')) ?>">
+                            <span class="label"><?= $block->escapeHtml(__('Page')) ?></span>
+                            <span><?= $block->escapeHtml($text ? $text : __('Previous')) ?></span>
+                        </a>
+                    </li>
+                <?php endif;?>
                 <?php foreach ($block->getFramePages() as $_page) : ?>
                     <?php if ($block->isPageCurrent($_page)) : ?>
                         <li class="item current">
@@ -57,19 +66,6 @@
                         <span><?= $block->getLastPageNum() ?></span>
                     </a>
                 </li>
-
-
-                <?php if (!$block->isFirstPage()) : ?>
-                    <li class="item pages-item-previous">
-                        <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>
-                        <a class="<?= $block->escapeHtmlAttr($text ? 'link ' : 'action ') ?> previous"
-                           href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"
-                           title="<?= $block->escapeHtmlAttr($text ? $text : __('Previous')) ?>">
-                            <span class="label"><?= $block->escapeHtml(__('Page')) ?></span>
-                            <span><?= $block->escapeHtml($text ? $text : __('Previous')) ?></span>
-                        </a>
-                    </li>
-                <?php endif;?>
 
                 <?php if (!$block->isLastPage()) : ?>
                     <li class="item pages-item-next">
