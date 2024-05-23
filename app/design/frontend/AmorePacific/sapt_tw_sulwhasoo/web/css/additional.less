@@ -621,7 +621,9 @@ tr {
 			float: right;
 		}
 	}
-
+	.footer_top .footer_top_nav .nav_items .nav_item {
+		min-width: 135px;
+	}
 }
 
 
@@ -635,6 +637,26 @@ tr {
 
 
 @media (max-width: 768px) {
+	#history-of-point-reward-tab {
+		.table-point.history {
+			.points-history-list{
+				tr{
+					&:not(:first-child) {
+						border-top:unset;
+					}
+				}
+				td{
+					height:80px;
+					&::before{
+						display: contents;
+					}
+					&:first-child{
+						border-top: 1px solid #ddd;
+					}
+				}
+			}
+		}
+	}
 	#my-orders-table {
 		a.action.view {
 			height: 12px;
@@ -775,7 +797,7 @@ tr {
 		}
 		div#modals_quickview {
 			.content-quickview {
-				padding: 0 20px;
+				padding: 0 20px 20px;
 			}
 		}
 	}

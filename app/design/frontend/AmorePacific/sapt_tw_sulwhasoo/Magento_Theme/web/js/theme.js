@@ -24,7 +24,7 @@ define([
 
     $('.cart-summary').mage('sticky', {
         container: '#maincontent',
-        spacingTop: -110
+        spacingTop: -100
     });
 
     $('.panel.header > .header.links').clone().appendTo('#store\\.links');
