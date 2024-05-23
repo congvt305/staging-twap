@@ -17,7 +17,8 @@ class UpdateCvsShippingDescriptionPlugin
      * List of store codes which apply new shipping description
      */
     const NEW_SHIPPING_DESC_STORES = [
-        'tw_laneige'
+        'tw_laneige',
+        'default'
     ];
 
     /**
