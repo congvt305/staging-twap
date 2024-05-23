@@ -24,16 +24,19 @@ define([
             reloadPrice: function reDrawPrices() {
                 var priceFormat = (this.options.priceConfig && this.options.priceConfig.priceFormat) || {},
                     priceTemplate = mageTemplate(this.options.priceTemplate);
-
-                _.each(this.cache.displayPrices, function (price, priceCode) {
+                var displayPrices = this.cache.displayPrices;
+                var oldPrice = this.cache.displayPrices.oldPrice ? this.cache.displayPrices.oldPrice.amount : undefined;
+                _.each(displayPrices, function (price, priceCode) {
                     price.final = _.reduce(price.adjustments, function (memo, amount) {
                         return memo + amount;
                     }, price.amount);
 
                     price.formatted = utils.formatPrice(price.final, priceFormat);
 
-                    if (this.cache.displayPrices.oldPrice != undefined) {
-                        var oldPrice = this.cache.displayPrices.oldPrice.amount;
+                    if (
+                        oldPrice != undefined && 
+                        (priceCode != 'oldPrice' && priceCode != 'baseOldPrice')
+                    ) {
                         if (price.final != oldPrice) {
                             var discount = Math.floor((oldPrice - price.final) / oldPrice * 100);
                             $('[data-price-type="oldPrice"]').closest('.old-price').show();
@@ -44,7 +47,7 @@ define([
                         }
                     }
 
-                    if (priceCode == 'finalPrice') {
+                    if (priceCode == 'finalPrice' || priceCode == 'oldPrice') {
                         var qtyInput = $(this.element).closest('.product-info-main').find('input[name=qty]');
                         if (qtyInput) {
                             price.final = price.final * parseInt(qtyInput.val());
