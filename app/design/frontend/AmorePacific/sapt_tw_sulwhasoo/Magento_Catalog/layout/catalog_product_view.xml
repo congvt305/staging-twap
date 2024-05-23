@@ -31,6 +31,11 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="reviews.tab">
+            <arguments>
+                <argument name="sort_order" xsi:type="string">3000</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="product.info.upsell" remove="true"/>
         <referenceBlock name="product.info.product.faq" remove="true" />
     </body>
