@@ -136,3 +136,18 @@ $storeCode = $block->getCurrentStoreCode();
        }
    }
 </script>
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        $(document).ready(function () {
+            var emailInput = $('#email'),
+                usernameInput = $('#username');
+            $(document).on('submit', '#eguana-form-validate', function (e) {
+                usernameInput.val(emailInput.val());
+                return true;
+            })
+        });
+    });
+</script>
