@@ -66,6 +66,26 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                     .css('top', offset);
             }
         },
+        _calculateDimens: function () {
+            var $parent         = this.element.parent(),
+                topMargin       = parseInt(this.element.css('margin-top'), 10),
+                parentHeight    = $parent.height() - topMargin,
+                height          = this.element.innerHeight(),
+                maxScroll       = document.body.offsetHeight - window.innerHeight;
+
+            if (this.options.container.length > 0) {
+                maxScroll = $(this.options.container).height();
+            }
+
+            this.parentOffset   = $parent.offset().top + topMargin;
+            this.maxOffset      = maxScroll - this.parentOffset;
+
+            if (this.maxOffset + height >= parentHeight) {
+                this.maxOffset = parentHeight - height;
+            }
+
+            return this;
+        },
     };
 
     return function (targetWidget) {
