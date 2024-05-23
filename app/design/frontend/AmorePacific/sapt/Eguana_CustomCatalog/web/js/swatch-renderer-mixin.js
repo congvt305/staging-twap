@@ -106,8 +106,8 @@ define([
                         attr += ' option-stock="false"';
                     }
                     if (type === 0) {
-                        // Text                       html += '<div class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) +
-                            '</div>';
+                        // Text
+                        html += '<div class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + '</div>';
                     } else if (type === 1) {
                         // Color
                         html += '<div class="' + optionClass + ' color" ' + attr +
