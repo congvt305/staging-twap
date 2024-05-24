@@ -23,6 +23,10 @@
     <div class="megamenu-static-mobile">
         <?php echo $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId($_config['custom_links']['staticblock_after'])->toHtml();?>
     </div>
+<?php } else { ?>
+    <div class="megamenu-static-mobile">
+        <?php echo $block->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId('tw_sws_block_menu_mobile')->toHtml();?>
+    </div>
 <?php } ?>
 <script type="text/javascript">
     require([
